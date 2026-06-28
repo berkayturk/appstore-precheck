@@ -181,7 +181,7 @@ narrative; verdict.sh just pins the threshold arithmetic.
 - Most accurate for native Swift / SwiftUI. The metadata, privacy-manifest, screenshots, and
   export-compliance checks apply to any iOS app, but the code-level checks read Swift source, so on
   React Native (JavaScript) or Flutter (Dart) they under-detect rather than false-fire.
-- iOS only. Android / Play Console is out of scope.
+- iOS only.
 - Phase 0 detects only **structural** drift (added/removed section numbers); see the reference for why.
 
 ## Optional: upload guard hook

@@ -87,7 +87,7 @@ signal-gated advisory WARNs: each emits nothing unless its triggering signal is 
 apply to any iOS app regardless of how it is built. The code-level checks grep the app's Swift
 source (`*.swift`, plus `*.m`/`*.h` and `*.entitlements` where relevant), so they are most accurate
 for native Swift / SwiftUI. On React Native (JavaScript) or Flutter (Dart) apps that logic is not in
-Swift, so the code-level checks under-detect rather than misfire. iOS only; Android is out of scope.
+Swift, so the code-level checks under-detect rather than misfire. iOS only.
 
 ---
 
