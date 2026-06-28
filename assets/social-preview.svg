@@ -37,7 +37,7 @@
 
   <!-- the product's real verdict line, tabular -->
   <g font-family="ui-monospace,'SF Mono',Menlo,monospace" font-size="26" font-weight="700">
-    <text x="582" y="446" fill="#46CC7C">PASS 11</text>
+    <text x="582" y="446" fill="#46CC7C">PASS 13</text>
     <text x="742" y="446" fill="#E7B948">WARN 1</text>
     <text x="888" y="446" fill="#FF6E5E">FAIL 0</text>
     <text x="1010" y="446" fill="#9FB4D6">→</text>
@@ -45,6 +45,6 @@
   </g>
 
   <!-- footer: plain prose, no pill, no dot-list -->
-  <text x="582" y="498" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="22" fill="#93A7C7">Read-only pre-submission review · 12+ rejection vectors</text>
+  <text x="582" y="498" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="22" fill="#93A7C7">Read-only pre-submission review · 20 rejection vectors</text>
   <text x="582" y="528" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="22" fill="#8398B8">Works in Claude Code, Codex, Cursor &amp; Gemini.</text>
 </svg>
