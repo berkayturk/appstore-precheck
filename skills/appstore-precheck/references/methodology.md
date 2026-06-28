@@ -83,6 +83,12 @@ Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / Re
 or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–20 are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
+**Scope by app type.** The metadata, privacy-manifest, screenshots, and export-compliance checks
+apply to any iOS app regardless of how it is built. The code-level checks grep the app's Swift
+source (`*.swift`, plus `*.m`/`*.h` and `*.entitlements` where relevant), so they are most accurate
+for native Swift / SwiftUI. On React Native (JavaScript) or Flutter (Dart) apps that logic is not in
+Swift, so the code-level checks under-detect rather than misfire. iOS only; Android is out of scope.
+
 ---
 
 ## Auto-detection rules

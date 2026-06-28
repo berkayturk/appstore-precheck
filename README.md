@@ -66,6 +66,13 @@ plain and surgical.
 
 Paywall checks are skipped automatically when no in-app-purchase signals are present.
 
+**Supported app types.** The metadata, privacy-manifest, screenshots, and export-compliance checks
+apply to any iOS app, however it is built. The code-level checks (ATT, paywall links, private API,
+SDK detection, navigation) read the app's Swift source, so they are most accurate for native Swift /
+SwiftUI. On React Native (JavaScript) or Flutter (Dart) apps, where that logic lives outside Swift,
+the code-level checks under-detect rather than misfire: they stay quiet instead of blocking, so you
+still get the full metadata and compliance coverage. Android and the Play Console are out of scope.
+
 ## Quick start
 
 **Claude Code**: install as a plugin:

@@ -178,6 +178,9 @@ narrative; verdict.sh just pins the threshold arithmetic.
   URLs and placeholder copy). The export-compliance key is flagged when absent, but the actual
   encryption answer still belongs in App Store Connect.
 - The adversarial reviewer is a heuristic simulation, not a guarantee of Apple's decision.
+- Most accurate for native Swift / SwiftUI. The metadata, privacy-manifest, screenshots, and
+  export-compliance checks apply to any iOS app, but the code-level checks read Swift source, so on
+  React Native (JavaScript) or Flutter (Dart) they under-detect rather than false-fire.
 - iOS only. Android / Play Console is out of scope.
 - Phase 0 detects only **structural** drift (added/removed section numbers); see the reference for why.
 
