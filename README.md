@@ -102,11 +102,14 @@ bash skills/appstore-precheck/scripts/scan.sh
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
-- uses: berkayturk/appstore-precheck@v1.0.0
+- uses: berkayturk/appstore-precheck@v1.1.0
   with:
-    working-directory: .   # optional
-    fail-on: RED           # optional (RED | YELLOW)
+    working-directory: .   # optional, default: . (repo root)
+    fail-on: RED           # optional, default: RED (RED | YELLOW)
 ```
+
+Both inputs are optional: with none set, the action scans the repo root and fails the job only on
+a RED verdict. No App Store Connect credentials are needed; the action runs the static scan only.
 
 ## How it works
 
@@ -177,8 +180,13 @@ App Store apps (DuckDuckGo, Pocket Casts, Wikipedia).
 
 ## Requirements
 
-`bash`, `git`, `grep`, `find` · `jq` (config + String Catalog checks) · `python3` (exact Unicode
-length counts) · `fastlane` + an App Store Connect API key for Phase 2 only.
+`bash`, `git`, `grep`, `find` are all the static scan, `npx appstore-precheck`, and the GitHub
+Action need, and they run with **zero credentials and no network**. `jq` (config + String Catalog
+checks) and `python3` (exact Unicode length counts) are optional and sharpen a few checks.
+
+Only the **optional Phase 2** (`fastlane precheck`) needs `fastlane` and an
+[App Store Connect API key](https://developer.apple.com/documentation/appstoreconnectapi/creating-api-keys-for-app-store-connect-api).
+Everything else works without one.
 
 **Secrets**: the ASC API key is read from your environment at runtime and deleted immediately after
 `fastlane precheck`. Never commit it; `.gitignore` blocks `*asc-key*.json` and `.env`.
