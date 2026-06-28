@@ -1,0 +1,25 @@
+{
+  "_comment": "Copy to your repo root as .appstore-precheck.json. Every key is OPTIONAL; the scanner auto-detects a standard fastlane + Xcode layout. Use 'auto' or omit a key to keep auto-detection.",
+
+  "bundleId": "com.example.app",
+
+  "iosSourceDir": "auto",
+  "metadataDir": "auto",
+  "screenshotsDir": "auto",
+  "xcstringsPath": "auto",
+
+  "paywallGlobs": ["*ubscription*.swift", "*paywall*.swift", "*purchase*.swift"],
+
+  "locales": "auto",
+
+  "disclosureKeys": {
+    "subscription": "subscription_disclosure",
+    "trial": "subscription_trial_disclosure"
+  },
+
+  "optionalChecks": {
+    "familyControls": false
+  },
+
+  "reviewPrepNotes": ""
+}

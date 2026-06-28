@@ -1,0 +1,14 @@
+{
+  "_doc": "Fixture config for tests/test-config.sh. Named precheck-config.json (not .appstore-precheck.json, which is gitignored); the test points APPSTORE_PRECHECK_CONFIG at it. The layout is deliberately non-standard so auto-detection would pick the wrong dirs without these overrides.",
+  "iosSourceDir": "custom/src",
+  "metadataDir": "custom/meta",
+  "locales": ["en-US", "de-DE"],
+  "disclosureKeys": {
+    "subscription": "my_sub_key",
+    "trial": "my_trial_key"
+  },
+  "optionalChecks": {
+    "familyControls": true
+  },
+  "reviewPrepNotes": "REVIEW_NOTES.md"
+}

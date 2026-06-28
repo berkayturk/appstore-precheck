@@ -1,0 +1,52 @@
+name: "appstore-precheck"
+description: "Read-only iOS App Store pre-submission scan — static rejection vectors with a GREEN/YELLOW/RED verdict."
+branding:
+  icon: "shield"
+  color: "blue"
+
+inputs:
+  working-directory:
+    description: "Directory to scan (repo root by default)."
+    required: false
+    default: "."
+  fail-on:
+    description: "Verdict at which the job fails: RED (default) or YELLOW."
+    required: false
+    default: "RED"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run appstore-precheck scan
+      shell: bash
+      # Inputs are passed via env (never interpolated into the script) to avoid
+      # command injection from user-controlled values.
+      env:
+        APC_WORKDIR: ${{ inputs.working-directory }}
+        APC_FAIL_ON: ${{ inputs.fail-on }}
+        APC_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
+        verdict="$APC_ACTION_PATH/skills/appstore-precheck/scripts/verdict.sh"
+
+        cd "$APC_WORKDIR"
+        out="$(bash "$scan")"
+        echo "$out"
+        echo "----------------------------------------"
+        summary="$(printf '%s\n' "$out" | bash "$verdict")"
+        echo "$summary"
+
+        v="$(printf '%s\n' "$summary" | sed -n 's/^VERDICT: //p')"
+        {
+          echo "## appstore-precheck: $v"
+          echo ""
+          echo '```'
+          echo "$summary"
+          echo '```'
+        } >> "${GITHUB_STEP_SUMMARY:-/dev/null}"
+
+        case "$APC_FAIL_ON" in
+          YELLOW) [ "$v" = "GREEN" ] || { echo "::error::appstore-precheck verdict is $v (fail-on=YELLOW)"; exit 1; } ;;
+          *)      [ "$v" != "RED" ] || { echo "::error::appstore-precheck verdict is RED"; exit 1; } ;;
+        esac

@@ -1,0 +1,19 @@
+# Pre-check pass token (generated at runtime)
+.precheck-pass
+
+# App Store Connect API key — NEVER commit
+*asc-key*.json
+fastlane/.env
+.env
+
+# Node
+node_modules/
+
+# Local user config (the example is committed)
+.appstore-precheck.json
+
+# Internal planning notes (kept out of the public repo)
+.planning/
+
+# OS noise
+.DS_Store

@@ -1,0 +1,18 @@
+{
+  "name": "appstore-precheck",
+  "version": "1.0.0",
+  "description": "Read-only iOS App Store pre-submission check, packaged as a portable Agent Skill / Claude Code plugin.",
+  "license": "MIT",
+  "author": "Berkay Turk (https://github.com/berkayturk)",
+  "homepage": "https://github.com/berkayturk/appstore-precheck",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/berkayturk/appstore-precheck.git"
+  },
+  "scripts": {
+    "test": "bash tests/all.sh",
+    "check-versions": "bash scripts/check-versions.sh",
+    "lint": "bash -n skills/appstore-precheck/scripts/scan.sh && bash -n skills/appstore-precheck/scripts/verdict.sh && bash -n skills/appstore-precheck/scripts/phase2-precheck.sh && bash -n hooks/fastlane-guard.sh && bash -n install.sh && bash -n tests/run.sh && bash -n tests/all.sh && bash -n tests/test-verdict.sh && bash -n tests/test-guard.sh && bash -n tests/test-config.sh && bash -n tests/test-install.sh && bash -n tests/test-phase2.sh"
+  },
+  "keywords": ["ios", "app-store", "fastlane", "agent-skill", "claude-code", "precheck"]
+}

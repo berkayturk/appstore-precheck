@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: ShellCheck scripts
+        # Fail on warnings and errors; allow style/info nits (e.g. SC2001 sed-vs-expansion).
+        run: |
+          shellcheck --version
+          # -x follows `# shellcheck source=` directives so sourced helpers
+          # (tests/_assert.sh) resolve, avoiding false SC2154 on shared vars.
+          shellcheck -x --severity=warning \
+                     skills/appstore-precheck/scripts/scan.sh \
+                     skills/appstore-precheck/scripts/verdict.sh \
+                     skills/appstore-precheck/scripts/phase2-precheck.sh \
+                     hooks/fastlane-guard.sh \
+                     install.sh \
+                     tests/run.sh \
+                     tests/all.sh \
+                     tests/test-verdict.sh \
+                     tests/test-guard.sh \
+                     tests/test-config.sh \
+                     tests/test-install.sh \
+                     tests/test-phase2.sh \
+                     scripts/check-versions.sh
+
+      - name: Validate JSON
+        run: |
+          for f in .claude-plugin/plugin.json \
+                   .claude-plugin/marketplace.json \
+                   hooks/hooks.json \
+                   skills/appstore-precheck/guidelines-baseline.json \
+                   skills/appstore-precheck/config.example.json \
+                   skills/appstore-precheck/evals/evals.json \
+                   package.json; do
+            echo "validating $f"
+            jq empty "$f"
+          done
+
+      - name: Version consistency
+        run: bash scripts/check-versions.sh
+
+      - name: Run fixture tests
+        run: npm test

@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="appstore-precheck logo">
+  <defs>
+    <linearGradient id="tile" x1="256" y1="24" x2="256" y2="488" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3AA7FF"/>
+      <stop offset="1" stop-color="#0A57DE"/>
+    </linearGradient>
+    <linearGradient id="shieldShade" x1="256" y1="160" x2="256" y2="392" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#EAF2FF"/>
+    </linearGradient>
+    <linearGradient id="check" x1="214" y1="232" x2="304" y2="296" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3BE07A"/>
+      <stop offset="1" stop-color="#23B14E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- iOS-style app tile -->
+  <rect x="24" y="24" width="464" height="464" rx="104" fill="url(#tile)"/>
+  <!-- soft top highlight -->
+  <rect x="24" y="24" width="464" height="232" rx="104" fill="#FFFFFF" opacity="0.06"/>
+
+  <!-- shield = protection from rejection -->
+  <path d="M172 196 Q172 178 190 178 L322 178 Q340 178 340 196 L340 256 Q340 322 256 376 Q172 322 172 256 Z"
+        fill="url(#shieldShade)"/>
+
+  <!-- GREEN-verdict checkmark -->
+  <path d="M212 266 L243 298 L304 228"
+        fill="none" stroke="url(#check)" stroke-width="28"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

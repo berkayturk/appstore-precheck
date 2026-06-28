@@ -1,0 +1,1 @@
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. A simple app for tracking your daily metrics and insights.

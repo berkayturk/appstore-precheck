@@ -1,0 +1,73 @@
+{
+  "skill_name": "appstore-precheck",
+  "description": "Behavioral evals for the appstore-precheck skill: does the agent invoke the skill, run the scanner, reach the correct GREEN/YELLOW/RED verdict, and present it faithfully (Pierre voice as a thin wrapper, scan output never paraphrased)? Inputs are self-contained throwaway iOS projects under evals/files/. The mechanical layer (scan.sh / verdict.sh / guard) is separately covered by the deterministic suite in tests/.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "red-blocks-submission",
+      "prompt": "I'm about to submit this iOS app to the App Store. Run the appstore-precheck and tell me whether I can submit.",
+      "files": [
+        "evals/files/red-app/App/ContentView.swift",
+        "evals/files/red-app/App/SubscriptionView.swift",
+        "evals/files/red-app/App/Info.plist",
+        "evals/files/red-app/App/PrivacyInfo.xcprivacy",
+        "evals/files/red-app/fastlane/metadata/en-US/name.txt",
+        "evals/files/red-app/fastlane/metadata/en-US/subtitle.txt",
+        "evals/files/red-app/fastlane/metadata/en-US/description.txt",
+        "evals/files/red-app/fastlane/metadata/en-US/keywords.txt"
+      ],
+      "expected_output": "A RED verdict that blocks submission: the metadata names another platform (2.3.10) and the paywall is missing Restore Purchases, Terms of Use, and Privacy Policy (3.1.2). No .precheck-pass token is written.",
+      "assertions": [
+        "The verdict is RED and submission is reported as blocked",
+        "The .precheck-pass token is NOT written (it is removed/withheld)",
+        "Flags Guideline 2.3.10: the 'Android' / 'Google Play' reference in the metadata description",
+        "Flags Guideline 3.1.2: missing Restore Purchases, Terms of Use, and Privacy Policy on the paywall",
+        "The response opens with exactly one in-character Pierre line, then plain output",
+        "The scan's FAIL lines are shown verbatim (machine-faithful), not paraphrased or invented"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "green-allows-submission",
+      "prompt": "Run the App Store pre-submission check on this project before I upload with fastlane.",
+      "files": [
+        "evals/files/green-app/App/ContentView.swift",
+        "evals/files/green-app/App/SubscriptionView.swift",
+        "evals/files/green-app/App/Info.plist",
+        "evals/files/green-app/App/PrivacyInfo.xcprivacy",
+        "evals/files/green-app/fastlane/metadata/en-US/name.txt",
+        "evals/files/green-app/fastlane/metadata/en-US/subtitle.txt",
+        "evals/files/green-app/fastlane/metadata/en-US/description.txt",
+        "evals/files/green-app/fastlane/metadata/en-US/keywords.txt"
+      ],
+      "expected_output": "A GREEN verdict: no FAILs. The paywall has Restore/Terms/Privacy and the metadata is clean, so the .precheck-pass token is written.",
+      "assertions": [
+        "The verdict is GREEN",
+        "The .precheck-pass token is written",
+        "Confirms Restore Purchases, Terms of Use, and Privacy Policy are present on the paywall",
+        "Reports zero FAIL lines",
+        "The response opens with exactly one in-character Pierre line"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "no-iap-skips-paywall-checks",
+      "prompt": "Is this app ready for the App Store? Run the precheck.",
+      "files": [
+        "evals/files/no-iap-app/App/ContentView.swift",
+        "evals/files/no-iap-app/App/Info.plist",
+        "evals/files/no-iap-app/App/PrivacyInfo.xcprivacy",
+        "evals/files/no-iap-app/fastlane/metadata/en-US/name.txt",
+        "evals/files/no-iap-app/fastlane/metadata/en-US/subtitle.txt",
+        "evals/files/no-iap-app/fastlane/metadata/en-US/description.txt",
+        "evals/files/no-iap-app/fastlane/metadata/en-US/keywords.txt"
+      ],
+      "expected_output": "No in-app-purchase signals are present, so the 3.1.2 paywall checks are skipped (not failed). The verdict is not RED.",
+      "assertions": [
+        "Detects no in-app-purchase / subscription signals and skips the 3.1.2 paywall checks",
+        "Does NOT report any 3.1.2 paywall FAIL (missing Restore/Terms/Privacy)",
+        "The verdict is not RED"
+      ]
+    }
+  ]
+}

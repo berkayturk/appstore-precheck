@@ -1,0 +1,35 @@
+{
+  "_doc": "Baseline of Apple App Store Review Guidelines section numbers, for drift detection. Phase 0 fetches the live guidelines page and diffs its section numbers against `all_sections`; any NEW/REMOVED number => WARN: guideline-drift. This file is updated ONLY by deliberate human reconciliation (see SKILL.md Phase 0), NEVER auto-edited by the skill, otherwise the warning would be silently swallowed.",
+  "source_url": "https://developer.apple.com/app-store/review/guidelines/",
+  "reconciled_on": "2026-06-24",
+  "apple_last_updated_seen": "not-exposed-in-DOM (the page shows no visible date stamp; drift signal = the set of section numbers)",
+  "drift_check_coverage": "Reliable for Sections 1-4 + 5.1-5.4 (high-churn regions: 2.5.x, 3.1.x, 4.7, 5.1.x). The 5.5-5.6.x tail can't be fetched (the page truncates ~5.4) and is structurally stable; review it by hand at reconciliation.",
+  "covered_by_scan": [
+    "2.3.1", "2.3.3", "2.3.7", "2.3.10",
+    "2.5.1",
+    "3.1.2",
+    "4.0",
+    "5.1.1", "5.1.2", "5.1.5"
+  ],
+  "all_sections": [
+    "1.1", "1.1.1", "1.1.2", "1.1.3", "1.1.4", "1.1.5", "1.1.6", "1.1.7",
+    "1.2", "1.2.1", "1.3", "1.4", "1.4.1", "1.4.2", "1.4.3", "1.4.4", "1.4.5",
+    "1.5", "1.6", "1.7",
+    "2.1", "2.2", "2.3", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.3.5", "2.3.6",
+    "2.3.7", "2.3.8", "2.3.9", "2.3.10", "2.3.11", "2.3.12", "2.3.13",
+    "2.4", "2.4.1", "2.4.2", "2.4.3", "2.4.4", "2.4.5",
+    "2.5", "2.5.1", "2.5.2", "2.5.3", "2.5.4", "2.5.5", "2.5.6", "2.5.8", "2.5.9",
+    "2.5.11", "2.5.12", "2.5.13", "2.5.14", "2.5.15", "2.5.16", "2.5.17", "2.5.18",
+    "3.1", "3.1.1", "3.1.2", "3.1.3", "3.1.4", "3.1.5",
+    "3.2", "3.2.1", "3.2.2",
+    "4.1", "4.2", "4.2.1", "4.2.2", "4.2.3", "4.2.6", "4.2.7",
+    "4.3", "4.4", "4.4.1", "4.4.2",
+    "4.5", "4.5.1", "4.5.2", "4.5.3", "4.5.4", "4.5.5", "4.5.6",
+    "4.7", "4.7.1", "4.7.2", "4.7.3", "4.7.4", "4.7.5",
+    "4.8", "4.9", "4.10",
+    "5.1", "5.1.1", "5.1.2", "5.1.3", "5.1.4", "5.1.5",
+    "5.2", "5.2.1", "5.2.2", "5.2.3", "5.2.4", "5.2.5",
+    "5.3", "5.3.1", "5.3.2", "5.3.3", "5.3.4",
+    "5.4", "5.5", "5.6", "5.6.1", "5.6.2", "5.6.3", "5.6.4", "5.6.5", "5.6.6", "5.6.7"
+  ]
+}
