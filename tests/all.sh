@@ -13,6 +13,7 @@ SUITE=(
   "test-config.sh"    # .appstore-precheck.json override honoring
   "test-install.sh"   # install.sh per-host vendoring
   "test-phase2.sh"    # Phase 2 fastlane-precheck wrapper (secret-free dry-run)
+  "test-cli.sh"       # npx CLI wrapper (bin/cli.js) verdict + exit codes
 )
 
 failed=()

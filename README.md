@@ -75,6 +75,16 @@ Paywall checks are skipped automatically when no in-app-purchase signals are pre
 /plugin install appstore-precheck@appstore-precheck
 ```
 
+**Run instantly with npx** (no clone, no install):
+
+```bash
+npx appstore-precheck            # scans the current directory, prints the verdict
+npx appstore-precheck --fail-on YELLOW
+```
+
+It runs the static scan over the current directory and exits non-zero on RED (or on YELLOW with
+`--fail-on YELLOW`). Read-only, like everything else here.
+
 **Codex, Cursor, Gemini, Claude**: clone, then run the installer from inside your iOS project:
 
 ```bash

@@ -3,6 +3,17 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.1.0] - 2026-06-28
+
+### Added
+- `npx appstore-precheck` CLI (`bin/cli.js`): run the static scan with no clone and no install.
+  It scans the current directory (or `--dir <path>`), prints the scan output and the verdict
+  verbatim, and exits non-zero on RED (or on YELLOW with `--fail-on YELLOW`), mirroring the
+  GitHub Action. A thin wrapper over the bundled `scan.sh` / `verdict.sh`; it adds no new checks.
+- Published to npm under the package name `appstore-precheck`.
+- `tests/test-cli.sh`: covers the CLI's verdict mapping and exit codes (GREEN/RED/YELLOW,
+  `--fail-on`, `--version`, `--help`, bad-usage), wired into the suite and `npm run lint`.
+
 ## [1.0.0] - 2026-06-28
 
 Initial release.
