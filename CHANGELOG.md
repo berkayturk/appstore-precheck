@@ -24,6 +24,15 @@ All notable changes to this project are documented here. Versioning follows
   doc disagreeing with metadata. An eligibility-gated/conditional offer paired with metadata that
   mentions it is WARN at most (unless the metadata promises it unconditionally). Prevents the
   false REJECT-RISK overreach seen when dogfooding an already-approved build.
+- **2.3.7 locale check no longer hard-FAILs on a config/disk mismatch.** A locale listed in
+  `.appstore-precheck.json` `locales` but with no metadata folder on disk is now a WARN (with an
+  actionable "add it or remove it from the config" message), not a FAIL — that locale was simply
+  never submitted, so it must not turn an approved set RED. A missing *file* inside a present
+  locale folder is still a FAIL.
+- **2.1 placeholder check no longer false-fires on words containing "changeme".** The `changeme`
+  pattern is now word-bounded (`\bchangeme\b`) in both the metadata-URL and store-copy scans, so
+  legitimate copy such as the French "changement" ("change") is not flagged as unfinished.
+- Added regression coverage in `tests/test-config.sh` for both fixes.
 
 ## [1.1.0] - 2026-06-28
 
