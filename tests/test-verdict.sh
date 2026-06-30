@@ -29,15 +29,15 @@ assert_contains "$out" "VERDICT: GREEN" "0F/0W is GREEN"
 assert_contains "$out" "TOKEN: write"   "GREEN writes token"
 assert_eq "$code" "0" "GREEN exit code 0"
 
-section "GREEN — 0 FAIL, 2 WARN (upper boundary)"
-run_case 0 2 5
-assert_contains "$out" "VERDICT: GREEN" "0F/2W still GREEN"
-assert_contains "$out" "COUNTS: fail=0 warn=2 pass=5" "counts correct"
+section "GREEN — 0 FAIL, 4 WARN (upper boundary)"
+run_case 0 4 5
+assert_contains "$out" "VERDICT: GREEN" "0F/4W still GREEN"
+assert_contains "$out" "COUNTS: fail=0 warn=4 pass=5" "counts correct"
 assert_eq "$code" "0" "exit 0"
 
-section "YELLOW — 0 FAIL, 3 WARN (lower boundary)"
-run_case 0 3 5
-assert_contains "$out" "VERDICT: YELLOW" "0F/3W tips to YELLOW"
+section "YELLOW — 0 FAIL, 5 WARN (lower boundary)"
+run_case 0 5 5
+assert_contains "$out" "VERDICT: YELLOW" "0F/5W tips to YELLOW"
 assert_contains "$out" "TOKEN: hold"     "YELLOW holds token"
 assert_eq "$code" "2" "YELLOW exit code 2"
 
@@ -59,7 +59,7 @@ assert_eq "$([[ -f "$TMP/.precheck-pass" ]] && echo yes || echo no)" "yes" "GREE
 ( cd "$TMP" && gen 1 0 3 | bash "$VERDICT" --apply >/dev/null )
 assert_eq "$([[ -f "$TMP/.precheck-pass" ]] && echo yes || echo no)" "no" "RED --apply removes .precheck-pass"
 # YELLOW must NOT create a token
-( cd "$TMP" && gen 0 3 3 | bash "$VERDICT" --apply >/dev/null )
+( cd "$TMP" && gen 0 5 3 | bash "$VERDICT" --apply >/dev/null )
 assert_eq "$([[ -f "$TMP/.precheck-pass" ]] && echo yes || echo no)" "no" "YELLOW --apply holds (no token)"
 rm -rf "$TMP"
 

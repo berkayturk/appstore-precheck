@@ -82,7 +82,7 @@ assert_has "FAIL: 2.3.10 Other-platform mention"                          "Andro
 assert_has "FAIL: 3.1.2 Restore Purchases"                                "missing Restore Purchases flagged"
 assert_has "FAIL: 3.1.2 Terms of Use"                                     "missing Terms link flagged"
 assert_has "FAIL: 3.1.2 Privacy Policy"                                   "missing Privacy link flagged"
-assert_has "PASS: 4.0 Minimum functionality"                              "TabView navigation hub detected"
+assert_has "PASS: 4.2 Minimum functionality"                              "TabView navigation hub detected"
 assert_absent "FAIL: 2.5.1"                                               "no false private-API positive"
 finish_fixture
 
@@ -168,6 +168,28 @@ assert_has "WARN: 2.3 Support URL"                                        "2.3 f
 assert_has "WARN: 2.3 Privacy URL"                                        "2.3 flagged: privacy_url missing in metadata"
 assert_has "WARN: 5.1.1 Privacy manifest"                                 "5.1.1 flagged: analytics SDK vs empty privacy manifest"
 assert_has "WARN: 2.1 Metadata content"                                  "2.1 flagged: lorem-ipsum placeholder in metadata"
+assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# risky-app — exercises the §21–§30 advisory checks: a third-party payment SDK
+# (Stripe), UGC without moderation, ATS disabled app-wide, recurring Apple Pay
+# without disclosure, a custom App Store review link, misleading + "for kids"
+# metadata, a keyboard extension requiring full access, HealthKit + iCloud, and
+# a VPN (NetworkExtension). All advisory: no FAIL, so the verdict is YELLOW.
+# ---------------------------------------------------------------------------
+check_fixture "risky-app" "advisory §21–§30 vectors"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 3.1.1 Third-party payment SDK"                         "3.1.1 flagged: Stripe payment SDK"
+assert_has "WARN: 1.2 UGC"                                               "1.2 flagged: UGC without moderation"
+assert_has "WARN: 1.6 App Transport Security"                            "1.6 flagged: NSAllowsArbitraryLoads=true"
+assert_has "WARN: 4.9 Apple Pay"                                         "4.9 flagged: recurring Apple Pay without disclosure"
+assert_has "WARN: 5.6.1 App reviews"                                     "5.6.1 flagged: custom review link without requestReview"
+assert_has "WARN: 2.3.1 Misleading marketing"                            "2.3.1 flagged: virus-scanner claim in metadata"
+assert_has "WARN: 2.3.8"                                                 "2.3.8 flagged: 'for kids' wording in metadata"
+assert_has "WARN: 4.4.1 Keyboard extension"                              "4.4.1 flagged: keyboard requires full access"
+assert_has "WARN: 5.1.3 Health data"                                     "5.1.3 flagged: HealthKit + iCloud"
+assert_has "WARN: 5.4 VPN"                                               "5.4 flagged: NetworkExtension/NEVPNManager"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
 finish_fixture
 

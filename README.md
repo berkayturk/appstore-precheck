@@ -40,7 +40,7 @@ plain and surgical.
 
 ## What it checks
 
-20 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+30 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -54,7 +54,7 @@ plain and surgical.
 | **3.1.2** | Trial & auto-renew subscription disclosures |
 | **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
 | **2.5.1** | No private / banned APIs |
-| **4.0** | Minimum functionality (real navigation) |
+| **4.2** | Minimum functionality (real navigation) |
 | **4.8** | Sign in with Apple offered when a third-party social login is used |
 | **3.1.1(a)** | External purchase link entitlement + disclosure, when external purchase APIs are used |
 | **5.1.5** | Sensitive-API justification *(opt-in)* |
@@ -63,8 +63,19 @@ plain and surgical.
 | **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) |
 | **5.1.1** | Analytics SDK present ↔ `PrivacyInfo.xcprivacy` declares collected data / tracking domains |
 | **2.1** | No placeholder / dummy copy (lorem ipsum, TODO, `example.com`) in store metadata |
+| **3.1.1** | Third-party payment SDK (Stripe, Braintree, PayPal, …) linked for digital goods instead of in-app purchase |
+| **1.2** | User-generated content without a report / block / moderation mechanism |
+| **1.6** | App Transport Security disabled app-wide (`NSAllowsArbitraryLoads`) |
+| **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
+| **5.6.1** | A custom App Store review prompt instead of the system `requestReview` API |
+| **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
+| **2.3.8** | "For Kids" / "For Children" wording outside the Kids Category |
+| **4.4.1** | Keyboard extension that requires full access (`RequestsOpenAccess`) |
+| **5.1.3** | HealthKit data with an iCloud / CloudKit sync path |
+| **5.4** | VPN / NetworkExtension usage (org account + on-screen data disclosure) |
 
-Paywall checks are skipped automatically when no in-app-purchase signals are present.
+Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
+signal-gated advisory checks stay silent unless their triggering signal is found.
 
 ### Supported app types
 
@@ -74,7 +85,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 20 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | **Full.** All 30 vectors apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The Swift-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -113,7 +124,7 @@ bash skills/appstore-precheck/scripts/scan.sh
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
-- uses: berkayturk/appstore-precheck@v1.1.0
+- uses: berkayturk/appstore-precheck@v1.2.0
   with:
     working-directory: .   # optional, default: . (repo root)
     fail-on: RED           # optional, default: RED (RED | YELLOW)
@@ -127,7 +138,7 @@ a RED verdict. No App Store Connect credentials are needed; the action runs the 
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 20 vectors above. |
+| **1** | **Static scan**: `scan.sh` over the 30 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Adversarial review**: Pierre role-plays a skeptical reviewer and drafts realistic rejection notices. |
 | **4** | **Verdict**: GREEN / YELLOW / RED, and a `.precheck-pass` token the upload guard gates on. |
@@ -160,8 +171,8 @@ plus real [Phase 0 drift-check](examples/drift-check.md) and [Phase 2 `fastlane 
 
 | State | Meaning | Token | Upload guard |
 |-------|---------|-------|--------------|
-| 🟢 **GREEN** | 0 FAIL, ≤2 WARN | written (60 min) | allowed |
-| 🟡 **YELLOW** | 0 FAIL, 3+ WARN | not written | blocked; needs confirmation |
+| 🟢 **GREEN** | 0 FAIL, ≤4 WARN | written (60 min) | allowed |
+| 🟡 **YELLOW** | 0 FAIL, 5+ WARN | not written | blocked; needs confirmation |
 | 🔴 **RED** | ≥1 FAIL | removed | blocked; shows the FAIL list |
 
 ## Configuration

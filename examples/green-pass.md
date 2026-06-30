@@ -16,7 +16,7 @@ PASS: 3.1.2 Restore Purchases — present in SubscriptionView.swift
 PASS: 3.1.2 Terms of Use (EULA) link — present
 PASS: 3.1.2 Privacy Policy link — present
 PASS: 2.5.1 Private API — clean
-PASS: 4.0 Minimum functionality — 12 navigation hub(s) found
+PASS: 4.2 Minimum functionality — 12 navigation hub(s) found
 PASS: 2.3.3 Screenshots — checked 8 locales under ./ios/fastlane/screenshots
 PASS: export-compliance — ITSAppUsesNonExemptEncryption set in Info.plist
 ---END-OF-SCAN---
@@ -29,7 +29,7 @@ PASS: export-compliance — ITSAppUsesNonExemptEncryption set in Info.plist
 |-------|------|------|------|
 | GREEN |  0   |  1   |  12  |
 
-guideline-drift: none (baseline reconciled 2026-06-24)
+guideline-drift: none (baseline reconciled 2026-06-30)
 fastlane precheck: Result: true
 
 → .precheck-pass written (valid 60 min). Upload allowed.
