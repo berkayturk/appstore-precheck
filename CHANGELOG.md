@@ -3,6 +3,22 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.5.0] - 2026-06-30
+
+### Added
+- **Tier B v1 — 6 heuristic Pierre deep-review checks** (28 total, up from 22). New Phase 4 items
+  in guideline order: **2.1** review notes / demo account quality, **2.2** beta/test language,
+  **2.3.4** app preview consistency, **2.3.9** incentivized review copy, **4.5.1–4.5.3** push /
+  HomeKit abuse patterns, **5.6.4–5.6.7** rating manipulation dark patterns. Marked † in docs;
+  higher false-positive risk — advisory `REVIEW-FINDING: WARN` only.
+- Expanded `covered_by_pierre_deep_review` in `guidelines-baseline.json` with 2.2, 2.3.4, 2.3.9,
+  4.5.1–4.5.3, 5.6.4–5.6.7.
+
+### Changed
+- Phase 4 checklist 22 → **28** across `pierre-deep-review.md`, `SKILL.md`, `methodology.md`, README
+  (full guideline-ordered table with † Tier B labels), plugin manifest, and social preview
+  (`41 static + 28 Pierre deep checks`).
+
 ## [1.4.0] - 2026-06-30
 
 ### Added

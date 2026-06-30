@@ -16,8 +16,9 @@
 
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most
 common rejection vectors, runs Apple's own metadata linter, watches the App Store Review Guidelines
-for drift, has Pierre explain every FAIL and WARN, then runs **22 semantic deep-review checks**
-(reads your privacy policy, compares metadata to code, inspects screenshots, validates paywall copy).
+for drift, has Pierre explain every FAIL and WARN, then runs **28 semantic deep-review checks**
+(22 high-confidence Tier A + 6 heuristic Tier B v1 — beta language, review notes quality, app preview,
+incentivized review, push/HomeKit abuse, rating manipulation).
 It hands you a single **GREEN / YELLOW / RED** verdict. It never edits your code.
 
 It ships as a portable [Agent Skill](https://agentskills.io): the same `SKILL.md` runs natively in
@@ -30,7 +31,7 @@ by hand or wire it into CI.
 
 Your verdict is delivered by **Pierre**, a French critic who has seen ten thousand rejections and is
 impressed by none of them. He reviews your build harder than Apple would, in private — first with a
-fast static scan, then with 22 deep semantic checks only a human reviewer could do. A GREEN from
+fast static scan, then with **28 deep semantic checks** (22 confident + 6 heuristic). A GREEN from
 Pierre means Apple will wave you through.
 
 - 🔴 **RED**: *"Non. Restore Purchases, absent. Guideline 3.1.2. Suivant."*
@@ -91,25 +92,34 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
 signal-gated advisory checks stay silent unless their triggering signal is found.
 
-### Pierre deep review (22 semantic checks)
+### Pierre deep review (28 semantic checks)
 
-After the static scan, Pierre reads your project end-to-end and runs **22 evidence-based checks**
+After the static scan, Pierre reads your project end-to-end and runs **28 evidence-based checks**
 the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (they do **not**
 change the GREEN/YELLOW/RED verdict). Full procedure:
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md).
+
+**22 checks (Tier A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
+screenshots, paywall copy). **6 checks (Tier B v1, marked †)** are heuristic — useful pre-submit
+signals with a higher false-positive rate; Pierre prefers `not applicable` when no signal is present.
 
 | Guideline | Deep check |
 |-----------|------------|
 | **1.2.1** | User-generated content → is there a real report / block / moderation UI flow? |
 | **1.4.1** | Health or medical claims in metadata/UI without appropriate disclaimers? |
 | **2.1** | Store metadata claims match features actually implemented in code |
+| **2.1** † | App Review demo account / review notes actionable (credentials, steps — not placeholder) |
+| **2.2** † | Beta, test, preview, or work-in-progress language in store-facing copy or UI |
 | **2.3.2** | Primary App Store category fits the app type |
+| **2.3.4** † | App preview video/assets (if in-repo) match shipped features and metadata |
 | **2.3.5** | Screenshot images match shipped features (no misleading frames or missing UI) |
 | **2.3.6** | Metadata pricing / subscription language matches the paywall |
+| **2.3.9** † | Incentivized review copy ("rate 5 stars", "review for reward") in metadata or UI |
 | **2.3.11–2.3.13** | Cross-locale metadata materially consistent (trial terms, features, URLs) |
 | **3.1.1** | Digital goods unlocked via external purchase links (web checkout in WebView, etc.) |
 | **3.1.2** | Trial, auto-renew, and cancel disclosures are legible sentences — not keyword stubs |
 | **4.2.1–4.2.2** | Minimum functionality beyond a thin WebView shell or template app |
+| **4.5.1–4.5.3** † | Push notification or HomeKit entitlement used as intended (no spam-push / HomeKit without home UI) |
 | **4.8** | Third-party login → Sign in with Apple offered, or a valid exempt case |
 | **5.1.1(i)** | Privacy policy text (fetched live) matches code, PrivacyInfo, and SDK usage |
 | **5.1.1(ii)** | Purpose strings are specific and tied to a visible feature |
@@ -122,9 +132,11 @@ change the GREEN/YELLOW/RED verdict). Full procedure:
 | **5.2.1–5.2.3** | Obvious third-party trademark or brand misuse in metadata or UI copy |
 | **5.3.1–5.3.3** | Contest / sweepstakes copy includes official rules and eligibility |
 | **5.6.2–5.6.3** | Developer identity consistent (app name, support URL content, domains) |
+| **5.6.4–5.6.7** † | Rating / review manipulation dark patterns (withhold features until 5 stars, write-review links without `requestReview`) |
 
-Pierre runs **all 22 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
+Pierre runs **all 28 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
 static scan already flagged a guideline, the deep check adds semantic context the scanner could not see.
+† Tier B v1 items are heuristic — treat findings as "verify before submit", not automatic blockers.
 
 ### Supported app types
 
@@ -173,7 +185,7 @@ bash skills/appstore-precheck/scripts/scan.sh
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
-- uses: berkayturk/appstore-precheck@v1.4.0
+- uses: berkayturk/appstore-precheck@v1.5.0
   with:
     working-directory: .   # optional, default: . (repo root)
     fail-on: RED           # optional, default: RED (RED | YELLOW)
@@ -190,7 +202,7 @@ a RED verdict. No App Store Connect credentials are needed; the action runs the 
 | **1** | **Static scan**: `scan.sh` over the 41 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
-| **4** | **Pierre deep review**: 22 semantic checks (privacy policy fetch, claims vs code, screenshots, paywall copy). Advisory only. |
+| **4** | **Pierre deep review**: 28 semantic checks (22 Tier A + 6 Tier B v1 heuristic). Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
 
 ## Demo
