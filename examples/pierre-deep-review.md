@@ -5,7 +5,7 @@ GREEN/YELLOW/RED verdict — they flag issues a static grep cannot catch.
 
 ## Context
 
-Static scan: **GREEN** (0 FAIL, 2 WARN). Phase 4 still runs all **28** checks (22 Kova A + 6 Kova B v1 †).
+Static scan: **GREEN** (0 FAIL, 2 WARN). Phase 4 still runs all **28** checks (22 Tier A + 6 Tier B v1 †).
 
 ## Phase 4 summary
 

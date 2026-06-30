@@ -2,8 +2,8 @@
 
 After Phase 3 (explaining every scan FAIL/WARN), Pierre runs a **read-only, project-wide
 semantic review** of 28 guideline areas the static scanner cannot fully judge. Checks **1–22**
-(minus Kova B items below) are high-confidence (Kova A); checks **4, 5, 7, 10, 15, and 28** are
-heuristic advisory (Kova B v1 — higher false-positive risk, still useful pre-submit signals).
+(minus Tier B items below) are high-confidence (Tier A); checks **4, 5, 7, 10, 15, and 28** are
+heuristic advisory (Tier B v1 — higher false-positive risk, still useful pre-submit signals).
 
 This is the **Review Simulator** layer: Pierre reads Swift, metadata, entitlements, screenshots,
 xcstrings, paywall views, review notes, and fetches live privacy/support URLs — then cross-checks
@@ -21,7 +21,7 @@ that Pierre explains in Phase 5 presentation.
 - **All 28 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
 - **REVIEW-FINDING severity:** always `WARN` (advisory). Never emit `REVIEW-FINDING: … FAIL`.
   A deep-review issue informs the human; it does not block the token by itself.
-- **Kova B checks (4, 5, 7, 10, 15, 28):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
+- **Tier B checks (4, 5, 7, 10, 15, 28):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
   when flagging, use cautious language ("may trigger review questions") — these are heuristics.
 - **Deepen scan hits:** when Phase 1 already flagged a guideline, Phase 4 still runs the matching
   deep check and adds semantic context (do not repeat the machine line verbatim — add what the
@@ -111,7 +111,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 2. Grep Swift / imports for matching implementation.
 3. Flag prominent metadata claims with no code evidence.
 
-### 4 — 2.1 Review notes / demo account quality *(Kova B v1)*
+### 4 — 2.1 Review notes / demo account quality *(Tier B v1)*
 
 1. If the app is login-gated (`SecureField`, Login/SignIn views) or scan §31 flagged missing demo:
    read `fastlane/metadata/*/review_information/` (username, password, notes) and
@@ -120,7 +120,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
    do not explain how to reach core features (subscription paywall, Screen Time blocking, etc.).
 3. If the app is not login-gated and has no account wall, mark not applicable.
 
-### 5 — 2.2 Beta / test language *(Kova B v1)*
+### 5 — 2.2 Beta / test language *(Tier B v1)*
 
 1. Grep store metadata, `release_notes.txt`, and user-visible Swift strings (not code comments) for:
    `beta`, `testflight`, `test flight`, `preview`, `pre-release`, `work in progress`, `WIP`,
@@ -134,7 +134,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 2. Infer app type from code (game loop, utility, reader, social).
 3. Flag obvious mismatch (arcade game filed as Productivity).
 
-### 7 — 2.3.4 App preview consistency *(Kova B v1)*
+### 7 — 2.3.4 App preview consistency *(Tier B v1)*
 
 1. Look for app preview assets under `fastlane/metadata/*/preview*` or `*.mov` / `*.mp4` in metadata trees.
 2. If no preview assets in-repo, mark not applicable (previews may live only in App Store Connect).
@@ -152,7 +152,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 1. Compare metadata "free", trial, and price claims to paywall/subscription UI strings.
 2. Flag "completely free" metadata when IAP/paywall exists without clear disclosure.
 
-### 10 — 2.3.9 Incentivized review *(Kova B v1)*
+### 10 — 2.3.9 Incentivized review *(Tier B v1)*
 
 1. Grep metadata, onboarding, and paywall strings for: `rate us`, `leave a review`, `5 star`,
    `five star`, `review and get`, `gift card`, `reward for review`, `write a review to unlock`.
@@ -180,7 +180,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 1. Map primary user journeys (launch → core action).
 2. Flag single-screen WebView brochure, template placeholder flows, or no native navigation beyond §12 minimum.
 
-### 15 — 4.5.1–4.5.3 Push / HomeKit abuse *(Kova B v1)*
+### 15 — 4.5.1–4.5.3 Push / HomeKit abuse *(Tier B v1)*
 
 1. Read entitlements and Info.plist for push notifications and HomeKit.
 2. **Push:** if push entitlement present, scan metadata/UI for spam patterns ("notify every hour",
@@ -252,7 +252,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 2. Compare app name, support domain, and privacy policy domain for consistency.
 3. Flag placeholder support pages or identity mismatch.
 
-### 28 — 5.6.4–5.6.7 Rating manipulation *(Kova B v1)*
+### 28 — 5.6.4–5.6.7 Rating manipulation *(Tier B v1)*
 
 1. Grep Swift and metadata for: `itms-apps://` write-review URLs, `apps.apple.com/.../write-review`,
    "rate 5 stars", "only enable after review", custom star-rating UI tied to App Store review.
@@ -267,6 +267,6 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 28 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Kova B items 4, 5, 7, 10, 15, 28 if any fired).
+3. Phase 4 summary table: 28 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 28 if any fired).
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.

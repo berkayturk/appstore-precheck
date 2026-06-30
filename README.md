@@ -17,7 +17,7 @@
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most
 common rejection vectors, runs Apple's own metadata linter, watches the App Store Review Guidelines
 for drift, has Pierre explain every FAIL and WARN, then runs **28 semantic deep-review checks**
-(22 high-confidence Kova A + 6 heuristic Kova B v1 — beta language, review notes quality, app preview,
+(22 high-confidence Tier A + 6 heuristic Tier B v1 — beta language, review notes quality, app preview,
 incentivized review, push/HomeKit abuse, rating manipulation).
 It hands you a single **GREEN / YELLOW / RED** verdict. It never edits your code.
 
@@ -99,8 +99,8 @@ the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (
 change the GREEN/YELLOW/RED verdict). Full procedure:
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md).
 
-**22 checks (Kova A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
-screenshots, paywall copy). **6 checks (Kova B v1, marked †)** are heuristic — useful pre-submit
+**22 checks (Tier A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
+screenshots, paywall copy). **6 checks (Tier B v1, marked †)** are heuristic — useful pre-submit
 signals with a higher false-positive rate; Pierre prefers `not applicable` when no signal is present.
 
 | Guideline | Deep check |
@@ -136,7 +136,7 @@ signals with a higher false-positive rate; Pierre prefers `not applicable` when 
 
 Pierre runs **all 28 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
 static scan already flagged a guideline, the deep check adds semantic context the scanner could not see.
-† Kova B v1 items are heuristic — treat findings as "verify before submit", not automatic blockers.
+† Tier B v1 items are heuristic — treat findings as "verify before submit", not automatic blockers.
 
 ### Supported app types
 
@@ -202,7 +202,7 @@ a RED verdict. No App Store Connect credentials are needed; the action runs the 
 | **1** | **Static scan**: `scan.sh` over the 41 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
-| **4** | **Pierre deep review**: 28 semantic checks (22 Kova A + 6 Kova B v1 heuristic). Advisory only. |
+| **4** | **Pierre deep review**: 28 semantic checks (22 Tier A + 6 Tier B v1 heuristic). Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
 
 ## Demo

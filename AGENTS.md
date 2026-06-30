@@ -10,7 +10,7 @@ Gemini CLI, GitHub Copilot, and others as always-on context.
 that runs a read-only, pre-submission check for an iOS app before App Store review. The skill
 lives at [`skills/appstore-precheck/`](skills/appstore-precheck/); its scanner,
 [`scripts/scan.sh`](skills/appstore-precheck/scripts/scan.sh), is portable Bash and can be run by
-any agent or by hand. Phase 4 runs **28** Pierre deep-review checks (22 Kova A + 6 Kova B v1 heuristic; see
+any agent or by hand. Phase 4 runs **28** Pierre deep-review checks (22 Tier A + 6 Tier B v1 heuristic; see
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)).
 
 ## Using the skill in your project

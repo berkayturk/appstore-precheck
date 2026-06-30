@@ -145,7 +145,7 @@ finds; Pierre explains.
 ## Phase 4: Pierre deep review (28 semantic checks)
 
 After Phase 3, Pierre runs the **Review Simulator**: 28 evidence-based checks the static scanner
-cannot fully judge — **22 Kova A** (high-confidence) plus **6 Kova B v1** heuristic checks (items
+cannot fully judge — **22 Tier A** (high-confidence) plus **6 Tier B v1** heuristic checks (items
 **4, 5, 7, 10, 15, 28** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
 5.6.4–5.6.7). Full procedure, output format, and per-check steps are in
 [`pierre-deep-review.md`](pierre-deep-review.md).
@@ -159,7 +159,7 @@ These are advisory; FAIL/WARN counts and GREEN/YELLOW/RED come only from Phases 
 are tracked in `guidelines-baseline.json` → `covered_by_pierre_deep_review`.
 
 **Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 28 findings) and
-every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation. Kova B v1 findings are heuristic.
+every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation. Tier B v1 findings are heuristic.
 
 ---
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "appstore-precheck",
-  "description": "Read-only iOS App Store pre-submission check: scans 41 rejection vectors, wraps Apple's fastlane precheck, watches guideline drift, has Pierre explain every FAIL and WARN, and runs 28 semantic deep-review checks (22 Kova A + 6 Kova B v1) before you submit.",
+  "description": "Read-only iOS App Store pre-submission check: scans 41 rejection vectors, wraps Apple's fastlane precheck, watches guideline drift, has Pierre explain every FAIL and WARN, and runs 28 semantic deep-review checks (22 Tier A + 6 Tier B v1) before you submit.",
   "version": "1.5.0",
   "author": {
     "name": "Berkay Turk",

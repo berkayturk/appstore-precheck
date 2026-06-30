@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 41 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Kova A) plus 6 heuristic checks (Kova B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 41 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -13,7 +13,7 @@ allowed-tools: Bash Read Grep Glob WebFetch
 A one-command gate to run before every iOS App Store submission. It minimizes the risk of
 rejection by statically scanning the most common rejection vectors, running Apple's own
 metadata linter, watching for guideline drift, having Pierre explain every FAIL and WARN, and
-running 28 semantic deep-review checks (22 Kova A + 6 Kova B v1 heuristic). The deep-review checklist lives in
+running 28 semantic deep-review checks (22 Tier A + 6 Tier B v1 heuristic). The deep-review checklist lives in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md).
 
 **This skill is read-only.** It never edits code, metadata, or assets. It only reports and
@@ -212,7 +212,7 @@ Use this prompt verbatim after Phases 0–2 complete, pasting in the collected f
 ### Phase 4: Pierre deep review (28 semantic checks)
 
 After Phase 3, Pierre runs the **Review Simulator**: 28 read-only, evidence-based checks the
-static scanner cannot fully judge (**22 Kova A** + **6 Kova B v1** heuristic — marked † below).
+static scanner cannot fully judge (**22 Tier A** + **6 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
 Phase 4.
@@ -225,7 +225,7 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 
 - Run **all 28 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
 - `REVIEW-FINDING:` is always **WARN** (advisory). It does **not** change FAIL/WARN counts or the verdict.
-- † **Kova B v1** checks (4, 5, 7, 10, 15, 28) are heuristic — use cautious language; prefer not applicable when no signal.
+- † **Tier B v1** checks (4, 5, 7, 10, 15, 28) are heuristic — use cautious language; prefer not applicable when no signal.
 - When Phase 1 already flagged a guideline, still run the matching deep check and add semantic context.
 - Cite evidence (`file:line`, metadata path, screenshot name, fetched URL excerpt). Read-only — never edit files.
 
@@ -268,7 +268,7 @@ Use this prompt after Phase 3:
 > [`references/pierre-deep-review.md`](references/pierre-deep-review.md), in table order. For each
 > check emit `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`. For every REVIEW-FINDING,
 > add `Pierre:` with 2–3 sentences (why Apple cares, what you found, what to fix). Read-only.
-> Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Kova B checks
+> Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Tier B checks
 > (4, 5, 7, 10, 15, 28): prefer not applicable when no signal; use cautious language when flagging.
 
 ### Phase 5: Consolidation + token
