@@ -1,9 +1,10 @@
 # Phase 4: Pierre deep review (28 semantic checks)
 
 After Phase 3 (explaining every scan FAIL/WARN), Pierre runs a **read-only, project-wide
-semantic review** of 28 guideline areas the static scanner cannot fully judge. Checks **1–22**
-(minus Tier B items below) are high-confidence (Tier A); checks **4, 5, 7, 10, 15, and 28** are
-heuristic advisory (Tier B v1 — higher false-positive risk, still useful pre-submit signals).
+semantic review** of 28 guideline areas the static scanner cannot fully judge. The **22 Tier A**
+checks (all 28 except the Tier B items below) are high-confidence; the **6 Tier B v1** checks
+**4, 5, 7, 10, 15, and 28** are heuristic advisory (higher false-positive risk, still useful
+pre-submit signals).
 
 This is the **Review Simulator** layer: Pierre reads Swift, metadata, entitlements, screenshots,
 xcstrings, paywall views, review notes, and fetches live privacy/support URLs — then cross-checks

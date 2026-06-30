@@ -190,6 +190,7 @@ assert_has "WARN: 2.3.8"                                                 "2.3.8 
 assert_has "WARN: 4.4.1 Keyboard extension"                              "4.4.1 flagged: keyboard requires full access"
 assert_has "WARN: 5.1.3 Health data"                                     "5.1.3 flagged: HealthKit + iCloud"
 assert_has "WARN: 5.4 VPN"                                               "5.4 flagged: NetworkExtension/NEVPNManager"
+assert_absent "WARN: 5.1.4"                                              "5.1.4 not fired: kids wording without an ad/analytics SDK (§39 gating)"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
 finish_fixture
 
@@ -199,6 +200,8 @@ finish_fixture
 # declared but unused, a crypto SDK, a remote-desktop SDK, a Safari extension,
 # account creation without deletion, a kids audience with an ad SDK, real-money
 # gambling copy, and an MDM signal. All advisory: no FAIL, so the verdict is YELLOW.
+# Also carries a SCOPED ATS exception (NSAllowsArbitraryLoadsInWebContent) that must
+# NOT trip §23, and asserts the §27↔§39 kids cross-gate (no 2.3.8 double-count).
 # ---------------------------------------------------------------------------
 check_fixture "risky-app-2" "advisory v1.3.0 vectors (§31–§41)"
 assert_has "---END-OF-SCAN---"                                           "scanner ran to completion"
@@ -212,6 +215,8 @@ assert_has "WARN: 5.1.1(v) Account deletion"                             "5.1.1(
 assert_has "WARN: 5.1.4 Kids"                                            "5.1.4 flagged: kids audience with an ad SDK"
 assert_has "WARN: 5.3.4 Gambling"                                        "5.3.4 flagged: real-money gambling copy"
 assert_has "WARN: 5.5 MDM"                                               "5.5 flagged: MDM signal"
+assert_absent "WARN: 2.3.8"                                              "2.3.8 cross-gated: §39 (5.1.4) owns the kids signal when an ad SDK is linked — no double-count"
+assert_absent "WARN: 1.6 App Transport"                                 "1.6 not fired: NSAllowsArbitraryLoadsInWebContent is scoped, not app-wide ATS off"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
 finish_fixture
 

@@ -8,7 +8,7 @@ whole file to run the skill.
 - [Phase 0: Guideline drift check](#phase-0-guideline-drift-check)
 - [Phase 1: Rejection vectors](#phase-1-rejection-vectors)
 - [Phase 3: Pierre explains every finding](#phase-3-pierre-explains-every-finding)
-- [Phase 4: Pierre deep review (22 checks)](#phase-4-pierre-deep-review-22-semantic-checks)
+- [Phase 4: Pierre deep review (28 checks)](#phase-4-pierre-deep-review-28-semantic-checks)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)

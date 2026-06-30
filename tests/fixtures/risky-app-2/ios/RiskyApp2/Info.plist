@@ -7,4 +7,10 @@
   <array>
     <string>location</string>
   </array>
+  <key>NSAppTransportSecurity</key>
+  <dict>
+    <!-- Scoped exception only: does NOT disable ATS app-wide, so §23 must stay quiet. -->
+    <key>NSAllowsArbitraryLoadsInWebContent</key>
+    <true/>
+  </dict>
 </dict></plist>
