@@ -44,35 +44,35 @@ plain and surgical.
 
 | Guideline | Check |
 |-----------|-------|
-| **5.1.1(v)** | Privacy Manifest ↔ Required Reason API parity |
-| **5.1.1** | A non-empty purpose string for every sensitive framework |
-| **5.1.2** | ATT usage ↔ `NSUserTrackingUsageDescription` |
-| **2.3.10** | No other-platform / competitor names in metadata |
-| **2.3.1** | Metadata length limits (name, subtitle, keywords, promo, description) |
-| **2.3.7** | Localized metadata parity across every locale |
-| **2.3.3** | At least one screenshot per locale |
-| **3.1.2** | Trial & auto-renew subscription disclosures |
-| **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
-| **2.5.1** | No private / banned APIs |
-| **4.2** | Minimum functionality (real navigation) |
-| **4.8** | Sign in with Apple offered when a third-party social login is used |
-| **3.1.1(a)** | External purchase link entitlement + disclosure, when external purchase APIs are used |
-| **5.1.5** | Sensitive-API justification *(opt-in)* |
-| **5.1.2** | Tracking / IDFA SDK (AdMob, AppLovin, AppsFlyer, Adjust, …) shipped without an ATT prompt |
-| **encryption** | `ITSAppUsesNonExemptEncryption` set, so App Store Connect skips the export-compliance question |
-| **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) |
-| **5.1.1** | Analytics SDK present ↔ `PrivacyInfo.xcprivacy` declares collected data / tracking domains |
-| **2.1** | No placeholder / dummy copy (lorem ipsum, TODO, `example.com`) in store metadata |
-| **3.1.1** | Third-party payment SDK (Stripe, Braintree, PayPal, …) linked for digital goods instead of in-app purchase |
 | **1.2** | User-generated content without a report / block / moderation mechanism |
 | **1.6** | App Transport Security disabled app-wide (`NSAllowsArbitraryLoads`) |
-| **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
-| **5.6.1** | A custom App Store review prompt instead of the system `requestReview` API |
+| **2.1** | No placeholder / dummy copy (lorem ipsum, TODO, `example.com`) in store metadata |
+| **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) |
+| **2.3.1** | Metadata length limits (name, subtitle, keywords, promo, description) |
 | **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
+| **2.3.3** | At least one screenshot per locale |
+| **2.3.7** | Localized metadata parity across every locale |
 | **2.3.8** | "For Kids" / "For Children" wording outside the Kids Category |
+| **2.3.10** | No other-platform / competitor names in metadata |
+| **2.5.1** | No private / banned APIs |
+| **3.1.1** | Third-party payment SDK (Stripe, Braintree, PayPal, …) linked for digital goods instead of in-app purchase |
+| **3.1.1(a)** | External purchase link entitlement + disclosure, when external purchase APIs are used |
+| **3.1.2** | Trial & auto-renew subscription disclosures |
+| **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
+| **4.2** | Minimum functionality (real navigation) |
 | **4.4.1** | Keyboard extension that requires full access (`RequestsOpenAccess`) |
+| **4.8** | Sign in with Apple offered when a third-party social login is used |
+| **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
+| **5.1.1** | A non-empty purpose string for every sensitive framework |
+| **5.1.1** | Analytics SDK present ↔ `PrivacyInfo.xcprivacy` declares collected data / tracking domains |
+| **5.1.1(v)** | Privacy Manifest ↔ Required Reason API parity |
+| **5.1.2** | ATT usage ↔ `NSUserTrackingUsageDescription` |
+| **5.1.2** | Tracking / IDFA SDK (AdMob, AppLovin, AppsFlyer, Adjust, …) shipped without an ATT prompt |
 | **5.1.3** | HealthKit data with an iCloud / CloudKit sync path |
+| **5.1.5** | Sensitive-API justification *(opt-in)* |
 | **5.4** | VPN / NetworkExtension usage (org account + on-screen data disclosure) |
+| **5.6.1** | A custom App Store review prompt instead of the system `requestReview` API |
+| **encryption** | `ITSAppUsesNonExemptEncryption` set, so App Store Connect skips the export-compliance question |
 
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
 signal-gated advisory checks stay silent unless their triggering signal is found.
