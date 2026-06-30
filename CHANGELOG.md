@@ -3,6 +3,39 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.1.1] - 2026-06-30
+
+### Changed
+- **Pierre now speaks in a trilingual block.** The verdict opens with his native **French** line,
+  then an **English** rendering, then a rendering in the **user's conversation language** — each an
+  idiomatic, in-character re-expression in that language's own rhythm, not a literal translation.
+  Collapses to two lines when the user already converses in French or English. The block stays
+  flavor only; the FAIL/WARN list, `file:line` references, and fixes below it remain plain and
+  machine-faithful. Updated the output contract, Phase 4 step 3, and the behavioral eval
+  assertions accordingly.
+
+### Fixed
+- **Pierre no longer treats local-only files as Apple submission evidence.** The Phase 3 prompt
+  now scopes reject-risk evidence to Apple-facing artifacts (fastlane metadata, paywall Swift,
+  String Catalog, Info.plist, PrivacyInfo.xcprivacy). Internal/local files (`.planning/` notes,
+  `reviewPrepNotes` drafts, build scripts) and Google Play / non-Apple sections are out of scope —
+  cited at most as a WARN labeled "internal draft — not submitted to Apple", never REJECT-RISK. A
+  REJECT risk now requires a contradiction *within* submission-facing artifacts, not an internal
+  doc disagreeing with metadata. An eligibility-gated/conditional offer paired with metadata that
+  mentions it is WARN at most (unless the metadata promises it unconditionally). Prevents the
+  false REJECT-RISK overreach seen when dogfooding an already-approved build.
+- **2.3.7 locale check no longer hard-FAILs on a config/disk mismatch.** A locale listed in
+  `.appstore-precheck.json` `locales` but with no metadata folder on disk is now a WARN (with an
+  actionable "add it or remove it from the config" message), not a FAIL — that locale was simply
+  never submitted, so it must not turn an approved set RED. A missing *file* inside a present
+  locale folder is still a FAIL.
+- **2.1 placeholder check no longer false-fires on words containing "changeme".** The `changeme`
+  pattern is now word-bounded (`\bchangeme\b`) in both the metadata-URL and store-copy scans, so
+  legitimate copy such as the French "changement" ("change") is not flagged as unfinished.
+- Added regression coverage in `tests/test-config.sh` for both fixes.
+- CI: bumped `actions/checkout@v4 -> v7` and `actions/setup-node@v4 -> v6` to clear the
+  GitHub Actions Node.js 20 deprecation warning (both now run natively on Node 24).
+
 ## [1.1.0] - 2026-06-28
 
 ### Added
