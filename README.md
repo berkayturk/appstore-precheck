@@ -16,7 +16,7 @@
 
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most
 common rejection vectors, runs Apple's own metadata linter, watches the App Store Review Guidelines
-for drift, and finishes with an adversarial review pass, then hands you a single **GREEN / YELLOW /
+for drift, and has Pierre explain every FAIL and WARN, then hands you a single **GREEN / YELLOW /
 RED** verdict. It never edits your code.
 
 It ships as a portable [Agent Skill](https://agentskills.io): the same `SKILL.md` runs natively in
@@ -35,8 +35,9 @@ Pierre means Apple will wave you through.
 - 🟡 **YELLOW**: *"A few small uglinesses. I would not reject. But I noticed."*
 - 🟢 **GREEN**: *"Hmf. I find nothing. Acceptable. Do not make me regret this."*
 
-The verdict line is in Pierre's voice. The breakdown beneath it, every `file:line` and fix, stays
-plain and surgical.
+The verdict line is in Pierre's voice — **three separate language blocks** (bold label + blockquote
+each, divided by horizontal rules), not one compressed sentence. The breakdown beneath it, every
+`file:line` and fix, stays plain and surgical.
 
 ## What it checks
 
@@ -135,7 +136,7 @@ bash skills/appstore-precheck/scripts/scan.sh
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
-- uses: berkayturk/appstore-precheck@v1.3.0
+- uses: berkayturk/appstore-precheck@v1.3.1
   with:
     working-directory: .   # optional, default: . (repo root)
     fail-on: RED           # optional, default: RED (RED | YELLOW)
@@ -151,7 +152,7 @@ a RED verdict. No App Store Connect credentials are needed; the action runs the 
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
 | **1** | **Static scan**: `scan.sh` over the 41 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
-| **3** | **Adversarial review**: Pierre role-plays a skeptical reviewer and drafts realistic rejection notices. |
+| **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each (no random sampling). |
 | **4** | **Verdict**: GREEN / YELLOW / RED, and a `.precheck-pass` token the upload guard gates on. |
 
 ## Demo
@@ -165,14 +166,26 @@ counts are deterministic ([`verdict.sh`](skills/appstore-precheck/scripts/verdic
 
 ## Example
 
-```
-🔴 Pierre: "Non. Three faults. Apple would have found one. Suivant."
+### Pierre
 
-RED: 3 FAIL
-• 3.1.2 Restore Purchases missing    SubscriptionView.swift:14 → add restorePurchases()
-• 2.3.10 "Android" in metadata        en-US/description.txt:1 → remove the reference
-• 5.1.1 FileTimestamp undeclared      PrivacyInfo.xcprivacy → declare the reason
-Submission blocked.
+**Français**
+> *Non. Trois fautes. Apple en aurait trouvé moins. Suivant.*
+
+---
+
+**English**
+> *No. Three faults. Apple would have found fewer. Next.*
+
+---
+
+**Türkçe**
+> *Hayır. Üç hata. Apple daha azını bulurdu. Sıradaki.*
+
+**RED — 3 FAIL** · submission blocked
+
+```
+FAIL: 3.1.2 Restore Purchases — not found in SubscriptionView.swift
+Pierre: Apple requires a Restore Purchases control on every subscription paywall …
 ```
 
 See [`examples/`](examples/) for full [GREEN](examples/green-pass.md) and [RED](examples/red-reject.md) runs,

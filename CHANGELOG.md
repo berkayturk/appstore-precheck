@@ -3,6 +3,19 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.3.1] - 2026-06-30
+
+### Changed
+- **Phase 3 (Pierre) now explains every FAIL and WARN** from Phases 0–2 in **2–3 sentences
+  each** — no more random 5-guideline sampling. Pierre repeats each machine line verbatim,
+  then explains why Apple cares, what the scan found, and what to fix. Updated `SKILL.md`,
+  `methodology.md`, the README example, `examples/red-reject.md`, and behavioral eval
+  assertions in lockstep.
+- Phase 4 presentation order clarified: trilingual verdict block → Pierre commentary → verbatim
+  scan lines + `file:line` fixes → verdict/token.
+- **Trilingual verdict block format:** each language in its own **bold label + blockquote**, separated
+  by horizontal rules (`---`) under a `### Pierre` heading — never FR/EN/user-lang compressed on one line.
+
 ## [1.3.0] - 2026-06-30
 
 ### Added

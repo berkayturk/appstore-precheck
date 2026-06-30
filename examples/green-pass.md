@@ -22,6 +22,23 @@ PASS: export-compliance — ITSAppUsesNonExemptEncryption set in Info.plist
 ---END-OF-SCAN---
 ```
 
+## Pierre (Phase 4 opening)
+
+### Pierre
+
+**Français**
+> *Hmf. Je ne trouve rien. Acceptable. Ne me faites pas regretter.*
+
+---
+
+**English**
+> *Hmf. I find nothing. Acceptable. Do not make me regret this.*
+
+---
+
+**Türkçe**
+> *Hmf. Bir şey bulamadım. Kabul edilebilir. Pişman etmeyin beni.*
+
 ## Verdict
 
 ```

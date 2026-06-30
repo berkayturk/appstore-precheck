@@ -7,6 +7,7 @@ whole file to run the skill.
 
 - [Phase 0: Guideline drift check](#phase-0-guideline-drift-check)
 - [Phase 1: Rejection vectors](#phase-1-rejection-vectors)
+- [Phase 3: Pierre explains every finding](#phase-3-pierre-explains-every-finding)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)
@@ -47,7 +48,7 @@ would silently swallow the warning and defeat the entire purpose of drift detect
 
 **Limit:** this detects only *structural* drift (the set of section numbers). A section whose
 number is unchanged but whose *text* changed is not caught here, but is partly covered by
-Phase 2 (Apple's own rule engine) and Phase 3 (the adversarial reviewer). Apple does not expose a
+Phase 2 (Apple's own rule engine) and Phase 3 (Pierre explains every FAIL/WARN). Apple does not expose a
 machine-readable "last updated" date in the page DOM, so the section-number set is the signal.
 
 ---
@@ -109,6 +110,34 @@ apply to any iOS app regardless of how it is built. The code-level checks grep t
 source (`*.swift`, plus `*.m`/`*.h` and `*.entitlements` where relevant), so they are most accurate
 for native Swift / SwiftUI. On React Native (JavaScript) or Flutter (Dart) apps that logic is not in
 Swift, so the code-level checks under-detect rather than misfire. iOS only.
+
+---
+
+## Phase 3: Pierre explains every finding
+
+After Phases 0–2, **Pierre** (the French critic reviewer persona) explains **every FAIL and WARN**
+the pipeline emitted — no random sampling, no new hunts.
+
+**Sources to explain (all lines, in order):**
+
+1. Phase 0 — any `WARN: guideline-drift` (or degraded drift-check) line.
+2. Phase 1 — every `FAIL:` and `WARN:` from `scan.sh` (including multi-line detail blocks
+   indented under a parent line — explain the parent once, cite the paths in the explanation).
+3. Phase 2 — every `fastlane precheck` violation, if Phase 2 ran (treat as FAIL-level).
+
+**Per finding:** repeat the line verbatim, then **2–3 sentences** from Pierre: why Apple cares
+about that guideline, what the scan found, what to fix or verify. Write explanations in the user's
+conversation language; keep the Phase 4 trilingual verdict block separate (bold label + blockquote
+per language, `---` between — see SKILL.md Output contract).
+
+**Trilingual verdict block:** `### Pierre` heading; each language on its own — **bold label**, blank
+line, `> *italic one-liner*`; horizontal rules between languages; never FR/EN/user-lang on one line.
+
+**If zero FAIL and zero WARN:** Pierre gives a brief all-clear (2–3 sentences). Do not invent issues.
+
+**What Phase 3 is not:** it does not add FAIL/WARN lines to the verdict count, does not paraphrase
+the machine lines (those stay verbatim in Phase 4), and does not re-run detection. The scanner
+finds; Pierre explains.
 
 ---
 

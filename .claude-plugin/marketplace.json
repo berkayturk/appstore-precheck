@@ -12,7 +12,7 @@
       "name": "appstore-precheck",
       "source": "./",
       "category": "testing",
-      "description": "Read-only iOS App Store pre-submission check (scan + fastlane precheck + guideline-drift + adversarial review)."
+      "description": "Read-only iOS App Store pre-submission check (scan + fastlane precheck + guideline-drift + Pierre explains every FAIL/WARN)."
     }
   ]
 }

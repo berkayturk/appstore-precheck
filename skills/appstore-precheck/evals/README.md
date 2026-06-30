@@ -6,8 +6,9 @@ Behavioral evaluations for the `appstore-precheck` skill, in the
 
 These test the **agent-behavior layer**: given a realistic submission-intent prompt and a throwaway
 iOS project, does the agent invoke the skill, run the scanner, reach the correct **GREEN/YELLOW/RED**
-verdict, and present it faithfully: one Pierre line as a thin wrapper, the scan's `FAIL`/`WARN`/`PASS`
-lines verbatim, never paraphrased? Each case carries `assertions` describing what a correct run must
+verdict, and present it faithfully: Pierre's trilingual block (`### Pierre`, bold language labels,
+blockquotes, `---` separators), then **2–3 sentences explaining each FAIL and WARN**, then the
+scan's `FAIL`/`WARN`/`PASS` lines verbatim (never paraphrased). Each case carries `assertions` describing what a correct run must
 contain.
 
 | # | Case | Input | Expected |
