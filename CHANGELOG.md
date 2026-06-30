@@ -33,6 +33,8 @@ All notable changes to this project are documented here. Versioning follows
   pattern is now word-bounded (`\bchangeme\b`) in both the metadata-URL and store-copy scans, so
   legitimate copy such as the French "changement" ("change") is not flagged as unfinished.
 - Added regression coverage in `tests/test-config.sh` for both fixes.
+- CI: bumped `actions/checkout@v4 -> v7` and `actions/setup-node@v4 -> v6` to clear the
+  GitHub Actions Node.js 20 deprecation warning (both now run natively on Node 24).
 
 ## [1.1.0] - 2026-06-28
 
