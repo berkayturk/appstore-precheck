@@ -12,6 +12,22 @@ set -u
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || ROOT="$(pwd)"
 cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit 0; }
 
+source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
+FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
+trap 'rm -f "$FINDINGS_TMP"' EXIT
+FORMAT="text"
+PRECHECK_VERSION="$(grep -m1 '"version"' "$ROOT/package.json" 2>/dev/null | tr -dc '0-9.' )"
+[[ -z "$PRECHECK_VERSION" ]] && PRECHECK_VERSION="dev"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --format) FORMAT="$2"; shift 2 ;;
+    --format=*) FORMAT="${1#*=}"; shift ;;
+    *) shift ;;
+  esac
+done
+[[ "$FORMAT" == json || "$FORMAT" == text ]] || { echo "scan.sh: --format must be text|json" >&2; exit 64; }
+
 CONFIG="${APPSTORE_PRECHECK_CONFIG:-.appstore-precheck.json}"
 have_jq() { command -v jq >/dev/null 2>&1; }
 
@@ -32,9 +48,9 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   echo "false"
 }
 
-fail() { echo "FAIL: $1"; }
-warn() { echo "WARN: $1"; }
-pass() { echo "PASS: $1"; }
+fail() { echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; }
+warn() { echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; }
+pass() { echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; }
 
 # ===================================================================
 # Auto-detection of the project layout
@@ -149,6 +165,8 @@ fi
 SUB_KEY="$(cfg '.disclosureKeys.subscription' 'subscription_disclosure')"
 TRIAL_KEY="$(cfg '.disclosureKeys.trial' 'subscription_trial_disclosure')"
 CHECK_FAMILY="$(cfg_bool '.optionalChecks.familyControls')"
+
+if [[ "$FORMAT" == json ]]; then exec 4>&1 1>/dev/null; fi
 
 echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='${XCSTRINGS:-?}' locales=${#LOCALES[@]}"
 
@@ -839,3 +857,4 @@ if [[ -n "$IOS_DIR" ]]; then
 fi
 
 echo "---END-OF-SCAN---"
+if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json; fi
