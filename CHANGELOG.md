@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
-## [1.2.0] - 2026-06-30
+## [1.1.1] - 2026-06-30
 
 ### Changed
 - **Pierre now speaks in a trilingual block.** The verdict opens with his native **French** line,
