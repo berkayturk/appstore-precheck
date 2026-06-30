@@ -362,7 +362,7 @@ Everything else works without one.
 
 ```bash
 /plugin uninstall appstore-precheck@appstore-precheck   # Claude Code plugin
-codex plugin remove appstore-precheck@appstore-precheck # Codex plugin
+# Codex: run `codex`, open `/plugins`, uninstall appstore-precheck (CLI 0.125.x has no `plugin remove`)
 # Cursor: Customize → Plugins → appstore-precheck → Uninstall
 gemini skills uninstall appstore-precheck                 # Gemini (if installed via gemini skills)
 rm -rf .claude/skills/appstore-precheck                # install.sh (Claude Code / Cursor)

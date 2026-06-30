@@ -49,7 +49,8 @@ assert_eq "$CODE" "1" "--fail-on YELLOW fails on a YELLOW verdict"
 
 section "--version prints the package version"
 ver="$(node "$CLI" --version 2>&1)"; vcode=$?
-assert_eq "$ver" "1.5.0" "--version matches package.json"
+pkg_ver="$(node -p "require('$REPO/package.json').version")"
+assert_eq "$ver" "$pkg_ver" "--version matches package.json"
 assert_eq "$vcode" "0" "--version exits 0"
 
 section "--help exits 0 and shows usage"

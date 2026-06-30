@@ -1,13 +1,13 @@
 # Cross-tool runtime verification
 
 `appstore-precheck` ships one `SKILL.md` (the open [Agent Skills](https://agentskills.io) standard)
-that every supported host reads natively. They differ only in the directory they scan.
-`install.sh` vendors the skill into both `.claude/skills/` and `.agents/skills/`, covering all hosts.
+that every supported host reads natively. Hosts differ in **which directory they scan** and **how
+they install** the skill (native plugin vs `install.sh` vs `gemini skills install`).
 
 This document records **real runs** verifying, per host, that the skill is discovered, triggers on
 a submission-intent prompt, and actually executes `scripts/scan.sh`.
 
-## Method
+## Method (skill via `install.sh`)
 
 A throwaway project was created from the `sample-app` fixture (which carries known violations:
 an "Android / Google Play" metadata mention and a paywall view missing Restore / Terms / Privacy).
@@ -26,7 +26,7 @@ WARN: 2.3.3 Screenshots — en-US has only 1 image(s)
 → RED (4 FAIL): no .precheck-pass token
 ```
 
-## Results
+## Results (skill runtime)
 
 | Host | Installed | Skill dir | Discovered | `scan.sh` ran | Verdict | Status |
 |------|-----------|-----------|------------|---------------|---------|--------|
@@ -79,9 +79,35 @@ scanner, and returned a faithful **RED** verdict: Pierre one-liner (*"Non. Quatr
 would have found fewer. Suivant."*), the verbatim scan output, and the deterministic counts
 (`fail=4 warn=1 pass=8`), token withheld.
 
+---
+
+## Plugin install verification (v1.5.x)
+
+Native plugin manifests ship at the repo root. These checks confirm **discovery and packaging**, not
+a second full agent run per host.
+
+| Host | Install path | Manifest smoke check | Status |
+|------|--------------|----------------------|--------|
+| **Claude Code** | `/plugin marketplace add berkayturk/appstore-precheck` + `/plugin install …` | `claude plugin validate .` passes | **Verified** |
+| **Cursor** | Customize → Plugins → Import marketplace → repo URL | `.cursor-plugin/plugin.json` + `marketplace.json`; skill at `skills/appstore-precheck/SKILL.md` | **Manifest verified** (IDE install: user / marketplace review) |
+| **Codex** | `codex plugin marketplace add berkayturk/appstore-precheck` → `/plugins` | `.agents/plugins/marketplace.json` + `.claude-plugin/plugin.json`; marketplace add succeeds on CLI 0.125.x | **Manifest verified** (install via `/plugins` TUI) |
+| **Gemini CLI** | `gemini skills install https://github.com/berkayturk/appstore-precheck.git --path skills/appstore-precheck` | `gemini skills list` → `appstore-precheck [Enabled]` after local install test | **Verified** |
+
+Notes:
+
+- **Codex CLI 0.125.x** exposes `codex plugin marketplace {add,upgrade,remove}` only; plugin install
+  and uninstall happen in the **`/plugins`** interactive browser (no `codex plugin add/remove`).
+- **Cursor** public listing is pending marketplace review; until then, users import the GitHub repo
+  as a marketplace (repo URL, not `github.com/marketplace/actions/…`).
+- **GitHub Actions** distribution is separate: [Marketplace action](https://github.com/marketplace/actions/appstore-precheck)
+  (`uses: berkayturk/appstore-precheck@v1`).
+
+---
+
 ## Conclusion
 
-The single `SKILL.md` is genuinely portable: **all four hosts are verified end-to-end, namely
-Claude Code, Codex CLI, Gemini CLI, and Cursor** (skill discovered → `scan.sh` executed → faithful
-GREEN/YELLOW/RED verdict, Pierre voice in presentation only). One `SKILL.md`, no per-tool
-conversion.
+The single `SKILL.md` is genuinely portable: **all four hosts are verified end-to-end for skill
+runtime**, namely Claude Code, Codex CLI, Gemini CLI, and Cursor (skill discovered → `scan.sh`
+executed → faithful GREEN/YELLOW/RED verdict, Pierre voice in presentation only). Native **plugin
+manifests** for Claude Code, Cursor, and Codex are validated; Gemini uses **`gemini skills install`**
+(no plugin marketplace). One `SKILL.md`, no per-tool conversion.

@@ -3,6 +3,15 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.5.1] - 2026-06-30
+
+### Changed
+
+- Plugin manifest descriptions no longer embed drifting check counts
+- README uninstall: Codex uses /plugins UI
+- cross-tool-verification.md plugin install paths documented
+- GitHub release v1.5.0 notes amended; npm 1.5.1 published
+
 ## [1.5.0] - 2026-06-30
 
 ### Added
