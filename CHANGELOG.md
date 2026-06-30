@@ -3,6 +3,38 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.3.0] - 2026-06-30
+
+### Added
+- **Eleven new signal-gated advisory checks (30 → 41 rejection vectors), all WARN-only:**
+  - **2.1** a login-gated app with no demo account / credentials for App Review (fastlane
+    `review_information` or `.reviewPrepNotes`).
+  - **2.5.2** executable-code download / native hot-patching (JSPatch, Rollout, DynamicCocoa).
+    Allowed JS-bundle OTA (React Native CodePush) is deliberately **not** flagged.
+  - **2.5.4** a background mode declared in `UIBackgroundModes` with no matching API used in Swift.
+  - **3.1.5(a)** a cryptocurrency wallet / exchange / mining signal.
+  - **4.2.3** a thin WKWebView wrapper around a website (heuristic: WKWebView + very few Swift files).
+  - **4.2.7** a remote-desktop / host-mirroring signal.
+  - **4.4.2** a Safari content-blocker / web extension.
+  - **5.1.1(v)** account creation offered without an in-app account-deletion path (the real
+    5.1.1(v) Account Sign-In rule).
+  - **5.1.4** metadata targeting a child audience while a third-party ads/analytics SDK is linked.
+  - **5.3.4** real-money gambling language in metadata.
+  - **5.5** a Mobile Device Management (MDM) signal.
+- `tests/fixtures/risky-app-2` (advisory §31–§41 except web-wrapper) and `tests/fixtures/webview-app`
+  (the 4.2.3 heuristic), with assertions in `tests/run.sh`. Both are advisory-only (no FAIL).
+
+### Changed
+- **Corrected the Required Reason API label from `5.1.1(v)` to `5.1.1`.** Apple documents the
+  Required Reason API rules under 5.1.1 + the privacy-manifest developer docs; sub-item **(v)** is
+  "Account Sign-In", a different rule. The `(v)` label now belongs to the new account-deletion
+  check (vector 38). Updated `scan.sh` output, the methodology table, the README table, the
+  examples, and the field-test notes in lockstep.
+- §18 (support / privacy URL) now also cites the guidelines it satisfies: **1.5** (developer
+  contact via the support URL) and **5.1.1(i)** (privacy policy link).
+- Expanded `guidelines-baseline.json` `covered_by_scan` with 1.5, 2.5.2, 2.5.4, 3.1.5, 4.2.3,
+  4.2.7, 4.4.2, 5.1.4, 5.3.4, and 5.5.
+
 ## [1.2.0] - 2026-06-30
 
 ### Added

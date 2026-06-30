@@ -153,24 +153,28 @@ CHECK_FAMILY="$(cfg_bool '.optionalChecks.familyControls')"
 echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='${XCSTRINGS:-?}' locales=${#LOCALES[@]}"
 
 # ===================================================================
-# §1 — 5.1.1(v) Privacy Manifest Required Reason API parity
+# §1 — 5.1.1 Privacy Manifest / Required Reason API parity
+# Apple documents the Required Reason API rules under 5.1.1 (Data Collection and
+# Storage) + the privacy-manifest developer docs; it is NOT roman sub-item (v).
+# (v) "Account Sign-In" is a different rule — its account-deletion requirement is
+# checked separately in §38.
 # ===================================================================
 check_required_reason_api() {
   local cat="$1" pattern="$2" hits declared
   hits=$(grep -rEl "$pattern" "$IOS_DIR" --include="*.swift" 2>/dev/null | head -3)
   declared=$(grep -c "NSPrivacyAccessedAPICategory${cat}" "$PRIVACY_FILE" 2>/dev/null)
   if [[ -n "$hits" && "${declared:-0}" -eq 0 ]]; then
-    fail "5.1.1(v) Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy"
+    fail "5.1.1 Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy"
   elif [[ -z "$hits" && "${declared:-0}" -gt 0 ]]; then
-    warn "5.1.1(v) PrivacyInfo — '$cat' declared but no code usage grepped (may be a false positive, verify manually)"
+    warn "5.1.1 PrivacyInfo — '$cat' declared but no code usage grepped (may be a false positive, verify manually)"
   elif [[ -n "$hits" && "${declared:-0}" -gt 0 ]]; then
-    pass "5.1.1(v) Required Reason API — '$cat' parity OK"
+    pass "5.1.1 Required Reason API — '$cat' parity OK"
   fi
 }
 if [[ -z "$IOS_DIR" ]]; then
   warn "layout — could not auto-detect iOS source dir; set .iosSourceDir in $CONFIG"
 elif [[ -z "$PRIVACY_FILE" ]]; then
-  fail "5.1.1(v) PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)"
+  fail "5.1.1 Required Reason API — PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)"
 else
   check_required_reason_api "UserDefaults"   'UserDefaults|@AppStorage'
   check_required_reason_api "FileTimestamp"  'attributesOfItem|creationDate|modificationDate|\.fileCreationDate|\.fileModificationDate'
@@ -473,8 +477,8 @@ if [[ -d "$META_DIR" ]]; then
     [[ -s "$META_DIR/$loc/privacy_url.txt" ]] && privacy_found=1
   done
   if (( ${#LOCALES[@]} > 0 )); then
-    [[ -z "$support_found" ]] && warn "2.3 Support URL — no non-empty support_url.txt in any locale under fastlane metadata; Apple requires a working support URL"
-    [[ -z "$privacy_found" ]] && warn "2.3 Privacy URL — no non-empty privacy_url.txt in any locale under fastlane metadata; required for apps with accounts or in-app purchases"
+    [[ -z "$support_found" ]] && warn "2.3 Support URL — no non-empty support_url.txt in any locale under fastlane metadata; Apple requires a working support URL with developer contact info (1.5 / 2.3)"
+    [[ -z "$privacy_found" ]] && warn "2.3 Privacy URL — no non-empty privacy_url.txt in any locale under fastlane metadata; a privacy policy link is required for every app, and especially apps with accounts or in-app purchases (5.1.1(i))"
   fi
   url_ph=$(grep -rEnI 'example\.com|localhost|\bTODO\b|\bchangeme\b' "$META_DIR" --include='*_url.txt' 2>/dev/null | grep -v "^Binary file" | head -10)
   if [[ -n "$url_ph" ]]; then
@@ -657,6 +661,174 @@ if [[ -n "$IOS_DIR" ]]; then
   vpn_use=$(grep -rlE 'NEVPNManager|NETunnelProviderManager|NEPacketTunnelProvider|NEVPNProtocol' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$vpn_use" ]]; then
     warn "5.4 VPN — NetworkExtension/NEVPNManager usage detected (e.g. $(basename "$vpn_use")); VPN apps must be offered by an organization account, disclose data collection on-screen before use, and not sell/share data (5.4). Verify compliance."
+  fi
+fi
+
+# ===================================================================
+# §31 — 2.1 Demo account for a credential login
+# ===================================================================
+# Apps behind a login must give App Review working credentials (a demo account
+# or notes). We fire only on a credential-login signal (a password field or a
+# Login/SignIn view), then look for demo creds in fastlane review_information or
+# the reviewer-prep notes. Social-only logins are not gated here (too noisy).
+if [[ -n "$IOS_DIR" ]]; then
+  auth_signal=$(grep -rlE 'SecureField' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  [[ -z "$auth_signal" ]] && auth_signal=$(find "$IOS_DIR" "${PRUNE[@]}" \( -name '*Login*View*.swift' -o -name '*SignIn*View*.swift' \) 2>/dev/null | head -1)
+  if [[ -n "$auth_signal" ]]; then
+    demo_present=""
+    ri="$META_DIR/review_information"
+    if [[ -d "$ri" ]]; then
+      for f in demo_user.txt demo_password.txt notes.txt; do [[ -s "$ri/$f" ]] && demo_present=1; done
+    fi
+    if [[ -z "$demo_present" && -n "$REVIEW_PREP" && -f "$REVIEW_PREP" ]]; then
+      grep -qiE 'demo|review.*(account|credential)|test.*account' "$REVIEW_PREP" 2>/dev/null && demo_present=1
+    fi
+    if [[ -n "$demo_present" ]]; then
+      pass "2.1 Demo account — credential login present and reviewer demo credentials/notes found"
+    else
+      warn "2.1 Demo account — a credential login was detected (e.g. $(basename "$auth_signal")) but no demo account/credentials for App Review found (fastlane review_information or .reviewPrepNotes); apps behind a login must give reviewers working credentials (2.1)"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §32 — 2.5.2 Executable code download / hot-patch
+# ===================================================================
+# Apps must be self-contained; native hot-patching frameworks (JSPatch, Rollout,
+# DynamicCocoa) download code that changes features and are a removal vector.
+# JS-bundle OTA for React Native (CodePush) is allowed, so we do NOT flag it.
+if [[ -n "$IOS_DIR" ]]; then
+  hotcode=$(grep -rlE 'import JSPatch|JSPatch\.|[Jj][Ss][Pp]atch|import Rollout|Rollout\.|rollout\.io|DynamicCocoa|import SwiftPatch' "$IOS_DIR" --include="*.swift" --include="*.m" --include="*.h" 2>/dev/null | head -1)
+  if [[ -n "$hotcode" ]]; then
+    warn "2.5.2 Executable code — a hot-patch / remote-code framework was detected (e.g. $(basename "$hotcode")); apps may not download or run code that changes features (JSPatch/Rollout-style native hot-patching). Allowed JS-bundle OTA (e.g. React Native CodePush) is fine — verify this is not native hot-patching (2.5.2)"
+  fi
+fi
+
+# ===================================================================
+# §33 — 2.5.4 Background modes declared but unused
+# ===================================================================
+# Declare only the UIBackgroundModes the app actually uses; a mode declared with
+# no matching API is a frequent rejection. We parse the array and check each
+# declared mode against its framework/API in Swift.
+if [[ -f "$INFO_PLIST" && -n "$IOS_DIR" ]]; then
+  modes=$(awk '/<key>UIBackgroundModes<\/key>/{f=1;next} f&&/<\/array>/{f=0} f&&/<string>/{gsub(/.*<string>|<\/string>.*/,""); print}' "$INFO_PLIST" 2>/dev/null)
+  if [[ -n "$modes" ]]; then
+    unused=""
+    while IFS= read -r m; do
+      [[ -z "$m" ]] && continue
+      case "$m" in
+        location) grep -rqE 'CLLocationManager|CoreLocation' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused location" ;;
+        audio) grep -rqE 'AVAudioSession|AVPlayer|AVAudioPlayer|AVQueuePlayer|AVAudioEngine' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused audio" ;;
+        voip) grep -rqE 'PushKit|PKPushRegistry|CallKit|CXProvider' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused voip" ;;
+        fetch) grep -rqE 'BGAppRefreshTask|BackgroundTasks|setMinimumBackgroundFetchInterval|performFetchWithCompletionHandler' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused fetch" ;;
+        processing) grep -rqE 'BGProcessingTask|BackgroundTasks' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused processing" ;;
+        bluetooth-central|bluetooth-peripheral) grep -rqE 'CoreBluetooth|CBCentralManager|CBPeripheralManager' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused $m" ;;
+        remote-notification) grep -rqE 'didReceiveRemoteNotification|UNUserNotificationCenter|registerForRemoteNotifications' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused remote-notification" ;;
+      esac
+    done <<< "$modes"
+    if [[ -n "$unused" ]]; then
+      warn "2.5.4 Background modes —$unused declared in UIBackgroundModes but no matching API usage found in Swift; declare only the background modes the app actually uses (2.5.4)"
+    else
+      pass "2.5.4 Background modes — declared modes have matching API usage"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §34 — 3.1.5(a) Cryptocurrency wallet / exchange / mining
+# ===================================================================
+if [[ -n "$IOS_DIR" ]]; then
+  crypto_sdk=$(grep -rlE 'import Web3|web3swift|Web3Swift|WalletConnect|TrustWalletCore|CoinbaseWalletSDK|SolanaSwift|CryptoMining|coinhive|MoneroMiner' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  if [[ -n "$crypto_sdk" ]]; then
+    warn "3.1.5(a) Cryptocurrency — a crypto wallet/exchange/mining signal was detected (e.g. $(basename "$crypto_sdk")); wallets & exchanges have entity and licensing requirements, and on-device mining is not permitted (3.1.5(a)). Verify eligibility."
+  fi
+fi
+
+# ===================================================================
+# §35 — 4.2.3 Web-wrapper / thin app
+# ===================================================================
+# A thin WKWebView wrapper around a website is rejected under minimum
+# functionality. Heuristic: WKWebView present in a project with very few Swift
+# files. WARN (verify) — this is the most false-positive-prone of the batch.
+if [[ -n "$IOS_DIR" ]]; then
+  if grep -rqE 'WKWebView' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    swift_n=$(find "$IOS_DIR" "${PRUNE[@]}" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')
+    if (( swift_n > 0 && swift_n <= 4 )); then
+      warn "4.2.3 Minimum functionality — the app appears to be a WKWebView wrapper with only $swift_n Swift file(s); a thin wrapper around a website is rejected under 4.2.3. Add native value, or verify this is a real app rather than a repackaged site."
+    fi
+  fi
+fi
+
+# ===================================================================
+# §36 — 4.2.7 Remote desktop / host-mirroring
+# ===================================================================
+if [[ -n "$IOS_DIR" ]]; then
+  remote_desktop=$(grep -rlE 'import libvncclient|LibVNC|VNCClient|RDPSession|RDPKit|RemoteDesktopClient|import FreeRDP|JumpDesktop' "$IOS_DIR" --include="*.swift" --include="*.m" 2>/dev/null | head -1)
+  if [[ -n "$remote_desktop" ]]; then
+    warn "4.2.7 Remote desktop — a remote-desktop/mirroring signal was detected (e.g. $(basename "$remote_desktop")); host-mirroring apps must only show/control the owner's host, display host content (not App Store content), and be free or use IAP (4.2.7). Verify."
+  fi
+fi
+
+# ===================================================================
+# §37 — 4.4.2 Safari extension / content blocker
+# ===================================================================
+safari_ext=$(grep -rlE 'com\.apple\.Safari\.(content-blocker|web-extension|extension)' --include='Info.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
+if [[ -n "$safari_ext" ]]; then
+  warn "4.4.2 Safari extension — a Safari content-blocker / web extension was detected ($safari_ext); it must use the extension APIs as intended, do only what it declares, and not include hidden analytics/ads or track without consent (4.4.2). Verify."
+fi
+
+# ===================================================================
+# §38 — 5.1.1(v) Account Sign-In: account creation without in-app deletion
+# ===================================================================
+# Apple 5.1.1(v): apps that support account creation must also let users delete
+# their account from within the app. Detect account-creation signals, then look
+# for an in-app deletion path. Deletion via a web page is missed → WARN, not FAIL.
+if [[ -n "$IOS_DIR" ]]; then
+  signup=$(grep -rlE 'createUser|signUp|signup|createAccount|registerUser|registerNewUser|Auth\.auth\(\)\.createUser' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  if [[ -n "$signup" ]]; then
+    if grep -rqiE 'delete.?account|account.?deletion|closeAccount|deleteUser|removeAccount|deleteMyAccount' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+      pass "5.1.1(v) Account deletion — account creation present and an in-app account-deletion path was found"
+    else
+      warn "5.1.1(v) Account deletion — account creation was detected (e.g. $(basename "$signup")) but no in-app account-deletion path found; apps that support account creation must let users delete their account from within the app (5.1.1(v))"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §39 — 5.1.4 Kids audience with third-party ads / analytics
+# ===================================================================
+# Kids Category apps may not include third-party advertising or analytics and
+# must include a parental gate. We fire when the metadata targets a child
+# audience AND an ad/analytics SDK is linked. tracking_sdk/analytics_sdk come
+# from §3/§19.
+if [[ -d "$META_DIR" && -n "$IOS_DIR" ]]; then
+  if grep -rqEiI 'for kids|for children|kids[[:space:]]?app|für kinder|para niños|pour enfants' "$META_DIR" 2>/dev/null; then
+    if [[ -n "$tracking_sdk" || -n "$analytics_sdk" ]]; then
+      warn "5.1.4 Kids — the metadata targets a child audience and a third-party ads/analytics SDK is linked (e.g. $(basename "${tracking_sdk:-$analytics_sdk}")); Kids Category apps may not include third-party advertising or analytics and must offer a parental gate (5.1.4)"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §40 — 5.3.4 Real-money gambling
+# ===================================================================
+if [[ -d "$META_DIR" ]]; then
+  gamble_re='real[ -]?money|gambling|casino|sportsbook|sports[ -]?betting|place[ -].*bets|wager(ing)?|roulette.*real'
+  gamble_hits=$(grep -rEniI "$gamble_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
+  if [[ -n "$gamble_hits" ]]; then
+    warn "5.3.4 Gambling — real-money gaming language in metadata; real-money gambling/lotteries need the proper licenses, must be geo-restricted to permitted regions, and must be free on the App Store (5.3.4):"
+    echo "$gamble_hits" | sed 's/^/      /'
+  fi
+fi
+
+# ===================================================================
+# §41 — 5.5 Mobile Device Management
+# ===================================================================
+if [[ -n "$IOS_DIR" ]]; then
+  mdm_sig=$(grep -rlE 'import DeviceManagement|MDMConfiguration|ManagedAppConfiguration|com\.apple\.mdm' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  [[ -z "$mdm_sig" ]] && mdm_sig=$(grep -rlE 'com\.apple\.configuration\.managed' --include='*.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
+  if [[ -n "$mdm_sig" ]]; then
+    warn "5.5 MDM — a Mobile Device Management signal was detected (e.g. $(basename "$mdm_sig")); MDM apps require a commercial enterprise/education entity, may request the MDM capability only for that purpose, and must not sell or use the data for other ends (5.5). Verify eligibility."
   fi
 fi
 

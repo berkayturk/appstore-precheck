@@ -67,12 +67,12 @@ limits of static analysis, each with a remedy.
   legitimate 3.1.2 angle (Apple expects them on/near the purchase screen). Confirmed remedy:
   pointing `paywallGlobs` at the real files (`*IAPHelper*`, `*LegalAndMore*`, …) turns all
   three into PASS. Takeaway: on apps that centralize purchase/legal UI, set `paywallGlobs`.
-- **5.1.1(v) SystemBootTime flags `CACurrentMediaTime()` (duckduckgo, pocket-casts).** The
+- **5.1.1 SystemBootTime flags `CACurrentMediaTime()` (duckduckgo, pocket-casts).** The
   hits are in animation code (`Confetti.swift`, `WMFWelcomeAnimation…`), where a Required
   Reason declaration is likely unnecessary. Apple's stance on `CACurrentMediaTime()` (built
   on `mach_absolute_time`) is genuinely gray, so the check flags it for **manual review**
-  rather than risk a false negative by ignoring it. Treat a used-but-undeclared 5.1.1(v)
-  line as "verify," not gospel, especially in multi-manifest apps, where the symbol may be
+  rather than risk a false negative by ignoring it. Treat a used-but-undeclared 5.1.1 Required
+  Reason API line as "verify," not gospel, especially in multi-manifest apps, where the symbol may be
   declared in a different target's `PrivacyInfo.xcprivacy` than the one the scanner reads.
 - **2.3.7 metadata gaps (duckduckgo keywords, pocket-casts name/subtitle).** Real
   observations: several locales have empty/absent `keywords.txt` (DuckDuckGo) or `name.txt`

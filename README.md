@@ -40,14 +40,15 @@ plain and surgical.
 
 ## What it checks
 
-30 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+41 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
 | **1.2** | User-generated content without a report / block / moderation mechanism |
 | **1.6** | App Transport Security disabled app-wide (`NSAllowsArbitraryLoads`) |
 | **2.1** | No placeholder / dummy copy (lorem ipsum, TODO, `example.com`) in store metadata |
-| **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) |
+| **2.1** | A login-gated app ships demo credentials / review notes for App Review |
+| **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) — also satisfies 1.5 and 5.1.1(i) |
 | **2.3.1** | Metadata length limits (name, subtitle, keywords, promo, description) |
 | **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
 | **2.3.3** | At least one screenshot per locale |
@@ -55,22 +56,32 @@ plain and surgical.
 | **2.3.8** | "For Kids" / "For Children" wording outside the Kids Category |
 | **2.3.10** | No other-platform / competitor names in metadata |
 | **2.5.1** | No private / banned APIs |
+| **2.5.2** | No executable-code download / native hot-patching (JSPatch, Rollout, …) |
+| **2.5.4** | Background modes declared in `UIBackgroundModes` but never used |
 | **3.1.1** | Third-party payment SDK (Stripe, Braintree, PayPal, …) linked for digital goods instead of in-app purchase |
 | **3.1.1(a)** | External purchase link entitlement + disclosure, when external purchase APIs are used |
 | **3.1.2** | Trial & auto-renew subscription disclosures |
 | **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
+| **3.1.5(a)** | Cryptocurrency wallet / exchange / mining signal |
 | **4.2** | Minimum functionality (real navigation) |
+| **4.2.3** | Thin WKWebView wrapper around a website |
+| **4.2.7** | Remote-desktop / host-mirroring app |
 | **4.4.1** | Keyboard extension that requires full access (`RequestsOpenAccess`) |
+| **4.4.2** | Safari content-blocker / web extension |
 | **4.8** | Sign in with Apple offered when a third-party social login is used |
 | **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
 | **5.1.1** | A non-empty purpose string for every sensitive framework |
 | **5.1.1** | Analytics SDK present ↔ `PrivacyInfo.xcprivacy` declares collected data / tracking domains |
-| **5.1.1(v)** | Privacy Manifest ↔ Required Reason API parity |
+| **5.1.1** | Privacy Manifest ↔ Required Reason API parity |
+| **5.1.1(v)** | Account creation offered without an in-app account-deletion path |
 | **5.1.2** | ATT usage ↔ `NSUserTrackingUsageDescription` |
 | **5.1.2** | Tracking / IDFA SDK (AdMob, AppLovin, AppsFlyer, Adjust, …) shipped without an ATT prompt |
 | **5.1.3** | HealthKit data with an iCloud / CloudKit sync path |
+| **5.1.4** | Kids-audience metadata shipping a third-party ads / analytics SDK |
 | **5.1.5** | Sensitive-API justification *(opt-in)* |
+| **5.3.4** | Real-money gambling language in metadata |
 | **5.4** | VPN / NetworkExtension usage (org account + on-screen data disclosure) |
+| **5.5** | Mobile Device Management (MDM) signal |
 | **5.6.1** | A custom App Store review prompt instead of the system `requestReview` API |
 | **encryption** | `ITSAppUsesNonExemptEncryption` set, so App Store Connect skips the export-compliance question |
 
@@ -85,7 +96,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 30 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | **Full.** All 41 vectors apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The Swift-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -124,7 +135,7 @@ bash skills/appstore-precheck/scripts/scan.sh
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
-- uses: berkayturk/appstore-precheck@v1.2.0
+- uses: berkayturk/appstore-precheck@v1.3.0
   with:
     working-directory: .   # optional, default: . (repo root)
     fail-on: RED           # optional, default: RED (RED | YELLOW)
@@ -138,7 +149,7 @@ a RED verdict. No App Store Connect credentials are needed; the action runs the 
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 30 vectors above. |
+| **1** | **Static scan**: `scan.sh` over the 41 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Adversarial review**: Pierre role-plays a skeptical reviewer and drafts realistic rejection notices. |
 | **4** | **Verdict**: GREEN / YELLOW / RED, and a `.precheck-pass` token the upload guard gates on. |
@@ -160,7 +171,7 @@ counts are deterministic ([`verdict.sh`](skills/appstore-precheck/scripts/verdic
 RED: 3 FAIL
 • 3.1.2 Restore Purchases missing    SubscriptionView.swift:14 → add restorePurchases()
 • 2.3.10 "Android" in metadata        en-US/description.txt:1 → remove the reference
-• 5.1.1(v) FileTimestamp undeclared   PrivacyInfo.xcprivacy → declare the reason
+• 5.1.1 FileTimestamp undeclared      PrivacyInfo.xcprivacy → declare the reason
 Submission blocked.
 ```
 

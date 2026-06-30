@@ -7,7 +7,7 @@ until the issues are fixed.
 
 ```
 PASS: layout — ios='./ios/MyApp' metadata='./ios/fastlane/metadata' xcstrings='./ios/MyApp/Localizable.xcstrings' locales=8
-FAIL: 5.1.1(v) Required Reason API — 'FileTimestamp' used in code (e.g. ./ios/MyApp/Cache.swift) but not declared in PrivacyInfo.xcprivacy
+FAIL: 5.1.1 Required Reason API — 'FileTimestamp' used in code (e.g. ./ios/MyApp/Cache.swift) but not declared in PrivacyInfo.xcprivacy
 FAIL: 2.3.10 Other-platform mention — banned reference in metadata:
       ./ios/fastlane/metadata/en-US/description.txt:5:Also on Android and Google Play
 FAIL: 3.1.2 Restore Purchases — not found in ./ios/MyApp/SubscriptionView.swift (required by Apple)

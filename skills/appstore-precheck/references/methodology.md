@@ -58,7 +58,7 @@ machine-readable "last updated" date in the page DOM, so the section-number set 
 
 | # | Guideline | What it checks |
 |---|-----------|----------------|
-| 1 | **5.1.1(v) Privacy Manifest** | Required Reason API usage (`UserDefaults`/`@AppStorage`, file timestamp, system boot time, disk space, active keyboard) ↔ `PrivacyInfo.xcprivacy` declaration parity |
+| 1 | **5.1.1 Privacy Manifest** | Required Reason API usage (`UserDefaults`/`@AppStorage`, file timestamp, system boot time, disk space, active keyboard) ↔ `PrivacyInfo.xcprivacy` declaration parity. (Apple documents Required Reason APIs under 5.1.1 + the privacy-manifest docs; it is **not** sub-item (v) — that is Account Sign-In, checked in vector 38.) |
 | 2 | **5.1.1 Purpose Strings** | Every imported sensitive framework (FamilyControls, CoreLocation, AVFoundation, Photos, Contacts, HealthKit) has a non-empty `NS*UsageDescription` in Info.plist |
 | 3 | **5.1.2 ATT** | If `AppTrackingTransparency`/`ATTrackingManager` is used, `NSUserTrackingUsageDescription` is present |
 | 4 | **2.3.10 Other platforms** | No "Android" / "Google Play" / competitor store names in store metadata |
@@ -88,9 +88,20 @@ machine-readable "last updated" date in the page DOM, so the section-number set 
 | 28 | **4.4.1 Keyboard full access** *(advisory)* | A keyboard extension (`com.apple.keyboard-service`) with `RequestsOpenAccess=true` |
 | 29 | **5.1.3 Health + iCloud** *(advisory)* | If HealthKit and iCloud/CloudKit are both used: health data must not be stored in iCloud |
 | 30 | **5.4 VPN** *(advisory)* | If NetworkExtension / `NEVPNManager` is used: org-account, on-screen data disclosure, and no data sale/sharing requirements |
+| 31 | **2.1 Demo account** *(advisory)* | If a credential login (`SecureField` / a Login/SignIn view) is present but no demo account/credentials for App Review are found (fastlane `review_information` or `.reviewPrepNotes`) |
+| 32 | **2.5.2 Executable code** *(advisory)* | A native hot-patch / remote-code framework (JSPatch, Rollout, DynamicCocoa) that downloads code which changes features. Allowed JS-bundle OTA (React Native CodePush) is not flagged |
+| 33 | **2.5.4 Background modes** *(advisory)* | A mode declared in `UIBackgroundModes` (location, audio, voip, fetch, processing, bluetooth, remote-notification) with no matching API used in Swift |
+| 34 | **3.1.5(a) Cryptocurrency** *(advisory)* | A crypto wallet / exchange / mining signal (WalletConnect, web3swift, TrustWalletCore, mining libraries) with its entity/licensing and no-on-device-mining requirements |
+| 35 | **4.2.3 Web wrapper** *(advisory)* | A `WKWebView` in a project with very few Swift files — heuristic for a thin wrapper around a website. The most false-positive-prone of the batch, so WARN/verify |
+| 36 | **4.2.7 Remote desktop** *(advisory)* | A remote-desktop / host-mirroring signal (VNC/RDP libraries); host-mirroring apps must only show the owner's host and be free or use IAP |
+| 37 | **4.4.2 Safari extension** *(advisory)* | A Safari content-blocker / web extension (`com.apple.Safari.*` extension point); must use the APIs as intended and not hide analytics/ads |
+| 38 | **5.1.1(v) Account deletion** *(advisory)* | Account creation (`signUp`/`createUser`/`createAccount`/…) detected but no in-app account-deletion path (`deleteAccount`/`closeAccount`/…). This is the real 5.1.1(v) Account Sign-In rule |
+| 39 | **5.1.4 Kids** *(advisory)* | Metadata targets a child audience **and** a third-party ads/analytics SDK is linked; Kids Category apps may not include third-party ads/analytics and need a parental gate |
+| 40 | **5.3.4 Gambling** *(advisory)* | Real-money gaming language in metadata (casino, sportsbook, real money, wager); real-money gambling needs licensing, geo-restriction, and must be free on the store |
+| 41 | **5.5 MDM** *(advisory)* | A Mobile Device Management signal (`DeviceManagement`, managed-app-config, `com.apple.mdm`); MDM apps need a commercial enterprise/education entity and purpose-limited data use |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–30 are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–41 are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
 **Scope by app type.** The metadata, privacy-manifest, screenshots, and export-compliance checks

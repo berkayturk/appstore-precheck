@@ -1,10 +1,10 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 30 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, and runs an adversarial reviewer pass. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 41 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, and runs an adversarial reviewer pass. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.2.0
+  version: 1.3.0
 allowed-tools: Bash Read Grep Glob WebFetch
 ---
 
@@ -75,21 +75,26 @@ baseline is **never auto-updated**. Reconciliation is a deliberate human step.
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 30 rejection vectors: Privacy Manifest parity
-(5.1.1(v)), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions (2.3.10), metadata
-limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial & auto-renew disclosures
-(3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum functionality (4.2),
-Sign in with Apple parity (4.8), external purchase links (3.1.1(a)), an opt-in Screen Time /
-FamilyControls justification (5.1.5), tracking/IDFA SDK without an ATT prompt (5.1.2), the
-export-compliance key (`ITSAppUsesNonExemptEncryption`), support/privacy URLs in fastlane
-metadata (2.3), analytics SDK vs PrivacyInfo data-types (5.1.1), placeholder/dummy metadata
-copy (2.1), third-party payment SDK for digital goods (3.1.1), user-generated content without
-moderation (1.2), App Transport Security disabled app-wide (1.6), recurring Apple Pay disclosure
-(4.9), custom App Store review prompts (5.6.1), misleading marketing claims (2.3.1), "For Kids"
-wording outside the Kids Category (2.3.8), keyboard extensions requiring full access (4.4.1),
-HealthKit data with an iCloud sync path (5.1.3), and VPN / NetworkExtension usage (5.4). The IAP
-checks (8–10) are skipped automatically when no in-app-purchase signals are present, and the
-signal-gated advisory checks (16–30) stay silent unless their triggering signal is found. The
+Emits `FAIL:` / `WARN:` / `PASS:` lines covering 41 rejection vectors: Privacy Manifest /
+Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
+(2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
+auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
+functionality (4.2), Sign in with Apple parity (4.8), external purchase links (3.1.1(a)), an
+opt-in Screen Time / FamilyControls justification (5.1.5), tracking/IDFA SDK without an ATT prompt
+(5.1.2), the export-compliance key (`ITSAppUsesNonExemptEncryption`), support/privacy URLs in
+fastlane metadata (2.3 / 1.5 / 5.1.1(i)), analytics SDK vs PrivacyInfo data-types (5.1.1),
+placeholder/dummy metadata copy (2.1), third-party payment SDK for digital goods (3.1.1),
+user-generated content without moderation (1.2), App Transport Security disabled app-wide (1.6),
+recurring Apple Pay disclosure (4.9), custom App Store review prompts (5.6.1), misleading
+marketing claims (2.3.1), "For Kids" wording outside the Kids Category (2.3.8), keyboard
+extensions requiring full access (4.4.1), HealthKit data with an iCloud sync path (5.1.3), VPN /
+NetworkExtension usage (5.4), a demo account for a login-gated app (2.1), executable-code download
+/ native hot-patching (2.5.2), unused background modes (2.5.4), cryptocurrency wallet/mining
+(3.1.5(a)), thin WKWebView wrappers (4.2.3), remote-desktop apps (4.2.7), Safari extensions
+(4.4.2), account creation without in-app deletion (5.1.1(v) Account Sign-In), kids audience with
+third-party ads/analytics (5.1.4), real-money gambling copy (5.3.4), and MDM signals (5.5). The
+IAP checks (8–10) are skipped automatically when no in-app-purchase signals are present, and the
+signal-gated advisory checks (16–41) stay silent unless their triggering signal is found. The
 full check table is in
 [`references/methodology.md`](references/methodology.md#phase-1-rejection-vectors).
 
