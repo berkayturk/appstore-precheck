@@ -3,6 +3,28 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.2.0] - 2026-06-30
+
+### Changed
+- **Pierre now speaks in a trilingual block.** The verdict opens with his native **French** line,
+  then an **English** rendering, then a rendering in the **user's conversation language** — each an
+  idiomatic, in-character re-expression in that language's own rhythm, not a literal translation.
+  Collapses to two lines when the user already converses in French or English. The block stays
+  flavor only; the FAIL/WARN list, `file:line` references, and fixes below it remain plain and
+  machine-faithful. Updated the output contract, Phase 4 step 3, and the behavioral eval
+  assertions accordingly.
+
+### Fixed
+- **Pierre no longer treats local-only files as Apple submission evidence.** The Phase 3 prompt
+  now scopes reject-risk evidence to Apple-facing artifacts (fastlane metadata, paywall Swift,
+  String Catalog, Info.plist, PrivacyInfo.xcprivacy). Internal/local files (`.planning/` notes,
+  `reviewPrepNotes` drafts, build scripts) and Google Play / non-Apple sections are out of scope —
+  cited at most as a WARN labeled "internal draft — not submitted to Apple", never REJECT-RISK. A
+  REJECT risk now requires a contradiction *within* submission-facing artifacts, not an internal
+  doc disagreeing with metadata. An eligibility-gated/conditional offer paired with metadata that
+  mentions it is WARN at most (unless the metadata promises it unconditionally). Prevents the
+  false REJECT-RISK overreach seen when dogfooding an already-approved build.
+
 ## [1.1.0] - 2026-06-28
 
 ### Added
