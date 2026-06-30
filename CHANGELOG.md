@@ -3,6 +3,16 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.5.2] - 2026-06-30
+
+### Fixed
+
+- **§23 (1.6 ATS) false positive**: the App Transport Security check now anchors to the exact `NSAllowsArbitraryLoads` key, so the scoped exceptions `NSAllowsArbitraryLoadsInWebContent` / `NSAllowsArbitraryLoadsForMedia` — which do not disable ATS app-wide and are Apple's recommended alternative — no longer trip a spurious WARN.
+- **Kids-signal double-count (§27 ↔ §39)**: when a child-audience term and a third-party ads/analytics SDK are both present, only §39 (5.1.4) fires now; §27 (2.3.8) is cross-gated so one root signal no longer costs two WARNs against the 5-WARN YELLOW threshold.
+- **§33 (2.5.4) background-mode coverage**: `audio` now recognizes AVKit / `VideoPlayer` / `AVPlayerViewController` / MediaPlayer now-playing APIs, and `fetch` / `processing` recognize `BGTaskScheduler`, reducing "declared but unused" false positives.
+- Pierre deep-review docs: corrected the Tier A definition (22 = all 28 except the 6 Tier B items; previously implied 17), fixed the stale "22 checks" label and broken table-of-contents anchor in the methodology and example files.
+- §28 / §37 evidence now print the plist basename, matching the rest of the batch.
+
 ## [1.5.1] - 2026-06-30
 
 ### Changed

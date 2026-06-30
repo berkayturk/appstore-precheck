@@ -564,7 +564,10 @@ fi
 # NSAllowsArbitraryLoads=true turns off ATS for the whole app, weakening
 # data-in-transit security and inviting a 1.6 / data-security question at review.
 if [[ -f "$INFO_PLIST" ]]; then
-  if awk '/NSAllowsArbitraryLoads/{getline; if ($0 ~ /<true/) print "ON"}' "$INFO_PLIST" 2>/dev/null | grep -q ON; then
+  # Anchor to the exact key: `NSAllowsArbitraryLoads</key>` (followed by `<`), so the
+  # narrower scoped exceptions NSAllowsArbitraryLoadsInWebContent / ...ForMedia — which
+  # do NOT disable ATS app-wide and are the recommended alternative — don't false-fire.
+  if awk '/NSAllowsArbitraryLoads</{getline; if ($0 ~ /<true/) print "ON"}' "$INFO_PLIST" 2>/dev/null | grep -q ON; then
     warn "1.6 App Transport Security — NSAllowsArbitraryLoads=true in Info.plist disables ATS app-wide; prefer per-domain exceptions, and expect a data-security justification request at review (1.6)"
   fi
 fi
@@ -619,7 +622,10 @@ fi
 if [[ -d "$META_DIR" ]]; then
   kids_re='for kids|for children|for your (kid|child)|kids[[:space:]]?app|für kinder|para niños|pour enfants'
   kids_hits=$(grep -rEniI "$kids_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
-  if [[ -n "$kids_hits" ]]; then
+  # Cross-gate with §39 (5.1.4): when an ads/analytics SDK is also linked, §39 fires the
+  # more specific Kids finding for the same wording signal — don't double-count it here
+  # (one root signal must not cost two WARNs against the 5-WARN YELLOW threshold).
+  if [[ -n "$kids_hits" && -z "${tracking_sdk:-}" && -z "${analytics_sdk:-}" ]]; then
     warn "2.3.8 'For Kids/Children' wording — terms implying a child audience are reserved for the Kids Category (2.3.8); if not enrolled, remove them from name/subtitle/keywords/description:"
     echo "$kids_hits" | sed 's/^/      /'
   fi
@@ -633,7 +639,7 @@ fi
 kb_plist=$(grep -rlE 'com\.apple\.keyboard-service' --include='Info.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
 if [[ -n "$kb_plist" ]]; then
   if grep -A1 'RequestsOpenAccess' "$kb_plist" 2>/dev/null | grep -q '<true'; then
-    warn "4.4.1 Keyboard extension — RequestsOpenAccess=true in $kb_plist; keyboards must remain functional without full access and may only collect data to enhance the keyboard (4.4.1). Justify full access in your review notes."
+    warn "4.4.1 Keyboard extension — RequestsOpenAccess=true in $(basename "$kb_plist"); keyboards must remain functional without full access and may only collect data to enhance the keyboard (4.4.1). Justify full access in your review notes."
   else
     pass "4.4.1 Keyboard extension — present without requiring full access"
   fi
@@ -718,10 +724,10 @@ if [[ -f "$INFO_PLIST" && -n "$IOS_DIR" ]]; then
       [[ -z "$m" ]] && continue
       case "$m" in
         location) grep -rqE 'CLLocationManager|CoreLocation' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused location" ;;
-        audio) grep -rqE 'AVAudioSession|AVPlayer|AVAudioPlayer|AVQueuePlayer|AVAudioEngine' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused audio" ;;
+        audio) grep -rqE 'AVAudioSession|AVPlayer|AVAudioPlayer|AVQueuePlayer|AVAudioEngine|AVKit|VideoPlayer|AVPlayerViewController|MPMusicPlayerController|MPNowPlayingInfoCenter' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused audio" ;;
         voip) grep -rqE 'PushKit|PKPushRegistry|CallKit|CXProvider' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused voip" ;;
-        fetch) grep -rqE 'BGAppRefreshTask|BackgroundTasks|setMinimumBackgroundFetchInterval|performFetchWithCompletionHandler' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused fetch" ;;
-        processing) grep -rqE 'BGProcessingTask|BackgroundTasks' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused processing" ;;
+        fetch) grep -rqE 'BGAppRefreshTask|BGTaskScheduler|BackgroundTasks|setMinimumBackgroundFetchInterval|performFetchWithCompletionHandler' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused fetch" ;;
+        processing) grep -rqE 'BGProcessingTask|BGTaskScheduler|BackgroundTasks' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused processing" ;;
         bluetooth-central|bluetooth-peripheral) grep -rqE 'CoreBluetooth|CBCentralManager|CBPeripheralManager' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused $m" ;;
         remote-notification) grep -rqE 'didReceiveRemoteNotification|UNUserNotificationCenter|registerForRemoteNotifications' "$IOS_DIR" --include="*.swift" 2>/dev/null || unused="$unused remote-notification" ;;
       esac
@@ -774,7 +780,7 @@ fi
 # ===================================================================
 safari_ext=$(grep -rlE 'com\.apple\.Safari\.(content-blocker|web-extension|extension)' --include='Info.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
 if [[ -n "$safari_ext" ]]; then
-  warn "4.4.2 Safari extension — a Safari content-blocker / web extension was detected ($safari_ext); it must use the extension APIs as intended, do only what it declares, and not include hidden analytics/ads or track without consent (4.4.2). Verify."
+  warn "4.4.2 Safari extension — a Safari content-blocker / web extension was detected ($(basename "$safari_ext")); it must use the extension APIs as intended, do only what it declares, and not include hidden analytics/ads or track without consent (4.4.2). Verify."
 fi
 
 # ===================================================================

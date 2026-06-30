@@ -1,6 +1,6 @@
 # Example: Phase 4 deep review (REVIEW-FINDING)
 
-Advisory output from Pierre's 22 semantic checks. These lines do **not** change the
+Advisory output from Pierre's 28 semantic checks (22 Tier A + 6 Tier B v1 †). These lines do **not** change the
 GREEN/YELLOW/RED verdict — they flag issues a static grep cannot catch.
 
 ## Context
