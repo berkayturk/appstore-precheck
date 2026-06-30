@@ -4,7 +4,7 @@ description: Read-only pre-submission check for an iOS app before App Store revi
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.1.0
+  version: 1.2.0
 allowed-tools: Bash Read Grep Glob WebFetch
 ---
 
@@ -47,11 +47,15 @@ The skill reaches one of three terminal states:
 | **YELLOW** | No FAIL but 3+ WARN | Not written | Guard blocks; ask for explicit confirmation |
 | **RED** | At least 1 FAIL | Removed | Guard blocks; show the FAIL list |
 
-When you present the verdict to the user, open with a **single in-character line from Pierre**
-(the French App Review critic, see Phase 3), then drop straight into the plain, surgical
-breakdown. The voice is a thin wrapper. The data underneath, the FAIL/WARN list, `file:line`
-references, and fixes, stays clean and machine-faithful. **Never rewrite or paraphrase
-`scan.sh` output**, and keep Pierre to one line.
+When you present the verdict to the user, open with Pierre's verdict (the French App Review
+critic, see Phase 3) as a short **trilingual block**: his native **French** line first, then an
+**English** rendering, then the **user's conversation language** rendering. Each is an
+*idiomatic, in-character* re-expression in that language's own rhythm — his deadpan French-critic
+register carried across, never a flat word-for-word translation. Collapse to two lines if the
+user already converses in French or English (no duplicate line). Then drop straight into the
+plain, surgical breakdown. The voice is a thin wrapper. The data underneath, the FAIL/WARN list,
+`file:line` references, and fixes, stays clean and machine-faithful. **Never rewrite or paraphrase
+`scan.sh` output**, and keep the Pierre block to these short one-per-language lines.
 
 ## Flow (5 phases: 0–4)
 
@@ -125,7 +129,17 @@ palate of a French critic. Use this prompt verbatim, filling in the app's specif
 > one 4.x, one 5.x); choose a different combination each run (include a seed line so reruns
 > vary). For each item: (Pass A) grep the relevant files for at least 2 concrete pieces of
 > evidence: metadata for 2.3.x; the paywall view + String Catalog for 3.1.x; Core/navigation
-> for 4.x; Info.plist + PrivacyInfo for 5.1.x. (Pass B) ask "as a reviewer, on what basis would
+> for 4.x; Info.plist + PrivacyInfo for 5.1.x. **Scope of evidence:** only Apple-facing
+> submission artifacts count toward a reject risk — fastlane metadata, the paywall Swift, the
+> String Catalog, Info.plist, and PrivacyInfo.xcprivacy. Internal or local-only files (anything
+> under `.planning/`, design notes, build scripts, and `reviewPrepNotes` drafts — which are *not*
+> auto-submitted to App Store Connect) and any Google Play / non-Apple sections are **out of
+> scope**: cite them at most as a WARN labeled "internal draft — not submitted to Apple", never as
+> REJECT-CERTAIN/REJECT-RISK. A REJECT risk requires a contradiction *within* submission-facing
+> artifacts (e.g. metadata vs the paywall), not an internal doc disagreeing with metadata. An
+> eligibility-gated / conditional offer (e.g. a free trial shown only to eligible users) paired
+> with metadata that mentions the offer is **WARN at most**, unless the metadata promises it
+> unconditionally to all users. (Pass B) ask "as a reviewer, on what basis would
 > I flag this?" (Pass C) write a rejection draft in Apple's real voice (Guideline X.Y.Z –
 > Category / We noticed… / Specifically… / Next Steps… / Resources…). Assign each item a risk:
 > REJECT-CERTAIN / REJECT-RISK / WARN / PASS. End with a submit recommendation (HOLD / SUBMIT
@@ -149,15 +163,21 @@ narrative; verdict.sh just pins the threshold arithmetic.
 
 1. Gather Phase 0–3 output; tally FAIL + WARN + PASS into the output-contract table.
 2. For each FAIL, give a `file:line` reference and a suggested fix.
-3. Open the verdict with **one** line in Pierre's voice (vary the wording each run; keep it short
-   and in his deadpan French-critic register), then drop into the plain breakdown. Decide:
-   - **GREEN:** Pierre, grudgingly: *"Hmf. I find nothing. Acceptable. Do not make me regret this."*
+3. Open the verdict with Pierre's **trilingual block** — French, then English, then the user's
+   conversation language — then drop into the plain breakdown. Each line is an idiomatic,
+   in-character rendering (not a literal translation), carrying his deadpan French-critic register
+   into that language's own rhythm. Collapse to two lines if the user already converses in French
+   or English. Vary the wording each run; keep each line short. Decide:
+   - **GREEN:** e.g. FR *"Hmf. Je ne trouve rien. Acceptable. Ne me faites pas regretter."* /
+     EN *"Hmf. I find nothing. Acceptable. Do not make me regret this."* / + the user-language line,
      then `date +%s > .precheck-pass && echo "token written"` (valid 60 min).
-   - **YELLOW:** Pierre: *"A few small uglinesses. I would not reject, but I noticed."* List the
-     WARNs plainly, ask the user "confirm and submit anyway?", write the token only on confirmation.
-   - **RED:** Pierre: *"Non. {n} faults. Apple would have found fewer. Suivant."* No token; then the
-     plain FAIL list with `file:line` + fixes, and state plainly that submission is BLOCKED.
-   The Pierre line is flavor only. The FAIL/WARN list, `file:line`, and fixes below it stay plain
+   - **YELLOW:** e.g. FR *"Quelques petites laideurs. Je ne rejette pas, mais j'ai remarqué."* /
+     EN *"A few small uglinesses. I would not reject, but I noticed."* / + the user-language line.
+     List the WARNs plainly, ask the user "confirm and submit anyway?", write the token only on confirmation.
+   - **RED:** e.g. FR *"Non. {n} fautes. Apple en aurait trouvé moins. Suivant."* /
+     EN *"No. {n} faults. Apple would have found fewer. Next."* / + the user-language line.
+     No token; then the plain FAIL list with `file:line` + fixes, and state plainly that submission is BLOCKED.
+   The Pierre block is flavor only. The FAIL/WARN list, `file:line`, and fixes below it stay plain
    and surgical, never paraphrased.
 4. Print the final manual checklist (see
    [`references/methodology.md`](references/methodology.md#pre-submit-manual-checklist)).
