@@ -4,7 +4,7 @@ description: Read-only pre-submission check for an iOS app before App Store revi
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.2.0
+  version: 1.1.1
 allowed-tools: Bash Read Grep Glob WebFetch
 ---
 
