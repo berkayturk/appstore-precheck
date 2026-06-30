@@ -276,8 +276,10 @@ assert_contains "$text" "---END-OF-SCAN---" "text mode reaches end marker"
 json="$(cd "$tmp" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
 echo "$json" | jq -e . >/dev/null; assert_eq "0" "$?" "json mode emits valid JSON"
 assert_eq "appstore-precheck" "$(jq -r .tool <<<"$json")" "tool field"
-n="$(jq '[.findings[]|select(.rule_id=="ats-arbitrary-loads")]|length' <<<"$json")"
-assert_eq "1" "$n" "ats-arbitrary-loads finding present in JSON"
+# NOTE: rule_id is wired per-section in Task 4 (set_rule). Here, assert structure
+# only — guideline is derived from the message's leading token, so it works now.
+has16="$(jq '[.findings[]|select(.guideline=="1.6")]|length > 0' <<<"$json")"
+assert_eq "true" "$has16" "ATS (guideline 1.6) finding present in JSON"
 assert_eq "" "$(printf '%s' "$json" | grep -c 'WARN: ' | sed 's/0//')" "no text WARN lines leaked into JSON"
 rm -rf "$tmp"
 exit "$fails"
@@ -322,7 +324,7 @@ warn() { echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; }
 pass() { echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; }
 ```
 
-(d) Wrap the scan body output: right before the first scan section, swallow stdout in JSON mode; at the very end, restore and render:
+(d) Wrap the scan body output: swallow stdout in JSON mode **before the first line the scan prints** — note scan.sh emits a `PASS: layout ...` echo *before* §1, so place the redirect above that echo (not literally at the §1 header), or that line leaks into the JSON and breaks `jq`. At the very end, restore and render:
 ```bash
 # just before §1:
 if [[ "$FORMAT" == json ]]; then exec 4>&1 1>/dev/null; fi
