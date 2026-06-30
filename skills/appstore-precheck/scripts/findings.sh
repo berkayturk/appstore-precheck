@@ -47,3 +47,23 @@ _record() {
       line:(if $l=="" then null else ($l|tonumber) end),
       suppressed:false}' >> "$FINDINGS_TMP"
 }
+
+: "${PRECHECK_VERSION:=dev}"
+
+# render_json -> prints the structured envelope. Verdict reuses verdict.sh thresholds
+# (RED >=1 FAIL; YELLOW >=5 WARN; else GREEN), counting non-suppressed findings only.
+render_json() {
+  local buf="${FINDINGS_TMP:-/dev/null}"
+  [[ -s "$buf" ]] || { printf '%s\n' '{"findings":[]}' | jq \
+     --arg v "$PRECHECK_VERSION" '{tool:"appstore-precheck",version:$v,verdict:"GREEN",summary:{fail:0,warn:0,pass:0,suppressed:0},findings:[]}'; return 0; }
+  jq -s --arg v "$PRECHECK_VERSION" '
+    (map(select(.suppressed==false))) as $live
+    | ($live|map(select(.severity=="FAIL"))|length) as $f
+    | ($live|map(select(.severity=="WARN"))|length) as $w
+    | ($live|map(select(.severity=="PASS"))|length) as $p
+    | (map(select(.suppressed==true))|length) as $s
+    | (if $f>=1 then "RED" elif $w>=5 then "YELLOW" else "GREEN" end) as $verdict
+    | {tool:"appstore-precheck", version:$v, verdict:$verdict,
+       summary:{fail:$f, warn:$w, pass:$p, suppressed:$s},
+       findings: .}' "$buf"
+}
