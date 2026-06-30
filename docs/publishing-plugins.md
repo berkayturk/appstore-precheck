@@ -98,16 +98,29 @@ codex plugin marketplace upgrade appstore-precheck
 ### Submit to the public Codex Plugin Directory (maintainer)
 
 OpenAI’s docs state that **self-serve publishing to the official Plugin Directory is coming soon**
-([Build plugins](https://developers.openai.com/codex/plugins/build)). Until then:
+([Build plugins](https://developers.openai.com/codex/plugins/build)). There is **no public submit
+form** like Cursor’s marketplace publish page today.
 
-1. Keep [`.agents/plugins/marketplace.json`](../.agents/plugins/marketplace.json) and
-   `.claude-plugin/plugin.json` valid (include `skills` and `hooks` paths).
-2. Users add the GitHub repo with `codex plugin marketplace add berkayturk/appstore-precheck`.
-3. For workspace sharing inside ChatGPT/Codex app: install locally, then **Plugins → Created by you
-   → Share** with workspace members (does not publish publicly).
+**What you can do now:**
 
-When the public directory opens, expect to submit publisher metadata (`interface` block in the
-manifest: `displayName`, `shortDescription`, icons, privacy/terms URLs).
+1. **GitHub repo marketplace (public, link-based)** — users run:
+
+   ```bash
+   codex plugin marketplace add berkayturk/appstore-precheck
+   codex plugin add appstore-precheck@appstore-precheck
+   ```
+
+2. **Codex app — workspace share (team, not public):** install the plugin locally, then
+   **Plugins → Created by you → Share** with workspace members. They see it under **Shared with you**.
+
+3. **Prep for official directory:** keep `.claude-plugin/plugin.json` `interface` metadata current
+   (`displayName`, `shortDescription`, `logo`, `websiteURL`). This repo already includes those fields.
+
+When self-serve public publishing opens, expect a flow similar to Cursor: manifest review + listing in
+the **Curated by OpenAI** tab inside Codex **Plugins**.
+
+**Not recommended for this skill repo:** the Apps SDK app-submission path (build a ChatGPT app →
+OpenAI creates a Codex plugin). That is for full apps with connectors, not a skill-only package.
 
 ---
 

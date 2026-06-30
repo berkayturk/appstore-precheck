@@ -12,5 +12,17 @@
   "license": "MIT",
   "keywords": ["ios", "app-store", "fastlane", "review", "precheck", "aso", "ios-submission"],
   "skills": "./skills/",
-  "hooks": "./hooks/hooks.json"
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "App Store Precheck",
+    "shortDescription": "Catch App Store rejections before a reviewer does.",
+    "longDescription": "Read-only iOS App Store pre-submission check. Static scan, optional fastlane precheck, guideline drift watch, Pierre commentary, and semantic deep review — with a GREEN/YELLOW/RED verdict before you upload.",
+    "developerName": "Berkay Turk",
+    "category": "Testing",
+    "logo": "./assets/marketplace-logo.svg",
+    "websiteURL": "https://github.com/berkayturk/appstore-precheck",
+    "defaultPrompt": [
+      "Run appstore-precheck on this iOS project before App Store submission."
+    ]
+  }
 }
