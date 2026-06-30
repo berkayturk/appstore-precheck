@@ -25,9 +25,10 @@ and Gemini CLI, with no per-tool conversion. They differ only in which directory
 | Cursor | `.agents/skills/`, `.cursor/skills/`, also reads `.claude/skills/` |
 | Gemini CLI | `.agents/skills/`, `.gemini/skills/` |
 
-Run `./install.sh` to copy the skill into both `.claude/skills/` and `.agents/skills/` of the
-current project (covers every host above), or `./install.sh <host> <project|user>` for a single
-host. Claude Code users can instead install it as a plugin (see the README).
+**Install:** Claude Code, Cursor, and Codex as native plugins from this repo (see README Quick start).
+Gemini: `gemini skills install https://github.com/berkayturk/appstore-precheck.git --path skills/appstore-precheck`.
+Fallback: `./install.sh` copies the skill into `.claude/skills/` and/or `.agents/skills/` of the
+current project, or `./install.sh <host> <project|user>` for a single host.
 
 ## The hard rule
 

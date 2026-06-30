@@ -42,6 +42,9 @@ jobs:
         run: |
           for f in .claude-plugin/plugin.json \
                    .claude-plugin/marketplace.json \
+                   .cursor-plugin/plugin.json \
+                   .cursor-plugin/marketplace.json \
+                   .agents/plugins/marketplace.json \
                    hooks/hooks.json \
                    skills/appstore-precheck/guidelines-baseline.json \
                    skills/appstore-precheck/config.example.json \

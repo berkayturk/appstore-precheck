@@ -151,37 +151,88 @@ how the app is built:
 
 ## Quick start
 
-**Claude Code**: install as a plugin:
+One `SKILL.md`, every host. **Claude Code, Cursor, and Codex** install as native **plugins** from
+this GitHub repo. **Gemini CLI** installs the same skill with `gemini skills install` (no plugin
+marketplace yet). [`install.sh`](install.sh) remains the fallback for vendoring into a project.
+
+### Install the full skill (Pierre + all phases)
+
+| Host | Install method |
+|------|----------------|
+| **Claude Code** | Plugin (recommended) |
+| **Cursor** | Plugin (recommended) |
+| **OpenAI Codex** | Plugin (recommended) |
+| **Gemini CLI** | `gemini skills install` one-liner |
+
+**Claude Code:**
 
 ```
 /plugin marketplace add berkayturk/appstore-precheck
 /plugin install appstore-precheck@appstore-precheck
 ```
 
-**Run instantly with npx** (no clone, no install):
+**Cursor** — import this repo as a marketplace, then install the plugin:
+
+1. **Customize → Plugins → Import marketplace**
+2. Repo URL: `https://github.com/berkayturk/appstore-precheck`
+3. Install **appstore-precheck**
+
+After the plugin is listed on the [Cursor Marketplace](https://cursor.com/marketplace), you can
+install from **Customize → Plugins** without importing the repo.
+
+**OpenAI Codex:**
+
+```bash
+codex plugin marketplace add berkayturk/appstore-precheck
+codex plugin add appstore-precheck@appstore-precheck
+```
+
+Or run `codex`, open `/plugins`, select the **appstore-precheck** marketplace, and install.
+
+**Gemini CLI** (native skill install — no plugin marketplace):
+
+```bash
+gemini skills install https://github.com/berkayturk/appstore-precheck.git \
+  --path skills/appstore-precheck --scope workspace
+```
+
+Use `--scope user` for a global install. Verify with `gemini skills list`.
+
+**Fallback — `install.sh`** (vendors the skill into `.claude/skills/` and/or `.agents/skills/`):
+
+```bash
+git clone https://github.com/berkayturk/appstore-precheck.git
+cd your-ios-app
+/path/to/appstore-precheck/install.sh              # all hosts → .claude/skills + .agents/skills
+/path/to/appstore-precheck/install.sh cursor       # Cursor only
+/path/to/appstore-precheck/install.sh codex        # Codex only
+/path/to/appstore-precheck/install.sh gemini       # Gemini only
+/path/to/appstore-precheck/install.sh claude user  # Claude Code user-wide → ~/.claude/skills
+```
+
+Then ask your agent to run the precheck before you submit. See [Cross-tool support](#cross-tool-support)
+for which directory each host reads. Maintainer notes for marketplace submission:
+[`docs/publishing-plugins.md`](docs/publishing-plugins.md).
+
+### Scan only (no agent skill install)
+
+**npx** — static scan + verdict in the terminal; no clone, no skill vendoring (Phases 3–4 Pierre
+commentary require an agent with the skill installed):
 
 ```bash
 npx appstore-precheck            # scans the current directory, prints the verdict
 npx appstore-precheck --fail-on YELLOW
 ```
 
-It runs the static scan over the current directory and exits non-zero on RED (or on YELLOW with
-`--fail-on YELLOW`). Read-only, like everything else here.
-
-**Codex, Cursor, Gemini, Claude**: clone, then run the installer from inside your iOS project:
+**Standalone Bash** — same static scan, run by hand or in CI:
 
 ```bash
-git clone https://github.com/berkayturk/appstore-precheck.git
-/path/to/appstore-precheck/install.sh        # → ./.claude/skills and ./.agents/skills
+bash skills/appstore-precheck/scripts/scan.sh   # from a clone of this repo
 ```
 
-**Standalone**: the scanner is just Bash:
+### CI
 
-```bash
-bash skills/appstore-precheck/scripts/scan.sh
-```
-
-**CI**: drop the static scan into a workflow with the bundled composite action. It fails the
+Drop the static scan into a workflow with the bundled composite action. It fails the
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
@@ -298,16 +349,22 @@ Everything else works without one.
 ## Uninstall
 
 ```bash
-/plugin uninstall appstore-precheck@appstore-precheck                        # Claude Code plugin
-rm -rf .claude/skills/appstore-precheck .agents/skills/appstore-precheck     # manual install
-rm -f .precheck-pass                                                         # runtime token
+/plugin uninstall appstore-precheck@appstore-precheck   # Claude Code plugin
+codex plugin remove appstore-precheck@appstore-precheck # Codex plugin
+# Cursor: Customize → Plugins → appstore-precheck → Uninstall
+gemini skills uninstall appstore-precheck                 # Gemini (if installed via gemini skills)
+rm -rf .claude/skills/appstore-precheck                # install.sh (Claude Code / Cursor)
+rm -rf .agents/skills/appstore-precheck                # install.sh (Codex / Cursor / Gemini)
+rm -rf .cursor/skills/appstore-precheck                # if you mirrored there manually
+rm -rf .gemini/skills/appstore-precheck                # if installed to workspace scope manually
+rm -f .precheck-pass                                   # runtime token
 ```
 
 ## Development
 
 ```bash
 npm run lint            # bash -n on every script
-npm run check-versions  # plugin.json / package.json / SKILL.md in lockstep
+npm run check-versions  # plugin manifests / package.json / SKILL.md in lockstep
 npm test                # run scan.sh against fixture projects and assert
 claude plugin validate .
 ```
