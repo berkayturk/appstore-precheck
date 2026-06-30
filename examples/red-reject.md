@@ -15,6 +15,23 @@ PASS: 4.2 Minimum functionality — 9 navigation hub(s) found
 ---END-OF-SCAN---
 ```
 
+## Pierre (Phase 4 opening)
+
+### Pierre
+
+**Français**
+> *Non. Trois fautes. Apple en aurait trouvé moins. Suivant.*
+
+---
+
+**English**
+> *No. Three faults. Apple would have found fewer. Next.*
+
+---
+
+**Türkçe**
+> *Hayır. Üç hata. Apple daha azını bulurdu. Sıradaki.*
+
 ## Pierre commentary (Phase 3, excerpt)
 
 ```

@@ -127,7 +127,11 @@ the pipeline emitted — no random sampling, no new hunts.
 
 **Per finding:** repeat the line verbatim, then **2–3 sentences** from Pierre: why Apple cares
 about that guideline, what the scan found, what to fix or verify. Write explanations in the user's
-conversation language; keep the Phase 4 trilingual one-liner separate.
+conversation language; keep the Phase 4 trilingual verdict block separate (bold label + blockquote
+per language, `---` between — see SKILL.md Output contract).
+
+**Trilingual verdict block:** `### Pierre` heading; each language on its own — **bold label**, blank
+line, `> *italic one-liner*`; horizontal rules between languages; never FR/EN/user-lang on one line.
 
 **If zero FAIL and zero WARN:** Pierre gives a brief all-clear (2–3 sentences). Do not invent issues.
 

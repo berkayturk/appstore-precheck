@@ -47,10 +47,47 @@ The skill reaches one of three terminal states:
 | **YELLOW** | No FAIL but 5+ WARN | Not written | Guard blocks; ask for explicit confirmation |
 | **RED** | At least 1 FAIL | Removed | Guard blocks; show the FAIL list |
 
-When you present the verdict to the user, open with Pierre's **trilingual one-liner** (see Phase 4),
-then Pierre's **finding commentary** (Phase 3 — 2–3 sentences per FAIL/WARN), then the machine-faithful
-`FAIL:`/`WARN:`/`PASS:` lines and `file:line` fixes from `scan.sh`. **Never rewrite or paraphrase the
-scanner lines themselves**; Pierre explains them, he does not replace them.
+When you present the verdict to the user, open with Pierre's **trilingual verdict block** (see format
+below and Phase 4), then Pierre's **finding commentary** (Phase 3 — 2–3 sentences per FAIL/WARN),
+then the machine-faithful `FAIL:`/`WARN:`/`PASS:` lines and `file:line` fixes from `scan.sh`.
+**Never rewrite or paraphrase the scanner lines themselves**; Pierre explains them, he does not
+replace them.
+
+### Trilingual verdict block (required format)
+
+Pierre's opening lines must **not** run together on one row or one sentence separated by slashes.
+Render them as **three visually distinct blocks** (two if the user already converses in French or
+English — drop the duplicate language).
+
+Use this markdown shape every time:
+
+```markdown
+### Pierre
+
+**Français**
+> *<Pierre's French one-liner in italics>*
+
+---
+
+**English**
+> *<Pierre's English one-liner in italics>*
+
+---
+
+**<User language name>**   ← e.g. **Türkçe**, **Deutsch**, **日本語**
+> *<Same meaning, idiomatic one-liner in the user's conversation language, in italics>*
+```
+
+Rules:
+
+- `### Pierre` heading always opens the block.
+- Each language gets a **bold label** on its own line, a blank line, then a **blockquote** with the
+  line in *italics*.
+- Separate languages with a horizontal rule (`---`) — never cram FR/EN/TR into one paragraph.
+- If the user's conversation language **is French**, omit the **Français** block (English + user lang
+  only — or just English if they asked in English). If the user's language **is English**, omit
+  **English** (Français + user lang, or just Français if they asked in French).
+- Keep each one-liner short (one sentence). Vary wording each run; stay in Pierre's dry critic voice.
 
 ## Flow (5 phases: 0–4)
 
@@ -185,21 +222,14 @@ narrative; verdict.sh just pins the threshold arithmetic.
 
 1. Gather Phase 0–3 output; tally FAIL + WARN + PASS into the output-contract table (counts come
    from Phase 1 + Phase 0/2 findings only — Pierre's prose does not add new FAIL/WARN lines).
-2. Open with Pierre's **trilingual one-liner** — French, then English, then the user's conversation
-   language (collapse to two lines if the user already speaks French or English). Keep each line short.
+2. Open with Pierre's **trilingual verdict block** using the required format in [Output contract](#trilingual-verdict-block-required-format) — bold language label + blockquote per language, separated by `---`; never one compressed line.
 3. Present **Phase 3 commentary** — Pierre's 2–3 sentence explanation for every FAIL and WARN.
 4. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, then for each
    FAIL a `file:line` reference and a suggested fix (one line each, surgical, not paraphrased).
-5. State the verdict and token action:
-   - **GREEN:** e.g. FR *"Hmf. Je ne trouve rien. Acceptable. Ne me faites pas regretter."* /
-     EN *"Hmf. I find nothing. Acceptable. Do not make me regret this."* / + the user-language line,
-     then `date +%s > .precheck-pass && echo "token written"` (valid 60 min).
-   - **YELLOW:** e.g. FR *"Quelques petites laideurs. Je ne rejette pas, mais j'ai remarqué."* /
-     EN *"A few small uglinesses. I would not reject, but I noticed."* / + the user-language line.
-     List the WARNs plainly, ask the user "confirm and submit anyway?", write the token only on confirmation.
-   - **RED:** e.g. FR *"Non. {n} fautes. Apple en aurait trouvé moins. Suivant."* /
-     EN *"No. {n} faults. Apple would have found fewer. Next."* / + the user-language line.
-     No token; state plainly that submission is BLOCKED.
+5. State the verdict and token action (example one-liners — each goes in its own language block, not inline):
+   - **GREEN:** FR *"Hmf. Je ne trouve rien. Acceptable. Ne me faites pas regretter."* · EN *"Hmf. I find nothing. Acceptable. Do not make me regret this."* · + user-language line → write `.precheck-pass` (valid 60 min).
+   - **YELLOW:** FR *"Quelques petites laideurs. Je ne rejette pas, mais j'ai remarqué."* · EN *"A few small uglinesses. I would not reject, but I noticed."* · + user-language line → ask "confirm and submit anyway?"; token only on confirmation.
+   - **RED:** FR *"Non. {n} fautes. Apple en aurait trouvé moins. Suivant."* · EN *"No. {n} faults. Apple would have found fewer. Next."* · + user-language line → no token; state submission is BLOCKED.
 6. Print the final manual checklist (see
    [`references/methodology.md`](references/methodology.md#pre-submit-manual-checklist)).
 

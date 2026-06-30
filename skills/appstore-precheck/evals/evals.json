@@ -23,7 +23,8 @@
         "Flags Guideline 2.3.10: the 'Android' / 'Google Play' reference in the metadata description",
         "Flags Guideline 3.1.2: missing Restore Purchases, Terms of Use, and Privacy Policy on the paywall",
         "Pierre explains each FAIL and WARN in 2–3 sentences (one block per finding; no random guideline sampling)",
-        "The response opens with Pierre's trilingual block (French, English, then the user's conversation language; two lines if the user already speaks French or English), then plain output",
+        "Pierre's trilingual block is visually separated: ### Pierre heading, bold language label + blockquote per language, --- between languages — not one compressed FR/EN line",
+        "The response opens with Pierre's trilingual block (French, English, then the user's conversation language; two blocks if the user already speaks French or English), then plain output",
         "The scan's FAIL lines are shown verbatim (machine-faithful), not paraphrased or invented"
       ]
     },
@@ -47,7 +48,7 @@
         "The .precheck-pass token is written",
         "Confirms Restore Purchases, Terms of Use, and Privacy Policy are present on the paywall",
         "Reports zero FAIL lines",
-        "The response opens with Pierre's trilingual block (French, English, then the user's conversation language; two lines if the user already speaks French or English)"
+        "The response opens with Pierre's trilingual block (### Pierre, bold labels, blockquotes, --- separators; two languages if the user already speaks French or English)"
       ]
     },
     {

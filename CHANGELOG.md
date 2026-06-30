@@ -11,8 +11,10 @@ All notable changes to this project are documented here. Versioning follows
   then explains why Apple cares, what the scan found, and what to fix. Updated `SKILL.md`,
   `methodology.md`, the README example, `examples/red-reject.md`, and behavioral eval
   assertions in lockstep.
-- Phase 4 presentation order clarified: trilingual one-liner → Pierre commentary → verbatim
+- Phase 4 presentation order clarified: trilingual verdict block → Pierre commentary → verbatim
   scan lines + `file:line` fixes → verdict/token.
+- **Trilingual verdict block format:** each language in its own **bold label + blockquote**, separated
+  by horizontal rules (`---`) under a `### Pierre` heading — never FR/EN/user-lang compressed on one line.
 
 ## [1.3.0] - 2026-06-30
 

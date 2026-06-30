@@ -35,8 +35,9 @@ Pierre means Apple will wave you through.
 - 🟡 **YELLOW**: *"A few small uglinesses. I would not reject. But I noticed."*
 - 🟢 **GREEN**: *"Hmf. I find nothing. Acceptable. Do not make me regret this."*
 
-The verdict line is in Pierre's voice. The breakdown beneath it, every `file:line` and fix, stays
-plain and surgical.
+The verdict line is in Pierre's voice — **three separate language blocks** (bold label + blockquote
+each, divided by horizontal rules), not one compressed sentence. The breakdown beneath it, every
+`file:line` and fix, stays plain and surgical.
 
 ## What it checks
 
@@ -165,19 +166,26 @@ counts are deterministic ([`verdict.sh`](skills/appstore-precheck/scripts/verdic
 
 ## Example
 
+### Pierre
+
+**Français**
+> *Non. Trois fautes. Apple en aurait trouvé moins. Suivant.*
+
+---
+
+**English**
+> *No. Three faults. Apple would have found fewer. Next.*
+
+---
+
+**Türkçe**
+> *Hayır. Üç hata. Apple daha azını bulurdu. Sıradaki.*
+
+**RED — 3 FAIL** · submission blocked
+
 ```
-🔴 Pierre: "Non. Three faults. Apple would have found one. Suivant."
-
 FAIL: 3.1.2 Restore Purchases — not found in SubscriptionView.swift
-Pierre: Apple requires a Restore Purchases control on every subscription paywall so users can recover
-entitlements on a new device. The scan found no restore action in your paywall view — Guideline 3.1.2
-is an automatic rejection. Add a visible Restore Purchases button wired to StoreKit before resubmitting.
-
-FAIL: 2.3.10 Other-platform mention — banned reference in metadata
-Pierre: App Store metadata must not advertise other platforms. Your description names Android /
-Google Play, which reviewers reject under 2.3.10. Remove every other-store reference from store copy.
-
-RED: 3 FAIL — submission blocked.
+Pierre: Apple requires a Restore Purchases control on every subscription paywall …
 ```
 
 See [`examples/`](examples/) for full [GREEN](examples/green-pass.md) and [RED](examples/red-reject.md) runs,
