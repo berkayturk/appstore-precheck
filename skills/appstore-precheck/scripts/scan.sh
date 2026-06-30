@@ -16,12 +16,17 @@ source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
 trap 'rm -f "$FINDINGS_TMP"' EXIT
 FORMAT="text"
-PRECHECK_VERSION="$(grep -m1 '"version"' "$ROOT/package.json" 2>/dev/null | tr -dc '0-9.' )"
+# The envelope `version` is the appstore-precheck TOOL's own version (from this
+# skill's SKILL.md), never the scanned repo's — $ROOT above is the SCANNED app's
+# git root, so reading its package.json here would leak the wrong version.
+PRECHECK_VERSION="$(grep -m1 -E '^[[:space:]]*version:' "$(dirname "${BASH_SOURCE[0]}")/../SKILL.md" 2>/dev/null | sed -E 's/.*version:[[:space:]]*//; s/[[:space:]]*$//')"
 [[ -z "$PRECHECK_VERSION" ]] && PRECHECK_VERSION="dev"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --format) FORMAT="$2"; shift 2 ;;
+    --format)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --format needs a value (text|json)" >&2; exit 64; fi
+      FORMAT="$2"; shift 2 ;;
     --format=*) FORMAT="${1#*=}"; shift ;;
     *) shift ;;
   esac
@@ -343,6 +348,9 @@ grep -rqE 'import StoreKit|RevenueCat|Purchases\.|Product\(for:|AppStore\.|SKPro
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
+  # Not one of the 41 catalog sections — clear the rule_id so this PASS doesn't
+  # inherit §7's "screenshots-per-locale" slug in the JSON output.
+  set_rule ""
   pass "3.1.2 IAP — no in-app purchase / subscription signals detected, skipping paywall checks"
 else
   # ---- §8 3.1.2 Trial disclosure -------------------------------------------------

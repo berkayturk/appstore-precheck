@@ -32,6 +32,35 @@ for fx in risky-app risky-app-2 tracking-app; do
   rm -rf "$d"
 done
 
-assert_eq "41" "$(grep -c 'set_rule "' "$SCAN")" "all 41 sections tagged"
+# Count only catalog-tagging set_rule calls (non-empty slug); the IAP-gate's
+# `set_rule ""` reset (Fix C) is intentionally excluded — it is not a section tag.
+assert_eq "41" "$(grep 'set_rule "' "$SCAN" | grep -vc 'set_rule ""')" "all 41 catalog sections tagged"
+
+# Version provenance: the JSON envelope must report the TOOL's own version (read
+# from skills/appstore-precheck/SKILL.md), never the scanned repo's package.json,
+# and never fall back to "dev" in normal operation.
+expected_version="$(grep -m1 -E '^[[:space:]]*version:' "$HERE/../skills/appstore-precheck/SKILL.md" 2>/dev/null | sed -E 's/.*version:[[:space:]]*//; s/[[:space:]]*$//')"
+d="$(mktemp -d)"; cp -R "$HERE/fixtures/risky-app/." "$d/"
+jv="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
+assert_eq "$(jq -r .version <<<"$jv")" "$expected_version" "version field equals the tool's own SKILL.md version"
+assert_eq "$([[ "$(jq -r .version <<<"$jv")" == "dev" ]] && echo yes || echo no)" "no" "version is not 'dev'"
+rm -rf "$d"
+
+# No leak from scanned app: drop a package.json with a *different* version at the
+# fixture root and confirm scan.sh still reports the TOOL's version, not the
+# scanned app's. Regression test for the package.json-based derivation bug.
+d="$(mktemp -d)"; cp -R "$HERE/fixtures/risky-app/." "$d/"
+echo '{"version":"42.0.7"}' > "$d/package.json"
+jv2="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
+assert_eq "$(jq -r .version <<<"$jv2")" "$expected_version" "version field is the tool's version, not the scanned app's package.json"
+assert_eq "$([[ "$(jq -r .version <<<"$jv2")" == "42.0.7" ]] && echo leaked || echo clean)" "clean" "scanned app's package.json version did not leak"
+rm -rf "$d"
+
+# IAP-gate PASS must not inherit §7's rule_id when no IAP signals exist at all.
+d="$(mktemp -d)"; cp -R "$HERE/fixtures/no-iap-app/." "$d/"
+jv3="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
+iap_rule="$(jq -r '[.findings[]|select(.message|test("no in-app purchase"))][0].rule_id' <<<"$jv3")"
+assert_eq "$iap_rule" "" "IAP-gate PASS has an empty rule_id (not inherited from §7)"
+rm -rf "$d"
 
 exit "$fails"
