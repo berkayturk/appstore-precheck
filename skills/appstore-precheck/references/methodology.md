@@ -8,6 +8,7 @@ whole file to run the skill.
 - [Phase 0: Guideline drift check](#phase-0-guideline-drift-check)
 - [Phase 1: Rejection vectors](#phase-1-rejection-vectors)
 - [Phase 3: Pierre explains every finding](#phase-3-pierre-explains-every-finding)
+- [Phase 4: Pierre deep review (22 checks)](#phase-4-pierre-deep-review-22-semantic-checks)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)
@@ -127,7 +128,7 @@ the pipeline emitted — no random sampling, no new hunts.
 
 **Per finding:** repeat the line verbatim, then **2–3 sentences** from Pierre: why Apple cares
 about that guideline, what the scan found, what to fix or verify. Write explanations in the user's
-conversation language; keep the Phase 4 trilingual verdict block separate (bold label + blockquote
+conversation language; keep the Phase 5 trilingual verdict block separate (bold label + blockquote
 per language, `---` between — see SKILL.md Output contract).
 
 **Trilingual verdict block:** `### Pierre` heading; each language on its own — **bold label**, blank
@@ -136,8 +137,27 @@ line, `> *italic one-liner*`; horizontal rules between languages; never FR/EN/us
 **If zero FAIL and zero WARN:** Pierre gives a brief all-clear (2–3 sentences). Do not invent issues.
 
 **What Phase 3 is not:** it does not add FAIL/WARN lines to the verdict count, does not paraphrase
-the machine lines (those stay verbatim in Phase 4), and does not re-run detection. The scanner
+the machine lines (those stay verbatim in Phase 5), and does not re-run detection. The scanner
 finds; Pierre explains.
+
+---
+
+## Phase 4: Pierre deep review (22 semantic checks)
+
+After Phase 3, Pierre runs the **Review Simulator**: 22 evidence-based checks the static scanner
+cannot fully judge. Full procedure, output format, and per-check steps are in
+[`pierre-deep-review.md`](pierre-deep-review.md).
+
+**Verdict impact:** none. Phase 4 emits `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`.
+These are advisory; FAIL/WARN counts and GREEN/YELLOW/RED come only from Phases 0–2.
+
+**Coverage:** deepens scan hits where applicable (e.g. 5.1.1 purpose strings → 5.1.1(ii) quality;
+§22 UGC keyword → 1.2.1 moderation UI) and adds net-new semantic areas (2.3.5 screenshots,
+5.1.1(i) privacy policy fetch, 2.3.11–13 locale consistency, etc.). Guideline numbers touched
+are tracked in `guidelines-baseline.json` → `covered_by_pierre_deep_review`.
+
+**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 22 findings) and
+every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation.
 
 ---
 

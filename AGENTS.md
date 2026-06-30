@@ -10,7 +10,8 @@ Gemini CLI, GitHub Copilot, and others as always-on context.
 that runs a read-only, pre-submission check for an iOS app before App Store review. The skill
 lives at [`skills/appstore-precheck/`](skills/appstore-precheck/); its scanner,
 [`scripts/scan.sh`](skills/appstore-precheck/scripts/scan.sh), is portable Bash and can be run by
-any agent or by hand.
+any agent or by hand. Phase 4 adds Pierre's 22-check semantic deep review (see
+[`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)).
 
 ## Using the skill in your project
 
@@ -38,6 +39,7 @@ bash skills/appstore-precheck/scripts/scan.sh   # or .agents/skills/appstore-pre
 
 Then follow [`references/methodology.md`](skills/appstore-precheck/references/methodology.md).
 A FAIL means submission is blocked; 5+ WARN means get explicit human confirmation first.
+Phase 4 `REVIEW-FINDING` lines are advisory — they do not block the token.
 
 ## Contributing to this repo
 
