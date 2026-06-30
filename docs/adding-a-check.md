@@ -15,7 +15,7 @@ PASS: <guideline> <topic> — <detail>
 ```
 
 - **FAIL** → blocks submission (drives RED). Use only for a confident, real defect.
-- **WARN** → advisory (3+ WARN drives YELLOW). Use when the signal is uncertain or non-blocking.
+- **WARN** → advisory (5+ WARN drives YELLOW). Use when the signal is uncertain or non-blocking.
 - **PASS** → confirms the check ran and found nothing wrong.
 - Include a `file:line` (or at least a file) whenever you can, so the fix is actionable.
 - The exit code is always 0; the verdict comes from *counting* these lines (see

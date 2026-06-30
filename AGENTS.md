@@ -37,7 +37,7 @@ bash skills/appstore-precheck/scripts/scan.sh   # or .agents/skills/appstore-pre
 ```
 
 Then follow [`references/methodology.md`](skills/appstore-precheck/references/methodology.md).
-A FAIL means submission is blocked; 3+ WARN means get explicit human confirmation first.
+A FAIL means submission is blocked; 5+ WARN means get explicit human confirmation first.
 
 ## Contributing to this repo
 

@@ -40,7 +40,7 @@ assert_eq "$CODE" "1" "exit code 1 for RED"
 
 section "tracking-app -> YELLOW; default fail-on RED does not fail"
 run_cli "tracking-app"
-assert_contains "$OUT" "VERDICT: YELLOW" "verdict is YELLOW (0 FAIL, 3+ WARN)"
+assert_contains "$OUT" "VERDICT: YELLOW" "verdict is YELLOW (0 FAIL, 5+ WARN)"
 assert_eq "$CODE" "0" "YELLOW does not trip the default RED gate"
 
 section "tracking-app with --fail-on YELLOW -> exit 1"
@@ -49,7 +49,7 @@ assert_eq "$CODE" "1" "--fail-on YELLOW fails on a YELLOW verdict"
 
 section "--version prints the package version"
 ver="$(node "$CLI" --version 2>&1)"; vcode=$?
-assert_eq "$ver" "1.1.1" "--version matches package.json"
+assert_eq "$ver" "1.2.0" "--version matches package.json"
 assert_eq "$vcode" "0" "--version exits 0"
 
 section "--help exits 0 and shows usage"

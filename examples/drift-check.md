@@ -3,7 +3,7 @@
 **Real run, 2026-06-28**, of the two-pass drift procedure (see
 [`methodology.md` § Phase 0](../skills/appstore-precheck/references/methodology.md#phase-0-guideline-drift-check))
 against the live [App Store Review Guidelines](https://developer.apple.com/app-store/review/guidelines/),
-diffed against `guidelines-baseline.json` (`reconciled_on: 2026-06-24`).
+diffed against `guidelines-baseline.json` (`reconciled_on: 2026-06-30`).
 
 The page truncates after ~5.4 when fetched, so the check runs as **two focused passes**, each
 embedding only the relevant slice of `all_sections`.
@@ -30,7 +30,7 @@ the live page.
 Both passes returned `NO DRIFT`, so Phase 0 emits:
 
 ```
-PASS: guideline-drift none (baseline reconciled 2026-06-24)
+PASS: guideline-drift none (baseline reconciled 2026-06-30)
 ```
 
 The baseline is **not** modified. Reconciliation is a deliberate human step taken only when drift

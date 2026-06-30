@@ -383,13 +383,13 @@ else
 fi
 
 # ===================================================================
-# §12 — 4.0 Minimum functionality — navigation hubs
+# §12 — 4.2 Minimum functionality — navigation hubs
 # ===================================================================
 tab_count=$(grep -rcE 'TabView|NavigationStack|NavigationSplitView' "$IOS_DIR" --include="*.swift" 2>/dev/null | awk -F: '{sum+=$2} END {print sum+0}')
 if (( tab_count < 1 )); then
-  warn "4.0 Minimum functionality — no TabView/NavigationStack found (heuristic, may be a false positive)"
+  warn "4.2 Minimum functionality — no TabView/NavigationStack found (heuristic, may be a false positive)"
 else
-  pass "4.0 Minimum functionality — $tab_count navigation hub(s) found"
+  pass "4.2 Minimum functionality — $tab_count navigation hub(s) found"
 fi
 
 # ===================================================================
@@ -520,6 +520,143 @@ if [[ -d "$META_DIR" ]]; then
   if [[ -n "$ph_hits" ]]; then
     warn "2.1 Metadata content — placeholder/dummy text in store metadata (looks unfinished; rejected under 2.1):"
     echo "$ph_hits" | sed 's/^/      /'
+  fi
+fi
+
+# ===================================================================
+# §21 — 3.1.1 Third-party payment SDK for digital goods
+# ===================================================================
+# Apple requires in-app purchase to unlock digital content/functionality. A
+# third-party payment SDK (Stripe, Braintree, PayPal, …) is legitimate for
+# PHYSICAL goods/services but a frequent rejection when used to sell digital
+# content. We can't tell digital from physical statically, so this is advisory.
+if [[ -n "$IOS_DIR" ]]; then
+  payment_sdk=$(grep -rlE 'import Stripe|StripePaymentSheet|StripeApplePay|import Braintree|BTPaymentFlow|import PayPal|PayPalCheckout|PayPalNativeCheckout|import Square|SquareInAppPayments|import Adyen|AdyenComponents|RazorpaySDK|import Paddle' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  if [[ -n "$payment_sdk" ]]; then
+    warn "3.1.1 Third-party payment SDK — '$(basename "$payment_sdk")' detected; selling digital content/functionality must use in-app purchase, not an external processor (3.1.1). Allowed only for physical goods/services — verify your offering."
+  fi
+fi
+
+# ===================================================================
+# §22 — 1.2 User-generated content without moderation affordances
+# ===================================================================
+# Apps with UGC must provide: a content filter, a report mechanism, the ability
+# to block abusive users, and published contact info. We detect a UGC signal and
+# warn when no report/block/moderation affordance is found anywhere in the source.
+if [[ -n "$IOS_DIR" ]]; then
+  ugc_signal=$(grep -rlE 'userGeneratedContent|\bUGC\b|StreamChat|MessageKit|SendbirdSDK|PubNub|postComment|submitComment|createPost|publishPost|uploadUserPhoto|uploadVideo' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  if [[ -n "$ugc_signal" ]]; then
+    if grep -rqiE 'report(Content|User|Abuse|Post|Comment|Message|Reason|ed)|block(ed)?User|unblockUser|moderat(e|ion|or)|flag(Content|Post|User|Comment|Message)|content.?filter' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+      pass "1.2 UGC — user-generated content with report/block/moderation affordances present"
+    else
+      warn "1.2 UGC — user-generated content detected (e.g. $(basename "$ugc_signal")) but no report/block/moderation mechanism found; UGC apps must offer content filtering, a report mechanism, user blocking, and published contact info (1.2)"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §23 — 1.6 App Transport Security disabled globally
+# ===================================================================
+# NSAllowsArbitraryLoads=true turns off ATS for the whole app, weakening
+# data-in-transit security and inviting a 1.6 / data-security question at review.
+if [[ -f "$INFO_PLIST" ]]; then
+  if awk '/NSAllowsArbitraryLoads/{getline; if ($0 ~ /<true/) print "ON"}' "$INFO_PLIST" 2>/dev/null | grep -q ON; then
+    warn "1.6 App Transport Security — NSAllowsArbitraryLoads=true in Info.plist disables ATS app-wide; prefer per-domain exceptions, and expect a data-security justification request at review (1.6)"
+  fi
+fi
+
+# ===================================================================
+# §24 — 4.9 Apple Pay recurring-payment disclosure
+# ===================================================================
+# Apps using Apple Pay for recurring payments must disclose the renewal term,
+# what's provided, the charges, and how to cancel. Gated strictly on the Apple
+# Pay recurring API (PKRecurringPaymentRequest) so it does NOT conflate StoreKit
+# auto-renew copy or a one-time PassKit payment with recurring Apple Pay. We don't
+# try to detect the disclosure text (too noisy) — we flag it for manual verify.
+if [[ -n "$IOS_DIR" ]] && grep -rqE 'PKRecurringPaymentRequest' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+  warn "4.9 Apple Pay — recurring Apple Pay (PKRecurringPaymentRequest) detected; verify you disclose the renewal term, what's provided, the charges, and how to cancel before purchase (4.9)"
+fi
+
+# ===================================================================
+# §25 — 5.6.1 Custom App Store review prompt
+# ===================================================================
+# Apple disallows custom review prompts and direct write-review links — apps must
+# use the system SKStoreReviewController / requestReview API.
+if [[ -n "$IOS_DIR" ]]; then
+  review_link=$(grep -rlE 'write-review|action=write-review|itms-apps[^"]*review' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  if [[ -n "$review_link" ]]; then
+    if grep -rqE 'requestReview|SKStoreReviewController|\.requestReview' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+      pass "5.6.1 App reviews — uses the system requestReview API alongside the review link"
+    else
+      warn "5.6.1 App reviews — a direct App Store review link/prompt was found (e.g. $(basename "$review_link")) but no system requestReview (SKStoreReviewController) call; Apple disallows custom review prompts (5.6.1)"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §26 — 2.3.1 Misleading marketing claims in metadata
+# ===================================================================
+# Marketing the app for things iOS apps can't actually do (virus/malware
+# scanners, fake speed boosters) is a 2.3.1 removal vector.
+if [[ -d "$META_DIR" ]]; then
+  mislead_re='virus scan|virus scanner|antivirus|anti-virus|malware (scan|remov|clean)|spyware remov|clean your (iphone|device)|speed booster|boost.*(speed|ram)|free money|guaranteed.*(win|prize)'
+  mislead_hits=$(grep -rEniI "$mislead_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
+  if [[ -n "$mislead_hits" ]]; then
+    warn "2.3.1 Misleading marketing — claims that often violate 2.3.1 (e.g. iOS virus/malware scanners, fake speed boosters) in metadata; verify the app truly delivers them or remove the claim:"
+    echo "$mislead_hits" | sed 's/^/      /'
+  fi
+fi
+
+# ===================================================================
+# §27 — 2.3.8 "For Kids/Children" wording outside the Kids Category
+# ===================================================================
+# Terms implying a child audience in name/subtitle/keywords/description are
+# reserved for the Kids Category (2.3.8 / 5.1.4).
+if [[ -d "$META_DIR" ]]; then
+  kids_re='for kids|for children|for your (kid|child)|kids[[:space:]]?app|für kinder|para niños|pour enfants'
+  kids_hits=$(grep -rEniI "$kids_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
+  if [[ -n "$kids_hits" ]]; then
+    warn "2.3.8 'For Kids/Children' wording — terms implying a child audience are reserved for the Kids Category (2.3.8); if not enrolled, remove them from name/subtitle/keywords/description:"
+    echo "$kids_hits" | sed 's/^/      /'
+  fi
+fi
+
+# ===================================================================
+# §28 — 4.4.1 Keyboard extension requiring full access
+# ===================================================================
+# Keyboards must stay functional without full network access / "full access",
+# and may only collect data to enhance the keyboard.
+kb_plist=$(grep -rlE 'com\.apple\.keyboard-service' --include='Info.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
+if [[ -n "$kb_plist" ]]; then
+  if grep -A1 'RequestsOpenAccess' "$kb_plist" 2>/dev/null | grep -q '<true'; then
+    warn "4.4.1 Keyboard extension — RequestsOpenAccess=true in $kb_plist; keyboards must remain functional without full access and may only collect data to enhance the keyboard (4.4.1). Justify full access in your review notes."
+  else
+    pass "4.4.1 Keyboard extension — present without requiring full access"
+  fi
+fi
+
+# ===================================================================
+# §29 — 5.1.3 Health data with an iCloud sync path
+# ===================================================================
+# Personal health information must not be stored in iCloud, and HealthKit data
+# may not be used for advertising/marketing.
+if [[ -n "$IOS_DIR" ]] && grep -rqE 'import HealthKit|HKHealthStore' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+  if grep -rqE 'import CloudKit|CKRecord|CKContainer|NSUbiquitousKeyValueStore|NSUbiquitousContainer' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    warn "5.1.3 Health data — HealthKit and iCloud/CloudKit are both used; personal health information must not be stored in iCloud (5.1.3). Verify HealthKit data is not synced to iCloud."
+  else
+    pass "5.1.3 Health data — HealthKit used without an obvious iCloud sync path"
+  fi
+fi
+
+# ===================================================================
+# §30 — 5.4 VPN apps (NetworkExtension)
+# ===================================================================
+# VPN apps must be offered by an organization account, declare data collection
+# on-screen before use, and may not sell/share data.
+if [[ -n "$IOS_DIR" ]]; then
+  vpn_use=$(grep -rlE 'NEVPNManager|NETunnelProviderManager|NEPacketTunnelProvider|NEVPNProtocol' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+  if [[ -n "$vpn_use" ]]; then
+    warn "5.4 VPN — NetworkExtension/NEVPNManager usage detected (e.g. $(basename "$vpn_use")); VPN apps must be offered by an organization account, disclose data collection on-screen before use, and not sell/share data (5.4). Verify compliance."
   fi
 fi
 

@@ -11,7 +11,7 @@ FAIL: 5.1.1(v) Required Reason API — 'FileTimestamp' used in code (e.g. ./ios/
 FAIL: 2.3.10 Other-platform mention — banned reference in metadata:
       ./ios/fastlane/metadata/en-US/description.txt:5:Also on Android and Google Play
 FAIL: 3.1.2 Restore Purchases — not found in ./ios/MyApp/SubscriptionView.swift (required by Apple)
-PASS: 4.0 Minimum functionality — 9 navigation hub(s) found
+PASS: 4.2 Minimum functionality — 9 navigation hub(s) found
 ---END-OF-SCAN---
 ```
 

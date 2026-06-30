@@ -69,7 +69,7 @@ machine-readable "last updated" date in the page DOM, so the section-number set 
 | 9 | **3.1.2 Auto-renew disclosure** | A subscription disclosure string exists and covers each locale |
 | 10 | **3.1.2 Required links** | The paywall view contains Restore Purchases + Terms of Use (EULA) + Privacy Policy |
 | 11 | **2.5.1 Private API** | No banned identifiers (`UIWebView`, `setSelectionIndicatorImage`, `_UIBackdropView`, `NSURLConnection`, …) |
-| 12 | **4.0 Minimum functionality** | At least one navigation hub (`TabView` / `NavigationStack` / `NavigationSplitView`) |
+| 12 | **4.2 Minimum functionality** | At least one navigation hub (`TabView` / `NavigationStack` / `NavigationSplitView`) |
 | 13 | **5.1.5 Sensitive APIs** *(opt-in)* | If FamilyControls is used and `optionalChecks.familyControls` is on, a reviewer-notes justification exists |
 | 14 | **4.8 Sign in with Apple** *(advisory)* | If a third-party social login SDK (Google, Facebook, Auth0, …) is used, Sign in with Apple is offered too |
 | 15 | **3.1.1(a) External purchase link** *(advisory)* | If StoreKit External Purchase APIs or the entitlement are present, the 3.1.1(a) disclosure/reporting requirements are flagged |
@@ -78,9 +78,19 @@ machine-readable "last updated" date in the page DOM, so the section-number set 
 | 18 | **2.3 Support / Privacy URL** *(advisory)* | fastlane metadata has a non-empty `support_url.txt` and `privacy_url.txt` across locales, with no placeholder URLs |
 | 19 | **5.1.1 Privacy manifest** *(advisory)* | If an analytics SDK (Firebase, Amplitude, Mixpanel, Sentry, Segment, Bugsnag, App Center, Datadog) is linked but `PrivacyInfo.xcprivacy` declares no collected data types or tracking domains, it is flagged |
 | 20 | **2.1 Placeholder content** *(advisory)* | No lorem ipsum / TODO / FIXME / `example.com` / "insert X here" / changeme in store metadata |
+| 21 | **3.1.1 Third-party payment SDK** *(advisory)* | If a third-party payment SDK (Stripe, Braintree, PayPal, Square, Adyen, …) is linked, flag it: digital goods/services must use in-app purchase (allowed only for physical goods/services) |
+| 22 | **1.2 UGC moderation** *(advisory)* | If user-generated-content signals (post/comment/upload, chat SDKs) are present but no report/block/moderation affordance is found, flag the missing 1.2 safety controls |
+| 23 | **1.6 App Transport Security** *(advisory)* | `NSAllowsArbitraryLoads=true` in Info.plist disables ATS app-wide |
+| 24 | **4.9 Apple Pay recurring** *(advisory)* | If the recurring Apple Pay API (`PKRecurringPaymentRequest`) is used: verify the renewal term, what's provided, charges, and cancel disclosure |
+| 25 | **5.6.1 Custom review prompt** *(advisory)* | If a direct App Store write-review link/prompt exists but no system `requestReview` / `SKStoreReviewController` call |
+| 26 | **2.3.1 Misleading marketing** *(advisory)* | Claims iOS apps can't deliver (virus/malware scanners, fake speed boosters) in store metadata |
+| 27 | **2.3.8 "For Kids" wording** *(advisory)* | Terms implying a child audience in metadata, reserved for the Kids Category |
+| 28 | **4.4.1 Keyboard full access** *(advisory)* | A keyboard extension (`com.apple.keyboard-service`) with `RequestsOpenAccess=true` |
+| 29 | **5.1.3 Health + iCloud** *(advisory)* | If HealthKit and iCloud/CloudKit are both used: health data must not be stored in iCloud |
+| 30 | **5.4 VPN** *(advisory)* | If NetworkExtension / `NEVPNManager` is used: org-account, on-screen data disclosure, and no data sale/sharing requirements |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–20 are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–30 are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
 **Scope by app type.** The metadata, privacy-manifest, screenshots, and export-compliance checks
@@ -113,12 +123,12 @@ match, so a vendored SwiftPM checkout is never mistaken for the app.
 
 | State | Rule |
 |-------|------|
-| **GREEN** | 0 FAIL and ≤2 WARN → write `.precheck-pass` (valid 60 min) |
-| **YELLOW** | 0 FAIL and ≥3 WARN → no token; require explicit user confirmation to proceed |
+| **GREEN** | 0 FAIL and ≤4 WARN → write `.precheck-pass` (valid 60 min) |
+| **YELLOW** | 0 FAIL and ≥5 WARN → no token; require explicit user confirmation to proceed |
 | **RED** | ≥1 FAIL → no token; submission blocked until fixed |
 
 The guideline-drift WARN from Phase 0 counts toward the same WARN threshold; on its own it never
-blocks, but it can be the third WARN that tips GREEN into YELLOW.
+blocks, but it can be the fifth WARN that tips GREEN into YELLOW.
 
 ---
 
