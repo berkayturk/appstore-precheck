@@ -77,7 +77,7 @@ finish_fixture() {
 # ---------------------------------------------------------------------------
 check_fixture "sample-app" "baseline with violations"
 assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
-assert_has "PASS: 5.1.1(v) Required Reason API — 'UserDefaults' parity OK" "PrivacyInfo parity detected"
+assert_has "PASS: 5.1.1 Required Reason API — 'UserDefaults' parity OK"    "PrivacyInfo parity detected"
 assert_has "FAIL: 2.3.10 Other-platform mention"                          "Android mention in metadata flagged"
 assert_has "FAIL: 3.1.2 Restore Purchases"                                "missing Restore Purchases flagged"
 assert_has "FAIL: 3.1.2 Terms of Use"                                     "missing Terms link flagged"
@@ -190,6 +190,38 @@ assert_has "WARN: 2.3.8"                                                 "2.3.8 
 assert_has "WARN: 4.4.1 Keyboard extension"                              "4.4.1 flagged: keyboard requires full access"
 assert_has "WARN: 5.1.3 Health data"                                     "5.1.3 flagged: HealthKit + iCloud"
 assert_has "WARN: 5.4 VPN"                                               "5.4 flagged: NetworkExtension/NEVPNManager"
+assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# risky-app-2 — exercises the v1.3.0 advisory checks (§31–§34, §36–§41): a
+# credential login with no demo account, a hot-patch framework, a background mode
+# declared but unused, a crypto SDK, a remote-desktop SDK, a Safari extension,
+# account creation without deletion, a kids audience with an ad SDK, real-money
+# gambling copy, and an MDM signal. All advisory: no FAIL, so the verdict is YELLOW.
+# ---------------------------------------------------------------------------
+check_fixture "risky-app-2" "advisory v1.3.0 vectors (§31–§41)"
+assert_has "---END-OF-SCAN---"                                           "scanner ran to completion"
+assert_has "WARN: 2.1 Demo account"                                      "2.1 flagged: credential login without demo account"
+assert_has "WARN: 2.5.2 Executable code"                                 "2.5.2 flagged: hot-patch framework (JSPatch)"
+assert_has "WARN: 2.5.4 Background modes"                                "2.5.4 flagged: location background mode unused"
+assert_has "WARN: 3.1.5(a) Cryptocurrency"                               "3.1.5(a) flagged: crypto SDK (WalletConnect)"
+assert_has "WARN: 4.2.7 Remote desktop"                                  "4.2.7 flagged: remote-desktop SDK"
+assert_has "WARN: 4.4.2 Safari extension"                                "4.4.2 flagged: Safari content-blocker extension"
+assert_has "WARN: 5.1.1(v) Account deletion"                             "5.1.1(v) flagged: account creation without deletion"
+assert_has "WARN: 5.1.4 Kids"                                            "5.1.4 flagged: kids audience with an ad SDK"
+assert_has "WARN: 5.3.4 Gambling"                                        "5.3.4 flagged: real-money gambling copy"
+assert_has "WARN: 5.5 MDM"                                               "5.5 flagged: MDM signal"
+assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# webview-app — a thin WKWebView wrapper with a single Swift file. Exercises the
+# 4.2.3 web-wrapper heuristic (§35). Advisory: no FAIL.
+# ---------------------------------------------------------------------------
+check_fixture "webview-app" "thin WKWebView wrapper (§35)"
+assert_has "---END-OF-SCAN---"                                           "scanner ran to completion"
+assert_has "WARN: 4.2.3 Minimum functionality"                           "4.2.3 flagged: thin WKWebView wrapper"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
 finish_fixture
 

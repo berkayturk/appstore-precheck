@@ -20,7 +20,7 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 
 ### Quarterly: vector and pattern review
 
-Walk the 30 vectors in the methodology table and confirm each still matches how Apple reviews
+Walk the 41 vectors in the methodology table and confirm each still matches how Apple reviews
 today. Pay special attention to the signal lists that go stale fastest:
 
 - The tracking / ad SDK list in §16 (`scan.sh`: `tracking_sdk`). New ad and attribution SDKs
@@ -28,8 +28,13 @@ today. Pay special attention to the signal lists that go stale fastest:
 - The analytics SDK list in §19 (`scan.sh`: `analytics_sdk`).
 - The third-party payment SDK list in §21 (`scan.sh`: `payment_sdk`) and the UGC / chat SDK
   signals in §22 (`ugc_signal`); both grow as new SDKs gain adoption.
+- The hot-patch frameworks in §32 (`hotcode`), the crypto SDKs in §34 (`crypto_sdk`), the
+  remote-desktop SDKs in §36 (`remote_desktop`), and the MDM signals in §41 (`mdm_sig`); these
+  vendor lists go stale the same way the ad/analytics lists do.
 - The Required Reason API categories in §1 and the sensitive frameworks in §2.
 - The banned / deprecated API list in §11.
+- The account-deletion rule in §38 (5.1.1(v)) and the 4.2.3 web-wrapper heuristic threshold in
+  §35; both are policy-sensitive and worth re-checking after a guidelines update.
 
 A pattern that is missing a popular new SDK is a silent false negative, so this review matters
 more than it looks.

@@ -7,7 +7,7 @@ allows `fastlane deliver`.
 
 ```
 PASS: layout — ios='./ios/MyApp' metadata='./ios/fastlane/metadata' xcstrings='./ios/MyApp/Localizable.xcstrings' locales=8
-PASS: 5.1.1(v) Required Reason API — 'UserDefaults' parity OK
+PASS: 5.1.1 Required Reason API — 'UserDefaults' parity OK
 PASS: 5.1.2 ATT — not used (no tracking)
 PASS: 2.3.10 Other-platform mentions — metadata clean
 PASS: 2.3.7 Localized metadata — checked 8 locales
