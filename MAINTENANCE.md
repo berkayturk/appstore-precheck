@@ -54,7 +54,8 @@ reconciliation as required, not optional:
 
 ## Keeping the pieces in lockstep
 
-- **Versions:** `plugin.json`, `package.json`, and `SKILL.md` must share one version. The guard
+- **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `package.json`, and
+  `SKILL.md` must share one version. The guard
   is `npm run check-versions`; CI runs it on every push.
 - **Vector count:** the count appears in the README intro and table, `SKILL.md`, `plugin.json`,
   the methodology table, and the changelog. When you add or remove a check, update all of them.

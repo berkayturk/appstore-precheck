@@ -23,7 +23,7 @@ it small, portable, and faithful are very welcome.
 ```bash
 npm test                 # fixture + unit suite (tests/all.sh)
 npm run lint             # bash -n on every script
-claude plugin validate . # plugin/marketplace manifests
+claude plugin validate . # Claude + Cursor + Codex plugin manifests
 shellcheck -x --severity=warning skills/appstore-precheck/scripts/*.sh hooks/*.sh tests/*.sh
 ```
 

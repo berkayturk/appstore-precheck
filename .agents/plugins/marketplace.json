@@ -1,0 +1,20 @@
+{
+  "name": "appstore-precheck",
+  "interface": {
+    "displayName": "App Store Precheck"
+  },
+  "plugins": [
+    {
+      "name": "appstore-precheck",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Testing"
+    }
+  ]
+}

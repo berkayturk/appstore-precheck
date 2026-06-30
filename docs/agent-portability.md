@@ -9,13 +9,14 @@ Hosts differ only in *which directory they scan* and *how they surface the skill
 
 | Host | Skill directory | Notes |
 |------|-----------------|-------|
-| **Claude Code** | `.claude/skills/<name>/` (project), `~/.claude/skills/` (user) | Also installable as a plugin (see the README); the upload-guard hook auto-wires via `hooks/hooks.json`. |
-| **OpenAI Codex** | `.agents/skills/<name>/` (project), `~/.agents/skills/` (user) | Reads the neutral `.agents/skills` tree. |
-| **Cursor** | `.agents/skills/`, `.cursor/skills/`, also `.claude/skills/` | Picks up either tree. |
-| **Gemini CLI** | `.agents/skills/`, `.gemini/skills/` | Built-in skill management: `gemini skills list / enable / install / link`. |
+| **Claude Code** | `.claude/skills/<name>/` (project), `~/.claude/skills/` (user) | Native plugin: `.claude-plugin/` + marketplace; upload-guard hook via `hooks/hooks.json`. |
+| **OpenAI Codex** | `.agents/skills/<name>/` (project), `~/.agents/skills/` (user) | Native plugin: reads `.claude-plugin/plugin.json` + `.agents/plugins/marketplace.json`. |
+| **Cursor** | `.agents/skills/`, `.cursor/skills/`, also `.claude/skills/` | Native plugin: `.cursor-plugin/` + marketplace; or `install.sh`. |
+| **Gemini CLI** | `.agents/skills/`, `.gemini/skills/` | No plugin marketplace; `gemini skills install … --path skills/appstore-precheck`. |
 
 [`install.sh`](../install.sh) vendors the skill into both `.claude/skills/` and
-`.agents/skills/`, covering every host above in one command. A root
+`.agents/skills/` as a fallback. Plugin install paths per host are in the README and
+[`publishing-plugins.md`](publishing-plugins.md). A root
 [`AGENTS.md`](../AGENTS.md) additionally serves hosts that read always-on context instead of
 on-demand skills.
 

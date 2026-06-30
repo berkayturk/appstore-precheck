@@ -1,7 +1,7 @@
 {
   "name": "appstore-precheck",
   "version": "1.5.0",
-  "description": "Read-only iOS App Store pre-submission check, packaged as a portable Agent Skill / Claude Code plugin and an npx CLI.",
+  "description": "Read-only iOS App Store pre-submission check, packaged as a portable Agent Skill with native Claude Code, Cursor, and Codex plugins, plus an npx CLI.",
   "license": "MIT",
   "author": "Berkay Turk (https://github.com/berkayturk)",
   "homepage": "https://github.com/berkayturk/appstore-precheck",
