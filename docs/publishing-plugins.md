@@ -107,8 +107,10 @@ form** like Cursor’s marketplace publish page today.
 
    ```bash
    codex plugin marketplace add berkayturk/appstore-precheck
-   codex plugin add appstore-precheck@appstore-precheck
    ```
+
+   Then run `codex`, type `/plugins`, open the **appstore-precheck** marketplace tab, and install
+   the plugin. (On Codex CLI 0.125.x there is no `codex plugin add` subcommand yet.)
 
 2. **Codex app — workspace share (team, not public):** install the plugin locally, then
    **Plugins → Created by you → Share** with workspace members. They see it under **Shared with you**.

@@ -184,10 +184,22 @@ install from **Customize → Plugins** without importing the repo.
 
 ```bash
 codex plugin marketplace add berkayturk/appstore-precheck
+```
+
+Then run `codex`, open `/plugins`, select the **appstore-precheck** marketplace tab, and install
+**appstore-precheck**. Start a new thread after install.
+
+On newer Codex builds you may also be able to run:
+
+```bash
 codex plugin add appstore-precheck@appstore-precheck
 ```
 
-Or run `codex`, open `/plugins`, select the **appstore-precheck** marketplace, and install.
+Refresh after repo updates:
+
+```bash
+codex plugin marketplace upgrade appstore-precheck
+```
 
 **Gemini CLI** (native skill install — no plugin marketplace):
 
