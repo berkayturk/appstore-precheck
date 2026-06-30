@@ -1,10 +1,10 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 20 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, and runs an adversarial reviewer pass. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 30 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, and runs an adversarial reviewer pass. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.1.1
+  version: 1.2.0
 allowed-tools: Bash Read Grep Glob WebFetch
 ---
 
@@ -43,8 +43,8 @@ The skill reaches one of three terminal states:
 
 | State | Meaning | `.precheck-pass` token | Guard behavior |
 |-------|---------|------------------------|----------------|
-| **GREEN** | No FAIL, ≤2 WARN | Written (valid 60 min) | Upload allowed |
-| **YELLOW** | No FAIL but 3+ WARN | Not written | Guard blocks; ask for explicit confirmation |
+| **GREEN** | No FAIL, ≤4 WARN | Written (valid 60 min) | Upload allowed |
+| **YELLOW** | No FAIL but 5+ WARN | Not written | Guard blocks; ask for explicit confirmation |
 | **RED** | At least 1 FAIL | Removed | Guard blocks; show the FAIL list |
 
 When you present the verdict to the user, open with Pierre's verdict (the French App Review
@@ -75,16 +75,22 @@ baseline is **never auto-updated**. Reconciliation is a deliberate human step.
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 20 rejection vectors: Privacy Manifest parity
+Emits `FAIL:` / `WARN:` / `PASS:` lines covering 30 rejection vectors: Privacy Manifest parity
 (5.1.1(v)), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions (2.3.10), metadata
 limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial & auto-renew disclosures
-(3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum functionality (4.0),
+(3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum functionality (4.2),
 Sign in with Apple parity (4.8), external purchase links (3.1.1(a)), an opt-in Screen Time /
 FamilyControls justification (5.1.5), tracking/IDFA SDK without an ATT prompt (5.1.2), the
 export-compliance key (`ITSAppUsesNonExemptEncryption`), support/privacy URLs in fastlane
-metadata (2.3), analytics SDK vs PrivacyInfo data-types (5.1.1), and placeholder/dummy metadata
-copy (2.1). The IAP checks (8–10) are
-skipped automatically when no in-app-purchase signals are present. The full check table is in
+metadata (2.3), analytics SDK vs PrivacyInfo data-types (5.1.1), placeholder/dummy metadata
+copy (2.1), third-party payment SDK for digital goods (3.1.1), user-generated content without
+moderation (1.2), App Transport Security disabled app-wide (1.6), recurring Apple Pay disclosure
+(4.9), custom App Store review prompts (5.6.1), misleading marketing claims (2.3.1), "For Kids"
+wording outside the Kids Category (2.3.8), keyboard extensions requiring full access (4.4.1),
+HealthKit data with an iCloud sync path (5.1.3), and VPN / NetworkExtension usage (5.4). The IAP
+checks (8–10) are skipped automatically when no in-app-purchase signals are present, and the
+signal-gated advisory checks (16–30) stay silent unless their triggering signal is found. The
+full check table is in
 [`references/methodology.md`](references/methodology.md#phase-1-rejection-vectors).
 
 The scanner is portable Bash, so you can also run it directly, outside any agent, for a quick CI

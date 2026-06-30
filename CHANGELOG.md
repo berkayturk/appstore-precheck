@@ -3,6 +3,35 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.2.0] - 2026-06-30
+
+### Added
+- **Ten new signal-gated advisory checks (20 → 30 rejection vectors), all WARN-only:**
+  - **3.1.1** third-party payment SDK (Stripe, Braintree, PayPal, Square, Adyen, …) linked for
+    digital goods instead of in-app purchase.
+  - **1.2** user-generated content detected without a report / block / moderation affordance.
+  - **1.6** App Transport Security disabled app-wide (`NSAllowsArbitraryLoads=true`).
+  - **4.9** recurring Apple Pay without the renewal / cancel disclosure.
+  - **5.6.1** a direct App Store write-review link/prompt without the system `requestReview` API.
+  - **2.3.1** misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata.
+  - **2.3.8** "For Kids" / "For Children" wording outside the Kids Category.
+  - **4.4.1** keyboard extension requiring full access (`RequestsOpenAccess=true`).
+  - **5.1.3** HealthKit used together with an iCloud / CloudKit sync path.
+  - **5.4** VPN / NetworkExtension (`NEVPNManager`) usage.
+- `tests/fixtures/risky-app` plus assertions in `tests/run.sh` exercising all ten new vectors
+  (advisory only — the fixture is YELLOW, never RED).
+
+### Changed
+- **YELLOW threshold raised from 3+ to 5+ WARN.** The ten new advisory checks are signal-gated
+  (most apps trip only one or two), but the bump keeps a normal submission from sliding into
+  YELLOW on advisory noise alone. GREEN is now 0 FAIL and ≤4 WARN; YELLOW is 0 FAIL and ≥5 WARN.
+  Updated `verdict.sh`, the verdict tests, the output-contract tables, and the docs in lockstep.
+- Corrected the minimum-functionality check's label from `4.0` to `4.2` (its real guideline
+  number) in the scanner output, the methodology table, and the README.
+- Reconciled `guidelines-baseline.json` against the live guidelines (Last Updated June 8, 2026):
+  no structural section drift; expanded `covered_by_scan` to reflect every guideline the scan now
+  touches (adds 1.2, 1.6, 2.1, 2.3, 2.3.8, 3.1.1, 4.4.1, 4.8, 4.9, 5.1.3, 5.4, 5.6.1; 4.0 → 4.2).
+
 ## [1.1.1] - 2026-06-30
 
 ### Changed

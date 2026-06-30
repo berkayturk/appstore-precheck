@@ -5,8 +5,8 @@
 # the .precheck-pass token action — so the verdict is machine-testable, not just an
 # agent judgement.
 #
-#   GREEN   0 FAIL and <=2 WARN   -> token: write
-#   YELLOW  0 FAIL and >=3 WARN   -> token: hold  (needs explicit human confirmation)
+#   GREEN   0 FAIL and <=4 WARN   -> token: write
+#   YELLOW  0 FAIL and >=5 WARN   -> token: hold  (needs explicit human confirmation)
 #   RED     >=1 FAIL              -> token: remove
 #
 # Usage:
@@ -49,7 +49,7 @@ passes=$(count '^PASS:')
 
 if (( fails >= 1 )); then
   verdict="RED";    token="remove"; code=1
-elif (( warns >= 3 )); then
+elif (( warns >= 5 )); then
   verdict="YELLOW"; token="hold";   code=2
 else
   verdict="GREEN";  token="write";  code=0
