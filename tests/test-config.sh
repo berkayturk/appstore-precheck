@@ -60,6 +60,34 @@ section "no-config scan completes (empty-LOCALES regression)"
 assert_contains "$no_cfg" "---END-OF-SCAN---" "scan runs to completion with 0 locales"
 
 rm -rf "$TMP"
+
+# ---------------------------------------------------------------------------
+# Regression: a locale listed in config but absent on disk WARNs (not FAILs),
+# and a legitimate word that merely contains "changeme" (e.g. French
+# "changement") is not flagged as placeholder copy.
+# ---------------------------------------------------------------------------
+TMP2="$(mktemp -d)"
+mkdir -p "$TMP2/fastlane/metadata/en-US"
+printf 'Focus App'                                  > "$TMP2/fastlane/metadata/en-US/name.txt"
+printf 'Block distractions'                         > "$TMP2/fastlane/metadata/en-US/subtitle.txt"
+printf 'Structured programs for real changement.\n' > "$TMP2/fastlane/metadata/en-US/description.txt"
+printf 'focus,habits'                               > "$TMP2/fastlane/metadata/en-US/keywords.txt"
+# Config lists en-US (present) + ru (NO folder on disk).
+cat > "$TMP2/precheck-config.json" <<'JSON'
+{ "metadataDir": "fastlane/metadata", "locales": ["en-US", "ru"] }
+JSON
+
+out2="$( cd "$TMP2" && APPSTORE_PRECHECK_CONFIG="$TMP2/precheck-config.json" bash "$SCAN" 2>&1 )"
+
+section "config locale absent on disk warns, never fails (option A)"
+assert_contains "$out2" "2.3.7 Locale 'ru' is in" "missing config locale is reported"
+assert_contains "$out2" "WARN: 2.3.7 Locale 'ru'" "missing config locale is a WARN"
+assert_absent   "$out2" "2.3.7 Locale missing — " "missing config locale is not a hard FAIL"
+
+section "legitimate word containing 'changeme' is not placeholder copy"
+assert_absent   "$out2" "2.1 Metadata content" "French 'changement' does not trip the 2.1 placeholder check"
+
+rm -rf "$TMP2"
 echo
 if (( fails == 0 )); then echo "test-config: ALL PASSED"; else echo "test-config: $fails FAILED"; fi
 exit "$fails"
