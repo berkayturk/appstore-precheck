@@ -10,7 +10,7 @@
   "repository": "https://github.com/berkayturk/appstore-precheck",
   "license": "MIT",
   "keywords": ["ios", "app-store", "fastlane", "review", "precheck", "aso", "ios-submission"],
-  "logo": "assets/social-preview.svg",
+  "logo": "assets/marketplace-logo.svg",
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"
 }

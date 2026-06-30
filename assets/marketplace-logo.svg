@@ -1,0 +1,29 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="plate" cx="50%" cy="38%" r="72%" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#15294C"/>
+      <stop offset="1" stop-color="#0C1830"/>
+    </radialGradient>
+    <clipPath id="portrait">
+      <rect x="72" y="72" width="368" height="368" rx="40"/>
+    </clipPath>
+  </defs>
+
+  <!-- 1:1 background plate -->
+  <rect width="512" height="512" rx="112" fill="url(#plate)"/>
+  <rect x="8" y="8" width="496" height="496" rx="104" fill="none" stroke="#1E3A66" stroke-opacity="0.45" stroke-width="2"/>
+
+  <!-- dossier inset -->
+  <rect x="56" y="56" width="400" height="400" rx="48" fill="#05101F" opacity="0.35"/>
+  <rect x="64" y="64" width="384" height="384" rx="44" fill="#FBFBF9"/>
+  <rect x="64" y="64" width="384" height="384" rx="44" fill="none" stroke="#0E1B33" stroke-opacity="0.12" stroke-width="2"/>
+
+  <!-- Pierre -->
+  <image href="mascot.png" x="72" y="72" width="368" height="368" clip-path="url(#portrait)"/>
+
+  <!-- brand stamp -->
+  <g transform="translate(332 88) rotate(-10)" opacity="0.92">
+    <rect x="0" y="0" width="108" height="62" rx="8" fill="none" stroke="#CE2F22" stroke-width="4"/>
+    <text x="54" y="42" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="28" font-weight="800" letter-spacing="1.5" fill="#CE2F22">NON</text>
+  </g>
+</svg>
