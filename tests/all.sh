@@ -14,6 +14,8 @@ SUITE=(
   "test-install.sh"   # install.sh per-host vendoring
   "test-phase2.sh"    # Phase 2 fastlane-precheck wrapper (secret-free dry-run)
   "test-cli.sh"       # npx CLI wrapper (bin/cli.js) verdict + exit codes
+  "test-findings.sh"  # findings.sh structured-findings helper
+  "test-format-json.sh" # scan.sh --format json envelope + text-mode parity
 )
 
 failed=()

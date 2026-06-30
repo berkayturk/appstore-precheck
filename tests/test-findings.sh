@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=tests/_assert.sh
 source "$HERE/_assert.sh"
+# shellcheck source=skills/appstore-precheck/scripts/findings.sh
 source "$HERE/../skills/appstore-precheck/scripts/findings.sh"
 
 FINDINGS_TMP="$(mktemp)"; : > "$FINDINGS_TMP"

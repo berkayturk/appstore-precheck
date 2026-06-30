@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=tests/_assert.sh
 source "$HERE/_assert.sh"
 SCAN="$HERE/../skills/appstore-precheck/scripts/scan.sh"
 

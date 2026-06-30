@@ -240,7 +240,13 @@ npx appstore-precheck --fail-on YELLOW
 
 ```bash
 bash skills/appstore-precheck/scripts/scan.sh   # from a clone of this repo
+bash skills/appstore-precheck/scripts/scan.sh --format json   # structured findings, for tooling
 ```
+
+`--format json` emits a structured findings envelope (`rule_id`, `severity`, `guideline`,
+`message`, and optional `file`/`line` per finding, plus the verdict summary) instead of the
+default text lines, for scripts and measurement tooling to consume. It's read-only and additive;
+the default text output is unchanged.
 
 ### CI
 
