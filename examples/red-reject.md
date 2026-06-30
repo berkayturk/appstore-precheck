@@ -15,17 +15,18 @@ PASS: 4.2 Minimum functionality — 9 navigation hub(s) found
 ---END-OF-SCAN---
 ```
 
-## Adversarial review (Phase 3, excerpt)
+## Pierre commentary (Phase 3, excerpt)
 
 ```
-Guideline 3.1.2 - Business - Payments - Subscriptions
-Risk: REJECT-CERTAIN
+FAIL: 5.1.1 Required Reason API — 'FileTimestamp' used in code (e.g. ./ios/MyApp/Cache.swift) but not declared in PrivacyInfo.xcprivacy
+Pierre: Apple requires every Required Reason API your app uses to be declared in PrivacyInfo.xcprivacy with an approved reason code. Cache.swift reads file timestamps but the manifest does not declare FileTimestamp — reviewers reject this under 5.1.1. Add the category and a matching reason to PrivacyInfo.xcprivacy.
 
-We noticed that your auto-renewable subscription does not include a functional
-"Restore Purchases" control on the paywall (SubscriptionView.swift). 
+FAIL: 2.3.10 Other-platform mention — banned reference in metadata:
+      ./ios/fastlane/metadata/en-US/description.txt:5:Also on Android and Google Play
+Pierre: Store metadata must not promote other app stores. Line 5 of your English description names Android and Google Play, which is a standard 2.3.10 rejection. Delete every other-platform reference from metadata before resubmitting.
 
-Next Steps: Add a Restore Purchases action and link to your Terms of Use (EULA)
-and Privacy Policy adjacent to the purchase controls.
+FAIL: 3.1.2 Restore Purchases — not found in ./ios/MyApp/SubscriptionView.swift (required by Apple)
+Pierre: Subscription apps must offer Restore Purchases on the paywall so users can recover purchases. SubscriptionView.swift has no restore control — Guideline 3.1.2 blocks submission until you add one wired to StoreKit.
 ```
 
 ## Verdict

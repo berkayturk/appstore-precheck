@@ -1,6 +1,6 @@
 {
   "skill_name": "appstore-precheck",
-  "description": "Behavioral evals for the appstore-precheck skill: does the agent invoke the skill, run the scanner, reach the correct GREEN/YELLOW/RED verdict, and present it faithfully (Pierre voice as a thin wrapper, scan output never paraphrased)? Inputs are self-contained throwaway iOS projects under evals/files/. The mechanical layer (scan.sh / verdict.sh / guard) is separately covered by the deterministic suite in tests/.",
+  "description": "Behavioral evals for the appstore-precheck skill: does the agent invoke the skill, run the scanner, reach the correct GREEN/YELLOW/RED verdict, and present it faithfully (Pierre trilingual one-liner + 2–3 sentence explanation per FAIL/WARN; scan output never paraphrased)? Inputs are self-contained throwaway iOS projects under evals/files/. The mechanical layer (scan.sh / verdict.sh / guard) is separately covered by the deterministic suite in tests/.",
   "evals": [
     {
       "id": 1,
@@ -22,6 +22,7 @@
         "The .precheck-pass token is NOT written (it is removed/withheld)",
         "Flags Guideline 2.3.10: the 'Android' / 'Google Play' reference in the metadata description",
         "Flags Guideline 3.1.2: missing Restore Purchases, Terms of Use, and Privacy Policy on the paywall",
+        "Pierre explains each FAIL and WARN in 2–3 sentences (one block per finding; no random guideline sampling)",
         "The response opens with Pierre's trilingual block (French, English, then the user's conversation language; two lines if the user already speaks French or English), then plain output",
         "The scan's FAIL lines are shown verbatim (machine-faithful), not paraphrased or invented"
       ]
