@@ -45,6 +45,6 @@
   </g>
 
   <!-- footer: plain prose, no pill, no dot-list -->
-  <text x="582" y="498" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="22" fill="#93A7C7">Read-only pre-submission review · 41 static + 22 Pierre deep checks</text>
+  <text x="582" y="498" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="22" fill="#93A7C7">Read-only pre-submission review · 41 static + 28 Pierre deep checks</text>
   <text x="582" y="528" font-family="-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="22" fill="#8398B8">Works in Claude Code, Codex, Cursor &amp; Gemini.</text>
 </svg>

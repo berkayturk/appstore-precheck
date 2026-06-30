@@ -21,7 +21,7 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 ### Quarterly: vector and pattern review
 
 Walk the 41 vectors in the methodology table and confirm each still matches how Apple reviews
-today. Also spot-check the 22 Pierre deep-review checks in
+today. Also spot-check the 28 Pierre deep-review checks in
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
 
