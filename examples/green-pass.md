@@ -22,7 +22,7 @@ PASS: export-compliance — ITSAppUsesNonExemptEncryption set in Info.plist
 ---END-OF-SCAN---
 ```
 
-## Pierre (Phase 4 opening)
+## Pierre (Phase 5 opening)
 
 ### Pierre
 

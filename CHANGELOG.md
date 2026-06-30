@@ -3,6 +3,25 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.4.0] - 2026-06-30
+
+### Added
+- **Phase 4: Pierre deep review — 22 semantic checks.** After Phase 3 (explaining every scan
+  FAIL/WARN), Pierre runs a read-only Review Simulator: fetches privacy/support URLs, reads
+  screenshots, compares metadata claims to Swift code, validates paywall disclosure quality, and
+  cross-checks permissions vs policy. Each check emits `REVIEW-PASS:` or advisory
+  `REVIEW-FINDING: … WARN` (does not change GREEN/YELLOW/RED counts). Full checklist in
+  [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md).
+- **`covered_by_pierre_deep_review`** in `guidelines-baseline.json` (26 guideline numbers across
+  the 22 checks). Consolidation moves to **Phase 5** (6 phases total: 0–5).
+- [`examples/pierre-deep-review.md`](examples/pierre-deep-review.md) showing `REVIEW-FINDING` output.
+
+### Changed
+- Flow is now **6 phases (0–5)**: Phase 3 = scan commentary, Phase 4 = deep review, Phase 5 =
+  verdict + token. Updated `SKILL.md`, `methodology.md`, README (static table + deep-review table
+  in guideline order), examples, plugin manifest, and social preview copy (`41 static + 22 Pierre
+  deep checks`).
+
 ## [1.3.1] - 2026-06-30
 
 ### Changed

@@ -15,7 +15,7 @@ PASS: 4.2 Minimum functionality — 9 navigation hub(s) found
 ---END-OF-SCAN---
 ```
 
-## Pierre (Phase 4 opening)
+## Pierre (Phase 5 opening)
 
 ### Pierre
 
