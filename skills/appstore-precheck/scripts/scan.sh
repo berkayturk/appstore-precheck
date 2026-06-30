@@ -134,7 +134,9 @@ fi
 
 # Locales: explicit config array, else the directory names under metadata/.
 declare -a LOCALES=()
+LOCALES_FROM_CONFIG=""
 if [[ -f "$CONFIG" ]] && have_jq && [[ "$(jq -r '.locales | type' "$CONFIG" 2>/dev/null)" == "array" ]]; then
+  LOCALES_FROM_CONFIG=1
   while IFS= read -r l; do LOCALES+=("$l"); done < <(jq -r '.locales[]' "$CONFIG" 2>/dev/null)
 elif [[ -d "$META_DIR" ]]; then
   while IFS= read -r d; do
@@ -266,7 +268,18 @@ if (( ${#LOCALES[@]} > 0 )); then
   expected_files=(name.txt subtitle.txt description.txt keywords.txt)
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
     d="$META_DIR/$loc"
-    if [[ ! -d "$d" ]]; then fail "2.3.7 Locale missing — $d does not exist"; continue; fi
+    if [[ ! -d "$d" ]]; then
+      # A locale listed in .appstore-precheck.json but absent on disk is a
+      # config/reality mismatch, not a build fault: the locale was simply never
+      # submitted. Warn (don't block) so an approved set isn't falsely RED.
+      # Auto-detected locales always exist, so this only fires in config mode.
+      if [[ -n "$LOCALES_FROM_CONFIG" ]]; then
+        warn "2.3.7 Locale '$loc' is in .appstore-precheck.json but has no metadata folder ($d) — add it or remove '$loc' from the config 'locales' list"
+      else
+        fail "2.3.7 Locale missing — $d does not exist"
+      fi
+      continue
+    fi
     for f in "${expected_files[@]}"; do
       [[ -s "$d/$f" ]] || fail "2.3.7 Metadata missing — $d/$f is empty or absent"
     done
@@ -463,7 +476,7 @@ if [[ -d "$META_DIR" ]]; then
     [[ -z "$support_found" ]] && warn "2.3 Support URL — no non-empty support_url.txt in any locale under fastlane metadata; Apple requires a working support URL"
     [[ -z "$privacy_found" ]] && warn "2.3 Privacy URL — no non-empty privacy_url.txt in any locale under fastlane metadata; required for apps with accounts or in-app purchases"
   fi
-  url_ph=$(grep -rEnI 'example\.com|localhost|\bTODO\b|changeme' "$META_DIR" --include='*_url.txt' 2>/dev/null | grep -v "^Binary file" | head -10)
+  url_ph=$(grep -rEnI 'example\.com|localhost|\bTODO\b|\bchangeme\b' "$META_DIR" --include='*_url.txt' 2>/dev/null | grep -v "^Binary file" | head -10)
   if [[ -n "$url_ph" ]]; then
     warn "2.3 Metadata URL — placeholder URL in fastlane metadata (replace before submitting):"
     echo "$url_ph" | sed 's/^/      /'
@@ -502,7 +515,7 @@ fi
 # avoid flagging legitimate words. Overlaps the Phase 2 precheck "No placeholder
 # text" rule, but this one is local and runs before any network call.
 if [[ -d "$META_DIR" ]]; then
-  ph_re='lorem ipsum|Lorem ipsum|\bTODO\b|\bFIXME\b|example\.com|placeholder|insert .* here|changeme'
+  ph_re='lorem ipsum|Lorem ipsum|\bTODO\b|\bFIXME\b|example\.com|placeholder|insert .* here|\bchangeme\b'
   ph_hits=$(grep -rEnI "$ph_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -20)
   if [[ -n "$ph_hits" ]]; then
     warn "2.1 Metadata content — placeholder/dummy text in store metadata (looks unfinished; rejected under 2.1):"
