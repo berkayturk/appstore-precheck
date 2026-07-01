@@ -16,6 +16,7 @@ SUITE=(
   "test-cli.sh"       # npx CLI wrapper (bin/cli.js) verdict + exit codes
   "test-findings.sh"  # findings.sh structured-findings helper
   "test-format-json.sh" # scan.sh --format json envelope + text-mode parity
+  "test-suppress.sh"  # suppress.sh + emit-time .precheck-ignore wiring
 )
 
 failed=()

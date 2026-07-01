@@ -13,6 +13,7 @@ ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || ROOT="$(pwd)"
 cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit 0; }
 
 source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/suppress.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
 trap 'rm -f "$FINDINGS_TMP"' EXIT
 FORMAT="text"
@@ -53,9 +54,13 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   echo "false"
 }
 
-fail() { echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; }
-warn() { echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; }
-pass() { echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; }
+_LAST_SUPPRESSED=0
+fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
+warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
+pass() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
+
+# detail <text> — indented evidence under the previous finding; skipped when it was suppressed.
+detail() { [[ "${_LAST_SUPPRESSED:-0}" == 1 ]] || printf '%s\n' "$1" | sed 's/^/      /'; }
 
 # ===================================================================
 # Auto-detection of the project layout
@@ -75,6 +80,17 @@ GREP_PRUNE=( --exclude-dir=.git --exclude-dir=Pods --exclude-dir=Carthage
             --exclude-dir=SourcePackages --exclude-dir=checkouts --exclude-dir=.swiftpm
             --exclude-dir=.claude --exclude-dir=worktrees
             --exclude-dir=node_modules --exclude-dir=vendor )
+
+# Load .precheck-ignore path exclusions (Task 2 suppress.sh) and extend both
+# prune sets so a suppressed path is skipped by detection AND grep passes.
+load_precheck_ignore "$ROOT"
+while IFS= read -r _g; do
+  [[ -z "$_g" ]] && continue
+  PRUNE+=( -not -path "*/$_g/*" -not -path "$_g/*" )
+  GREP_PRUNE+=( --exclude-dir="${_g##*/}" )
+done <<PRUNE_GLOBS
+$(precheck_prune_globs)
+PRUNE_GLOBS
 
 # Reads newline-separated paths on stdin, prints the one with the fewest path
 # segments (the shallowest, i.e. the real project copy rather than a nested one).
@@ -263,7 +279,7 @@ if [[ -d "$META_DIR" ]]; then
   hits=$(grep -rEnI "$banned_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -30)
   if [[ -n "$hits" ]]; then
     fail "2.3.10 Other-platform mention — banned reference in metadata:"
-    echo "$hits" | sed 's/^/      /'
+    detail "$hits"
   else
     pass "2.3.10 Other-platform mentions — metadata clean"
   fi
@@ -421,7 +437,7 @@ if [[ -n "$banned_hits" ]]; then
   pa_file="${pa_first%%:*}"
   pa_rest="${pa_first#*:}"; pa_line="${pa_rest%%:*}"
   fail "2.5.1 Private/Deprecated API:" "$pa_file" "$pa_line"
-  echo "$banned_hits" | sed 's/^/      /'
+  detail "$banned_hits"
 else
   pass "2.5.1 Private API — clean"
 fi
@@ -531,7 +547,7 @@ if [[ -d "$META_DIR" ]]; then
   if [[ -n "$url_ph" ]]; then
     url_ph_file="$(printf '%s\n' "$url_ph" | head -1 | cut -d: -f1)"
     warn "2.3 Metadata URL — placeholder URL in fastlane metadata (replace before submitting):" "$url_ph_file"
-    echo "$url_ph" | sed 's/^/      /'
+    detail "$url_ph"
   fi
 fi
 
@@ -574,7 +590,7 @@ if [[ -d "$META_DIR" ]]; then
   if [[ -n "$ph_hits" ]]; then
     ph_file="$(printf '%s\n' "$ph_hits" | head -1 | cut -d: -f1)"
     warn "2.1 Metadata content — placeholder/dummy text in store metadata (looks unfinished; rejected under 2.1):" "$ph_file"
-    echo "$ph_hits" | sed 's/^/      /'
+    detail "$ph_hits"
   fi
 fi
 
@@ -668,7 +684,7 @@ if [[ -d "$META_DIR" ]]; then
   if [[ -n "$mislead_hits" ]]; then
     mislead_file="$(printf '%s\n' "$mislead_hits" | head -1 | cut -d: -f1)"
     warn "2.3.1 Misleading marketing — claims that often violate 2.3.1 (e.g. iOS virus/malware scanners, fake speed boosters) in metadata; verify the app truly delivers them or remove the claim:" "$mislead_file"
-    echo "$mislead_hits" | sed 's/^/      /'
+    detail "$mislead_hits"
   fi
 fi
 
@@ -687,7 +703,7 @@ if [[ -d "$META_DIR" ]]; then
   if [[ -n "$kids_hits" && -z "${tracking_sdk:-}" && -z "${analytics_sdk:-}" ]]; then
     kids_file="$(printf '%s\n' "$kids_hits" | head -1 | cut -d: -f1)"
     warn "2.3.8 'For Kids/Children' wording — terms implying a child audience are reserved for the Kids Category (2.3.8); if not enrolled, remove them from name/subtitle/keywords/description:" "$kids_file"
-    echo "$kids_hits" | sed 's/^/      /'
+    detail "$kids_hits"
   fi
 fi
 
@@ -899,7 +915,7 @@ if [[ -d "$META_DIR" ]]; then
     gamble_file="${gamble_first%%:*}"
     gamble_rest="${gamble_first#*:}"; gamble_line="${gamble_rest%%:*}"
     warn "5.3.4 Gambling — real-money gaming language in metadata; real-money gambling/lotteries need the proper licenses, must be geo-restricted to permitted regions, and must be free on the App Store (5.3.4):" "$gamble_file" "$gamble_line"
-    echo "$gamble_hits" | sed 's/^/      /'
+    detail "$gamble_hits"
   fi
 fi
 
@@ -916,4 +932,7 @@ if [[ -n "$IOS_DIR" ]]; then
 fi
 
 echo "---END-OF-SCAN---"
+if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
+  printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"
+fi
 if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json; fi

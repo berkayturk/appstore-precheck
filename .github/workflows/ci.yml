@@ -28,6 +28,7 @@ jobs:
                      skills/appstore-precheck/scripts/verdict.sh \
                      skills/appstore-precheck/scripts/phase2-precheck.sh \
                      skills/appstore-precheck/scripts/findings.sh \
+                     skills/appstore-precheck/scripts/suppress.sh \
                      hooks/fastlane-guard.sh \
                      install.sh \
                      tests/run.sh \
@@ -39,6 +40,7 @@ jobs:
                      tests/test-phase2.sh \
                      tests/test-findings.sh \
                      tests/test-format-json.sh \
+                     tests/test-suppress.sh \
                      scripts/check-versions.sh
 
       - name: Validate JSON
