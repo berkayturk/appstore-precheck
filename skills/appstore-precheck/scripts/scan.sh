@@ -188,9 +188,9 @@ check_required_reason_api() {
   hits=$(grep -rEl "$pattern" "$IOS_DIR" --include="*.swift" 2>/dev/null | head -3)
   declared=$(grep -c "NSPrivacyAccessedAPICategory${cat}" "$PRIVACY_FILE" 2>/dev/null)
   if [[ -n "$hits" && "${declared:-0}" -eq 0 ]]; then
-    fail "5.1.1 Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy"
+    fail "5.1.1 Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy" "$PRIVACY_FILE"
   elif [[ -z "$hits" && "${declared:-0}" -gt 0 ]]; then
-    warn "5.1.1 PrivacyInfo — '$cat' declared but no code usage grepped (may be a false positive, verify manually)"
+    warn "5.1.1 PrivacyInfo — '$cat' declared but no code usage grepped (may be a false positive, verify manually)" "$PRIVACY_FILE"
   elif [[ -n "$hits" && "${declared:-0}" -gt 0 ]]; then
     pass "5.1.1 Required Reason API — '$cat' parity OK"
   fi
@@ -198,7 +198,7 @@ check_required_reason_api() {
 if [[ -z "$IOS_DIR" ]]; then
   warn "layout — could not auto-detect iOS source dir; set .iosSourceDir in $CONFIG"
 elif [[ -z "$PRIVACY_FILE" ]]; then
-  fail "5.1.1 Required Reason API — PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)"
+  fail "5.1.1 Required Reason API — PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)" "$INFO_PLIST"
 else
   check_required_reason_api "UserDefaults"   'UserDefaults|@AppStorage'
   check_required_reason_api "FileTimestamp"  'attributesOfItem|creationDate|modificationDate|\.fileCreationDate|\.fileModificationDate'
@@ -212,10 +212,10 @@ fi
 # ===================================================================
 set_rule "usage-description-crosscheck"
 if [[ ! -f "$INFO_PLIST" ]]; then
-  [[ -n "$IOS_DIR" ]] && warn "5.1.1 Info.plist not found at $INFO_PLIST (modern Xcode may auto-generate it; verify purpose strings in build settings)"
+  [[ -n "$IOS_DIR" ]] && warn "5.1.1 Info.plist not found at $INFO_PLIST (modern Xcode may auto-generate it; verify purpose strings in build settings)" "$INFO_PLIST"
 else
   awk '/NS[A-Za-z]+UsageDescription/{key=$0; getline; if($0 ~ /<string>[[:space:]]*<\/string>/) print "EMPTY:"key}' "$INFO_PLIST" | while read -r line; do
-    [[ -n "$line" ]] && fail "5.1.1 Purpose String — $line (empty usage description is rejected by App Review)"
+    [[ -n "$line" ]] && fail "5.1.1 Purpose String — $line (empty usage description is rejected by App Review)" "$INFO_PLIST"
   done
   for fw in \
     "FamilyControls|ManagedSettings|DeviceActivity:NSFamilyControlsUsageDescription" \
@@ -227,7 +227,7 @@ else
     framework="${fw%%:*}"; needed_key="${fw##*:}"
     if grep -rqE "import ($framework)|($framework)\." "$IOS_DIR" --include="*.swift" 2>/dev/null; then
       if ! grep -qE "$needed_key" "$INFO_PLIST" 2>/dev/null; then
-        fail "5.1.1 framework '${framework%%|*}' imported but Info.plist is missing '${needed_key%%|*}'"
+        fail "5.1.1 framework '${framework%%|*}' imported but Info.plist is missing '${needed_key%%|*}'" "$INFO_PLIST"
       fi
     fi
   done
@@ -246,7 +246,7 @@ if [[ -n "$att_used" ]]; then
   if grep -q "NSUserTrackingUsageDescription" "$INFO_PLIST" 2>/dev/null; then
     pass "5.1.2 ATT — used + NSUserTrackingUsageDescription present"
   else
-    fail "5.1.2 ATT framework imported but NSUserTrackingUsageDescription missing in Info.plist ($att_used)"
+    fail "5.1.2 ATT framework imported but NSUserTrackingUsageDescription missing in Info.plist ($att_used)" "$INFO_PLIST"
   fi
 elif [[ -z "$tracking_sdk" ]]; then
   pass "5.1.2 ATT — not used (no tracking)"
@@ -282,7 +282,7 @@ check_len() {
     len=$(wc -m < "$file" | tr -d ' ')
   fi
   [[ -z "$len" ]] && return
-  (( len > limit )) && fail "2.3.1 $label — $file ${len} chars (limit ${limit})"
+  (( len > limit )) && fail "2.3.1 $label — $file ${len} chars (limit ${limit})" "$file"
 }
 for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
   d="$META_DIR/$loc"; [[ -d "$d" ]] || continue
@@ -417,7 +417,10 @@ set_rule "private-api"
 banned_api='UIWebView|setSelectionIndicatorImage|_UIBackdropView|NSURLConnection[^a-zA-Z]|UIAlertView[^Q]|UIActionSheet[^Q]'
 banned_hits=$(grep -rEnI "$banned_api" "$IOS_DIR" --include="*.swift" --include="*.m" --include="*.h" 2>/dev/null | head -5)
 if [[ -n "$banned_hits" ]]; then
-  fail "2.5.1 Private/Deprecated API:"
+  pa_first="$(printf '%s\n' "$banned_hits" | head -1)"   # "path:line:match"
+  pa_file="${pa_first%%:*}"
+  pa_rest="${pa_first#*:}"; pa_line="${pa_rest%%:*}"
+  fail "2.5.1 Private/Deprecated API:" "$pa_file" "$pa_line"
   echo "$banned_hits" | sed 's/^/      /'
 else
   pass "2.5.1 Private API — clean"
@@ -502,7 +505,7 @@ if [[ -f "$INFO_PLIST" ]]; then
   if grep -q "ITSAppUsesNonExemptEncryption" "$INFO_PLIST" 2>/dev/null; then
     pass "export-compliance — ITSAppUsesNonExemptEncryption set in Info.plist"
   else
-    warn "export-compliance — Info.plist has no ITSAppUsesNonExemptEncryption; set it (true/false) to skip the App Store Connect encryption-export prompt every submission"
+    warn "export-compliance — Info.plist has no ITSAppUsesNonExemptEncryption; set it (true/false) to skip the App Store Connect encryption-export prompt every submission" "$INFO_PLIST"
   fi
 fi
 
@@ -526,7 +529,8 @@ if [[ -d "$META_DIR" ]]; then
   fi
   url_ph=$(grep -rEnI 'example\.com|localhost|\bTODO\b|\bchangeme\b' "$META_DIR" --include='*_url.txt' 2>/dev/null | grep -v "^Binary file" | head -10)
   if [[ -n "$url_ph" ]]; then
-    warn "2.3 Metadata URL — placeholder URL in fastlane metadata (replace before submitting):"
+    url_ph_file="$(printf '%s\n' "$url_ph" | head -1 | cut -d: -f1)"
+    warn "2.3 Metadata URL — placeholder URL in fastlane metadata (replace before submitting):" "$url_ph_file"
     echo "$url_ph" | sed 's/^/      /'
   fi
 fi
@@ -552,7 +556,7 @@ if [[ -n "$analytics_sdk" ]]; then
   if [[ -n "$declared_data" ]]; then
     pass "5.1.1 Privacy manifest — analytics SDK present and PrivacyInfo declares collected data"
   else
-    warn "5.1.1 Privacy manifest — analytics SDK detected (e.g. $(basename "$analytics_sdk")) but PrivacyInfo declares no collected data types or tracking domains; verify your privacy manifest and App Privacy nutrition labels"
+    warn "5.1.1 Privacy manifest — analytics SDK detected (e.g. $(basename "$analytics_sdk")) but PrivacyInfo declares no collected data types or tracking domains; verify your privacy manifest and App Privacy nutrition labels" "$PRIVACY_FILE"
   fi
 fi
 
@@ -568,7 +572,8 @@ if [[ -d "$META_DIR" ]]; then
   ph_re='lorem ipsum|Lorem ipsum|\bTODO\b|\bFIXME\b|example\.com|placeholder|insert .* here|\bchangeme\b'
   ph_hits=$(grep -rEnI "$ph_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -20)
   if [[ -n "$ph_hits" ]]; then
-    warn "2.1 Metadata content — placeholder/dummy text in store metadata (looks unfinished; rejected under 2.1):"
+    ph_file="$(printf '%s\n' "$ph_hits" | head -1 | cut -d: -f1)"
+    warn "2.1 Metadata content — placeholder/dummy text in store metadata (looks unfinished; rejected under 2.1):" "$ph_file"
     echo "$ph_hits" | sed 's/^/      /'
   fi
 fi
@@ -617,7 +622,7 @@ if [[ -f "$INFO_PLIST" ]]; then
   # narrower scoped exceptions NSAllowsArbitraryLoadsInWebContent / ...ForMedia — which
   # do NOT disable ATS app-wide and are the recommended alternative — don't false-fire.
   if awk '/NSAllowsArbitraryLoads</{getline; if ($0 ~ /<true/) print "ON"}' "$INFO_PLIST" 2>/dev/null | grep -q ON; then
-    warn "1.6 App Transport Security — NSAllowsArbitraryLoads=true in Info.plist disables ATS app-wide; prefer per-domain exceptions, and expect a data-security justification request at review (1.6)"
+    warn "1.6 App Transport Security — NSAllowsArbitraryLoads=true in Info.plist disables ATS app-wide; prefer per-domain exceptions, and expect a data-security justification request at review (1.6)" "$INFO_PLIST"
   fi
 fi
 
@@ -661,7 +666,8 @@ if [[ -d "$META_DIR" ]]; then
   mislead_re='virus scan|virus scanner|antivirus|anti-virus|malware (scan|remov|clean)|spyware remov|clean your (iphone|device)|speed booster|boost.*(speed|ram)|free money|guaranteed.*(win|prize)'
   mislead_hits=$(grep -rEniI "$mislead_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
   if [[ -n "$mislead_hits" ]]; then
-    warn "2.3.1 Misleading marketing — claims that often violate 2.3.1 (e.g. iOS virus/malware scanners, fake speed boosters) in metadata; verify the app truly delivers them or remove the claim:"
+    mislead_file="$(printf '%s\n' "$mislead_hits" | head -1 | cut -d: -f1)"
+    warn "2.3.1 Misleading marketing — claims that often violate 2.3.1 (e.g. iOS virus/malware scanners, fake speed boosters) in metadata; verify the app truly delivers them or remove the claim:" "$mislead_file"
     echo "$mislead_hits" | sed 's/^/      /'
   fi
 fi
@@ -679,7 +685,8 @@ if [[ -d "$META_DIR" ]]; then
   # more specific Kids finding for the same wording signal — don't double-count it here
   # (one root signal must not cost two WARNs against the 5-WARN YELLOW threshold).
   if [[ -n "$kids_hits" && -z "${tracking_sdk:-}" && -z "${analytics_sdk:-}" ]]; then
-    warn "2.3.8 'For Kids/Children' wording — terms implying a child audience are reserved for the Kids Category (2.3.8); if not enrolled, remove them from name/subtitle/keywords/description:"
+    kids_file="$(printf '%s\n' "$kids_hits" | head -1 | cut -d: -f1)"
+    warn "2.3.8 'For Kids/Children' wording — terms implying a child audience are reserved for the Kids Category (2.3.8); if not enrolled, remove them from name/subtitle/keywords/description:" "$kids_file"
     echo "$kids_hits" | sed 's/^/      /'
   fi
 fi
@@ -792,7 +799,7 @@ if [[ -f "$INFO_PLIST" && -n "$IOS_DIR" ]]; then
       esac
     done <<< "$modes"
     if [[ -n "$unused" ]]; then
-      warn "2.5.4 Background modes —$unused declared in UIBackgroundModes but no matching API usage found in Swift; declare only the background modes the app actually uses (2.5.4)"
+      warn "2.5.4 Background modes —$unused declared in UIBackgroundModes but no matching API usage found in Swift; declare only the background modes the app actually uses (2.5.4)" "$INFO_PLIST"
     else
       pass "2.5.4 Background modes — declared modes have matching API usage"
     fi
@@ -888,7 +895,10 @@ if [[ -d "$META_DIR" ]]; then
   gamble_re='real[ -]?money|gambling|casino|sportsbook|sports[ -]?betting|place[ -].*bets|wager(ing)?|roulette.*real'
   gamble_hits=$(grep -rEniI "$gamble_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
   if [[ -n "$gamble_hits" ]]; then
-    warn "5.3.4 Gambling — real-money gaming language in metadata; real-money gambling/lotteries need the proper licenses, must be geo-restricted to permitted regions, and must be free on the App Store (5.3.4):"
+    gamble_first="$(printf '%s\n' "$gamble_hits" | head -1)"   # "path:line:match"
+    gamble_file="${gamble_first%%:*}"
+    gamble_rest="${gamble_first#*:}"; gamble_line="${gamble_rest%%:*}"
+    warn "5.3.4 Gambling — real-money gaming language in metadata; real-money gambling/lotteries need the proper licenses, must be geo-restricted to permitted regions, and must be free on the App Store (5.3.4):" "$gamble_file" "$gamble_line"
     echo "$gamble_hits" | sed 's/^/      /'
   fi
 fi

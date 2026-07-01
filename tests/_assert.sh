@@ -30,4 +30,20 @@ assert_absent() { # assert_absent <haystack> <needle> <label>
   fi
 }
 
+assert_not_empty() { # assert_not_empty <value> <label>
+  if [[ -n "$1" ]]; then
+    echo "  ok: $2"
+  else
+    echo "  FAIL: $2 (got empty value)"; fails=$((fails + 1))
+  fi
+}
+
+assert_gt() { # assert_gt <actual> <threshold> <label>
+  if (( $1 > $2 )); then
+    echo "  ok: $3"
+  else
+    echo "  FAIL: $3 (got '$1', want > '$2')"; fails=$((fails + 1))
+  fi
+}
+
 section() { echo "== $1 =="; }
