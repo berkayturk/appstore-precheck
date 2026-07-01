@@ -319,5 +319,70 @@ assert_eq "$(printf '%s' "$got" | cut -f2)" "App/iOS/Supporting Files/Info.plist
   "resolve returns Client's build-config-attributed plist"
 rm -rf "$brave"
 
+# --- pm_target_infoplist: comment-LESS buildConfigurationList (generator-written
+# pbxproj, e.g. XcodeGen/Tuist, which omit the "/* comment */") must still
+# resolve. The UUID extraction used to rely on the comment's leading space to
+# truncate the line, so `buildConfigurationList = BCLIST1;` (no comment) left
+# a trailing ";" attached to the UUID, which then failed to match the
+# XCConfigurationList block-opener and silently fell back to nothing. ---
+nocomment="$(mktemp -d)"
+cat > "$nocomment/nocomment.pbxproj" <<'EOF'
+		AAA /* Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCLIST1;
+			name = Client;
+			productType = "com.apple.product-type.application";
+		};
+		BCLIST1 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG1,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CFG1 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Client/Info.plist;
+			};
+			name = Debug;
+		};
+EOF
+assert_eq "$(pm_target_infoplist "$nocomment/nocomment.pbxproj" "Client")" "Client/Info.plist" \
+  "pm_target_infoplist resolves INFOPLIST_FILE when buildConfigurationList has no trailing comment (Fix 1)"
+rm -rf "$nocomment"
+
+# --- pm_resolve: PM_SAMPLE_PATH must NOT deprioritize a primary app that lives
+# under a Demo/-named dir (common for library repos whose real deliverable app
+# is the demo). Only ThirdParty/Vendored are high-confidence vendored markers.
+# DemoApp has more .swift sources than OtherApp (which lives under a dir that
+# never matches PM_SAMPLE_PATH), so DemoApp must win normal best-vs-best
+# comparison — if Demo/ were still deprioritized into the alt bucket, OtherApp
+# would win instead since a non-empty "best" always beats "alt" (Fix 2). ---
+demo="$(mktemp -d)"
+mkdir -p "$demo/Demo/App.xcodeproj" "$demo/Demo/DemoApp" \
+         "$demo/Elsewhere/Other.xcodeproj" "$demo/Elsewhere/OtherApp"
+cat > "$demo/Demo/App.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* DemoApp */ = {
+			isa = PBXNativeTarget;
+			name = DemoApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+touch "$demo/Demo/DemoApp/One.swift" "$demo/Demo/DemoApp/Two.swift" "$demo/Demo/DemoApp/Three.swift"
+cat > "$demo/Elsewhere/Other.xcodeproj/project.pbxproj" <<'EOF'
+		BBB /* OtherApp */ = {
+			isa = PBXNativeTarget;
+			name = OtherApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+touch "$demo/Elsewhere/OtherApp/One.swift"
+got="$(pm_resolve "$demo")"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "Demo/DemoApp" \
+  "resolve treats a Demo/-named dir as primary, not deprioritized (Fix 2)"
+rm -rf "$demo"
+
 echo "test-project-model: OK"
 exit "$fails"

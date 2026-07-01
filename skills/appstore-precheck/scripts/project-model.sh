@@ -44,7 +44,7 @@ pm_target_infoplist() {
   cl="$(awk -v t="$target" '
     /isa = PBXNativeTarget;/{inb=1;nm="";c="";next}
     inb&&/^[[:space:]]*name = /{l=$0;sub(/^[[:space:]]*name = /,"",l);sub(/;[[:space:]]*$/,"",l);gsub(/^"|"$/,"",l);nm=l}
-    inb&&/^[[:space:]]*buildConfigurationList = /{l=$0;sub(/^[[:space:]]*buildConfigurationList = /,"",l);sub(/ .*/,"",l);c=l}
+    inb&&/^[[:space:]]*buildConfigurationList = /{l=$0;sub(/^[[:space:]]*buildConfigurationList = /,"",l);sub(/;[[:space:]]*$/,"",l);sub(/ .*/,"",l);c=l}
     inb&&/^[[:space:]]*};[[:space:]]*$/{if(nm==t&&c!=""){print c;exit}inb=0}
   ' "$pbx")"
   [[ -z "$cl" ]] && return 1
@@ -74,8 +74,15 @@ pm_target_infoplist() {
 PM_PRUNE_DIRS='node_modules|Pods|Carthage|\.build|DerivedData|\.git'
 
 # App targets whose project lives under a vendored/sample path are deprioritized:
-# they only win when no primary (non-vendored) app target exists.
-PM_SAMPLE_PATH='(^|/)(ThirdParty|Examples?|Samples?|Demos?|Fixtures|Vendored?)(/|$)'
+# they only win when no primary (non-vendored) app target exists. This is a
+# deprioritization heuristic (mirrors scan.sh's NONAPP_TARGET), bounded on
+# purpose: a sample app under a clearly-vendored path (ThirdParty/Vendor)
+# loses to a primary app, but the heuristic deliberately does NOT match
+# Demo/Sample/Example-named dirs, because those often hold a library repo's
+# real deliverable app rather than a throwaway sample (Pods/Carthage/
+# node_modules are already fully pruned by PM_PRUNE_DIRS in
+# pm_find_pbxprojs, so they need not be listed here either).
+PM_SAMPLE_PATH='(^|/)(ThirdParty|Vendored?)(/|$)'
 
 # pm_find_pbxprojs <root> -> all project.pbxproj under *.xcodeproj (pruned), deterministic order.
 pm_find_pbxprojs() {
