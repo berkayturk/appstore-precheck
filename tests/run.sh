@@ -321,13 +321,19 @@ assert_has "---END-OF-SCAN---"                                            "scann
 assert_absent "WARN: 4.2 Minimum functionality"                           "uikit-nav: no 4.2 FP for a UIKit UITabBarController app"
 finish_fixture
 
-check_fixture "pbxproj-generate-app" "app uses GENERATE_INFOPLIST_FILE; extension owns the only plist"
-assert_has  "PASS: layout — ios='MyApp'"  "project-model picks the app dir, not the extension"
-assert_absent "ios='MyWidget'"            "detection does not land on the extension dir"
+check_fixture "pbxproj-generate-app" "GENERATE app; larger non-app decoy dir traps the heuristic"
+assert_has    "ios='MyApp'"      "project-model picks the real app target, not the larger decoy dir"
+assert_absent "ios='Vendored'"   "detection does not fall for the decoy the heuristic would pick"
+finish_fixture
+
+check_fixture "pbxproj-declared-plist" "app declares INFOPLIST_FILE; decoy holds an empty usage string"
+assert_has    "ios='MyApp'"                 "project-model picks the app dir over the larger decoy"
+assert_absent "empty usage description"     "INFO_PLIST reads the app's plist, not the decoy's empty one"
 finish_fixture
 
 check_fixture "pbxproj-multiapp" "two application targets; the larger one wins"
-assert_has  "ios='AppB'"                  "project-model picks the app with more sources"
+assert_has    "ios='AppB'"                  "project-model picks the app with more sources"
+assert_absent "ios='AppA'"                  "the smaller application target does not win"
 finish_fixture
 
 # ---------------------------------------------------------------------------

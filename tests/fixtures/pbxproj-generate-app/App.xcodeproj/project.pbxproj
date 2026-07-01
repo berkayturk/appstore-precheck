@@ -6,14 +6,14 @@
 			name = MyApp;
 			productType = "com.apple.product-type.application";
 		};
-		DDD /* MyWidget */ = {
+		DDD /* Vendored */ = {
 			isa = PBXNativeTarget;
-			name = MyWidget;
-			productType = "com.apple.product-type.app-extension";
+			name = Vendored;
+			productType = "com.apple.product-type.framework";
 		};
 	};
 	buildSettings = {
 		GENERATE_INFOPLIST_FILE = YES;
-		INFOPLIST_FILE = MyWidget/Info.plist;
+		INFOPLIST_FILE = Vendored/Info.plist;
 	};
 }
