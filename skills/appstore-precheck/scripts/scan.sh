@@ -236,8 +236,6 @@ else
   for fw in \
     "FamilyControls|ManagedSettings|DeviceActivity:NSFamilyControlsUsageDescription" \
     "CoreLocation:NSLocationWhenInUseUsageDescription" \
-    "AVFoundation:NSCameraUsageDescription|NSMicrophoneUsageDescription" \
-    "Photos:NSPhotoLibraryUsageDescription" \
     "Contacts:NSContactsUsageDescription" \
     "HealthKit:NSHealthShareUsageDescription"; do
     framework="${fw%%:*}"; needed_key="${fw##*:}"
@@ -247,6 +245,30 @@ else
       fi
     fi
   done
+  # AVFoundation and Photos are gated on real capture/read APIs, not bare
+  # imports: an import only signals framework linkage, not camera/mic/library
+  # access (e.g. AVFoundation is commonly imported for playback-only use via
+  # AVAudioPlayer/AVPlayer, and Photos/PhotosUI's PhotosPicker/PHPickerViewController
+  # run out-of-process and need no Info.plist key at all).
+  # Camera: purpose string required only when a capture API is actually used.
+  if grep -rqE 'AVCaptureDevice|AVCaptureSession|UIImagePickerController' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    grep -qE 'NSCameraUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "$INFO_PLIST"
+  fi
+  # Microphone: required only for recording/capture, not playback.
+  if grep -rqE 'AVAudioRecorder|AVCaptureDevice|installTap\(|AVAudioSession[^;]*\.record' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    grep -qE 'NSMicrophoneUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "$INFO_PLIST"
+  fi
+  # Photo library READ: PhotosPicker/PHPicker need no key; only true read/fetch APIs do.
+  if grep -rqE 'PHAsset\b|PHFetchResult|PHImageManager|fetchAssets|PHAssetCollection' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    grep -qE 'NSPhotoLibraryUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 Photos read API used but Info.plist is missing 'NSPhotoLibraryUsageDescription'" "$INFO_PLIST"
+  elif grep -rqE 'PHAssetCreationRequest|UIImageWriteToSavedPhotosAlbum|performChanges' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    # Add-only save: covered by the add-only key.
+    grep -qE 'NSPhotoLibraryAddUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 Photos add-only API used but Info.plist is missing 'NSPhotoLibraryAddUsageDescription'" "$INFO_PLIST"
+  fi
 fi
 
 # ===================================================================

@@ -256,6 +256,45 @@ assert_absent "WARN: 5.1.1 Privacy manifest — analytics SDK detected"     "seg
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# audio-playback-app — `import AVFoundation` used ONLY for playback
+# (AVAudioPlayer + AVAudioSession.setCategory(.playback)), no capture API at
+# all. The old generic framework loop treated the bare import as proof of
+# camera+mic use; the capture-gated §2 restructure must stay silent since
+# neither a camera- nor a microphone-capture API is present.
+# ---------------------------------------------------------------------------
+check_fixture "audio-playback-app" "playback-only AVFoundation — no camera/mic FP"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "FAIL: 5.1.1 camera capture API"                            "no camera-capture FAIL: playback-only AVFoundation use"
+assert_absent "FAIL: 5.1.1 microphone/recording API"                      "no microphone-capture FAIL: .playback category, not .record"
+assert_absent "FAIL: 5.1.1 framework 'AVFoundation'"                      "legacy import-based AVFoundation FAIL is gone (generic entry removed)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# photos-picker-app — `import PhotosUI` with PhotosPicker only, no PHAsset
+# read. PhotosPicker runs out-of-process and needs NO Info.plist key at all.
+# The old generic framework loop treated the bare "Photos" substring match
+# (present inside "PhotosUI") as proof of library access; the capture-gated
+# restructure must stay silent since no PHAsset/PHFetchResult/PHImageManager
+# read API and no PHAssetCreationRequest/save API is present.
+# ---------------------------------------------------------------------------
+check_fixture "photos-picker-app" "PhotosPicker only — no NSPhotoLibraryUsageDescription FP"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "FAIL: 5.1.1 Photos"                                        "no legacy import-based Photos FAIL (PhotosPicker needs no key)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# camera-capture-app — TP-GUARD fixture. Drives AVCaptureSession/
+# AVCaptureDevice directly (real capture, not a bare import) with NO
+# NSCameraUsageDescription in Info.plist. Proves the capture-gated §2
+# restructure did not just get disabled: a genuine capture API without the
+# purpose string must still FAIL.
+# ---------------------------------------------------------------------------
+check_fixture "camera-capture-app" "TP-guard: real AVCaptureSession capture without purpose string"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "capture-gated check still fires on a real capture API (no TP regression)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then
   echo "ALL TESTS PASSED"

@@ -1,0 +1,3 @@
+Drives AVCaptureSession directly for live camera capture. Intentionally missing
+NSCameraUsageDescription — this is the TP-guard fixture proving the capture-gated
+check still fires on real capture APIs.

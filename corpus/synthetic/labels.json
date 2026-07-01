@@ -88,5 +88,17 @@
   "config-app": {
     "expect_fire": [],
     "expect_absent": ["private-api"]
+  },
+  "audio-playback-app": {
+    "expect_fire": [],
+    "expect_absent": ["usage-description-crosscheck"]
+  },
+  "photos-picker-app": {
+    "expect_fire": [],
+    "expect_absent": ["usage-description-crosscheck"]
+  },
+  "camera-capture-app": {
+    "expect_fire": ["usage-description-crosscheck"],
+    "expect_absent": []
   }
 }
