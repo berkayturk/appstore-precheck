@@ -36,6 +36,16 @@ assert_contains "$with_cfg" "5.1.5 Screen Time API — reviewer-prep justificati
 section "config-driven layout produces no FAIL"
 assert_absent "$with_cfg" "FAIL:" "well-formed config-app has zero FAILs"
 
+# Regression guard: config-app has no fastlane/screenshots dir and no
+# .screenshotsDir override, so it hits the screenshots-per-locale else-branch.
+# That branch must be a silent advisory PASS, not a WARN — real apps manage
+# screenshots in App Store Connect/CI, not git.
+section "no in-repo screenshots dir is an advisory PASS, not a WARN"
+assert_absent  "$with_cfg" "WARN: 2.3.3 Screenshots — screenshots dir not found" \
+  "config-app: absent in-repo screenshots dir is not a WARN (managed in ASC)"
+assert_contains "$with_cfg" "PASS: 2.3.3 Screenshots — no in-repo screenshots dir" \
+  "config-app: absent in-repo screenshots dir is a non-firing advisory PASS"
+
 # Contrast: WITHOUT the config, the scan resolves a DIFFERENT layout — proving the
 # overrides are doing real work, not coinciding with what auto-detection would find.
 # Comparing the two layout lines is platform-independent (it doesn't assume which dir
@@ -81,6 +91,13 @@ printf 'Focus App'                                  > "$TMP2/fastlane/metadata/e
 printf 'Block distractions'                         > "$TMP2/fastlane/metadata/en-US/subtitle.txt"
 printf 'Structured programs for real changement.\n' > "$TMP2/fastlane/metadata/en-US/description.txt"
 printf 'focus,habits'                               > "$TMP2/fastlane/metadata/en-US/keywords.txt"
+# A screenshots dir DOES exist here, but only for en-US — ru has no folder.
+# This is the TP-guard for the dir-exists path: a real missing-locale gap
+# must still WARN even though the no-dir-at-all case (above) no longer does.
+mkdir -p "$TMP2/fastlane/screenshots/en-US"
+printf 'x' > "$TMP2/fastlane/screenshots/en-US/01.png"
+printf 'x' > "$TMP2/fastlane/screenshots/en-US/02.png"
+printf 'x' > "$TMP2/fastlane/screenshots/en-US/03.png"
 # Config lists en-US (present) + ru (NO folder on disk).
 cat > "$TMP2/precheck-config.json" <<'JSON'
 { "metadataDir": "fastlane/metadata", "locales": ["en-US", "ru"] }
@@ -92,6 +109,10 @@ section "config locale absent on disk warns, never fails (option A)"
 assert_contains "$out2" "2.3.7 Locale 'ru' is in" "missing config locale is reported"
 assert_contains "$out2" "WARN: 2.3.7 Locale 'ru'" "missing config locale is a WARN"
 assert_absent   "$out2" "2.3.7 Locale missing — " "missing config locale is not a hard FAIL"
+
+section "screenshots dir EXISTS but a locale folder is missing — still WARNs (TP-guard)"
+assert_contains "$out2" "WARN: 2.3.3 Screenshots — no folder for ru" \
+  "real per-locale screenshots gap still WARNs when the dir exists (dir-exists path unchanged)"
 
 section "legitimate word containing 'changeme' is not placeholder copy"
 assert_absent   "$out2" "2.1 Metadata content" "French 'changement' does not trip the 2.1 placeholder check"

@@ -378,7 +378,7 @@ if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
   done
   pass "2.3.3 Screenshots — checked ${#LOCALES[@]} locales under $SCREEN_DIR"
 else
-  warn "2.3.3 Screenshots — screenshots dir not found (set .screenshotsDir if you manage them in-repo)"
+  pass "2.3.3 Screenshots — no in-repo screenshots dir; assumed managed in App Store Connect (set .screenshotsDir to check in-repo)"
 fi
 
 # ===================================================================

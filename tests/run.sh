@@ -241,6 +241,7 @@ check_fixture "webview-app" "thin WKWebView wrapper (§35)"
 assert_has "---END-OF-SCAN---"                                           "scanner ran to completion"
 assert_has "WARN: 4.2.3 Minimum functionality"                           "4.2.3 flagged: thin WKWebView wrapper"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
+assert_absent "WARN: 2.3.3 Screenshots — screenshots dir not found"       "no-screenshots: absent in-repo screenshots dir is not a WARN (managed in ASC)"
 finish_fixture
 
 # ---------------------------------------------------------------------------
