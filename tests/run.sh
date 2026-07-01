@@ -292,6 +292,19 @@ finish_fixture
 check_fixture "camera-capture-app" "TP-guard: real AVCaptureSession capture without purpose string"
 assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
 assert_has "FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "capture-gated check still fires on a real capture API (no TP regression)"
+assert_absent "FAIL: 5.1.1 microphone/recording API"                      "video-only AVCaptureDevice(for: .video) must NOT force a microphone-purpose-string requirement"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# voice-recorder-app — mic TP-guard fixture. Sets AVAudioSession's category to
+# .playAndRecord (the standard record+monitor category) and uses AVAudioRecorder,
+# with NO NSMicrophoneUsageDescription in Info.plist. The old mic regex
+# (`AVAudioSession[^;]*\.record`) does not match `.playAndRecord` — this fixture
+# proves the mic-gating regex now matches the .playAndRecord category too.
+# ---------------------------------------------------------------------------
+check_fixture "voice-recorder-app" "TP-guard: .playAndRecord category without purpose string"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "FAIL: 5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "mic-gated check fires on .playAndRecord category (no TP regression)"
 finish_fixture
 
 # ---------------------------------------------------------------------------

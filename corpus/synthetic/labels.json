@@ -100,5 +100,9 @@
   "camera-capture-app": {
     "expect_fire": ["usage-description-crosscheck"],
     "expect_absent": []
+  },
+  "voice-recorder-app": {
+    "expect_fire": ["usage-description-crosscheck"],
+    "expect_absent": []
   }
 }

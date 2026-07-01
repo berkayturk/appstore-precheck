@@ -255,8 +255,11 @@ else
     grep -qE 'NSCameraUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "$INFO_PLIST"
   fi
-  # Microphone: required only for recording/capture, not playback.
-  if grep -rqE 'AVAudioRecorder|AVCaptureDevice|installTap\(|AVAudioSession[^;]*\.record' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+  # Microphone: required only for recording/capture, not playback. Matched
+  # separately from the camera check above: a bare AVCaptureDevice only
+  # implies microphone use when it is audio-typed (`.audio` device/media
+  # type), not for a video-only capture device.
+  if grep -rqE 'AVAudioRecorder|installTap\(|AVAudioEngine\(|AVAudioSession[^;]*\.(playAndRecord|record)|AVCaptureDevice[^;)]*\.audio|for:[[:space:]]*\.audio' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
     grep -qE 'NSMicrophoneUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "$INFO_PLIST"
   fi
