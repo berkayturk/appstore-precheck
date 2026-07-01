@@ -96,166 +96,183 @@ figures measure **real-code false-positive rate**, not agreement with Apple's ac
 decisions. Recall is bounded by what the panel exercises. The aggregate is directional; the
 per-rule, churn-robust deltas are the reliable result.
 
-## Project-model detection (roadmap #2b) — 2026-07-01
+## Project-model detection (roadmap #2b) — 2026-07-01 (re-measured, post-fix)
 
 **Scope:** measures the IOS_DIR/INFO_PLIST project-model change
 (`skills/appstore-precheck/scripts/project-model.sh`, branch `feat/ast-iosdir-project-model`)
-against the same 18-app real panel, isolated from the fixes already measured above.
+against the same 18-app real panel, isolated from the fixes measured above. An earlier interim
+run of this section (commit `642c2d2`) found the feature was partly inert because of two bugs;
+both are now fixed and this is the re-measurement.
 
-### Method (churn-robust, per the trap this round already documented)
+- **BUG-1 (subshell scoping), fixed `791a584`:** `detect_ios_dir()` set `PM_INFO_PLIST` as a
+  side effect but was called via `IOS_DIR="$(detect_ios_dir)"` — a command substitution, which
+  bash runs in a subshell, so the custom-plist path never propagated and `INFO_PLIST` always
+  took the naive `IOS_DIR/Info.plist` fallback. The function now assigns its globals in the
+  parent shell. Effect: custom-named target plists (`Wikipedia/Experimental-Info.plist`,
+  `podcasts/podcasts-Info.plist`) are finally read.
+- **BUG-2 (single-pbxproj resolution), fixed `c8219da`:** `pm_resolve` looked at only the
+  shallowest `project.pbxproj`, picking the wrong app in multi-`.xcodeproj` monorepos. It now
+  enumerates every pbxproj and the global best (most `*.swift` sources) wins. Effect: the
+  `firefox-ios` real Client app is resolved instead of a sibling sample project.
 
-The label-keyed join (`app|rule_id|file|line|commit`) undercounts here by construction: this
-change alters the FILE/LINE of findings, which re-keys them. So the base/after comparison was
-done as **per-rule firing counts on identical clones scanned by both scanners**, not a label
-join:
+### Method (churn-robust, unchanged from the interim run)
 
-1. A worktree of the pre-#2b baseline (`27ab9e9`, the v1.6.0 release measured above) provided
-   the **old** scanner. The current tree provided the **new** scanner.
-2. Each of the 18 apps in `corpus/real/manifest.json` was cloned **once** (blobless) and checked
-   out at its pinned commit — identical to `scorecard-real.sh`. All 18 clones and checkouts
-   succeeded; **no clone failures**, so this measurement covers the full panel.
-3. That single clone was scanned with **both** scanners (`PRECHECK_VERSION=measure … --format
-   json`), and every non-PASS, non-suppressed `{rule_id, file, line}` finding was recorded for
-   both.
-4. Per-rule totals were aggregated across all 18 apps, base vs. new, then every app's finding
-   set was diffed (path-normalized to strip the cosmetic leading `./` some finds carry) to find
-   exactly which apps changed at all.
+The label-keyed join (`app|rule_id|file|line|commit`) undercounts by construction here: this
+change alters the FILE/LINE of findings, which re-keys them. So the comparison is **per-rule
+firing counts on identical clones scanned by both scanners**, not a label join.
+
+1. A worktree of the pre-#2b baseline (`27ab9e9`, the v1.6.0 release) provided the **base**
+   scanner (heuristic-only `IOS_DIR="$(detect_ios_dir)"`, no `project-model.sh`). The current
+   tree provided the **new** scanner.
+2. Each of the 18 apps in `corpus/real/manifest.json` was cloned **once** (blobless) at its
+   pinned commit and scanned by **both** scanners (`PRECHECK_VERSION=measure … --format json`);
+   every non-PASS, non-suppressed `{rule_id, file, line}` was recorded for each.
+3. All 18 clones and checkouts succeeded — **no clone failures**, full-panel result.
+4. Per-rule totals were aggregated base vs. new; every app's finding set was then diffed
+   (path-normalized to strip the cosmetic leading `./`) to find exactly which apps changed.
 
 ### Per-rule totals (all rules, both scanners, full panel)
 
-| Rule | before | after | Δ |
+| Rule | base | new | Δ |
 |---|---:|---:|---:|
 | `metadata-char-limits` | 146 | 146 | 0 |
+| `privacy-manifest-parity` | 23 | 23 | 0 |
 | `locale-metadata-parity` | 22 | 22 | 0 |
-| `privacy-manifest-parity` | 23 | 24 | **+1** |
 | `usage-description-crosscheck` | 9 | 7 | **−2** |
-| `export-compliance` | 5 | 7 | **+2** |
+| `ats-arbitrary-loads` | 5 | 6 | **+1** |
+| `demo-account` | 6 | 6 | 0 |
 | `subscription-links-restore` | 6 | 6 | 0 |
-| `demo-account` | 6 | 5 | **−1** |
-| `ats-arbitrary-loads` | 5 | 4 | **−1** |
+| `export-compliance` | 5 | 5 | 0 |
 | `analytics-privacyinfo-mismatch` | 4 | 4 | 0 |
 | `background-modes-unused` | 1 | 2 | **+1** |
-| `support-privacy-url` | 2 | 2 | 0 |
-| `safari-extension` | 2 | 2 | 0 |
 | `private-api` | 2 | 2 | 0 |
-| `vpn-networkextension` | 1 | 1 | 0 |
-| `ugc-no-moderation` | 1 | 1 | 0 |
-| `custom-review-prompt` | 1 | 1 | 0 |
+| `safari-extension` | 2 | 2 | 0 |
+| `support-privacy-url` | 2 | 2 | 0 |
 | `autorenew-disclosure` | 1 | 1 | 0 |
-| `min-functionality-nav` | 0 | 0 | 0 (already cleared pre-#2b) |
+| `custom-review-prompt` | 1 | 1 | 0 |
+| `ugc-no-moderation` | 1 | 1 | 0 |
+| `vpn-networkextension` | 1 | 1 | 0 |
 | **total** | **237** | **237** | 0 |
 
-The panel total is identical (237 → 237) — but that is a coincidence of aggregation, not
-evidence of "no change." Diffing every app's finding set (path-normalized) shows **15 of the 18
-apps are byte-identical between scanners**; all movement is concentrated in **3 apps**:
-`cwa-app-ios`, `firefox-ios`, `wikipedia-ios`. Those three are examined individually below,
-because the aggregate table alone would misrepresent what actually happened.
+All 11 non-detection-sensitive rules are identical base vs. new. Path-normalized diffing shows
+**14 of the 18 apps are byte-identical** between scanners; all movement is concentrated in
+**4 apps**: `wikipedia-ios`, `cwa-app-ios`, `pocket-casts-ios`, `brave-ios`. `firefox-ios` — the
+interim run's regression — is now byte-identical to base again.
 
-### `cwa-app-ios` — a genuine, verified fix
+The interim (buggy) run's four problems are all resolved:
 
-Old heuristic guessed `./src/xcode/ENA/ENA/Source/AppDelegate & Globals/Info.plist` — **a path
-that does not exist** at the pinned commit (verified: `ls` fails). The new pbxproj-driven
-resolution correctly reads `INFOPLIST_FILE = ENA/Resources/Info.plist` from `ENA.xcodeproj` and
-resolves to the **real, existing** production plist, which does contain real content
-(`NSCameraUsageDescription`, a populated `UIBackgroundModes` array). Effects, all traced to this
-one corrected path:
-- `usage-description-crosscheck` FP cleared (labelled `FP` in `corpus/real/labels.json`) — for
-  the **right** reason this time: the real plist has the purpose strings, not an artifact of
-  losing the file.
-- `privacy-manifest-parity` (labelled `TP`) now cites the real, existing file instead of a
-  fabricated path — same verdict, correct location.
-- `export-compliance` and `background-modes-unused` newly fire — because the real Info.plist has
-  content those rules inspect (no `ITSAppUsesNonExemptEncryption`; a real `UIBackgroundModes`
-  array). These are plausible new TPs surfaced by finally reading the real file, not detection
-  noise — unlabelled, so kept as directional per the honesty caveat below.
+| rule | base | interim (buggy) | now (fixed) | resolution |
+|---|---:|---:|---:|---|
+| `usage-description-crosscheck` | 9 | 7 | 7 | wikipedia now clears (interim: it did not) |
+| `export-compliance` | 5 | **7** | **5** | no longer worse; interim +2 was firefox mis-scope |
+| `privacy-manifest-parity` | 23 | **24** | **23** | firefox no longer mis-scoped |
+| `demo-account` | 6 | **5** | **6** | firefox TP preserved (interim lost it) |
+| `ats-arbitrary-loads` | 5 | **4** | **6** | firefox TP restored + one real new finding |
 
-### `firefox-ios` — a confirmed regression, root-caused
+### `wikipedia-ios` — the flagship predicted case now CLEARS
 
-This is a **monorepo with five sibling `.xcodeproj`s** at the same nesting depth: the real app
-(`firefox-ios/Client.xcodeproj`), a second real app (`focus-ios/Blockzilla.xcodeproj`), and three
-sample/demo projects (`SampleBrowser`, `SampleComponentLibraryApp`, `Deferred`). Old detection
-(the heuristic) correctly landed on `firefox-ios/Client/Info.plist` — this exact path is
-labelled `TP` for `ats-arbitrary-loads` in `corpus/real/labels.json`. New detection's
-`pm_find_pbxproj` picks the *shallowest* `project.pbxproj`, and when two candidates tie on depth
-it falls back to a plain lexicographic sort of the full path — `SampleBrowser/...` sorts before
-`firefox-ios/...` (`S` < `f` in ASCII), so the **sample browser project wins over the real app**.
-Verified effects on the identical clone:
-- **`ats-arbitrary-loads` — a labelled TP is lost.** The real `NSAllowsArbitraryLoads=true` in
-  `firefox-ios/Client/Info.plist` is no longer read at all; the new scan reads
-  `SampleBrowser/SampleBrowser/Info.plist` instead, which doesn't have the issue.
-  **This is a confirmed true-positive regression, not an artifact of the churn-robust method.**
-- `privacy-manifest-parity` loses a real, content-grounded `FAIL` (`SystemBootTime` used in
-  `firefox-ios/Client/Frontend/.../TabTrayThemeAnimator.swift` but undeclared) because the
-  required-reason-API code search is now scoped to the tiny `SampleBrowser` tree instead of the
-  real `Client` source tree. This label's key was already known to collapse multi-sub-finding
-  entries (see the churn note above), so it isn't independently labelled, but it is a real
-  content-based finding that the old scan produced and the new scan cannot see anymore.
-- `export-compliance` newly fires on `SampleBrowser/SampleBrowser/Info.plist` — a **new,
-  likely-false positive**: it's flagging the demo project, not the app that ships to the store.
-- `usage-description-crosscheck` and `demo-account` FPs (both labelled `FP`) clear — but for the
-  **wrong reason**: detection didn't correctly resolve the real app's plist and find it clean, it
-  narrowed scope to the sample project and stopped looking at the real one.
+Base resolved `Wikipedia/Code/Info.plist` (a naive-fallback path that does not exist). The new
+scanner resolves the real, custom-named `Wikipedia/Experimental-Info.plist` (7 `*UsageDescription`
+keys). Wikipedia ships four app-target plists, all in `Wikipedia/` and all custom-named
+(`Experimental-`, `Local-`, `Staging-`, `Wikipedia-Info.plist`); `pm_resolve` picks the first by
+source count — any of them carries the purpose strings and clears the crosscheck.
 
-**Follow-up (defect, not fixed in this task):** `pm_find_pbxproj`'s tie-break needs to prefer the
-target with the most sources (or explicitly deprioritize `Sample*`/`Demo*`-named projects), the
-same way `pm_resolve`'s own inner target-selection already does by Swift-file count — the
-tie-break at the *project* level currently has no such signal.
+| | base | new |
+|---|---|---|
+| `demo-account` | (null) | (null) |
+| `privacy-manifest-parity` ×3 | `Wikipedia/Resources/PrivacyInfo.xcprivacy` | `Wikipedia/Resources/PrivacyInfo.xcprivacy` |
+| `private-api` | `Wikipedia/Code/ArticleViewController+TableOfContents.swift:63` | `Wikipedia/Code/ArticleViewController+TableOfContents.swift:63` |
+| `usage-description-crosscheck` | `Wikipedia/Code/Info.plist` (labelled **FP**) | **— cleared —** |
 
-### `wikipedia-ios` — the flagship predicted case did **not** clear, a second bug found
+The `usage-description-crosscheck` FP is gone for the right reason — the real target plist with
+all purpose strings is now read, not an artifact of a missing file. This is BUG-1's fix landing
+on exactly the case the roadmap item named.
 
-The prior round's report named `wikipedia-ios` explicitly, predicting its custom-named-plist FP
-would clear once `IOS_DIR` detection correctly resolved. It did **not** clear — same WARN, same
-count (1→1), only the guessed (still wrong) path changed: `Wikipedia/Code/Info.plist` →
-`Wikipedia/Info.plist`. Neither path exists; the real plist is `Wikipedia/Wikipedia-Info.plist`
-(confirmed present, with 7 real `*UsageDescription` keys).
+### `firefox-ios` — the interim true-positive LOSS is RESTORED
 
-Root cause, confirmed by tracing `scan.sh` with `bash -x`: `detect_ios_dir()` sets
-`PM_INFO_PLIST` as a side effect, but it is invoked as `IOS_DIR="$(detect_ios_dir)"` —  a command
-substitution, which bash runs in a **subshell**. The `PM_INFO_PLIST=...` assignment inside that
-subshell never propagates back to the parent shell; the parent's `PM_INFO_PLIST` stays `""`
-(its initial value) for the entire scan, every time, for every app. `INFO_PLIST="${PM_INFO_PLIST:-
-${IOS_DIR%/}/Info.plist}"` therefore **always** takes the naive fallback branch — the
-INFOPLIST_FILE-driven custom-plist-name resolution that Tasks 1–3 built is silently inert.
+Base and new are **byte-identical**. `ats-arbitrary-loads` on `firefox-ios/Client/Info.plist`
+(labelled **TP** — the real `NSAllowsArbitraryLoads=true`) is present in BOTH scans. BUG-2's fix
+means `pm_resolve` now enumerates all five sibling `.xcodeproj`s and the real Client app (most
+sources) wins, instead of the interim run's `SampleBrowser` sample project.
 
-It happens to still produce the right file when the resolved directory's real plist is literally
-named `Info.plist` (as with `cwa-app-ios` above, and most conventional layouts) — the directory
-half of the fix (which IS correctly returned, since it's the function's real stdout, not a side
-channel) still moved `IOS_DIR` from the wrong `Wikipedia/Code` to the correct `Wikipedia`. But
-for the exact class of case that motivated this roadmap item — a target whose Info.plist has a
-non-default name — the fix cannot take effect at all.
+| | base | new |
+|---|---|---|
+| `ats-arbitrary-loads` | `firefox-ios/Client/Info.plist` (labelled **TP**) | `firefox-ios/Client/Info.plist` (**preserved**) |
+| `demo-account` | (null) | (null) |
+| `privacy-manifest-parity` | `firefox-ios/PrivacyInfo.xcprivacy` | `firefox-ios/PrivacyInfo.xcprivacy` |
+| `safari-extension` | (null) | (null) |
+| `usage-description-crosscheck` | `firefox-ios/Client/Info.plist` | `firefox-ios/Client/Info.plist` |
 
-**Follow-up (defect, not fixed in this task, high priority):** stop mutating `PM_INFO_PLIST` as
-a side effect of a function called via command substitution. Either have `detect_ios_dir` emit
-`DIR<TAB>PLIST` on its own stdout and have the caller `cut` both fields (mirroring
-`pm_resolve`'s own contract), or write the plist path to a file descriptor / temp file that
-survives the subshell. Until fixed, every custom-named-plist case behaves exactly like the
-pre-#2b heuristic.
+### `cwa-app-ios` and `pocket-casts-ios` — genuine fixes (bonus)
 
-### Zero-TP-loss verdict: **NOT verified — one confirmed regression**
+- **`cwa-app-ios`:** base guessed `.../Source/AppDelegate & Globals/Info.plist` (does not exist);
+  the new scanner reads the real `.../ENA/Resources/Info.plist`. `usage-description-crosscheck`
+  (labelled **FP**) clears; `privacy-manifest-parity` (labelled **TP**) now cites the real
+  existing file (same verdict); `export-compliance` and `background-modes-unused` newly fire on
+  the real plist (no `ITSAppUsesNonExemptEncryption`; a populated `UIBackgroundModes`) — plausible
+  content-grounded new findings, unlabelled.
+- **`pocket-casts-ios`:** base read the nonexistent `podcasts/Info.plist`; the new scanner reads
+  the declared custom-named `podcasts/podcasts-Info.plist`. `usage-description-crosscheck`
+  (labelled **FP**) clears (6 real purpose strings); `ats-arbitrary-loads` newly fires because
+  that real plist genuinely sets `NSAllowsArbitraryLoads=true` — a real, content-grounded finding
+  (unlabelled). This is BUG-1's fix landing on a second custom-named-plist app.
 
-The FP-reduction round's own discipline requires treating any TP loss as a defect rather than
-reporting success. Per-rule totals for 15/18 apps are unchanged, and one app (`cwa-app-ios`)
-improved for the right reason. But `firefox-ios` shows a **confirmed loss of a labelled true
-positive** (`ats-arbitrary-loads` on the real `NSAllowsArbitraryLoads=true`), caused by a
-specific, identified defect in `pm_find_pbxproj`'s tie-break logic on multi-project monorepos —
-not by the churn-robust method's known join-key limitations. This is reported as a regression,
-not papered over: **roadmap #2b is not ready to claim a net win on the real panel** until the two
-defects above (`pm_find_pbxproj` tie-break, `PM_INFO_PLIST` subshell scoping) are fixed and the
-panel is re-measured.
+### `brave-ios` — a separate, pre-existing detection gap (not a regression from these fixes)
+
+Both scanners mis-resolve `brave-ios` to the vendored `ThirdParty/Static` example, not brave's
+real app (base → `ThirdParty/Static/Static/Info.plist`; new → `ThirdParty/Static/Example/Info.plist`).
+Brave's real app is `App/Client.xcodeproj` (target **Client**), but that target declares no
+`INFOPLIST_FILE` whose leading path component is `Client` (its plist is `iOS/Supporting Files/Info.plist`)
+and there is no directory literally named `Client`, so `pm_resolve`'s GENERATE_INFOPLIST branch
+cannot map the target to a source dir and skips it — leaving only the vendored `Example` target
+(0 sources) to win by default. This gap **predates #2b**: the base heuristic was also wrong, just
+on a different vendored plist. The path change churns `export-compliance` (labelled FP) out and a
+new `usage-description-crosscheck` (unlabelled, likely FP) in, while `privacy-manifest-parity`
+still fires (count 1→1). All brave findings remain suspect because neither scanner reads its real
+app. Logged as a follow-up below.
+
+### `pm_resolve` picked app dirs (new scanner)
+
+| app | resolved ios dir | resolved plist |
+|---|---|---|
+| `wikipedia-ios` | `Wikipedia` | `Wikipedia/Experimental-Info.plist` |
+| `firefox-ios` | `firefox-ios/Client` | `firefox-ios/Client/Info.plist` |
+| `pocket-casts-ios` | `podcasts` | `podcasts/podcasts-Info.plist` |
+| `cwa-app-ios` | `src/xcode/ENA/ENA/Resources` | `src/xcode/ENA/ENA/Resources/Info.plist` |
+| `brave-ios` | `ThirdParty/Static/Example` | `ThirdParty/Static/Example/Info.plist` (wrong — vendored) |
+
+### Zero-TP-loss verdict: **VERIFIED across the full 18-app panel**
+
+Both interim defects are resolved with clean evidence:
+
+- No labelled true positive is lost. The `firefox-ios` `ats-arbitrary-loads` TP (the interim
+  regression) is restored; every `privacy-manifest-parity` TP still fires (count 23→23);
+  `demo-account`/`safari-extension` TPs preserved.
+- All net movement is FP removal (`wikipedia-ios`, `cwa-app-ios`, `pocket-casts-ios`
+  `usage-description-crosscheck` FPs, and the `brave-ios` `export-compliance` FP) plus real,
+  content-grounded findings surfaced by finally reading the correct plist (`cwa-app-ios`
+  `export-compliance`+`background-modes-unused`, `pocket-casts-ios` `ats-arbitrary-loads`).
+- One residual new likely-FP: `brave-ios usage-description-crosscheck` on the vendored `Example`
+  plist — a symptom of the separate, pre-existing `Client`-target → source-dir mapping gap above,
+  not a regression from BUG-1/BUG-2.
+
+**Follow-up (defect, not fixed in this task):** `pm_resolve` cannot map an app target to its
+source dir when the target's `INFOPLIST_FILE` prefix does not match the target name AND no
+directory is named after the target (`brave-ios`'s `Client`). It should fall back to the target's
+build-phase source group or its actual `INFOPLIST_FILE` directory before skipping the target and
+letting a vendored sample win.
 
 ### Honesty caveats (this section)
 
-- Panel labels remain **candidate**, agent-generated, pending human review — same caveat as the
-  rest of this report; they are used here only to confirm the one TP loss is real, not to grade
-  the new, unlabelled findings (`export-compliance`/`background-modes-unused` on `cwa-app-ios`,
-  `export-compliance` on `firefox-ios`).
-- No clone failures — all 18 apps in `corpus/real/manifest.json` were successfully cloned,
-  checked out, and scanned by both scanners; this measurement covers the full panel, not a
-  subset.
-- `docs/scorecard.md` (the synthetic-fixture scorecard) is **not regenerated** — this change
-  only affects real-repo, multi-target/pbxproj project layouts that the synthetic corpus doesn't
-  model, and `./scripts/scorecard.sh --check` (below) confirms the synthetic aggregate is
-  unmoved.
+- `corpus/real/labels.json` TP/FP labels are **candidate**, agent-generated, pending human review
+  — same caveat as the rest of this report. They are used here only to confirm the FP-clears and
+  the restored TP are real, not to grade the new unlabelled findings
+  (`cwa-app-ios`/`pocket-casts-ios`/`brave-ios`).
+- No clone failures — all 18 apps were cloned, checked out, and scanned by both scanners; this
+  covers the full panel, not a subset.
+- `docs/scorecard.md` (the synthetic-fixture scorecard) is **not** regenerated — this change only
+  affects real-repo multi-target/pbxproj layouts the synthetic corpus does not model, and
+  `./scripts/scorecard.sh --check` confirms the synthetic aggregate (precision 1.00) is unmoved.
 - This measurement does not claim agreement with Apple's actual review decisions; it measures
   detection-path correctness on real repos against the existing candidate labels and direct
   inspection of the cloned source.
