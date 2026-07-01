@@ -161,5 +161,39 @@ assert_eq "$([[ -n "$got" ]] && echo nonempty || echo empty)" "nonempty" "resolv
 assert_eq "$(printf '%s' "$got" | cut -f1)" "xbuild/MyApp" "resolve does not prune a dir that only resembles .build/.git"
 rm -rf "$lookalike"
 
+# --- pm_find_pbxprojs: returns ALL pruned project.pbxproj, not just the shallowest ---
+multiproj="$(mktemp -d)"
+mkdir -p "$multiproj/Sample.xcodeproj" "$multiproj/SampleApp" \
+         "$multiproj/app/RealApp.xcodeproj" "$multiproj/app/RealApp"
+cat > "$multiproj/Sample.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* SampleApp */ = {
+			isa = PBXNativeTarget;
+			name = SampleApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+printf 'INFOPLIST_FILE = SampleApp/Info.plist;\n' >> "$multiproj/Sample.xcodeproj/project.pbxproj"
+touch "$multiproj/SampleApp/App.swift" "$multiproj/SampleApp/Info.plist"
+cat > "$multiproj/app/RealApp.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* RealApp */ = {
+			isa = PBXNativeTarget;
+			name = RealApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+printf 'INFOPLIST_FILE = RealApp/Info.plist;\n' >> "$multiproj/app/RealApp.xcodeproj/project.pbxproj"
+touch "$multiproj/app/RealApp/App.swift" "$multiproj/app/RealApp/A.swift" "$multiproj/app/RealApp/B.swift"
+touch "$multiproj/app/RealApp/Info.plist"
+
+found_count="$(pm_find_pbxprojs "$multiproj" | wc -l | tr -d ' ')"
+assert_eq "$found_count" "2" "pm_find_pbxprojs returns both pbxproj paths in a multi-project tree"
+
+# --- pm_resolve: monorepo with a shallow sample .xcodeproj and a deeper real app;
+# the real app (more swift sources) must win, even though it is NOT the shallowest ---
+got="$(pm_resolve "$multiproj")"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "app/RealApp" "resolve picks the real app across all pbxproj, not the shallow sample"
+assert_eq "$(printf '%s' "$got" | cut -f2)" "app/RealApp/Info.plist" "resolve returns the real app's declared plist"
+rm -rf "$multiproj"
+
 echo "test-project-model: OK"
 exit "$fails"

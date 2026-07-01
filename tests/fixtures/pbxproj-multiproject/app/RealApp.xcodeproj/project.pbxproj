@@ -1,0 +1,13 @@
+// !$*UTF8*$!
+{
+	objects = {
+		AAA /* RealApp */ = {
+			isa = PBXNativeTarget;
+			name = RealApp;
+			productType = "com.apple.product-type.application";
+		};
+	};
+	buildSettings = {
+		INFOPLIST_FILE = RealApp/Info.plist;
+	};
+}

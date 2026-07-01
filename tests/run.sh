@@ -341,6 +341,11 @@ assert_has    "ios='AppB'"                  "project-model picks the app with mo
 assert_absent "ios='AppA'"                  "the smaller application target does not win"
 finish_fixture
 
+check_fixture "pbxproj-multiproject" "monorepo: shallow sample .xcodeproj + deeper real app"
+assert_has    "ios='app/RealApp'"   "resolver picks the real app across all pbxproj, not the shallow sample"
+assert_absent "ios='SampleApp'"     "the shallow sample sub-project does not win"
+finish_fixture
+
 # ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then

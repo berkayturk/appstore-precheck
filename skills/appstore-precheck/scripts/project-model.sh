@@ -40,45 +40,61 @@ pm_find_pbxproj() {
     | awk '{ print gsub(/\//,"/"), $0 }' | sort -n | head -1 | cut -d' ' -f2-
 }
 
+# pm_find_pbxprojs <root> -> all project.pbxproj under *.xcodeproj (pruned), deterministic order.
+pm_find_pbxprojs() {
+  local root="${1:-.}"
+  find "$root" -name 'project.pbxproj' -path '*.xcodeproj/*' 2>/dev/null \
+    | grep -Ev "/($PM_PRUNE_DIRS)/" \
+    | LC_ALL=C sort
+}
+
 # pm_resolve <root> -> "DIR<TAB>PLIST" (ROOT-relative; PLIST may be empty) for the
 # primary app target, or non-zero with no output.
+#
+# A monorepo may contain several .xcodeproj (samples, sub-projects, the real
+# app). The shallowest one is not necessarily the real app, so every pbxproj
+# is resolved on its own terms (against its own SRCROOT-relative projdir) and
+# the single global best — most *.swift sources — wins across all of them.
 pm_resolve() {
-  local root="${1:-.}" pbx rel projdir apps plists app plist dir n
-  local best="" best_plist="" best_n=-1
+  local root="${1:-.}" pbx rel projdir apps plists app plist dir n cand_dir cand_plist
+  local best="" best_plist="" best_n=-1 found=0
   # Normalize a trailing slash so the ROOT-relative strip below reliably matches
   # (root="/" strips to "" and must stay "/"; root="." is untouched).
   root="${root%/}"; [[ -z "$root" ]] && root="/"
-  pbx="$(pm_find_pbxproj "$root")"; [[ -z "$pbx" ]] && return 1
-  # ROOT-relative dir that contains the .xcodeproj (SRCROOT). INFOPLIST_FILE paths
-  # and the app source dir are relative to this.
-  rel="${pbx#"$root"/}"                 # e.g. ios/App.xcodeproj/project.pbxproj
-  projdir="$(dirname "$(dirname "$rel")")"; projdir="${projdir#./}"
-  [[ "$projdir" == "." ]] && projdir=""
-  apps="$(pm_app_targets "$pbx")"; [[ -z "$apps" ]] && return 1
-  plists="$(pm_infoplist_files "$pbx")"
-  while IFS= read -r app; do
-    [[ -z "$app" ]] && continue
-    # A declared plist whose leading path component equals the app target name.
-    plist="$(printf '%s\n' "$plists" | awk -v a="$app" -F/ '$1==a{print; exit}')"
-    if [[ -n "$plist" ]]; then
-      dir="$(dirname "$plist")"
-    else
-      # GENERATE_INFOPLIST_FILE: no app plist. Use the dir named after the target.
-      dir="$(cd "$root${projdir:+/$projdir}" 2>/dev/null && \
-             find . -type d -name "$app" 2>/dev/null | sed 's#^\./##' \
-             | awk '{print length, $0}' | sort -n | head -1 | cut -d' ' -f2-)"
-      [[ -z "$dir" ]] && continue
-    fi
-    n="$(cd "$root${projdir:+/$projdir}" 2>/dev/null && \
-         find "$dir" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')"
-    if (( n > best_n )); then
-      best_n=$n; best="$dir"; best_plist="$plist"
-    fi
-  done <<< "$apps"
-  [[ -z "$best" ]] && return 1
-  # Prefix the projdir so paths are ROOT-relative.
-  local out_dir="${projdir:+$projdir/}$best"
-  local out_plist=""
-  [[ -n "$best_plist" ]] && out_plist="${projdir:+$projdir/}$best_plist"
-  printf '%s\t%s\n' "$out_dir" "$out_plist"
+  while IFS= read -r pbx; do
+    [[ -z "$pbx" ]] && continue
+    apps="$(pm_app_targets "$pbx")"; [[ -z "$apps" ]] && continue
+    found=1
+    # ROOT-relative dir that contains this .xcodeproj (SRCROOT). Its
+    # INFOPLIST_FILE paths and app source dir are relative to this.
+    rel="${pbx#"$root"/}"                 # e.g. ios/App.xcodeproj/project.pbxproj
+    projdir="$(dirname "$(dirname "$rel")")"; projdir="${projdir#./}"
+    [[ "$projdir" == "." ]] && projdir=""
+    plists="$(pm_infoplist_files "$pbx")"
+    while IFS= read -r app; do
+      [[ -z "$app" ]] && continue
+      # A declared plist whose leading path component equals the app target name.
+      plist="$(printf '%s\n' "$plists" | awk -v a="$app" -F/ '$1==a{print; exit}')"
+      if [[ -n "$plist" ]]; then
+        dir="$(dirname "$plist")"
+      else
+        # GENERATE_INFOPLIST_FILE: no app plist. Use the dir named after the target.
+        dir="$(cd "$root${projdir:+/$projdir}" 2>/dev/null && \
+               find . -type d -name "$app" 2>/dev/null | sed 's#^\./##' \
+               | awk '{print length, $0}' | sort -n | head -1 | cut -d' ' -f2-)"
+        [[ -z "$dir" ]] && continue
+      fi
+      n="$(cd "$root${projdir:+/$projdir}" 2>/dev/null && \
+           find "$dir" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')"
+      # Prefix the projdir so paths are ROOT-relative before comparing/storing.
+      cand_dir="${projdir:+$projdir/}$dir"
+      cand_plist=""
+      [[ -n "$plist" ]] && cand_plist="${projdir:+$projdir/}$plist"
+      if (( n > best_n )); then
+        best_n=$n; best="$cand_dir"; best_plist="$cand_plist"
+      fi
+    done <<< "$apps"
+  done <<< "$(pm_find_pbxprojs "$root")"
+  [[ $found -eq 0 || -z "$best" ]] && return 1
+  printf '%s\t%s\n' "$best" "$best_plist"
 }
