@@ -195,5 +195,28 @@ assert_eq "$(printf '%s' "$got" | cut -f1)" "app/RealApp" "resolve picks the rea
 assert_eq "$(printf '%s' "$got" | cut -f2)" "app/RealApp/Info.plist" "resolve returns the real app's declared plist"
 rm -rf "$multiproj"
 
+# --- pm_resolve: multi-app tie on equal .swift counts keeps the first-seen target
+# (n > best_n is a strict inequality, so ordering — not magnitude — decides ties) ---
+tie="$(mktemp -d)"
+mkdir -p "$tie/App.xcodeproj" "$tie/AppOne" "$tie/AppTwo"
+cat > "$tie/App.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* AppOne */ = {
+			isa = PBXNativeTarget;
+			name = AppOne;
+			productType = "com.apple.product-type.application";
+		};
+		BBB /* AppTwo */ = {
+			isa = PBXNativeTarget;
+			name = AppTwo;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+printf 'INFOPLIST_FILE = AppOne/Info.plist;\n' >> "$tie/App.xcodeproj/project.pbxproj"
+printf 'INFOPLIST_FILE = AppTwo/Info.plist;\n' >> "$tie/App.xcodeproj/project.pbxproj"
+touch "$tie/AppOne/App.swift" "$tie/AppOne/Info.plist"
+touch "$tie/AppTwo/App.swift" "$tie/AppTwo/Info.plist"
+assert_eq "$(pm_resolve "$tie" | cut -f1)" "AppOne" "resolve keeps the first-seen target on an equal-count tie"
+rm -rf "$tie"
+
 echo "test-project-model: OK"
 exit "$fails"

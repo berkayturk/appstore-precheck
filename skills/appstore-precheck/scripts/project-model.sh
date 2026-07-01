@@ -32,14 +32,6 @@ pm_infoplist_files() {
 # Vendored dirs whose .xcodeproj must never win detection.
 PM_PRUNE_DIRS='node_modules|Pods|Carthage|\.build|DerivedData|\.git'
 
-# pm_find_pbxproj <root> -> shallowest project.pbxproj under an *.xcodeproj (pruned), or "".
-pm_find_pbxproj() {
-  local root="${1:-.}"
-  find "$root" -name 'project.pbxproj' -path '*.xcodeproj/*' 2>/dev/null \
-    | grep -Ev "/($PM_PRUNE_DIRS)/" \
-    | awk '{ print gsub(/\//,"/"), $0 }' | sort -n | head -1 | cut -d' ' -f2-
-}
-
 # pm_find_pbxprojs <root> -> all project.pbxproj under *.xcodeproj (pruned), deterministic order.
 pm_find_pbxprojs() {
   local root="${1:-.}"
