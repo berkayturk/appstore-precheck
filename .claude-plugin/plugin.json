@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "appstore-precheck",
   "description": "Read-only iOS App Store pre-submission check: static scan, optional fastlane precheck, guideline drift watch, Pierre explains every FAIL and WARN, and semantic deep review before you submit.",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "author": {
     "name": "Berkay Turk",
     "url": "https://github.com/berkayturk"

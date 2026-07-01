@@ -5,8 +5,26 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-07-01
+
+Measurement release: structured findings, suppression, and a published
+precision/recall scorecard, plus a measurement-driven false-positive reduction
+round. Default text output stays byte-identical (verified across 11 fixtures);
+every behavior change is gated by TDD and the synthetic-corpus `--check`.
+
 ### Added
-- `scan.sh --format json`: structured findings output (stable `rule_id` per vector, severity, guideline, message, optional file/line) for tooling and measurement. Default text output is unchanged.
+- **`scan.sh --format json`**: structured findings envelope (`{tool, version, verdict, summary{fail,warn,pass,suppressed}, findings[{rule_id, severity, guideline, message, file, line, suppressed}]}`) for tooling and measurement. Stable `rule_id` per vector via a 41-slug catalog. Default text output is unchanged.
+- **`.precheck-ignore` suppression**: repo-root rules (`<rule-id>`, `<rule-id> <path-glob>`, `<path-glob>`-exclude) and inline `# precheck:ignore [rule-id]` directives (`//`, `#`, `<!-- -->`). Suppression is emit-time — a suppressed FAIL no longer forces RED — and always transparent: suppressed findings stay in `findings[]` with `suppressed:true`, count in `summary.suppressed`, and a text footer reports the count only when non-zero (byte-identity preserved otherwise).
+- **Precision/recall scorecard**: `scripts/scorecard.sh` (`--check` / `--selftest` / default) over a synthetic labelled corpus (`corpus/synthetic/labels.json`), plus `scripts/scorecard-real.sh` over an 18-app commit-pinned open-source real panel (`corpus/real/`). Published to `docs/scorecard.md` with a mandatory honesty section (neither corpus claims agreement with Apple's actual decisions). Synthetic `--check` is a blocking CI gate; the real panel is non-blocking.
+- File/line threading into locatable checks (surfaced in JSON; text output unchanged).
+
+### Fixed
+- **False-positive reduction round** (measurement-driven; ~33 FP eliminated across the 18-app panel with zero true-positive loss, char-limit-excluded precision 0.37 → ~0.54):
+  - **Analytics detection** now requires an import/API-qualified form, so a bare `Segment` substring (e.g. `UISegmentedControl`) no longer trips 5.1.1.
+  - **IAP gate** requires a real purchase API, ignoring `SKStoreReviewController` / `SKAdNetwork` / the `AppStore.` namespace.
+  - **Usage-description checks** are capture-gated: playback-only AVFoundation / PhotosPicker no longer false-fire; mic matches `.playAndRecord`; video-only `AVCaptureDevice` no longer triggers the microphone check.
+  - **Minimum-functionality navigation** detects UIKit / `NavigationView` / React-Navigation repo-wide.
+  - **Screenshots-per-locale**: no in-repo screenshots directory is an advisory PASS (managed in App Store Connect), not a WARN.
 
 ## [1.5.2] - 2026-06-30
 
