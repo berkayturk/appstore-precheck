@@ -52,3 +52,4 @@ got="$(pm_infoplist_files "$work/plists.pbxproj" | tr '\n' '|')"
 assert_eq "$got" "MyApp/Info.plist|MyWidget/Info.plist|" "pm_infoplist_files unquotes + dedupes + sorts"
 
 echo "test-project-model: OK"
+exit "$fails"
