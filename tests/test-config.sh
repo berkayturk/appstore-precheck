@@ -54,6 +54,15 @@ fi
 assert_absent  "$no_cfg" "key 'my_sub_key' present" "custom disclosure key not used without config"
 assert_absent  "$no_cfg" "5.1.5 Screen Time"        "FamilyControls check off by default"
 
+# Regression: without config, auto-detection lands on decoy/ (see layout_no
+# above), yet the TabView nav hub lives under custom/src/ — OUTSIDE the
+# auto-detected iOS dir. §12 (4.2 Minimum functionality) must still find it
+# because the grep is repo-wide (`.` + GREP_PRUNE), not scoped to $IOS_DIR. If
+# a future change reverts the grep target back to "$IOS_DIR", this fails.
+section "nav hub found repo-wide, outside auto-detected iOS dir (locks scope-widening)"
+assert_contains "$no_cfg" "PASS: 4.2 Minimum functionality" \
+  "config-app: nav hub found repo-wide, outside auto-detected iOS dir (locks scope-widening)"
+
 # Regression: the no-config path has 0 locales; the scan must still complete (it used
 # to crash on empty-array expansion under bash 3.2 set -u).
 section "no-config scan completes (empty-LOCALES regression)"
