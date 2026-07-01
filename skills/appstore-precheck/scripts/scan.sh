@@ -471,7 +471,7 @@ fi
 # §12 — 4.2 Minimum functionality — navigation hubs
 # ===================================================================
 set_rule "min-functionality-nav"
-tab_count=$(grep -rcE 'TabView|NavigationStack|NavigationSplitView' "$IOS_DIR" --include="*.swift" 2>/dev/null | awk -F: '{sum+=$2} END {print sum+0}')
+tab_count=$(grep -rcE 'TabView|NavigationStack|NavigationSplitView|NavigationView|UITabBarController|UINavigationController|createBottomTabNavigator|createStackNavigator|createNativeStackNavigator' . "${GREP_PRUNE[@]}" --include='*.swift' --include='*.m' --include='*.js' --include='*.jsx' --include='*.ts' --include='*.tsx' 2>/dev/null | awk -F: '{sum+=$2} END {print sum+0}')
 if (( tab_count < 1 )); then
   warn "4.2 Minimum functionality — no TabView/NavigationStack found (heuristic, may be a false positive)"
 else

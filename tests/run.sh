@@ -308,6 +308,19 @@ assert_has "FAIL: 5.1.1 microphone/recording API used but Info.plist is missing 
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# uikit-nav-app — navigation is pure UIKit (UITabBarController root embedded in
+# a UINavigationController), with NO SwiftUI TabView/NavigationStack anywhere.
+# The old §12 pattern only matched SwiftUI tokens inside the auto-detected
+# $IOS_DIR, so a real multi-screen UIKit app false-flagged 4.2 Minimum
+# functionality (real-panel FP). The broadened, repo-wide pattern must
+# recognize UIKit's own nav-hub APIs.
+# ---------------------------------------------------------------------------
+check_fixture "uikit-nav-app" "pure UIKit UITabBarController/UINavigationController nav (§12 false-positive regression)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "WARN: 4.2 Minimum functionality"                           "uikit-nav: no 4.2 FP for a UIKit UITabBarController app"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then
   echo "ALL TESTS PASSED"
