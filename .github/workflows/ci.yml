@@ -28,6 +28,7 @@ jobs:
                      skills/appstore-precheck/scripts/verdict.sh \
                      skills/appstore-precheck/scripts/phase2-precheck.sh \
                      skills/appstore-precheck/scripts/findings.sh \
+                     skills/appstore-precheck/scripts/suppress.sh \
                      hooks/fastlane-guard.sh \
                      install.sh \
                      tests/run.sh \
@@ -39,7 +40,11 @@ jobs:
                      tests/test-phase2.sh \
                      tests/test-findings.sh \
                      tests/test-format-json.sh \
-                     scripts/check-versions.sh
+                     tests/test-suppress.sh \
+                     tests/test-scorecard.sh \
+                     scripts/check-versions.sh \
+                     scripts/scorecard.sh \
+                     scripts/scorecard-real.sh
 
       - name: Validate JSON
         run: |
@@ -52,6 +57,9 @@ jobs:
                    skills/appstore-precheck/guidelines-baseline.json \
                    skills/appstore-precheck/config.example.json \
                    skills/appstore-precheck/evals/evals.json \
+                   corpus/synthetic/labels.json \
+                   corpus/real/manifest.json \
+                   corpus/real/labels.json \
                    package.json; do
             echo "validating $f"
             jq empty "$f"
@@ -62,3 +70,15 @@ jobs:
 
       - name: Run fixture tests
         run: npm test
+
+      - name: Scorecard up to date (synthetic)
+        run: bash scripts/scorecard.sh --check
+
+  real-panel:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Real-app panel (informational)
+        run: bash scripts/scorecard.sh --real

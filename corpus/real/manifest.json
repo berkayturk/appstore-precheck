@@ -1,0 +1,23 @@
+{
+  "_doc": "Pinned real-app panel for scripts/scorecard-real.sh. Every {repo,commit,license} value below was resolved live via `gh api repos/{owner}/{repo}` (license.spdx_id) and `gh api repos/{owner}/{repo}/commits/HEAD` (sha) — none invented. Only MIT / Apache-2.0 / BSD-2-Clause / BSD-3-Clause / MPL-2.0 licensed repos are eligible. See corpus/real/labels.json for the human TP/FP labelling pass (seeded empty until reviewed) and .superpowers/sdd/task-5-report.md for the verification log.",
+  "apps": [
+    { "name": "wikipedia-ios",   "repo": "https://github.com/wikimedia/wikipedia-ios",         "commit": "eaa5bd2c07f1e76fea78a73b39a7480193b95c34", "license": "MIT" },
+    { "name": "ios-oss",         "repo": "https://github.com/kickstarter/ios-oss",             "commit": "0b8ab6d2f4074a72740330a4b4829a1074e1405e", "license": "Apache-2.0" },
+    { "name": "duckduckgo-ios",  "repo": "https://github.com/duckduckgo/iOS",                  "commit": "7b3f6010d27a3a69fe92a2ad698543f2e67c8900", "license": "Apache-2.0" },
+    { "name": "firefox-ios",     "repo": "https://github.com/mozilla-mobile/firefox-ios",      "commit": "7568102ebf8d1ef65a22f26db8d4a8f67264c249", "license": "MPL-2.0" },
+    { "name": "focus-ios",       "repo": "https://github.com/mozilla-mobile/focus-ios",        "commit": "a2832521c1daa0c23419c73705ae043ed60c9791", "license": "MPL-2.0" },
+    { "name": "pocket-casts-ios","repo": "https://github.com/Automattic/pocket-casts-ios",     "commit": "120d7c705a04d8f0d8d9a502faae02e6ba4a96b5", "license": "MPL-2.0" },
+    { "name": "brave-ios",       "repo": "https://github.com/brave/brave-ios",                 "commit": "398f8b763aa88cdc23289138863d62f05b2c2a23", "license": "MPL-2.0" },
+    { "name": "eigen",           "repo": "https://github.com/artsy/eigen",                     "commit": "d9483de34573cfec130e68188c03d476c20c2c73", "license": "MIT" },
+    { "name": "openfoodfacts-ios","repo": "https://github.com/openfoodfacts/openfoodfacts-ios","commit": "35cf4ea57788a953b8a2001de0f68beea00ebb9a", "license": "Apache-2.0" },
+    { "name": "quran-ios",       "repo": "https://github.com/quran/quran-ios",                 "commit": "c6bccb56289d50b5fd9602d69e76eddb9df71bd4", "license": "Apache-2.0" },
+    { "name": "cwa-app-ios",     "repo": "https://github.com/corona-warn-app/cwa-app-ios",     "commit": "02c629b695e64643b3d8a06dff290eb59ae14ad3", "license": "Apache-2.0" },
+    { "name": "movie-swiftui",   "repo": "https://github.com/Dimillian/MovieSwiftUI",          "commit": "72eb4ae7117fbf893be533c9a277c47a7287d87e", "license": "Apache-2.0" },
+    { "name": "achnbrowserui",   "repo": "https://github.com/Dimillian/ACHNBrowserUI",         "commit": "7bcb4e383a740fd81ae3ef6498a3f1757de24460", "license": "Apache-2.0" },
+    { "name": "papr",            "repo": "https://github.com/jdisho/Papr",                     "commit": "c9464b1bf95f2144b96fc68dcc474186c24c855f", "license": "Apache-2.0" },
+    { "name": "enchanted",       "repo": "https://github.com/gluonfield/enchanted",             "commit": "84d0e26df7b2add017bedb8ca1f60d824ed337a6", "license": "Apache-2.0" },
+    { "name": "swift-chat",      "repo": "https://github.com/huggingface/swift-chat",          "commit": "7e9c33255f9801e8d59cf5ebbb5793a23c9d136e", "license": "Apache-2.0" },
+    { "name": "ehpanda",         "repo": "https://github.com/EhPanda-Team/EhPanda",            "commit": "b40a2eb3d3613bd8cee1a610bfb8e33a18b47fdd", "license": "MIT" },
+    { "name": "asspp",           "repo": "https://github.com/Lakr233/Asspp",                   "commit": "c736de25aff112b5118fe5e9567beb1ac944f628", "license": "MIT" }
+  ]
+}

@@ -48,6 +48,23 @@ _record() {
       suppressed:false}' >> "$FINDINGS_TMP"
 }
 
+: "${_SUPPRESSED_COUNT:=0}"
+
+# _record_suppressed <severity> <message> [<file>] [<line>]
+# Same JSONL record as _record but suppressed:true, and bumps the counter.
+_record_suppressed() {
+  [[ -z "$FINDINGS_TMP" ]] && { _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1)); return 0; }
+  local sev="$1" msg="$2" file="${3:-}" line="${4:-}" guideline
+  guideline="$(printf '%s' "$msg" | awk '{print $1}')"
+  jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
+        --arg m "$msg" --arg f "$file" --arg l "$line" \
+    '{rule_id:$r, severity:$s, guideline:$g, message:$m,
+      file:(if $f=="" then null else $f end),
+      line:(if $l=="" then null else ($l|tonumber) end),
+      suppressed:true}' >> "$FINDINGS_TMP"
+  _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1))
+}
+
 : "${PRECHECK_VERSION:=dev}"
 
 # render_json -> prints the structured envelope. Verdict reuses verdict.sh thresholds
