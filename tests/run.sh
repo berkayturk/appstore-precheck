@@ -321,6 +321,15 @@ assert_has "---END-OF-SCAN---"                                            "scann
 assert_absent "WARN: 4.2 Minimum functionality"                           "uikit-nav: no 4.2 FP for a UIKit UITabBarController app"
 finish_fixture
 
+check_fixture "pbxproj-generate-app" "app uses GENERATE_INFOPLIST_FILE; extension owns the only plist"
+assert_has  "PASS: layout — ios='MyApp'"  "project-model picks the app dir, not the extension"
+assert_absent "ios='MyWidget'"            "detection does not land on the extension dir"
+finish_fixture
+
+check_fixture "pbxproj-multiapp" "two application targets; the larger one wins"
+assert_has  "ios='AppB'"                  "project-model picks the app with more sources"
+finish_fixture
+
 # ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then

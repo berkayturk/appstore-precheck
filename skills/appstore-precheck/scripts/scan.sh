@@ -14,6 +14,7 @@ cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit
 
 source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/suppress.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/project-model.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
 trap 'rm -f "$FINDINGS_TMP"' EXIT
 FORMAT="text"
@@ -112,6 +113,14 @@ NONAPP_TARGET='(Watch|Extension|Widget|Intents|Clip|Notification|Share|Sticker|T
 detect_ios_dir() {
   local d; d=$(cfg '.iosSourceDir')
   [[ -n "$d" ]] && { echo "$d"; return; }
+  # Authoritative: parse the Xcode project model when a .pbxproj exists.
+  local pm; pm="$(pm_resolve . 2>/dev/null)"
+  if [[ -n "$pm" ]]; then
+    PM_INFO_PLIST="$(printf '%s' "$pm" | cut -f2)"
+    printf '%s' "$pm" | cut -f1
+    return
+  fi
+  # Fallback: the original grep heuristic (unchanged).
   local candidates plist entry
   candidates=$(
     find . "${PRUNE[@]}" -name Info.plist 2>/dev/null | while IFS= read -r plist; do dirname "$plist"; done
@@ -133,13 +142,14 @@ detect_ios_dir() {
   echo "$alt"
 }
 
+PM_INFO_PLIST=""
 IOS_DIR="$(detect_ios_dir)"
 META_DIR="$(cfg '.metadataDir')";      [[ -z "$META_DIR" ]]   && META_DIR="$(detect_first -type d -name metadata -path '*fastlane*')"
 SCREEN_DIR="$(cfg '.screenshotsDir')"; [[ -z "$SCREEN_DIR" ]] && SCREEN_DIR="$(detect_first -type d -name screenshots -path '*fastlane*')"
 XCSTRINGS="$(cfg '.xcstringsPath')";   [[ -z "$XCSTRINGS" ]]  && XCSTRINGS="$(detect_first -name 'Localizable.xcstrings')"
 [[ -z "$XCSTRINGS" ]] && XCSTRINGS="$(detect_first -name '*.xcstrings')"
 PRIVACY_FILE="$(detect_first -name 'PrivacyInfo.xcprivacy')"
-INFO_PLIST="${IOS_DIR%/}/Info.plist"
+INFO_PLIST="${PM_INFO_PLIST:-${IOS_DIR%/}/Info.plist}"
 REVIEW_PREP="$(cfg '.reviewPrepNotes')"
 
 # Paywall / subscription views. A real app spreads its purchase UI across several files
