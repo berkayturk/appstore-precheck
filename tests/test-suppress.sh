@@ -56,6 +56,24 @@ is_suppressed "anything" "$src" "3" && r=0 || r=1
 assert_eq "$r" "0" "bare inline marker on the line above"
 is_suppressed "kids-wording" "$src" "1" && r=0 || r=1
 assert_eq "$r" "1" "scoped inline marker does not suppress a different rule"
+is_suppressed "private-api" "$src" "4" && r=0 || r=1
+assert_eq "$r" "1" "prose mention of marker is not a directive"
+
+# --- inline: plist-style HTML comment marker ---
+plist="$work/Info.plist"
+printf '%s\n' \
+  '<!-- precheck:ignore -->' \
+  '<key>NSAllowsArbitraryLoads</key>' \
+  '<!-- precheck:ignore ats-arbitrary-loads -->' > "$plist"
+_SUPP_RULES=""; _SUPP_RULE_PATH=""; _SUPP_PATHS=""      # inline path is independent of file rules
+is_suppressed "private-api" "$plist" "1" && r=0 || r=1
+assert_eq "$r" "0" "bare plist-close marker suppresses any rule"
+is_suppressed "ats-arbitrary-loads" "$plist" "1" && r=0 || r=1
+assert_eq "$r" "0" "bare plist-close marker does not capture -- as a rule"
+is_suppressed "ats-arbitrary-loads" "$plist" "3" && r=0 || r=1
+assert_eq "$r" "0" "scoped plist-close marker suppresses its own rule"
+is_suppressed "private-api" "$plist" "3" && r=0 || r=1
+assert_eq "$r" "1" "scoped plist-close marker does not suppress a different rule"
 
 echo "test-suppress: OK"
 exit "$fails"
