@@ -9,6 +9,10 @@
     "expect_fire": [],
     "expect_absent": ["subscription-links-restore"]
   },
+  "review-prompt-app": {
+    "expect_fire": [],
+    "expect_absent": ["subscription-links-restore"]
+  },
   "root-app": {
     "expect_fire": [],
     "expect_absent": ["private-api"]

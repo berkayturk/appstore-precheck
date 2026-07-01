@@ -97,6 +97,19 @@ assert_absent "FAIL: 3.1.2"                                               "no pa
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# review-prompt-app — the only StoreKit usage is a rating prompt
+# (SKStoreReviewController.requestReview), no purchase API and no paywall view.
+# Bare `import StoreKit` used to be enough to set iap_detected, so this app got
+# false-flagged with 3.1.2 paywall FAILs it doesn't deserve. The IAP gate must
+# require an actual purchase-API signal (or a paywall view) before running.
+# ---------------------------------------------------------------------------
+check_fixture "review-prompt-app" "StoreKit used only for a rating prompt"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "FAIL: 3.1.2"                                               "review-prompt: no paywall FAIL when StoreKit is only a rating prompt"
+assert_has "PASS: 3.1.2 IAP — no in-app purchase"                         "review-prompt: IAP gate correctly skips"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 # root-app — Xcode source + fastlane live at the fixture ROOT (no ios/ nesting).
 # Auto-detection must still resolve a non-empty iOS source dir.
 # ---------------------------------------------------------------------------

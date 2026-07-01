@@ -360,7 +360,7 @@ fi
 # In-app purchase gate — only run 3.1.2 checks if IAP signals exist
 # ===================================================================
 iap_detected=""
-grep -rqE 'import StoreKit|RevenueCat|Purchases\.|Product\(for:|AppStore\.|SKProduct|StoreKit2' "$IOS_DIR" --include="*.swift" 2>/dev/null && iap_detected=1
+grep -rqE 'SKPaymentQueue|SKProduct|SKMutablePayment|Product\.products|Product\(for:|Product\(id:|\.purchase\(|Transaction\.currentEntitlements|Transaction\.updates|RevenueCat|Purchases\.(shared|configure|logIn|getProducts)|Adapty|Glassfy|import Qonversion' "$IOS_DIR" --include="*.swift" 2>/dev/null && iap_detected=1
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
