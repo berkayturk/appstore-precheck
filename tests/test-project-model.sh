@@ -129,5 +129,37 @@ pm_resolve "$none" >/dev/null && r=0 || r=1
 assert_eq "$r" "1" "resolve fails cleanly when no pbxproj is present"
 rm -rf "$none"
 
+# --- pm_resolve: trailing-slash root still yields ROOT-relative paths (Fix 1) ---
+slash="$(mktemp -d)"
+mkdir -p "$slash/ios/App.xcodeproj" "$slash/ios/MyApp"
+cat > "$slash/ios/App.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* MyApp */ = {
+			isa = PBXNativeTarget;
+			name = MyApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+printf 'INFOPLIST_FILE = MyApp/Info.plist;\n' >> "$slash/ios/App.xcodeproj/project.pbxproj"
+touch "$slash/ios/MyApp/App.swift" "$slash/ios/MyApp/Info.plist"
+assert_eq "$(pm_resolve "$slash/")" "$(printf 'ios/MyApp\tios/MyApp/Info.plist')" "resolve stays ROOT-relative when root has a trailing slash"
+rm -rf "$slash"
+
+# --- pm_resolve: dir name merely resembling a pruned dir is not pruned (Fix 2) ---
+lookalike="$(mktemp -d)"
+mkdir -p "$lookalike/xbuild/App.xcodeproj" "$lookalike/xbuild/MyApp"
+cat > "$lookalike/xbuild/App.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* MyApp */ = {
+			isa = PBXNativeTarget;
+			name = MyApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+printf 'INFOPLIST_FILE = MyApp/Info.plist;\n' >> "$lookalike/xbuild/App.xcodeproj/project.pbxproj"
+touch "$lookalike/xbuild/MyApp/App.swift" "$lookalike/xbuild/MyApp/Info.plist"
+got="$(pm_resolve "$lookalike")"
+assert_eq "$([[ -n "$got" ]] && echo nonempty || echo empty)" "nonempty" "resolve finds a pbxproj under a dir merely resembling a pruned name"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "xbuild/MyApp" "resolve does not prune a dir that only resembles .build/.git"
+rm -rf "$lookalike"
+
 echo "test-project-model: OK"
 exit "$fails"

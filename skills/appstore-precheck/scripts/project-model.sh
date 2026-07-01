@@ -30,7 +30,7 @@ pm_infoplist_files() {
 }
 
 # Vendored dirs whose .xcodeproj must never win detection.
-PM_PRUNE_DIRS='node_modules|Pods|Carthage|.build|DerivedData|.git'
+PM_PRUNE_DIRS='node_modules|Pods|Carthage|\.build|DerivedData|\.git'
 
 # pm_find_pbxproj <root> -> shallowest project.pbxproj under an *.xcodeproj (pruned), or "".
 pm_find_pbxproj() {
@@ -45,6 +45,9 @@ pm_find_pbxproj() {
 pm_resolve() {
   local root="${1:-.}" pbx rel projdir apps plists app plist dir n
   local best="" best_plist="" best_n=-1
+  # Normalize a trailing slash so the ROOT-relative strip below reliably matches
+  # (root="/" strips to "" and must stay "/"; root="." is untouched).
+  root="${root%/}"; [[ -z "$root" ]] && root="/"
   pbx="$(pm_find_pbxproj "$root")"; [[ -z "$pbx" ]] && return 1
   # ROOT-relative dir that contains the .xcodeproj (SRCROOT). INFOPLIST_FILE paths
   # and the app source dir are relative to this.
