@@ -1,0 +1,4 @@
+Sets AVAudioSession's category to .playAndRecord and records with
+AVAudioRecorder. Intentionally missing NSMicrophoneUsageDescription — this is
+the mic TP-guard fixture proving the mic-gated check matches .playAndRecord,
+not just the bare .record category.

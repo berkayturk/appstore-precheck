@@ -236,8 +236,6 @@ else
   for fw in \
     "FamilyControls|ManagedSettings|DeviceActivity:NSFamilyControlsUsageDescription" \
     "CoreLocation:NSLocationWhenInUseUsageDescription" \
-    "AVFoundation:NSCameraUsageDescription|NSMicrophoneUsageDescription" \
-    "Photos:NSPhotoLibraryUsageDescription" \
     "Contacts:NSContactsUsageDescription" \
     "HealthKit:NSHealthShareUsageDescription"; do
     framework="${fw%%:*}"; needed_key="${fw##*:}"
@@ -247,6 +245,33 @@ else
       fi
     fi
   done
+  # AVFoundation and Photos are gated on real capture/read APIs, not bare
+  # imports: an import only signals framework linkage, not camera/mic/library
+  # access (e.g. AVFoundation is commonly imported for playback-only use via
+  # AVAudioPlayer/AVPlayer, and Photos/PhotosUI's PhotosPicker/PHPickerViewController
+  # run out-of-process and need no Info.plist key at all).
+  # Camera: purpose string required only when a capture API is actually used.
+  if grep -rqE 'AVCaptureDevice|AVCaptureSession|UIImagePickerController' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    grep -qE 'NSCameraUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "$INFO_PLIST"
+  fi
+  # Microphone: required only for recording/capture, not playback. Matched
+  # separately from the camera check above: a bare AVCaptureDevice only
+  # implies microphone use when it is audio-typed (`.audio` device/media
+  # type), not for a video-only capture device.
+  if grep -rqE 'AVAudioRecorder|installTap\(|AVAudioEngine\(|AVAudioSession[^;]*\.(playAndRecord|record)|AVCaptureDevice[^;)]*\.audio|for:[[:space:]]*\.audio' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    grep -qE 'NSMicrophoneUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "$INFO_PLIST"
+  fi
+  # Photo library READ: PhotosPicker/PHPicker need no key; only true read/fetch APIs do.
+  if grep -rqE 'PHAsset\b|PHFetchResult|PHImageManager|fetchAssets|PHAssetCollection' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    grep -qE 'NSPhotoLibraryUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 Photos read API used but Info.plist is missing 'NSPhotoLibraryUsageDescription'" "$INFO_PLIST"
+  elif grep -rqE 'PHAssetCreationRequest|UIImageWriteToSavedPhotosAlbum|performChanges' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
+    # Add-only save: covered by the add-only key.
+    grep -qE 'NSPhotoLibraryAddUsageDescription' "$INFO_PLIST" 2>/dev/null || \
+      fail "5.1.1 Photos add-only API used but Info.plist is missing 'NSPhotoLibraryAddUsageDescription'" "$INFO_PLIST"
+  fi
 fi
 
 # ===================================================================
@@ -353,14 +378,14 @@ if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
   done
   pass "2.3.3 Screenshots — checked ${#LOCALES[@]} locales under $SCREEN_DIR"
 else
-  warn "2.3.3 Screenshots — screenshots dir not found (set .screenshotsDir if you manage them in-repo)"
+  pass "2.3.3 Screenshots — no in-repo screenshots dir; assumed managed in App Store Connect (set .screenshotsDir to check in-repo)"
 fi
 
 # ===================================================================
 # In-app purchase gate — only run 3.1.2 checks if IAP signals exist
 # ===================================================================
 iap_detected=""
-grep -rqE 'import StoreKit|RevenueCat|Purchases\.|Product\(for:|AppStore\.|SKProduct|StoreKit2' "$IOS_DIR" --include="*.swift" 2>/dev/null && iap_detected=1
+grep -rqE 'SKPaymentQueue|SKProduct|SKMutablePayment|Product\.products|Product\(for:|Product\(id:|\.purchase\(|Transaction\.currentEntitlements|Transaction\.updates|RevenueCat|Purchases\.(shared|configure|logIn|getProducts)|Adapty|Glassfy|import Qonversion' "$IOS_DIR" --include="*.swift" 2>/dev/null && iap_detected=1
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
@@ -446,7 +471,7 @@ fi
 # §12 — 4.2 Minimum functionality — navigation hubs
 # ===================================================================
 set_rule "min-functionality-nav"
-tab_count=$(grep -rcE 'TabView|NavigationStack|NavigationSplitView' "$IOS_DIR" --include="*.swift" 2>/dev/null | awk -F: '{sum+=$2} END {print sum+0}')
+tab_count=$(grep -rcE 'TabView|NavigationStack|NavigationSplitView|NavigationView|UITabBarController|UINavigationController|createBottomTabNavigator|createStackNavigator|createNativeStackNavigator' . "${GREP_PRUNE[@]}" --include='*.swift' --include='*.m' --include='*.js' --include='*.jsx' --include='*.ts' --include='*.tsx' 2>/dev/null | awk -F: '{sum+=$2} END {print sum+0}')
 if (( tab_count < 1 )); then
   warn "4.2 Minimum functionality — no TabView/NavigationStack found (heuristic, may be a false positive)"
 else
@@ -560,7 +585,7 @@ fi
 # incomplete. Soft "verify" wording (a crash-only Sentry may genuinely collect
 # nothing), so WARN, never FAIL.
 set_rule "analytics-privacyinfo-mismatch"
-analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|Amplitude|Mixpanel|import Sentry|Segment|Bugsnag|AppCenterAnalytics|Datadog' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|import Amplitude|Amplitude\(|import Mixpanel|Mixpanel\.|import Sentry|SentrySDK|import Segment|SEGAnalytics|Analytics\.shared\(|import Bugsnag|Bugsnag\.|AppCenterAnalytics|import Datadog|DatadogCore' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
 if [[ -n "$analytics_sdk" ]]; then
   declared_data=""
   if [[ -n "$PRIVACY_FILE" && -f "$PRIVACY_FILE" ]]; then

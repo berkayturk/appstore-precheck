@@ -1,0 +1,1 @@
+A simple journal app to help you jot down daily notes. No accounts, no fuss.

@@ -17,7 +17,7 @@ Two corpora measure two different things:
 
 | metric | value |
 |---|---|
-| true positives  | 30 |
+| true positives  | 32 |
 | false positives | 0 |
 | false negatives | 0 |
 | **precision**   | 1.00 |

@@ -97,6 +97,19 @@ assert_absent "FAIL: 3.1.2"                                               "no pa
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# review-prompt-app — the only StoreKit usage is a rating prompt
+# (SKStoreReviewController.requestReview), no purchase API and no paywall view.
+# Bare `import StoreKit` used to be enough to set iap_detected, so this app got
+# false-flagged with 3.1.2 paywall FAILs it doesn't deserve. The IAP gate must
+# require an actual purchase-API signal (or a paywall view) before running.
+# ---------------------------------------------------------------------------
+check_fixture "review-prompt-app" "StoreKit used only for a rating prompt"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "FAIL: 3.1.2"                                               "review-prompt: no paywall FAIL when StoreKit is only a rating prompt"
+assert_has "PASS: 3.1.2 IAP — no in-app purchase"                         "review-prompt: IAP gate correctly skips"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 # root-app — Xcode source + fastlane live at the fixture ROOT (no ios/ nesting).
 # Auto-detection must still resolve a non-empty iOS source dir.
 # ---------------------------------------------------------------------------
@@ -228,6 +241,84 @@ check_fixture "webview-app" "thin WKWebView wrapper (§35)"
 assert_has "---END-OF-SCAN---"                                           "scanner ran to completion"
 assert_has "WARN: 4.2.3 Minimum functionality"                           "4.2.3 flagged: thin WKWebView wrapper"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
+assert_absent "WARN: 2.3.3 Screenshots — screenshots dir not found"       "no-screenshots: absent in-repo screenshots dir is not a WARN (managed in ASC)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# segmented-ui-app — a SwiftUI Picker with .pickerStyle(SegmentedPickerStyle())
+# plus a UIKit UISegmentedControl(), and NO analytics SDK. The bare "Segment"
+# substring in the old analytics-privacyinfo-mismatch regex matched these UI
+# APIs and false-fired the §19 privacy-manifest WARN; the import/API-qualified
+# regex must not.
+# ---------------------------------------------------------------------------
+check_fixture "segmented-ui-app" "segmented control, no analytics SDK (§19 false-positive regression)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "WARN: 5.1.1 Privacy manifest — analytics SDK detected"     "segmented-ui: no analytics-SDK false positive"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# audio-playback-app — `import AVFoundation` used ONLY for playback
+# (AVAudioPlayer + AVAudioSession.setCategory(.playback)), no capture API at
+# all. The old generic framework loop treated the bare import as proof of
+# camera+mic use; the capture-gated §2 restructure must stay silent since
+# neither a camera- nor a microphone-capture API is present.
+# ---------------------------------------------------------------------------
+check_fixture "audio-playback-app" "playback-only AVFoundation — no camera/mic FP"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "FAIL: 5.1.1 camera capture API"                            "no camera-capture FAIL: playback-only AVFoundation use"
+assert_absent "FAIL: 5.1.1 microphone/recording API"                      "no microphone-capture FAIL: .playback category, not .record"
+assert_absent "FAIL: 5.1.1 framework 'AVFoundation'"                      "legacy import-based AVFoundation FAIL is gone (generic entry removed)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# photos-picker-app — `import PhotosUI` with PhotosPicker only, no PHAsset
+# read. PhotosPicker runs out-of-process and needs NO Info.plist key at all.
+# The old generic framework loop treated the bare "Photos" substring match
+# (present inside "PhotosUI") as proof of library access; the capture-gated
+# restructure must stay silent since no PHAsset/PHFetchResult/PHImageManager
+# read API and no PHAssetCreationRequest/save API is present.
+# ---------------------------------------------------------------------------
+check_fixture "photos-picker-app" "PhotosPicker only — no NSPhotoLibraryUsageDescription FP"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "FAIL: 5.1.1 Photos"                                        "no legacy import-based Photos FAIL (PhotosPicker needs no key)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# camera-capture-app — TP-GUARD fixture. Drives AVCaptureSession/
+# AVCaptureDevice directly (real capture, not a bare import) with NO
+# NSCameraUsageDescription in Info.plist. Proves the capture-gated §2
+# restructure did not just get disabled: a genuine capture API without the
+# purpose string must still FAIL.
+# ---------------------------------------------------------------------------
+check_fixture "camera-capture-app" "TP-guard: real AVCaptureSession capture without purpose string"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "capture-gated check still fires on a real capture API (no TP regression)"
+assert_absent "FAIL: 5.1.1 microphone/recording API"                      "video-only AVCaptureDevice(for: .video) must NOT force a microphone-purpose-string requirement"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# voice-recorder-app — mic TP-guard fixture. Sets AVAudioSession's category to
+# .playAndRecord (the standard record+monitor category) and uses AVAudioRecorder,
+# with NO NSMicrophoneUsageDescription in Info.plist. The old mic regex
+# (`AVAudioSession[^;]*\.record`) does not match `.playAndRecord` — this fixture
+# proves the mic-gating regex now matches the .playAndRecord category too.
+# ---------------------------------------------------------------------------
+check_fixture "voice-recorder-app" "TP-guard: .playAndRecord category without purpose string"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "FAIL: 5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "mic-gated check fires on .playAndRecord category (no TP regression)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# uikit-nav-app — navigation is pure UIKit (UITabBarController root embedded in
+# a UINavigationController), with NO SwiftUI TabView/NavigationStack anywhere.
+# The old §12 pattern only matched SwiftUI tokens inside the auto-detected
+# $IOS_DIR, so a real multi-screen UIKit app false-flagged 4.2 Minimum
+# functionality (real-panel FP). The broadened, repo-wide pattern must
+# recognize UIKit's own nav-hub APIs.
+# ---------------------------------------------------------------------------
+check_fixture "uikit-nav-app" "pure UIKit UITabBarController/UINavigationController nav (§12 false-positive regression)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "WARN: 4.2 Minimum functionality"                           "uikit-nav: no 4.2 FP for a UIKit UITabBarController app"
 finish_fixture
 
 # ---------------------------------------------------------------------------
