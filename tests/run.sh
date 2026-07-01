@@ -331,6 +331,11 @@ assert_has    "ios='MyApp'"                 "project-model picks the app dir ove
 assert_absent "empty usage description"     "INFO_PLIST reads the app's plist, not the decoy's empty one"
 finish_fixture
 
+check_fixture "pbxproj-custom-plist" "app declares a custom-named plist; INFO_PLIST must follow it, not the Info.plist guess"
+assert_has    "ios='MyApp'"              "project-model resolves the app dir"
+assert_absent "Info.plist not found"     "INFO_PLIST follows the declared custom plist path (PM_INFO_PLIST propagates out of detect_ios_dir)"
+finish_fixture
+
 check_fixture "pbxproj-multiapp" "two application targets; the larger one wins"
 assert_has    "ios='AppB'"                  "project-model picks the app with more sources"
 assert_absent "ios='AppA'"                  "the smaller application target does not win"

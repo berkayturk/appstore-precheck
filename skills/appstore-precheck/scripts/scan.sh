@@ -110,14 +110,18 @@ NONAPP_TARGET='(Watch|Extension|Widget|Intents|Clip|Notification|Share|Sticker|T
 # can land on a Watch app, an app extension, or a framework instead of the real app.
 # We score candidates by Swift-file count and deprioritize obvious non-app targets, so
 # they only win when nothing app-like exists.
+# Sets the globals IOS_DIR (and, when resolved via the project model, PM_INFO_PLIST)
+# directly rather than echoing a result — this function MUST be called without
+# command substitution (no `IOS_DIR="$(detect_ios_dir)"`) so its assignments run
+# in the caller's shell instead of a subshell, where they would be discarded.
 detect_ios_dir() {
   local d; d=$(cfg '.iosSourceDir')
-  [[ -n "$d" ]] && { echo "$d"; return; }
+  [[ -n "$d" ]] && { IOS_DIR="$d"; return; }
   # Authoritative: parse the Xcode project model when a .pbxproj exists.
   local pm; pm="$(pm_resolve . 2>/dev/null)"
   if [[ -n "$pm" ]]; then
     PM_INFO_PLIST="$(printf '%s' "$pm" | cut -f2)"
-    printf '%s' "$pm" | cut -f1
+    IOS_DIR="$(printf '%s' "$pm" | cut -f1)"
     return
   fi
   # Fallback: the original grep heuristic (unchanged).
@@ -138,12 +142,12 @@ detect_ios_dir() {
       (( n > best_n )) && { best_n=$n; best="$dir"; }
     fi
   done <<< "$candidates"
-  [[ -n "$best" ]] && { echo "$best"; return; }
-  echo "$alt"
+  if [[ -n "$best" ]]; then IOS_DIR="$best"; else IOS_DIR="$alt"; fi
 }
 
 PM_INFO_PLIST=""
-IOS_DIR="$(detect_ios_dir)"
+IOS_DIR=""
+detect_ios_dir
 META_DIR="$(cfg '.metadataDir')";      [[ -z "$META_DIR" ]]   && META_DIR="$(detect_first -type d -name metadata -path '*fastlane*')"
 SCREEN_DIR="$(cfg '.screenshotsDir')"; [[ -z "$SCREEN_DIR" ]] && SCREEN_DIR="$(detect_first -type d -name screenshots -path '*fastlane*')"
 XCSTRINGS="$(cfg '.xcstringsPath')";   [[ -z "$XCSTRINGS" ]]  && XCSTRINGS="$(detect_first -name 'Localizable.xcstrings')"
