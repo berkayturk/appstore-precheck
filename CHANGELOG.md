@@ -3,6 +3,11 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [Unreleased]
+
+### Added
+- `scan.sh --format json`: structured findings output (stable `rule_id` per vector, severity, guideline, message, optional file/line) for tooling and measurement. Default text output is unchanged.
+
 ## [1.5.2] - 2026-06-30
 
 ### Fixed

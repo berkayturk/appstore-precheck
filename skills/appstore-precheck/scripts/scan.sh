@@ -12,6 +12,27 @@ set -u
 ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || ROOT="$(pwd)"
 cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit 0; }
 
+source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
+FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
+trap 'rm -f "$FINDINGS_TMP"' EXIT
+FORMAT="text"
+# The envelope `version` is the appstore-precheck TOOL's own version (from this
+# skill's SKILL.md), never the scanned repo's — $ROOT above is the SCANNED app's
+# git root, so reading its package.json here would leak the wrong version.
+PRECHECK_VERSION="$(grep -m1 -E '^[[:space:]]*version:' "$(dirname "${BASH_SOURCE[0]}")/../SKILL.md" 2>/dev/null | sed -E 's/.*version:[[:space:]]*//; s/[[:space:]]*$//')"
+[[ -z "$PRECHECK_VERSION" ]] && PRECHECK_VERSION="dev"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --format)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --format needs a value (text|json)" >&2; exit 64; fi
+      FORMAT="$2"; shift 2 ;;
+    --format=*) FORMAT="${1#*=}"; shift ;;
+    *) shift ;;
+  esac
+done
+[[ "$FORMAT" == json || "$FORMAT" == text ]] || { echo "scan.sh: --format must be text|json" >&2; exit 64; }
+
 CONFIG="${APPSTORE_PRECHECK_CONFIG:-.appstore-precheck.json}"
 have_jq() { command -v jq >/dev/null 2>&1; }
 
@@ -32,9 +53,9 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   echo "false"
 }
 
-fail() { echo "FAIL: $1"; }
-warn() { echo "WARN: $1"; }
-pass() { echo "PASS: $1"; }
+fail() { echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; }
+warn() { echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; }
+pass() { echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; }
 
 # ===================================================================
 # Auto-detection of the project layout
@@ -150,6 +171,8 @@ SUB_KEY="$(cfg '.disclosureKeys.subscription' 'subscription_disclosure')"
 TRIAL_KEY="$(cfg '.disclosureKeys.trial' 'subscription_trial_disclosure')"
 CHECK_FAMILY="$(cfg_bool '.optionalChecks.familyControls')"
 
+if [[ "$FORMAT" == json ]]; then exec 4>&1 1>/dev/null; fi
+
 echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='${XCSTRINGS:-?}' locales=${#LOCALES[@]}"
 
 # ===================================================================
@@ -159,6 +182,7 @@ echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='
 # (v) "Account Sign-In" is a different rule — its account-deletion requirement is
 # checked separately in §38.
 # ===================================================================
+set_rule "privacy-manifest-parity"
 check_required_reason_api() {
   local cat="$1" pattern="$2" hits declared
   hits=$(grep -rEl "$pattern" "$IOS_DIR" --include="*.swift" 2>/dev/null | head -3)
@@ -186,6 +210,7 @@ fi
 # ===================================================================
 # §2 — 5.1.1 NSUsageDescription cross-check (Info.plist)
 # ===================================================================
+set_rule "usage-description-crosscheck"
 if [[ ! -f "$INFO_PLIST" ]]; then
   [[ -n "$IOS_DIR" ]] && warn "5.1.1 Info.plist not found at $INFO_PLIST (modern Xcode may auto-generate it; verify purpose strings in build settings)"
 else
@@ -214,6 +239,7 @@ fi
 # Ad / attribution / IDFA SDK signal, shared with §16. The reverse of §3: §3 fires
 # when the ATT framework IS imported; §16 fires when a tracking SDK is present but
 # the ATT prompt is NOT. Computed once here so the two checks never contradict.
+set_rule "att-usage"
 tracking_sdk=$(grep -rlE 'advertisingIdentifier|ASIdentifierManager|GADMobileAds|GoogleMobileAds|AppLovinSDK|ALSdk|AppsFlyerLib|import Adjust|Adjust\.|FBAudienceNetwork|BranchSDK|IronSource' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
 att_used=$(grep -rlE 'AppTrackingTransparency|ATTrackingManager' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
 if [[ -n "$att_used" ]]; then
@@ -231,6 +257,7 @@ fi
 # ===================================================================
 # §4 — 2.3.10 Other-platform / competitor mentions in metadata
 # ===================================================================
+set_rule "competitor-mentions"
 if [[ -d "$META_DIR" ]]; then
   banned_re='Android|Google[[:space:]]?Play|Play[[:space:]]?Store|Windows[[:space:]]?Phone|Samsung Galaxy|Huawei AppGallery|F-Droid'
   hits=$(grep -rEnI "$banned_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -30)
@@ -245,6 +272,7 @@ fi
 # ===================================================================
 # §5 — 2.3.1 Metadata character limits (Unicode codepoints, like ASC)
 # ===================================================================
+set_rule "metadata-char-limits"
 check_len() {
   local file="$1" limit="$2" label="$3" len
   [[ -f "$file" ]] || return
@@ -268,6 +296,7 @@ done
 # ===================================================================
 # §6 — 2.3.7 Localized metadata parity across all detected locales
 # ===================================================================
+set_rule "locale-metadata-parity"
 if (( ${#LOCALES[@]} > 0 )); then
   expected_files=(name.txt subtitle.txt description.txt keywords.txt)
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
@@ -294,6 +323,7 @@ fi
 # ===================================================================
 # §7 — 2.3.3 Screenshots per locale
 # ===================================================================
+set_rule "screenshots-per-locale"
 if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
     d="$SCREEN_DIR/$loc"
@@ -318,9 +348,13 @@ grep -rqE 'import StoreKit|RevenueCat|Purchases\.|Product\(for:|AppStore\.|SKPro
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
+  # Not one of the 41 catalog sections — clear the rule_id so this PASS doesn't
+  # inherit §7's "screenshots-per-locale" slug in the JSON output.
+  set_rule ""
   pass "3.1.2 IAP — no in-app purchase / subscription signals detected, skipping paywall checks"
 else
   # ---- §8 3.1.2 Trial disclosure -------------------------------------------------
+  set_rule "trial-disclosure"
   trial_re='free[[:space:]]?trial|trial[[:space:]]?period|ücretsiz[[:space:]]?dene|kostenlos[[:space:]]?test|essai[[:space:]]?gratuit|prueba[[:space:]]?grat|無料.*トライアル|무료[[:space:]]?체험'
   if [[ -n "$XCSTRINGS" ]] && grep -EqI "$trial_re" "$XCSTRINGS" 2>/dev/null; then
     if grep -q "$TRIAL_KEY" "$XCSTRINGS" 2>/dev/null; then
@@ -333,6 +367,7 @@ else
   fi
 
   # ---- §9 3.1.2 Auto-renew subscription disclosure -------------------------------
+  set_rule "autorenew-disclosure"
   if [[ -n "$XCSTRINGS" ]]; then
     if have_jq && jq -e ".strings | has(\"$SUB_KEY\")" "$XCSTRINGS" >/dev/null 2>&1; then
       pass "3.1.2 subscription disclosure key '$SUB_KEY' present"
@@ -353,6 +388,7 @@ else
   # Grep across the whole paywall cluster: a link present in ANY paywall view satisfies
   # the requirement; only its absence from ALL of them is a FAIL. SUB_VIEW names the
   # representative file in messages.
+  set_rule "subscription-links-restore"
   if (( ${#PAYWALL_FILES[@]} > 0 )); then
     if grep -qE 'restore|restorePurchases' "${PAYWALL_FILES[@]}"; then
       pass "3.1.2 Restore Purchases — present in $(basename "$SUB_VIEW")"
@@ -377,6 +413,7 @@ fi
 # ===================================================================
 # §11 — 2.5.1 Private / banned API
 # ===================================================================
+set_rule "private-api"
 banned_api='UIWebView|setSelectionIndicatorImage|_UIBackdropView|NSURLConnection[^a-zA-Z]|UIAlertView[^Q]|UIActionSheet[^Q]'
 banned_hits=$(grep -rEnI "$banned_api" "$IOS_DIR" --include="*.swift" --include="*.m" --include="*.h" 2>/dev/null | head -5)
 if [[ -n "$banned_hits" ]]; then
@@ -389,6 +426,7 @@ fi
 # ===================================================================
 # §12 — 4.2 Minimum functionality — navigation hubs
 # ===================================================================
+set_rule "min-functionality-nav"
 tab_count=$(grep -rcE 'TabView|NavigationStack|NavigationSplitView' "$IOS_DIR" --include="*.swift" 2>/dev/null | awk -F: '{sum+=$2} END {print sum+0}')
 if (( tab_count < 1 )); then
   warn "4.2 Minimum functionality — no TabView/NavigationStack found (heuristic, may be a false positive)"
@@ -399,6 +437,7 @@ fi
 # ===================================================================
 # §13 — 5.1.5 Screen Time / sensitive-API justification (optional, opt-in)
 # ===================================================================
+set_rule "screentime-justification"
 if [[ "$CHECK_FAMILY" == "true" ]] && grep -q "NSFamilyControlsUsageDescription" "$INFO_PLIST" 2>/dev/null; then
   if [[ -n "$REVIEW_PREP" && -f "$REVIEW_PREP" ]] && grep -qiE 'family|screen[[:space:]]?time' "$REVIEW_PREP" 2>/dev/null; then
     pass "5.1.5 Screen Time API — reviewer-prep justification note present"
@@ -410,6 +449,7 @@ fi
 # ===================================================================
 # §14 — 4.8 Sign in with Apple parity (only when a third-party social login is used)
 # ===================================================================
+set_rule "siwa-parity"
 if [[ -n "$IOS_DIR" ]]; then
   social_login=$(grep -rlE 'GIDSignIn|import GoogleSignIn|FBSDKLoginKit|FBSDKLoginManager|FacebookLogin|import Auth0|LineSDK|VKSdkAuthorization' "$IOS_DIR" --include='*.swift' 2>/dev/null | head -1)
   if [[ -n "$social_login" ]]; then
@@ -424,6 +464,7 @@ fi
 # ===================================================================
 # §15 — 3.1.1(a) External purchase link (StoreKit External Purchase)
 # ===================================================================
+set_rule "external-purchase-link"
 ext_purchase=""
 grep -rqE 'ExternalPurchase|ExternalPurchaseLink|ExternalPurchaseCustomLink' "${IOS_DIR:-.}" --include='*.swift' 2>/dev/null && ext_purchase=1
 grep -rqE 'external-purchase' "${IOS_DIR:-.}" --include='*.entitlements' 2>/dev/null && ext_purchase=1
@@ -437,6 +478,7 @@ fi
 # §3 catches "ATT framework imported but no usage string". This catches the more
 # common rejection: shipping an ad / attribution SDK (or touching the IDFA) without
 # ever presenting the ATT prompt. `tracking_sdk` and `att_used` are computed in §3.
+set_rule "tracking-sdk-no-att"
 if [[ -n "$tracking_sdk" ]]; then
   att_present=""
   [[ -n "$att_used" ]] && att_present=1
@@ -455,6 +497,7 @@ fi
 # submission. Setting it (true/false) removes that friction. Only checked when an
 # Info.plist exists; a modern app may auto-generate it, in which case the key lives
 # in build settings, so we stay silent rather than nag.
+set_rule "export-compliance"
 if [[ -f "$INFO_PLIST" ]]; then
   if grep -q "ITSAppUsesNonExemptEncryption" "$INFO_PLIST" 2>/dev/null; then
     pass "export-compliance — ITSAppUsesNonExemptEncryption set in Info.plist"
@@ -470,6 +513,7 @@ fi
 # support_url.txt / privacy_url.txt / marketing_url.txt. Apple requires a working
 # support URL, and a privacy policy URL for apps with accounts or IAP. Flag when
 # they are absent across every locale, or contain an obvious placeholder.
+set_rule "support-privacy-url"
 if [[ -d "$META_DIR" ]]; then
   support_found="" privacy_found=""
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
@@ -495,6 +539,7 @@ fi
 # domains, the privacy manifest and the App Privacy nutrition labels are probably
 # incomplete. Soft "verify" wording (a crash-only Sentry may genuinely collect
 # nothing), so WARN, never FAIL.
+set_rule "analytics-privacyinfo-mismatch"
 analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|Amplitude|Mixpanel|import Sentry|Segment|Bugsnag|AppCenterAnalytics|Datadog' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
 if [[ -n "$analytics_sdk" ]]; then
   declared_data=""
@@ -518,6 +563,7 @@ fi
 # get rejected under 2.1 and look unfinished. Conservative, specific patterns to
 # avoid flagging legitimate words. Overlaps the Phase 2 precheck "No placeholder
 # text" rule, but this one is local and runs before any network call.
+set_rule "placeholder-metadata"
 if [[ -d "$META_DIR" ]]; then
   ph_re='lorem ipsum|Lorem ipsum|\bTODO\b|\bFIXME\b|example\.com|placeholder|insert .* here|\bchangeme\b'
   ph_hits=$(grep -rEnI "$ph_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -20)
@@ -534,6 +580,7 @@ fi
 # third-party payment SDK (Stripe, Braintree, PayPal, …) is legitimate for
 # PHYSICAL goods/services but a frequent rejection when used to sell digital
 # content. We can't tell digital from physical statically, so this is advisory.
+set_rule "thirdparty-payment-sdk"
 if [[ -n "$IOS_DIR" ]]; then
   payment_sdk=$(grep -rlE 'import Stripe|StripePaymentSheet|StripeApplePay|import Braintree|BTPaymentFlow|import PayPal|PayPalCheckout|PayPalNativeCheckout|import Square|SquareInAppPayments|import Adyen|AdyenComponents|RazorpaySDK|import Paddle' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$payment_sdk" ]]; then
@@ -547,6 +594,7 @@ fi
 # Apps with UGC must provide: a content filter, a report mechanism, the ability
 # to block abusive users, and published contact info. We detect a UGC signal and
 # warn when no report/block/moderation affordance is found anywhere in the source.
+set_rule "ugc-no-moderation"
 if [[ -n "$IOS_DIR" ]]; then
   ugc_signal=$(grep -rlE 'userGeneratedContent|\bUGC\b|StreamChat|MessageKit|SendbirdSDK|PubNub|postComment|submitComment|createPost|publishPost|uploadUserPhoto|uploadVideo' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$ugc_signal" ]]; then
@@ -563,6 +611,7 @@ fi
 # ===================================================================
 # NSAllowsArbitraryLoads=true turns off ATS for the whole app, weakening
 # data-in-transit security and inviting a 1.6 / data-security question at review.
+set_rule "ats-arbitrary-loads"
 if [[ -f "$INFO_PLIST" ]]; then
   # Anchor to the exact key: `NSAllowsArbitraryLoads</key>` (followed by `<`), so the
   # narrower scoped exceptions NSAllowsArbitraryLoadsInWebContent / ...ForMedia — which
@@ -580,6 +629,7 @@ fi
 # Pay recurring API (PKRecurringPaymentRequest) so it does NOT conflate StoreKit
 # auto-renew copy or a one-time PassKit payment with recurring Apple Pay. We don't
 # try to detect the disclosure text (too noisy) — we flag it for manual verify.
+set_rule "applepay-recurring-disclosure"
 if [[ -n "$IOS_DIR" ]] && grep -rqE 'PKRecurringPaymentRequest' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
   warn "4.9 Apple Pay — recurring Apple Pay (PKRecurringPaymentRequest) detected; verify you disclose the renewal term, what's provided, the charges, and how to cancel before purchase (4.9)"
 fi
@@ -589,6 +639,7 @@ fi
 # ===================================================================
 # Apple disallows custom review prompts and direct write-review links — apps must
 # use the system SKStoreReviewController / requestReview API.
+set_rule "custom-review-prompt"
 if [[ -n "$IOS_DIR" ]]; then
   review_link=$(grep -rlE 'write-review|action=write-review|itms-apps[^"]*review' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$review_link" ]]; then
@@ -605,6 +656,7 @@ fi
 # ===================================================================
 # Marketing the app for things iOS apps can't actually do (virus/malware
 # scanners, fake speed boosters) is a 2.3.1 removal vector.
+set_rule "misleading-marketing"
 if [[ -d "$META_DIR" ]]; then
   mislead_re='virus scan|virus scanner|antivirus|anti-virus|malware (scan|remov|clean)|spyware remov|clean your (iphone|device)|speed booster|boost.*(speed|ram)|free money|guaranteed.*(win|prize)'
   mislead_hits=$(grep -rEniI "$mislead_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
@@ -619,6 +671,7 @@ fi
 # ===================================================================
 # Terms implying a child audience in name/subtitle/keywords/description are
 # reserved for the Kids Category (2.3.8 / 5.1.4).
+set_rule "kids-wording"
 if [[ -d "$META_DIR" ]]; then
   kids_re='for kids|for children|for your (kid|child)|kids[[:space:]]?app|für kinder|para niños|pour enfants'
   kids_hits=$(grep -rEniI "$kids_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
@@ -636,6 +689,7 @@ fi
 # ===================================================================
 # Keyboards must stay functional without full network access / "full access",
 # and may only collect data to enhance the keyboard.
+set_rule "keyboard-full-access"
 kb_plist=$(grep -rlE 'com\.apple\.keyboard-service' --include='Info.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
 if [[ -n "$kb_plist" ]]; then
   if grep -A1 'RequestsOpenAccess' "$kb_plist" 2>/dev/null | grep -q '<true'; then
@@ -650,6 +704,7 @@ fi
 # ===================================================================
 # Personal health information must not be stored in iCloud, and HealthKit data
 # may not be used for advertising/marketing.
+set_rule "health-icloud-sync"
 if [[ -n "$IOS_DIR" ]] && grep -rqE 'import HealthKit|HKHealthStore' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
   if grep -rqE 'import CloudKit|CKRecord|CKContainer|NSUbiquitousKeyValueStore|NSUbiquitousContainer' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
     warn "5.1.3 Health data — HealthKit and iCloud/CloudKit are both used; personal health information must not be stored in iCloud (5.1.3). Verify HealthKit data is not synced to iCloud."
@@ -663,6 +718,7 @@ fi
 # ===================================================================
 # VPN apps must be offered by an organization account, declare data collection
 # on-screen before use, and may not sell/share data.
+set_rule "vpn-networkextension"
 if [[ -n "$IOS_DIR" ]]; then
   vpn_use=$(grep -rlE 'NEVPNManager|NETunnelProviderManager|NEPacketTunnelProvider|NEVPNProtocol' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$vpn_use" ]]; then
@@ -677,6 +733,7 @@ fi
 # or notes). We fire only on a credential-login signal (a password field or a
 # Login/SignIn view), then look for demo creds in fastlane review_information or
 # the reviewer-prep notes. Social-only logins are not gated here (too noisy).
+set_rule "demo-account"
 if [[ -n "$IOS_DIR" ]]; then
   auth_signal=$(grep -rlE 'SecureField' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   [[ -z "$auth_signal" ]] && auth_signal=$(find "$IOS_DIR" "${PRUNE[@]}" \( -name '*Login*View*.swift' -o -name '*SignIn*View*.swift' \) 2>/dev/null | head -1)
@@ -703,6 +760,7 @@ fi
 # Apps must be self-contained; native hot-patching frameworks (JSPatch, Rollout,
 # DynamicCocoa) download code that changes features and are a removal vector.
 # JS-bundle OTA for React Native (CodePush) is allowed, so we do NOT flag it.
+set_rule "executable-code-download"
 if [[ -n "$IOS_DIR" ]]; then
   hotcode=$(grep -rlE 'import JSPatch|JSPatch\.|[Jj][Ss][Pp]atch|import Rollout|Rollout\.|rollout\.io|DynamicCocoa|import SwiftPatch' "$IOS_DIR" --include="*.swift" --include="*.m" --include="*.h" 2>/dev/null | head -1)
   if [[ -n "$hotcode" ]]; then
@@ -716,6 +774,7 @@ fi
 # Declare only the UIBackgroundModes the app actually uses; a mode declared with
 # no matching API is a frequent rejection. We parse the array and check each
 # declared mode against its framework/API in Swift.
+set_rule "background-modes-unused"
 if [[ -f "$INFO_PLIST" && -n "$IOS_DIR" ]]; then
   modes=$(awk '/<key>UIBackgroundModes<\/key>/{f=1;next} f&&/<\/array>/{f=0} f&&/<string>/{gsub(/.*<string>|<\/string>.*/,""); print}' "$INFO_PLIST" 2>/dev/null)
   if [[ -n "$modes" ]]; then
@@ -743,6 +802,7 @@ fi
 # ===================================================================
 # §34 — 3.1.5(a) Cryptocurrency wallet / exchange / mining
 # ===================================================================
+set_rule "crypto-wallet-mining"
 if [[ -n "$IOS_DIR" ]]; then
   crypto_sdk=$(grep -rlE 'import Web3|web3swift|Web3Swift|WalletConnect|TrustWalletCore|CoinbaseWalletSDK|SolanaSwift|CryptoMining|coinhive|MoneroMiner' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$crypto_sdk" ]]; then
@@ -756,6 +816,7 @@ fi
 # A thin WKWebView wrapper around a website is rejected under minimum
 # functionality. Heuristic: WKWebView present in a project with very few Swift
 # files. WARN (verify) — this is the most false-positive-prone of the batch.
+set_rule "webview-wrapper"
 if [[ -n "$IOS_DIR" ]]; then
   if grep -rqE 'WKWebView' "$IOS_DIR" --include="*.swift" 2>/dev/null; then
     swift_n=$(find "$IOS_DIR" "${PRUNE[@]}" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')
@@ -768,6 +829,7 @@ fi
 # ===================================================================
 # §36 — 4.2.7 Remote desktop / host-mirroring
 # ===================================================================
+set_rule "remote-desktop"
 if [[ -n "$IOS_DIR" ]]; then
   remote_desktop=$(grep -rlE 'import libvncclient|LibVNC|VNCClient|RDPSession|RDPKit|RemoteDesktopClient|import FreeRDP|JumpDesktop' "$IOS_DIR" --include="*.swift" --include="*.m" 2>/dev/null | head -1)
   if [[ -n "$remote_desktop" ]]; then
@@ -778,6 +840,7 @@ fi
 # ===================================================================
 # §37 — 4.4.2 Safari extension / content blocker
 # ===================================================================
+set_rule "safari-extension"
 safari_ext=$(grep -rlE 'com\.apple\.Safari\.(content-blocker|web-extension|extension)' --include='Info.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
 if [[ -n "$safari_ext" ]]; then
   warn "4.4.2 Safari extension — a Safari content-blocker / web extension was detected ($(basename "$safari_ext")); it must use the extension APIs as intended, do only what it declares, and not include hidden analytics/ads or track without consent (4.4.2). Verify."
@@ -789,6 +852,7 @@ fi
 # Apple 5.1.1(v): apps that support account creation must also let users delete
 # their account from within the app. Detect account-creation signals, then look
 # for an in-app deletion path. Deletion via a web page is missed → WARN, not FAIL.
+set_rule "account-no-delete"
 if [[ -n "$IOS_DIR" ]]; then
   signup=$(grep -rlE 'createUser|signUp|signup|createAccount|registerUser|registerNewUser|Auth\.auth\(\)\.createUser' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   if [[ -n "$signup" ]]; then
@@ -807,6 +871,7 @@ fi
 # must include a parental gate. We fire when the metadata targets a child
 # audience AND an ad/analytics SDK is linked. tracking_sdk/analytics_sdk come
 # from §3/§19.
+set_rule "kids-ads-analytics"
 if [[ -d "$META_DIR" && -n "$IOS_DIR" ]]; then
   if grep -rqEiI 'for kids|for children|kids[[:space:]]?app|für kinder|para niños|pour enfants' "$META_DIR" 2>/dev/null; then
     if [[ -n "$tracking_sdk" || -n "$analytics_sdk" ]]; then
@@ -818,6 +883,7 @@ fi
 # ===================================================================
 # §40 — 5.3.4 Real-money gambling
 # ===================================================================
+set_rule "realmoney-gambling"
 if [[ -d "$META_DIR" ]]; then
   gamble_re='real[ -]?money|gambling|casino|sportsbook|sports[ -]?betting|place[ -].*bets|wager(ing)?|roulette.*real'
   gamble_hits=$(grep -rEniI "$gamble_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
@@ -830,6 +896,7 @@ fi
 # ===================================================================
 # §41 — 5.5 Mobile Device Management
 # ===================================================================
+set_rule "mdm"
 if [[ -n "$IOS_DIR" ]]; then
   mdm_sig=$(grep -rlE 'import DeviceManagement|MDMConfiguration|ManagedAppConfiguration|com\.apple\.mdm' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
   [[ -z "$mdm_sig" ]] && mdm_sig=$(grep -rlE 'com\.apple\.configuration\.managed' --include='*.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
@@ -839,3 +906,4 @@ if [[ -n "$IOS_DIR" ]]; then
 fi
 
 echo "---END-OF-SCAN---"
+if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json; fi

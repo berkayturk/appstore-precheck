@@ -136,6 +136,11 @@ full check table is in
 The scanner is portable Bash, so you can also run it directly, outside any agent, for a quick CI
 or pre-commit check.
 
+`scan.sh --format json` emits a structured findings envelope (`rule_id`, `severity`, `guideline`,
+`message`, optional `file`/`line` per finding, plus the verdict summary) instead of the default
+text lines, for tooling and measurement to consume. It's read-only and additive; the default text
+output is unchanged.
+
 ### Phase 2: Apple's official `fastlane precheck`
 
 Requires `bundleId` in config (or pass `app_identifier` directly) and App Store Connect API
