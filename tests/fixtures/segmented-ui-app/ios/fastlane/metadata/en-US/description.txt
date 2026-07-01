@@ -1,0 +1,1 @@
+A simple app with a segmented control to switch between two views. No accounts, no fuss.

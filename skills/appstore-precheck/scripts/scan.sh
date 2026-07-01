@@ -560,7 +560,7 @@ fi
 # incomplete. Soft "verify" wording (a crash-only Sentry may genuinely collect
 # nothing), so WARN, never FAIL.
 set_rule "analytics-privacyinfo-mismatch"
-analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|Amplitude|Mixpanel|import Sentry|Segment|Bugsnag|AppCenterAnalytics|Datadog' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
+analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|import Amplitude|Amplitude\(|import Mixpanel|Mixpanel\.|import Sentry|SentrySDK|import Segment|SEGAnalytics|Analytics\.shared\(|import Bugsnag|Bugsnag\.|AppCenterAnalytics|import Datadog|DatadogCore' "$IOS_DIR" --include="*.swift" 2>/dev/null | head -1)
 if [[ -n "$analytics_sdk" ]]; then
   declared_data=""
   if [[ -n "$PRIVACY_FILE" && -f "$PRIVACY_FILE" ]]; then

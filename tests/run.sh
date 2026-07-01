@@ -231,6 +231,18 @@ assert_absent "FAIL:"                                                     "advis
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# segmented-ui-app — a SwiftUI Picker with .pickerStyle(SegmentedPickerStyle())
+# plus a UIKit UISegmentedControl(), and NO analytics SDK. The bare "Segment"
+# substring in the old analytics-privacyinfo-mismatch regex matched these UI
+# APIs and false-fired the §19 privacy-manifest WARN; the import/API-qualified
+# regex must not.
+# ---------------------------------------------------------------------------
+check_fixture "segmented-ui-app" "segmented control, no analytics SDK (§19 false-positive regression)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "WARN: 5.1.1 Privacy manifest — analytics SDK detected"     "segmented-ui: no analytics-SDK false positive"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then
   echo "ALL TESTS PASSED"

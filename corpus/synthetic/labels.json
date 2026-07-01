@@ -77,6 +77,10 @@
     "expect_fire": ["webview-wrapper"],
     "expect_absent": ["private-api"]
   },
+  "segmented-ui-app": {
+    "expect_fire": [],
+    "expect_absent": ["analytics-privacyinfo-mismatch"]
+  },
   "config-app": {
     "expect_fire": [],
     "expect_absent": ["private-api"]
