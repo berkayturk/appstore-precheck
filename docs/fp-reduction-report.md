@@ -77,6 +77,18 @@ measurement correctly attributes the residual to the deferred cause rather than 
 - **`private-api`** comment-line skipping (1 FP).
 - A hermetic key scheme (add a message hash) to remove the null-location key churn seen here.
 
+**Symmetric recall trade-offs introduced by this round** (narrow missed-TP gaps, never new FPs — the cost of the precision gains; surfaced here so they are visible, not implicit):
+- **IAP gate** keys on imperative purchase signals, so a purely *declarative* StoreKit2 paywall
+  (`SubscriptionStoreView(groupID:)` / `StoreView(ids:)` / `ProductView(id:)`) in a
+  non-conventionally-named file (one that `PAYWALL_GLOBS` doesn't catch) can skip the 3.1.2
+  sub-checks. Follow-up: add those tokens + a declarative-paywall TP-guard fixture.
+- **usage-description** camera/mic gating does not yet cover VisionKit
+  (`VNDocumentCameraViewController` / `DataScannerViewController`, real camera) or
+  `SFSpeechRecognizer` (real mic). Follow-up: extend the capture-API alternations.
+- **min-functionality-nav** repo-wide search does not prune `Tests/`/`Example/`/`Demo/`, so a
+  thin wrapper shipping UI-test files that reference `NavigationStack` could have its 4.2 WARN
+  suppressed. Follow-up: add those to the exclude set.
+
 ## Honesty caveats
 
 These are **candidate** labels (final human review pending) on a **pinned** 18-app panel; the
