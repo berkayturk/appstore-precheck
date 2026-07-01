@@ -41,7 +41,9 @@ jobs:
                      tests/test-findings.sh \
                      tests/test-format-json.sh \
                      tests/test-suppress.sh \
-                     scripts/check-versions.sh
+                     tests/test-scorecard.sh \
+                     scripts/check-versions.sh \
+                     scripts/scorecard.sh
 
       - name: Validate JSON
         run: |
@@ -54,6 +56,7 @@ jobs:
                    skills/appstore-precheck/guidelines-baseline.json \
                    skills/appstore-precheck/config.example.json \
                    skills/appstore-precheck/evals/evals.json \
+                   corpus/synthetic/labels.json \
                    package.json; do
             echo "validating $f"
             jq empty "$f"
@@ -64,3 +67,6 @@ jobs:
 
       - name: Run fixture tests
         run: npm test
+
+      - name: Scorecard up to date (synthetic)
+        run: bash scripts/scorecard.sh --check

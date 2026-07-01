@@ -17,6 +17,7 @@ SUITE=(
   "test-findings.sh"  # findings.sh structured-findings helper
   "test-format-json.sh" # scan.sh --format json envelope + text-mode parity
   "test-suppress.sh"  # suppress.sh + emit-time .precheck-ignore wiring
+  "test-scorecard.sh" # scorecard.sh metric math + --check staleness gate
 )
 
 failed=()
