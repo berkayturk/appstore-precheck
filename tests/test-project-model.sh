@@ -218,5 +218,106 @@ touch "$tie/AppTwo/App.swift" "$tie/AppTwo/Info.plist"
 assert_eq "$(pm_resolve "$tie" | cut -f1)" "AppOne" "resolve keeps the first-seen target on an equal-count tie"
 rm -rf "$tie"
 
+# --- pm_target_infoplist: attribute a target's OWN INFOPLIST_FILE via the
+# build-config graph (PBXNativeTarget -> buildConfigurationList UUID ->
+# XCConfigurationList block -> buildConfigurations list -> XCBuildConfiguration
+# blocks), even when the plist's leading path component != the target name.
+# Models brave-ios's real App/Client.xcodeproj shape. ---
+graph="$(mktemp -d)"
+cat > "$graph/graph.pbxproj" <<'EOF'
+		AAA /* Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCLIST1 /* Build configuration list for PBXNativeTarget "Client" */;
+			name = Client;
+			productName = Client;
+			productType = "com.apple.product-type.application";
+		};
+		BCLIST1 /* Build configuration list for PBXNativeTarget "Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG1 /* Debug */,
+				CFG2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CFG1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_NAME = Client;
+			};
+			name = Debug;
+		};
+		CFG2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_NAME = Client;
+			};
+			name = Release;
+		};
+EOF
+assert_eq "$(pm_target_infoplist "$graph/graph.pbxproj" "Client")" "iOS/Supporting Files/Info.plist" \
+  "pm_target_infoplist attributes the target's own quoted-with-space plist via the build-config graph"
+rm -rf "$graph"
+
+# --- pm_resolve: a real ("Client"-shaped) app whose plist is only attributable
+# via the build-config graph (no Client/ dir, projdir "App") must beat a
+# vendored sample app (projdir "ThirdParty/Sample") even though the sample has
+# more .swift sources. This reproduces the brave-ios false positive where the
+# old code (a) fails the leading-component match, (b) then `find -type d -name
+# Client` finds nothing and SKIPS Client entirely, letting the vendored sample
+# win by default. ---
+brave="$(mktemp -d)"
+mkdir -p "$brave/App/Client.xcodeproj" "$brave/App/iOS/Supporting Files" \
+         "$brave/ThirdParty/Sample/Sample.xcodeproj" "$brave/ThirdParty/Sample/Example"
+cat > "$brave/App/Client.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCLIST1 /* Build configuration list for PBXNativeTarget "Client" */;
+			name = Client;
+			productType = "com.apple.product-type.application";
+		};
+		BCLIST1 /* Build configuration list for PBXNativeTarget "Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG1 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CFG1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+			};
+			name = Debug;
+		};
+EOF
+# NOTE: no "Client/" directory exists anywhere under App/ — sources live
+# elsewhere in the real repo. This is the crux of the brave-ios bug: the old
+# GENERATE fallback `find -type d -name Client` finds nothing and `continue`s,
+# skipping Client entirely.
+touch "$brave/App/iOS/Supporting Files/Info.plist"
+cat > "$brave/ThirdParty/Sample/Sample.xcodeproj/project.pbxproj" <<'EOF'
+		BBB /* Example */ = {
+			isa = PBXNativeTarget;
+			name = Example;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+printf 'INFOPLIST_FILE = Example/Info.plist;\n' >> "$brave/ThirdParty/Sample/Sample.xcodeproj/project.pbxproj"
+touch "$brave/ThirdParty/Sample/Example/Info.plist"
+touch "$brave/ThirdParty/Sample/Example/One.swift" \
+      "$brave/ThirdParty/Sample/Example/Two.swift" \
+      "$brave/ThirdParty/Sample/Example/Three.swift"
+got="$(pm_resolve "$brave")"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "App/iOS/Supporting Files" \
+  "resolve picks Client's real plist dir via the build-config graph, not the vendored sample"
+assert_eq "$(printf '%s' "$got" | cut -f2)" "App/iOS/Supporting Files/Info.plist" \
+  "resolve returns Client's build-config-attributed plist"
+rm -rf "$brave"
+
 echo "test-project-model: OK"
 exit "$fails"

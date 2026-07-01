@@ -1,0 +1,13 @@
+// !$*UTF8*$!
+{
+	objects = {
+		BBB /* Example */ = {
+			isa = PBXNativeTarget;
+			name = Example;
+			productType = "com.apple.product-type.application";
+		};
+	};
+	buildSettings = {
+		INFOPLIST_FILE = Example/Info.plist;
+	};
+}

@@ -1,0 +1,37 @@
+// !$*UTF8*$!
+{
+	objects = {
+		AAA /* Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCLIST1 /* Build configuration list for PBXNativeTarget "Client" */;
+			name = Client;
+			productName = Client;
+			productType = "com.apple.product-type.application";
+		};
+		BCLIST1 /* Build configuration list for PBXNativeTarget "Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG1 /* Debug */,
+				CFG2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CFG1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_NAME = Client;
+			};
+			name = Debug;
+		};
+		CFG2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "iOS/Supporting Files/Info.plist";
+				PRODUCT_NAME = Client;
+			};
+			name = Release;
+		};
+	};
+}

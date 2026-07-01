@@ -346,6 +346,11 @@ assert_has    "ios='app/RealApp'"   "resolver picks the real app across all pbxp
 assert_absent "ios='SampleApp'"     "the shallow sample sub-project does not win"
 finish_fixture
 
+check_fixture "pbxproj-target-plist" "app plist via build-config graph; vendored sample deprioritized"
+assert_has    "ios='App/iOS/Supporting Files'"   "Client's INFOPLIST_FILE resolved via build config; its dir picked"
+assert_absent "ios='ThirdParty"                  "vendored sample app does not win"
+finish_fixture
+
 # ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then
