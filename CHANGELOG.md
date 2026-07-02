@@ -5,6 +5,38 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-07-02
+
+Roadmap #3: **rejection-outcome feedback loop** — a third, honestly-scoped measurement
+axis. Reporting layer only; the scan and GREEN/YELLOW/RED verdict are untouched.
+
+Alongside the synthetic and real-panel corpora, the tool now tracks **real App Store
+review outcomes** (approved / rejected + Apple's cited guideline) in a committed,
+human-reviewed ledger (`corpus/outcomes/ledger.json`, starts empty) and summarizes them
+in `docs/scorecard.md`. The summary is **honesty-floored**: below 10 recorded outcomes
+it shows only a raw tally and computes **no rate**; at/above the floor it may show a
+directional recall estimate with a permanent survivorship-bias caveat. Because the
+ledger is committed and read offline, the section is deterministic and covered by the
+existing `scorecard.sh --check` — no network, no new CI job.
+
+### Added
+- **`corpus/outcomes/ledger.json`** (empty `[]`) + **`corpus/outcomes/README.md`** —
+  record schema, anonymization/privacy rules (no verbatim Apple text, no real identity),
+  contribution/review process, and the sample-size floor.
+- **`scripts/scorecard-outcomes.sh`** — pure `bash`+`jq`, offline, deterministic; renders
+  the "Real App Store outcomes (n=N)" section with the honesty floor. Also
+  `scorecard.sh --outcomes`.
+- The outcomes section is baked into `docs/scorecard.md`; Methodology now describes three
+  measurements.
+- **`.github/ISSUE_TEMPLATE/app-store-outcome.md`** — anonymized outcome contribution that
+  funnels into a maintainer-reviewed PR.
+- Test: `tests/test-scorecard-outcomes.sh`.
+
+### Notes
+- Reporting/measurement only — outcome data never influences the verdict or which rules
+  fire (a future, human-only decision). No verbatim Apple Resolution Center text is stored.
+  The scan path (`scan.sh`/`verdict.sh`/`bin/cli.js`/`action.yml`) is unchanged.
+
 ## [1.10.0] - 2026-07-02
 
 Roadmap #4: **SARIF output + opt-in GitHub PR annotations** — read-only, no auto-fix.
