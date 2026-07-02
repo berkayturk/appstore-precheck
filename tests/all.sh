@@ -18,6 +18,7 @@ SUITE=(
   "test-format-json.sh" # scan.sh --format json envelope + text-mode parity
   "test-suppress.sh"  # suppress.sh + emit-time .precheck-ignore wiring
   "test-scorecard.sh" # scorecard.sh metric math + --check staleness gate
+  "test-scorecard-outcomes.sh" # scorecard-outcomes.sh tally + honesty floor
   "test-project-model.sh" # project-model.sh pbxproj parser + resolver
   "test-guideline-drift.sh" # guideline-drift.sh parse/diff + coverage↔fingerprint consistency
   "test-image-dims.sh" # image-dims.sh PNG magic + IHDR dimension parse + accepted-size match
