@@ -440,7 +440,7 @@ grep -rqE 'SKPaymentQueue|SKProduct|SKMutablePayment|Product\.products|Product\(
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
-  # Not one of the 41 catalog sections — clear the rule_id so this PASS doesn't
+  # Not one of the 42 catalog sections — clear the rule_id so this PASS doesn't
   # inherit §7's "screenshots-per-locale" slug in the JSON output.
   set_rule ""
   pass "3.1.2 IAP — no in-app purchase / subscription signals detected, skipping paywall checks"

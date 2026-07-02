@@ -108,10 +108,30 @@ baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
 | 39 | **5.1.4 Kids** *(advisory)* | Metadata targets a child audience **and** a third-party ads/analytics SDK is linked; Kids Category apps may not include third-party ads/analytics and need a parental gate |
 | 40 | **5.3.4 Gambling** *(advisory)* | Real-money gaming language in metadata (casino, sportsbook, real money, wager); real-money gambling needs licensing, geo-restriction, and must be free on the store |
 | 41 | **5.5 MDM** *(advisory)* | A Mobile Device Management signal (`DeviceManagement`, managed-app-config, `com.apple.mdm`); MDM apps need a commercial enterprise/education entity and purpose-limited data use |
+| 42 | **2.3.3 Screenshot format/dimensions** *(advisory)* | Reads each in-repo screenshot's magic bytes and, for PNGs, its IHDR pixel dimensions; WARNs on a file whose content does not match its extension, a truncated PNG, or a PNG whose size matches no known App Store screenshot size (either orientation). JPEG dimensions are not parsed (format-checked only). WARN-only — never forces a RED verdict. |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–41 are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–42 are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
+
+### Screenshot format + dimensions (§7b, 2.3.3)
+
+Vector 7 (above) checks that every locale has at least one screenshot. §7b goes one layer deeper,
+purely with zero-dependency byte reads (`image-dims.sh`, pure bash + `od`/`awk`): for every
+in-repo screenshot it reads the file's magic bytes to confirm the content actually matches its
+extension (`.png`/`.jpg`/`.jpeg`), and for PNGs it also parses the IHDR chunk for pixel width and
+height and checks that pair against a table of known App Store screenshot sizes (tried in both
+orientations, sourced from Apple's [screenshot specifications
+page](https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/)).
+JPEG dimensions are not parsed — JPEGs are format-checked only (magic-byte match), not size-checked.
+
+This is **WARN-only, never FAIL**: the accepted-size table can drift as Apple adds device sizes,
+and the scanner has no way to know which display slot (iPhone 6.9", iPad 13", …) a given file is
+meant to target, so a size that matches nothing in the table is a prompt to verify against the
+current spec, not proof of a rejection. A mismatched-format file (e.g. a renamed JPEG saved as
+`.png`) or an unreadable/truncated PNG WARNs the same way. Findings surface under
+`rule_id == "screenshot-dimensions"` (catalog vector 42) with messages beginning
+`WARN: 2.3.3 Screenshot …`.
 
 **Scope by app type.** The metadata, privacy-manifest, screenshots, and export-compliance checks
 apply to any iOS app regardless of how it is built. The code-level checks grep the app's Swift
