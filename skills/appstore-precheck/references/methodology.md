@@ -12,6 +12,7 @@ whole file to run the skill.
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [SARIF output](#sarif-output---format-sarif)
+- [Real App Store outcomes](#real-app-store-outcomes-corpusoutcomes)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)
 
 ---
@@ -231,6 +232,17 @@ that carry a `file`/`line` become SARIF `physicalLocation`s so GitHub can anchor
 the deterministic scan findings are included — the agent-mode Pierre deep-review findings are not
 (SARIF is a deterministic CI artifact). The GitHub Action uploads this via `upload-sarif` and/or
 emits inline `::error`/`::warning` annotations, both opt-in.
+
+---
+
+### Real App Store outcomes (`corpus/outcomes/`)
+
+Beyond the synthetic and real-panel corpora, the tool tracks real Apple review outcomes (approved /
+rejected + cited guideline) in a committed, human-reviewed ledger (`corpus/outcomes/ledger.json`),
+summarized in `docs/scorecard.md` by `scripts/scorecard-outcomes.sh`. It is honesty-floored: no rate
+is computed below 10 records (raw tally only), and a permanent survivorship-bias caveat applies once
+a rate is shown. It is a reporting layer only — it never influences the GREEN/YELLOW/RED verdict or
+which rules fire. Contribute an outcome via the "App Store outcome" issue template.
 
 ---
 
