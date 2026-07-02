@@ -5,6 +5,34 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-07-02
+
+Smarter analysis (roadmap #2b): the scanner now resolves the iOS source directory
+and `Info.plist` from the Xcode **project model** (`.pbxproj`) instead of a pure
+grep heuristic, eliminating the dominant remaining false-positive source in
+monorepo / SPM / multi-target layouts. Zero new runtime dependencies (pure
+bash + awk), READ-ONLY preserved, and default text output stays byte-identical for
+any repo without a `.pbxproj`.
+
+### Added
+- **Project-model detection** (`skills/appstore-precheck/scripts/project-model.sh`):
+  parses `.pbxproj` to find the primary `application`-type target and resolve its
+  source dir + `INFOPLIST_FILE` authoritatively, across ALL `.xcodeproj` in a
+  monorepo. `detect_ios_dir` now chains: config `.iosSourceDir` > project-model
+  parse > the original grep heuristic (unchanged, kept as fallback).
+- Per-target `INFOPLIST_FILE` attribution via the build-config graph
+  (target → `buildConfigurationList` → `XCBuildConfiguration`), used as a last
+  resort so already-correct apps are untouched; unexpanded build-variable paths
+  (`$(SRCROOT)` etc.) are guarded, and app targets under vendored paths
+  (`ThirdParty`/`Vendor`) are deprioritized so a vendored sample app never wins.
+
+### Measured impact (18-app open-source panel, candidate/directional labels)
+- Corrects detection on `wikipedia-ios`, `pocket-casts-ios`, `cwa-app-ios`
+  (now read their real custom-named plists) and `brave-ios` (real app over a
+  vendored sample). `usage-description-crosscheck` false positives 9 → 6, with
+  content-grounded findings surfaced by finally reading the correct plist; zero
+  true-positive loss. See `docs/fp-reduction-report.md`.
+
 ## [1.6.0] - 2026-07-01
 
 Measurement release: structured findings, suppression, and a published
