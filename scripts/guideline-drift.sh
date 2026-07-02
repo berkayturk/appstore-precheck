@@ -59,7 +59,7 @@ gd_number_drift() {
 gd_checks_for_section() {
   awk -v want="$2" '
     /set_rule "/ { if (match($0, /set_rule "([^"]+)"/)) slug = substr($0, RSTART+10, RLENGTH-11) }
-    slug != "" {
+    slug != "" && $0 !~ /^[[:space:]]*#/ {
       s = $0
       while (match(s, /[1-5]\.[0-9]+(\.[0-9]+)?/)) {
         if (substr(s, RSTART, RLENGTH) == want) { print slug; break }
