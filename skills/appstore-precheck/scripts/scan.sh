@@ -16,6 +16,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/suppress.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/project-model.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/image-dims.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/sarif.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
 trap 'rm -f "$FINDINGS_TMP"' EXIT
 FORMAT="text"
@@ -28,13 +29,13 @@ PRECHECK_VERSION="$(grep -m1 -E '^[[:space:]]*version:' "$(dirname "${BASH_SOURC
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --format)
-      if [[ $# -lt 2 ]]; then echo "scan.sh: --format needs a value (text|json)" >&2; exit 64; fi
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --format needs a value (text|json|sarif)" >&2; exit 64; fi
       FORMAT="$2"; shift 2 ;;
     --format=*) FORMAT="${1#*=}"; shift ;;
     *) shift ;;
   esac
 done
-[[ "$FORMAT" == json || "$FORMAT" == text ]] || { echo "scan.sh: --format must be text|json" >&2; exit 64; }
+[[ "$FORMAT" == json || "$FORMAT" == text || "$FORMAT" == sarif ]] || { echo "scan.sh: --format must be text|json|sarif" >&2; exit 64; }
 
 CONFIG="${APPSTORE_PRECHECK_CONFIG:-.appstore-precheck.json}"
 have_jq() { command -v jq >/dev/null 2>&1; }
@@ -202,7 +203,7 @@ SUB_KEY="$(cfg '.disclosureKeys.subscription' 'subscription_disclosure')"
 TRIAL_KEY="$(cfg '.disclosureKeys.trial' 'subscription_trial_disclosure')"
 CHECK_FAMILY="$(cfg_bool '.optionalChecks.familyControls')"
 
-if [[ "$FORMAT" == json ]]; then exec 4>&1 1>/dev/null; fi
+if [[ "$FORMAT" != text ]]; then exec 4>&1 1>/dev/null; fi
 
 echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='${XCSTRINGS:-?}' locales=${#LOCALES[@]}"
 
@@ -1011,4 +1012,5 @@ echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
   printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"
 fi
-if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json; fi
+if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json;
+elif [[ "$FORMAT" == sarif ]]; then exec 1>&4 4>&-; render_sarif; fi

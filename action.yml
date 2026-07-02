@@ -13,6 +13,14 @@ inputs:
     description: "Verdict at which the job fails: RED (default) or YELLOW."
     required: false
     default: "RED"
+  sarif:
+    description: "Emit a SARIF file and upload it to GitHub code-scanning (needs permissions: security-events: write)."
+    required: false
+    default: "false"
+  annotations:
+    description: "Emit inline PR annotations (::error/::warning) for each FAIL/WARN finding."
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -50,3 +58,36 @@ runs:
           YELLOW) [ "$v" = "GREEN" ] || { echo "::error::appstore-precheck verdict is $v (fail-on=YELLOW)"; exit 1; } ;;
           *)      [ "$v" != "RED" ] || { echo "::error::appstore-precheck verdict is RED"; exit 1; } ;;
         esac
+    - name: Generate SARIF
+      if: ${{ (success() || failure()) && inputs.sarif == 'true' }}
+      shell: bash
+      env:
+        APC_WORKDIR: ${{ inputs.working-directory }}
+        APC_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
+        cd "$APC_WORKDIR"
+        bash "$scan" --format sarif > "$GITHUB_WORKSPACE/appstore-precheck.sarif"
+    - name: Upload SARIF
+      if: ${{ (success() || failure()) && inputs.sarif == 'true' }}
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: appstore-precheck.sarif
+    - name: Emit PR annotations
+      if: ${{ (success() || failure()) && inputs.annotations == 'true' }}
+      shell: bash
+      env:
+        APC_WORKDIR: ${{ inputs.working-directory }}
+        APC_ACTION_PATH: ${{ github.action_path }}
+      run: |
+        set -euo pipefail
+        scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
+        cd "$APC_WORKDIR"
+        bash "$scan" --format json \
+          | jq -r '.findings[]
+                   | select(.suppressed==false and (.severity=="FAIL" or .severity=="WARN"))
+                   | (if .severity=="FAIL" then "error" else "warning" end) as $lvl
+                   | "::\($lvl)"
+                     + (if .file then " file=\(.file)" + (if .line then ",line=\(.line)" else "" end) else "" end)
+                     + "::\(.message)"'
