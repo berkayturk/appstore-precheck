@@ -15,6 +15,7 @@ cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit
 source "$(dirname "${BASH_SOURCE[0]}")/findings.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/suppress.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/project-model.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/image-dims.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
 trap 'rm -f "$FINDINGS_TMP"' EXIT
 FORMAT="text"
@@ -396,6 +397,42 @@ else
 fi
 
 # ===================================================================
+# §7b — 2.3.3 Screenshot format + PNG dimensions (deterministic; PNG dims,
+# JPEG format only). WARN-only: the accepted-size table can drift, and we
+# cannot know which display slot a file targets, so mismatches never FAIL.
+# ===================================================================
+if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
+  set_rule "screenshot-dimensions"
+  while IFS= read -r img; do
+    [[ -z "$img" ]] && continue
+    fmt="$(img_format "$img")"
+    case "$img" in
+      *.png)
+        if [[ "$fmt" != png ]]; then
+          warn "2.3.3 Screenshot $img is not a valid PNG (file content does not match .png extension)" "$img"
+          continue
+        fi
+        dims="$(png_dims "$img")"
+        if [[ -z "$dims" ]]; then
+          warn "2.3.3 Screenshot $img — could not read PNG dimensions (possibly truncated)" "$img"
+        else
+          w="${dims% *}"; h="${dims#* }"
+          if ! dims_match_accepted "$w" "$h"; then
+            warn "2.3.3 Screenshot $img is ${w}x${h}, which matches no known App Store screenshot size — verify against the current spec" "$img"
+          fi
+        fi
+        ;;
+      *.jpg|*.jpeg)
+        if [[ "$fmt" != jpeg ]]; then
+          warn "2.3.3 Screenshot $img is not a valid JPEG (file content does not match extension)" "$img"
+        fi
+        ;;
+    esac
+  done < <(find "$SCREEN_DIR" -maxdepth 3 -type f \( -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' \) 2>/dev/null | sort)
+  set_rule ""
+fi
+
+# ===================================================================
 # In-app purchase gate — only run 3.1.2 checks if IAP signals exist
 # ===================================================================
 iap_detected=""
@@ -403,7 +440,7 @@ grep -rqE 'SKPaymentQueue|SKProduct|SKMutablePayment|Product\.products|Product\(
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
-  # Not one of the 41 catalog sections — clear the rule_id so this PASS doesn't
+  # Not one of the 42 catalog sections — clear the rule_id so this PASS doesn't
   # inherit §7's "screenshots-per-locale" slug in the JSON output.
   set_rule ""
   pass "3.1.2 IAP — no in-app purchase / subscription signals detected, skipping paywall checks"

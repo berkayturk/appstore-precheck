@@ -147,6 +147,9 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 1. Open ≥1 screenshot per primary locale.
 2. List visible features (tabs, paywall, login, maps, etc.).
 3. Flag screenshots showing features absent from the build or metadata.
+4. For the full structured screenshot vision review (placeholder/empty-state, text overflow,
+   wrong device frame, misleading marketing, metadata mismatch), follow
+   `references/screenshot-vision-review.md`.
 
 ### 9 — 2.3.6 Pricing language
 

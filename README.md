@@ -44,7 +44,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-41 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+42 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -56,6 +56,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **2.3.1** | Metadata length limits (name, subtitle, keywords, promo, description) |
 | **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
 | **2.3.3** | At least one screenshot per locale |
+| **2.3.3** | Screenshot format + PNG dimensions match a known App Store screenshot size *(advisory, WARN-only)* |
 | **2.3.7** | Localized metadata parity across every locale |
 | **2.3.8** | "For Kids" / "For Children" wording outside the Kids Category |
 | **2.3.10** | No other-platform / competitor names in metadata |
@@ -146,7 +147,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 41 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | **Full.** All 42 vectors apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The Swift-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -268,7 +269,7 @@ a RED verdict. No App Store Connect credentials are needed; the action runs the 
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 41 vectors above. |
+| **1** | **Static scan**: `scan.sh` over the 42 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
 | **4** | **Pierre deep review**: 28 semantic checks (22 Tier A + 6 Tier B v1 heuristic). Advisory only. |

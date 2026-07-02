@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 41 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 42 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -116,7 +116,7 @@ check(s). It is non-blocking and never runs in the offline user scan; the finger
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 41 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` lines covering 42 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -133,9 +133,10 @@ NetworkExtension usage (5.4), a demo account for a login-gated app (2.1), execut
 / native hot-patching (2.5.2), unused background modes (2.5.4), cryptocurrency wallet/mining
 (3.1.5(a)), thin WKWebView wrappers (4.2.3), remote-desktop apps (4.2.7), Safari extensions
 (4.4.2), account creation without in-app deletion (5.1.1(v) Account Sign-In), kids audience with
-third-party ads/analytics (5.1.4), real-money gambling copy (5.3.4), and MDM signals (5.5). The
-IAP checks (8–10) are skipped automatically when no in-app-purchase signals are present, and the
-signal-gated advisory checks (16–41) stay silent unless their triggering signal is found. The
+third-party ads/analytics (5.1.4), real-money gambling copy (5.3.4), MDM signals (5.5), and
+screenshot format/dimension mismatches (2.3.3). The IAP checks (8–10) are skipped automatically
+when no in-app-purchase signals are present, and the signal-gated advisory checks (16–42) stay
+silent unless their triggering signal is found. The
 full check table is in
 [`references/methodology.md`](references/methodology.md#phase-1-rejection-vectors).
 
@@ -226,7 +227,9 @@ After Phase 3, Pierre runs the **Review Simulator**: 28 read-only, evidence-base
 static scanner cannot fully judge (**22 Tier A** + **6 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
-Phase 4.
+Phase 4. When screenshots are present, also run the structured screenshot vision review in
+[`references/screenshot-vision-review.md`](references/screenshot-vision-review.md) (non-blocking;
+host vision model; never changes the verdict).
 
 **What Pierre does:** read Swift, metadata, entitlements, xcstrings, paywall views, review notes,
 screenshot/preview assets; fetch privacy and support URLs; cross-check claims vs code, policy vs

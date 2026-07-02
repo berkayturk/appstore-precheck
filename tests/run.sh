@@ -351,6 +351,13 @@ assert_has    "ios='App/iOS/Supporting Files'"   "Client's INFOPLIST_FILE resolv
 assert_absent "ios='ThirdParty"                  "vendored sample app does not win"
 finish_fixture
 
+check_fixture screenshots-app "screenshot dimension + format checks (§7b)"
+assert_has "WARN: 2.3.3 Screenshot" "wrong-size / corrupt screenshots produce a dimension/format WARN"
+assert_has "1000x1000"              "the non-accepted size is reported with its dimensions"
+assert_has "not a valid PNG"        "the renamed non-PNG is flagged as invalid"
+assert_absent "01.png is 1290x2796" "an accepted-size PNG does not produce a size WARN"
+finish_fixture
+
 # ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then
