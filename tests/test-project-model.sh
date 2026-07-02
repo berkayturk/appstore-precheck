@@ -476,5 +476,62 @@ assert_eq "$(printf '%s' "$got" | cut -f1)" "Demo/DemoApp" \
   "resolve treats a Demo/-named dir as primary, not deprioritized (Fix 2)"
 rm -rf "$demo"
 
+# --- pm_resolve: PM_SAMPLE_PATH must deprioritize an app target whose project
+# lives under a bare "Vendor/" path segment, even when that vendored app has
+# MORE .swift sources than the primary (non-vendored) app. This guards against
+# a regex bug where '(^|/)(ThirdParty|Vendored?)(/|$)' — the trailing "?"
+# binds only to the "d" in "Vendored" — matches "Vendore"/"Vendored" but NOT
+# the bare canonical "Vendor", so a Vendor/-rooted app would wrongly be
+# treated as primary and win on source count alone. ---
+vendor="$(mktemp -d)"
+mkdir -p "$vendor/Main/PrimaryApp.xcodeproj" "$vendor/Main/PrimaryApp" \
+         "$vendor/Vendor/VendorApp.xcodeproj" "$vendor/Vendor/VendorApp"
+cat > "$vendor/Main/PrimaryApp.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* PrimaryApp */ = {
+			isa = PBXNativeTarget;
+			name = PrimaryApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+touch "$vendor/Main/PrimaryApp/One.swift"
+cat > "$vendor/Vendor/VendorApp.xcodeproj/project.pbxproj" <<'EOF'
+		BBB /* VendorApp */ = {
+			isa = PBXNativeTarget;
+			name = VendorApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+touch "$vendor/Vendor/VendorApp/One.swift" "$vendor/Vendor/VendorApp/Two.swift" "$vendor/Vendor/VendorApp/Three.swift"
+got="$(pm_resolve "$vendor")"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "Main/PrimaryApp" \
+  "resolve deprioritizes a bare Vendor/-rooted app even though it has more .swift sources"
+rm -rf "$vendor"
+
+# --- pm_resolve: same as above, but for the "Vendored/" spelling, to guard the
+# other side of the regex (must still match the longer form too). ---
+vendored="$(mktemp -d)"
+mkdir -p "$vendored/Main/PrimaryApp.xcodeproj" "$vendored/Main/PrimaryApp" \
+         "$vendored/Vendored/VendorApp.xcodeproj" "$vendored/Vendored/VendorApp"
+cat > "$vendored/Main/PrimaryApp.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* PrimaryApp */ = {
+			isa = PBXNativeTarget;
+			name = PrimaryApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+touch "$vendored/Main/PrimaryApp/One.swift"
+cat > "$vendored/Vendored/VendorApp.xcodeproj/project.pbxproj" <<'EOF'
+		BBB /* VendorApp */ = {
+			isa = PBXNativeTarget;
+			name = VendorApp;
+			productType = "com.apple.product-type.application";
+		};
+EOF
+touch "$vendored/Vendored/VendorApp/One.swift" "$vendored/Vendored/VendorApp/Two.swift" "$vendored/Vendored/VendorApp/Three.swift"
+got="$(pm_resolve "$vendored")"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "Main/PrimaryApp" \
+  "resolve deprioritizes a Vendored/-rooted app even though it has more .swift sources"
+rm -rf "$vendored"
+
 echo "test-project-model: OK"
 exit "$fails"

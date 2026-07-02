@@ -90,7 +90,7 @@ PM_PRUNE_DIRS='node_modules|Pods|Carthage|\.build|DerivedData|\.git'
 # real deliverable app rather than a throwaway sample (Pods/Carthage/
 # node_modules are already fully pruned by PM_PRUNE_DIRS in
 # pm_find_pbxprojs, so they need not be listed here either).
-PM_SAMPLE_PATH='(^|/)(ThirdParty|Vendored?)(/|$)'
+PM_SAMPLE_PATH='(^|/)(ThirdParty|Vendor(ed)?)(/|$)'
 
 # pm_find_pbxprojs <root> -> all project.pbxproj under *.xcodeproj (pruned), deterministic order.
 pm_find_pbxprojs() {
