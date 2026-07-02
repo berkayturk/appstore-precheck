@@ -264,6 +264,29 @@ job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 Both inputs are optional: with none set, the action scans the repo root and fails the job only on
 a RED verdict. No App Store Connect credentials are needed; the action runs the static scan only.
 
+### SARIF & PR annotations (opt-in)
+
+The Action can surface findings as GitHub code-scanning results and inline PR annotations. Both are
+off by default; enable either or both:
+
+```yaml
+permissions:
+  contents: read
+  security-events: write   # required for SARIF upload
+jobs:
+  precheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: berkayturk/appstore-precheck@v1
+        with:
+          sarif: true         # upload SARIF to the Security tab + PR annotations
+          annotations: true   # also emit inline ::error/::warning annotations
+```
+
+Locally / via npx: `npx appstore-precheck --format sarif > results.sarif`. The scan stays read-only;
+nothing is auto-fixed.
+
 ## How it works
 
 | Phase | Step |

@@ -11,6 +11,7 @@ whole file to run the skill.
 - [Phase 4: Pierre deep review (28 checks)](#phase-4-pierre-deep-review-28-semantic-checks)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
+- [SARIF output](#sarif-output---format-sarif)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)
 
 ---
@@ -218,6 +219,18 @@ match, so a vendored SwiftPM checkout is never mistaken for the app.
 
 The guideline-drift WARN from Phase 0 counts toward the same WARN threshold; on its own it never
 blocks, but it can be the fifth WARN that tips GREEN into YELLOW.
+
+---
+
+## SARIF output (`--format sarif`)
+
+`scan.sh --format sarif` emits a SARIF 2.1.0 log built from the same structured findings as
+`--format json` (pure `jq`, no new dependency). `results[]` contains the non-suppressed FAIL and
+WARN findings (FAIL → `error`, WARN → `warning`); PASS and suppressed findings are excluded. Findings
+that carry a `file`/`line` become SARIF `physicalLocation`s so GitHub can anchor PR annotations. Only
+the deterministic scan findings are included — the agent-mode Pierre deep-review findings are not
+(SARIF is a deterministic CI artifact). The GitHub Action uploads this via `upload-sarif` and/or
+emits inline `::error`/`::warning` annotations, both opt-in.
 
 ---
 
