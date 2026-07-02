@@ -24,6 +24,7 @@ line2="$(sed -n '2p' "$FINDINGS_TMP")"
 assert_eq "null" "$(jq -r .file <<<"$line2")" "file null when omitted"
 assert_eq "ats-arbitrary-loads" "$(rule_slug 23)" "catalog lookup §23"
 assert_eq "" "$(rule_slug 999)" "catalog lookup unknown -> empty"
+assert_eq "screenshot-dimensions" "$(rule_slug 42)" "catalog lookup §42 screenshot-dimensions"
 rm -f "$FINDINGS_TMP"
 
 FINDINGS_TMP="$(mktemp)"; : > "$FINDINGS_TMP"

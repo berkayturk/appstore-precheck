@@ -46,7 +46,7 @@ rm -f "$FIX/live-added.ids" "$FIX/live-removed.ids"
 # --- gd_checks_for_section: derives the affected scan rule-id from scan.sh ---
 checks="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "2.3.3")"
 assert_contains "$checks" "screenshots-per-locale" "2.3.3 maps to its scan check"
-assert_eq "$checks" "screenshots-per-locale" "2.3.3 maps to exactly its scan check (no comment-boundary false extra)"
+assert_eq "$checks" "$(printf 'screenshots-per-locale\nscreenshot-dimensions')" "2.3.3 maps to exactly its two real checks (§7 + §7b; no comment-boundary false extra)"
 
 c511="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "5.1.1")"
 assert_contains "$c511" "privacy-manifest-parity" "5.1.1 maps to its real checks"

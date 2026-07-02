@@ -26,7 +26,8 @@ rule_slug() {
     35) echo webview-wrapper ;;                36) echo remote-desktop ;;
     37) echo safari-extension ;;               38) echo account-no-delete ;;
     39) echo kids-ads-analytics ;;             40) echo realmoney-gambling ;;
-    41) echo mdm ;;                            *) echo "" ;;
+    41) echo mdm ;;                            42) echo screenshot-dimensions ;;
+    *) echo "" ;;
   esac
 }
 
