@@ -102,7 +102,8 @@ per-rule, churn-robust deltas are the reliable result.
 (`skills/appstore-precheck/scripts/project-model.sh`, branch `feat/ast-iosdir-project-model`)
 against the same 18-app real panel, isolated from the fixes measured above. An earlier interim
 run of this section (commit `642c2d2`) found the feature was partly inert because of two bugs;
-both are now fixed and this is the re-measurement.
+both are now fixed. A follow-up round then resolved the `brave-ios` residual and this is the
+final re-measurement (base `27ab9e9` = v1.6.0 vs the brave-fixed HEAD).
 
 - **BUG-1 (subshell scoping), fixed `791a584`:** `detect_ios_dir()` set `PM_INFO_PLIST` as a
   side effect but was called via `IOS_DIR="$(detect_ios_dir)"` — a command substitution, which
@@ -114,6 +115,18 @@ both are now fixed and this is the re-measurement.
   shallowest `project.pbxproj`, picking the wrong app in multi-`.xcodeproj` monorepos. It now
   enumerates every pbxproj and the global best (most `*.swift` sources) wins. Effect: the
   `firefox-ios` real Client app is resolved instead of a sibling sample project.
+- **Follow-up: `brave-ios` residual, fixed `f2366cc` + `6ad2c23` + `7d0adfe`:** brave's real app
+  target `Client` declares no `INFOPLIST_FILE` whose leading component is `Client` (its plist is
+  `iOS/Supporting Files/Info.plist`) and there is no `Client/` dir, so `pm_resolve` skipped it and
+  a vendored `ThirdParty/Static/Example` sample app won. Fix adds `pm_target_infoplist` — attribute
+  a target's own `INFOPLIST_FILE` via the build-config graph (target → `buildConfigurationList` →
+  `XCBuildConfiguration`) — used as a **last resort** (only when the leading-component match and the
+  GENERATE dir-name branch both fail, so already-correct apps are untouched), plus a `$(…)`
+  build-variable guard, plus deprioritization of app targets under vendored paths
+  (`ThirdParty`/`Vendor`). The first cut of this fix ran the attribution eagerly and regressed
+  `eigen` (a literal `$(SRCROOT)` plist path) and `cwa-app-ios` (picked the Debug config's
+  `Info_Debug.plist` over the release `Info.plist`); the last-resort reorder + build-var guard
+  fixed both, verified by re-measurement: **only `brave-ios` changes vs the pre-follow-up state.**
 
 ### Method (churn-robust, unchanged from the interim run)
 
@@ -138,13 +151,13 @@ firing counts on identical clones scanned by both scanners**, not a label join.
 | `metadata-char-limits` | 146 | 146 | 0 |
 | `privacy-manifest-parity` | 23 | 23 | 0 |
 | `locale-metadata-parity` | 22 | 22 | 0 |
-| `usage-description-crosscheck` | 9 | 7 | **−2** |
-| `ats-arbitrary-loads` | 5 | 6 | **+1** |
+| `usage-description-crosscheck` | 9 | 6 | **−3** |
+| `ats-arbitrary-loads` | 5 | 7 | **+2** |
 | `demo-account` | 6 | 6 | 0 |
 | `subscription-links-restore` | 6 | 6 | 0 |
 | `export-compliance` | 5 | 5 | 0 |
 | `analytics-privacyinfo-mismatch` | 4 | 4 | 0 |
-| `background-modes-unused` | 1 | 2 | **+1** |
+| `background-modes-unused` | 1 | 3 | **+2** |
 | `private-api` | 2 | 2 | 0 |
 | `safari-extension` | 2 | 2 | 0 |
 | `support-privacy-url` | 2 | 2 | 0 |
@@ -152,22 +165,24 @@ firing counts on identical clones scanned by both scanners**, not a label join.
 | `custom-review-prompt` | 1 | 1 | 0 |
 | `ugc-no-moderation` | 1 | 1 | 0 |
 | `vpn-networkextension` | 1 | 1 | 0 |
-| **total** | **237** | **237** | 0 |
+| **total** | **237** | **238** | +1 |
 
 All 11 non-detection-sensitive rules are identical base vs. new. Path-normalized diffing shows
 **14 of the 18 apps are byte-identical** between scanners; all movement is concentrated in
 **4 apps**: `wikipedia-ios`, `cwa-app-ios`, `pocket-casts-ios`, `brave-ios`. `firefox-ios` — the
 interim run's regression — is now byte-identical to base again.
 
-The interim (buggy) run's four problems are all resolved:
+The interim (buggy) run's four problems are all resolved, and the `brave-ios` follow-up adds its
+own movement on top (final "now" column includes the brave fix):
 
-| rule | base | interim (buggy) | now (fixed) | resolution |
+| rule | base | interim (buggy) | now (fixed + brave) | resolution |
 |---|---:|---:|---:|---|
-| `usage-description-crosscheck` | 9 | 7 | 7 | wikipedia now clears (interim: it did not) |
-| `export-compliance` | 5 | **7** | **5** | no longer worse; interim +2 was firefox mis-scope |
-| `privacy-manifest-parity` | 23 | **24** | **23** | firefox no longer mis-scoped |
+| `usage-description-crosscheck` | 9 | 7 | **6** | wikipedia clears (BUG-1) + brave no longer FP-fires on a vendored plist |
+| `export-compliance` | 5 | **7** | **5** | interim +2 was firefox mis-scope; brave vendored FP out, cwa real finding in (net 0) |
+| `privacy-manifest-parity` | 23 | **24** | **23** | firefox no longer mis-scoped; eigen `$(SRCROOT)` regression fixed |
 | `demo-account` | 6 | **5** | **6** | firefox TP preserved (interim lost it) |
-| `ats-arbitrary-loads` | 5 | **4** | **6** | firefox TP restored + one real new finding |
+| `ats-arbitrary-loads` | 5 | **4** | **7** | firefox TP restored + real new findings on pocket-casts & brave real plists |
+| `background-modes-unused` | 1 | 2 | **3** | content-grounded on cwa & brave real plists |
 
 ### `wikipedia-ios` — the flagship predicted case now CLEARS
 
@@ -217,19 +232,30 @@ sources) wins, instead of the interim run's `SampleBrowser` sample project.
   that real plist genuinely sets `NSAllowsArbitraryLoads=true` — a real, content-grounded finding
   (unlabelled). This is BUG-1's fix landing on a second custom-named-plist app.
 
-### `brave-ios` — a separate, pre-existing detection gap (not a regression from these fixes)
+### `brave-ios` — now RESOLVED by the follow-up fix
 
-Both scanners mis-resolve `brave-ios` to the vendored `ThirdParty/Static` example, not brave's
-real app (base → `ThirdParty/Static/Static/Info.plist`; new → `ThirdParty/Static/Example/Info.plist`).
-Brave's real app is `App/Client.xcodeproj` (target **Client**), but that target declares no
-`INFOPLIST_FILE` whose leading path component is `Client` (its plist is `iOS/Supporting Files/Info.plist`)
-and there is no directory literally named `Client`, so `pm_resolve`'s GENERATE_INFOPLIST branch
-cannot map the target to a source dir and skips it — leaving only the vendored `Example` target
-(0 sources) to win by default. This gap **predates #2b**: the base heuristic was also wrong, just
-on a different vendored plist. The path change churns `export-compliance` (labelled FP) out and a
-new `usage-description-crosscheck` (unlabelled, likely FP) in, while `privacy-manifest-parity`
-still fires (count 1→1). All brave findings remain suspect because neither scanner reads its real
-app. Logged as a follow-up below.
+Base and the interim #2b both mis-resolved `brave-ios` to the vendored `ThirdParty/Static` example
+(base → `ThirdParty/Static/Static`; interim → `ThirdParty/Static/Example`). Brave's real app is
+`App/Client.xcodeproj` (target **Client**), whose plist is the custom-pathed
+`iOS/Supporting Files/Info.plist` with no `Client/` dir — so the leading-component and GENERATE
+branches both miss it. The follow-up's `pm_target_infoplist` attributes `Client`'s own plist via
+its build config, and the vendored-path deprioritization keeps the `ThirdParty/…/Example` sample in
+the alt bucket, so the new scanner resolves **`App/iOS/Supporting Files`** — brave's real app plist.
+
+| | base | new |
+|---|---|---|
+| resolved dir | `ThirdParty/Static/Static` (vendored) | `App/iOS/Supporting Files` (real Client plist) |
+| `export-compliance` | `ThirdParty/Static/Static/Info.plist` (vendored **FP**) | — cleared — |
+| `usage-description-crosscheck` | — | — (no spurious finding on the real plist) |
+| `ats-arbitrary-loads` | — | `App/iOS/Supporting Files/Info.plist` (real — a browser sets `NSAllowsArbitraryLoads`; advisory, unlabelled) |
+| `background-modes-unused` | — | `App/iOS/Supporting Files/Info.plist` (real, content-grounded, unlabelled) |
+
+The vendored-plist `export-compliance` FP is gone; the two new findings are content-grounded on
+brave's actual app plist (brave is a browser, so `NSAllowsArbitraryLoads` is expected — these are
+advisory WARNs, not hard FAILs, left unlabelled). One known limitation remains (see follow-up):
+`App/iOS/Supporting Files` holds the plist but not brave's Swift sources (which live under
+`Sources/`), so grep-scoped checks scan a near-empty dir — INFO_PLIST is now correct, but true
+source-root resolution for such split layouts is a smaller future item.
 
 ### `pm_resolve` picked app dirs (new scanner)
 
@@ -239,7 +265,7 @@ app. Logged as a follow-up below.
 | `firefox-ios` | `firefox-ios/Client` | `firefox-ios/Client/Info.plist` |
 | `pocket-casts-ios` | `podcasts` | `podcasts/podcasts-Info.plist` |
 | `cwa-app-ios` | `src/xcode/ENA/ENA/Resources` | `src/xcode/ENA/ENA/Resources/Info.plist` |
-| `brave-ios` | `ThirdParty/Static/Example` | `ThirdParty/Static/Example/Info.plist` (wrong — vendored) |
+| `brave-ios` | `App/iOS/Supporting Files` | `App/iOS/Supporting Files/Info.plist` (real Client plist) |
 
 ### Zero-TP-loss verdict: **VERIFIED across the full 18-app panel**
 
@@ -249,18 +275,20 @@ Both interim defects are resolved with clean evidence:
   regression) is restored; every `privacy-manifest-parity` TP still fires (count 23→23);
   `demo-account`/`safari-extension` TPs preserved.
 - All net movement is FP removal (`wikipedia-ios`, `cwa-app-ios`, `pocket-casts-ios`
-  `usage-description-crosscheck` FPs, and the `brave-ios` `export-compliance` FP) plus real,
-  content-grounded findings surfaced by finally reading the correct plist (`cwa-app-ios`
-  `export-compliance`+`background-modes-unused`, `pocket-casts-ios` `ats-arbitrary-loads`).
-- One residual new likely-FP: `brave-ios usage-description-crosscheck` on the vendored `Example`
-  plist — a symptom of the separate, pre-existing `Client`-target → source-dir mapping gap above,
-  not a regression from BUG-1/BUG-2.
+  `usage-description-crosscheck` FPs, and the `brave-ios` vendored `export-compliance` FP) plus
+  real, content-grounded findings surfaced by finally reading the correct plist (`cwa-app-ios`
+  `export-compliance`+`background-modes-unused`, `pocket-casts-ios` `ats-arbitrary-loads`,
+  `brave-ios` `ats-arbitrary-loads`+`background-modes-unused`). Net totals: `usage-description`
+  −3, `ats` +2, `background-modes` +2 (total 237→238).
+- The `brave-ios` residual from the earlier run is resolved: it now reads brave's real Client
+  plist, and re-measurement confirms **only `brave-ios` moves** vs the pre-follow-up state — no
+  other app regressed from the last-resort attribution / vendored-deprioritization change.
 
-**Follow-up (defect, not fixed in this task):** `pm_resolve` cannot map an app target to its
-source dir when the target's `INFOPLIST_FILE` prefix does not match the target name AND no
-directory is named after the target (`brave-ios`'s `Client`). It should fall back to the target's
-build-phase source group or its actual `INFOPLIST_FILE` directory before skipping the target and
-letting a vendored sample win.
+**Remaining follow-up (smaller):** for split layouts where a target's plist dir differs from its
+Swift source root (`brave-ios`: plist under `App/iOS/Supporting Files`, sources under `Sources/`),
+`IOS_DIR` follows the plist dir, so grep-scoped source checks scan a near-empty dir. INFO_PLIST is
+correct; resolving the true source root (via the target's build-phase source group) is a future
+item. Also cosmetic: the duplicated `cd`-subshell in `pm_resolve` (DRY).
 
 ### Honesty caveats (this section)
 
