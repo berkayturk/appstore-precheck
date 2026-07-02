@@ -353,6 +353,98 @@ assert_eq "$(pm_target_infoplist "$nocomment/nocomment.pbxproj" "Client")" "Clie
   "pm_target_infoplist resolves INFOPLIST_FILE when buildConfigurationList has no trailing comment (Fix 1)"
 rm -rf "$nocomment"
 
+# --- pm_resolve: a target resolvable via the GENERATE dir-name branch (a dir
+# named after the target EXISTS) must win over build-config attribution, even
+# when the target's build config also declares an (unusable) INFOPLIST_FILE
+# under an unexpanded build variable. Models eigen's real Artsy.xcodeproj
+# shape: the Artsy target's build config has
+# INFOPLIST_FILE = "$(SRCROOT)/Artsy/Supporting/Info.plist" (an Xcode
+# variable, never expanded by this script), but an "Artsy/" dir exists next
+# to the .xcodeproj. Before this fix, pm_target_infoplist was consulted
+# FIRST and won unconditionally, producing the broken dir
+# "ios/$(SRCROOT)/Artsy/Supporting". The GENERATE branch (Priority 2) must
+# take precedence over build-config attribution (Priority 3, last resort). ---
+eigenclass="$(mktemp -d)"
+mkdir -p "$eigenclass/ios/Artsy.xcodeproj" "$eigenclass/ios/Artsy"
+cat > "$eigenclass/ios/Artsy.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* Artsy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCLIST1 /* Build configuration list for PBXNativeTarget "Artsy" */;
+			name = Artsy;
+			productType = "com.apple.product-type.application";
+		};
+		BCLIST1 /* Build configuration list for PBXNativeTarget "Artsy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG1 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CFG1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "$(SRCROOT)/Artsy/Supporting/Info.plist";
+			};
+			name = Debug;
+		};
+EOF
+# No leading-component-matching INFOPLIST_FILE is declared anywhere (the only
+# one lives under the unexpanded $(SRCROOT) variable, which pm_infoplist_files
+# would return as "$(SRCROOT)/Artsy/Supporting/Info.plist" — leading component
+# "$(SRCROOT)", not "Artsy" — so the leading-component match also legitimately
+# fails). The "Artsy/" dir DOES exist, so the GENERATE branch must resolve it.
+touch "$eigenclass/ios/Artsy/AppDelegate.swift"
+got="$(pm_resolve "$eigenclass")"
+assert_eq "$(printf '%s' "$got" | cut -f1)" "ios/Artsy" \
+  "resolve uses the GENERATE dir-name branch, not build-config attribution, when a dir named after the target exists (eigen class)"
+assert_eq "$(printf '%s' "$got" | cut -f2)" "" \
+  "resolve does not surface the unusable \$(SRCROOT) build-variable plist when GENERATE already resolved a dir"
+rm -rf "$eigenclass"
+
+# --- pm_target_infoplist / pm_resolve: a resolved plist path must never
+# contain an unexpanded Xcode build variable such as "$(SRCROOT)" — a literal
+# "$(...)" path can never be found on disk. This guards the last-resort
+# build-config-attribution branch directly (no GENERATE dir exists here, so
+# pm_resolve is forced to fall through to pm_target_infoplist, which must be
+# rejected for the build-variable path, leaving the target skipped). ---
+buildvar="$(mktemp -d)"
+mkdir -p "$buildvar/ios/Foo.xcodeproj"
+cat > "$buildvar/ios/Foo.xcodeproj/project.pbxproj" <<'EOF'
+		AAA /* Foo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BCLIST1 /* Build configuration list for PBXNativeTarget "Foo" */;
+			name = Foo;
+			productType = "com.apple.product-type.application";
+		};
+		BCLIST1 /* Build configuration list for PBXNativeTarget "Foo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFG1 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CFG1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "$(SRCROOT)/Foo/Info.plist";
+			};
+			name = Debug;
+		};
+EOF
+# pm_target_infoplist itself must still return the raw (unguarded) value —
+# the guard lives at the pm_resolve call site, not inside the attribution walk.
+assert_eq "$(pm_target_infoplist "$buildvar/ios/Foo.xcodeproj/project.pbxproj" "Foo")" '$(SRCROOT)/Foo/Info.plist' \
+  "pm_target_infoplist returns the raw build-variable path unguarded"
+# No "Foo/" dir exists anywhere and no leading-component plist is declared, so
+# pm_resolve must fall through to the last resort, reject the $(SRCROOT) path,
+# and skip the target entirely (no *.swift sources anywhere -> resolve fails).
+pm_resolve "$buildvar" >/dev/null && r=0 || r=1
+assert_eq "$r" "1" \
+  "resolve never yields a path containing an unexpanded build variable; skips the target instead"
+rm -rf "$buildvar"
+
 # --- pm_resolve: PM_SAMPLE_PATH must NOT deprioritize a primary app that lives
 # under a Demo/-named dir (common for library repos whose real deliverable app
 # is the demo). Only ThirdParty/Vendored are high-confidence vendored markers.

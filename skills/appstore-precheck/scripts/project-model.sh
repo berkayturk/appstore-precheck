@@ -39,6 +39,14 @@ pm_infoplist_files() {
 # PBXNativeTarget "name = X" -> buildConfigurationList = <UUID> -> the
 # XCConfigurationList block for that UUID -> its buildConfigurations list ->
 # each XCBuildConfiguration block, looking for INFOPLIST_FILE.
+#
+# NOTE: this returns the FIRST build config's plist, which is only reliable
+# when all configs agree. Per-configuration plists (Debug vs Release) can
+# legitimately differ (e.g. cwa-app-ios's ENA target), so pm_resolve() only
+# calls this as a LAST RESORT — after the leading-component match and the
+# GENERATE dir-name branch have both failed. Callers must also guard against
+# unexpanded Xcode build variables (e.g. "$(SRCROOT)/...") in the returned
+# path, since those can never resolve to a real file on disk.
 pm_target_infoplist() {
   local pbx="$1" target="$2" cl u ip
   cl="$(awk -v t="$target" '
@@ -122,23 +130,37 @@ pm_resolve() {
     plists="$(pm_infoplist_files "$pbx")"
     while IFS= read -r app; do
       [[ -z "$app" ]] && continue
-      # Prefer the target's OWN INFOPLIST_FILE, attributed via the pbxproj's
-      # build-config graph (works even when the plist's leading path
-      # component doesn't match the target name). Fall back to the older
-      # leading-component heuristic when the graph walk can't attribute one.
-      plist="$(pm_target_infoplist "$pbx" "$app" 2>/dev/null)"
-      if [[ -z "$plist" ]]; then
-        # A declared plist whose leading path component equals the app target name.
-        plist="$(printf '%s\n' "$plists" | awk -v a="$app" -F/ '$1==a{print; exit}')"
-      fi
+      # Priority 1: a declared plist whose leading path component equals the
+      # app target name.
+      plist="$(printf '%s\n' "$plists" | awk -v a="$app" -F/ '$1==a{print; exit}')"
       if [[ -n "$plist" ]]; then
         dir="$(dirname "$plist")"
       else
-        # GENERATE_INFOPLIST_FILE: no app plist. Use the dir named after the target.
+        # Priority 2 (GENERATE_INFOPLIST_FILE): no leading-component plist.
+        # Use the dir named after the target.
         dir="$(cd "$root${projdir:+/$projdir}" 2>/dev/null && \
                find . -type d -name "$app" 2>/dev/null | sed 's#^\./##' \
                | awk '{print length, $0}' | sort -n | head -1 | cut -d' ' -f2-)"
-        [[ -z "$dir" ]] && continue
+        if [[ -z "$dir" ]]; then
+          # Priority 3 (LAST RESORT — only reached when both of the above
+          # fail, i.e. the target would otherwise be skipped entirely):
+          # attribute the target's OWN INFOPLIST_FILE via the pbxproj's
+          # build-config graph. Works even when the plist's leading path
+          # component doesn't match the target name (e.g. brave-ios's
+          # Client -> "iOS/Supporting Files/Info.plist"), but must not
+          # override a working leading-component or GENERATE resolution
+          # (e.g. eigen's Artsy, cwa-app-ios's ENA), so it stays last.
+          plist="$(pm_target_infoplist "$pbx" "$app" 2>/dev/null)"
+          # A literal, unexpanded Xcode build variable (e.g. $(SRCROOT),
+          # $(PROJECT_DIR)) can never be found on disk — treat it as
+          # unusable rather than resolving to a broken path.
+          [[ "$plist" == *'$('* ]] && plist=""
+          if [[ -n "$plist" ]]; then
+            dir="$(dirname "$plist")"
+          else
+            continue
+          fi
+        fi
       fi
       n="$(cd "$root${projdir:+/$projdir}" 2>/dev/null && \
            find "$dir" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')"
