@@ -132,7 +132,7 @@ signals with a higher false-positive rate; Pierre prefers `not applicable` when 
 | **5.2.1–5.2.3** | Obvious third-party trademark or brand misuse in metadata or UI copy |
 | **5.3.1–5.3.3** | Contest / sweepstakes copy includes official rules and eligibility |
 | **5.6.2–5.6.3** | Developer identity consistent (app name, support URL content, domains) |
-| **5.6.4–5.6.7** † | Rating / review manipulation dark patterns (withhold features until 5 stars, write-review links without `requestReview`) |
+| **5.6.1 / 5.6.3** † | Rating / review manipulation dark patterns (withhold features until 5 stars, write-review links without `requestReview`) |
 
 Pierre runs **all 28 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
 static scan already flagged a guideline, the deep check adds semantic context the scanner could not see.
