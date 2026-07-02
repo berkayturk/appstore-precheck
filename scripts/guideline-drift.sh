@@ -9,8 +9,11 @@ set -u
 GD_URL="https://developer.apple.com/app-store/review/guidelines/"
 
 # gd_section_ids <html> -> numeric guideline anchor ids, document order, deduped.
+# Requires at least one dotted component so bare top-level category anchors
+# (id="1".."5") aren't tracked as drift-able sections — those are just the
+# five category headers, not sub-sections with their own prose.
 gd_section_ids() {
-  grep -oE 'id="[1-5](\.[0-9]+)*"' "$1" 2>/dev/null \
+  grep -oE 'id="[1-5](\.[0-9]+)+"' "$1" 2>/dev/null \
     | sed -E 's/^id="//; s/"$//' \
     | awk '!seen[$0]++'
 }
