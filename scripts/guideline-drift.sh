@@ -78,12 +78,17 @@ gd_main() {
   local scan="$here/skills/appstore-precheck/scripts/scan.sh"
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --html) html="$2"; shift 2 ;;
-      --baseline) baseline="$2"; shift 2 ;;
-      --fingerprints) fingerprints="$2"; shift 2 ;;
-      --scan) scan="$2"; shift 2 ;;
+      --html|--baseline|--fingerprints|--scan)
+        if [[ $# -lt 2 ]]; then echo "WARN: guideline-drift — missing value for $1; ignoring."; shift; continue; fi
+        case "$1" in
+          --html) html="$2" ;;
+          --baseline) baseline="$2" ;;
+          --fingerprints) fingerprints="$2" ;;
+          --scan) scan="$2" ;;
+        esac
+        shift 2 ;;
       --reconcile) reconcile=1; shift ;;
-      *) echo "unknown arg: $1" >&2; return 2 ;;
+      *) echo "WARN: guideline-drift — unknown arg: $1; ignoring."; shift ;;
     esac
   done
 
@@ -128,7 +133,7 @@ gd_main() {
     [[ -z "$sec" ]] && continue
     base_hash="$(jq -r --arg s "$sec" '.sections[$s].fingerprint // ""' "$fingerprints" 2>/dev/null)"
     [[ -z "$base_hash" ]] && continue   # no baseline fingerprint -> nothing to compare
-    live_hash="$(gd_section_text "$html" "$sec" | gd_hash)"
+    live_hash="$(printf '%s' "$(gd_section_text "$html" "$sec")" | gd_hash)"
     if [[ "$live_hash" != "$base_hash" ]]; then
       checks="$(gd_checks_for_section "$scan" "$sec" | tr '\n' ' ' | sed 's/ *$//')"
       [[ -z "$checks" ]] && checks="(covered — review manually)"

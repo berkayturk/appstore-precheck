@@ -78,5 +78,9 @@ assert_contains "$deg" "degraded" "empty fetch produces a degraded WARN"
 assert_contains "$deg" "RC=0" "degraded fetch still exits 0"
 rm -f "$FIX/baseline-cov.json" "$FIX/empty.html"
 
+# --- gd_main: bad args must never break the caller (non-blocking contract) ---
+gd_main --bogus >/dev/null 2>&1; assert_eq "$?" "0" "unknown flag exits 0 (non-blocking)"
+gd_main --html >/dev/null 2>&1;  assert_eq "$?" "0" "flag with missing value exits 0 (non-blocking)"
+
 echo "test-guideline-drift: OK"
 exit "$fails"
