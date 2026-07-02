@@ -62,6 +62,15 @@ section "unknown option is a usage error (exit 64)"
 node "$CLI" --bogus >/dev/null 2>&1; bcode=$?
 assert_eq "$bcode" "64" "bad usage exits 64"
 
+section "clean-app --format sarif -> SARIF doc, exit 0"
+run_cli "clean-app" --format sarif
+assert_contains "$OUT" '"version": "2.1.0"' "cli passes --format sarif through to the scanner"
+assert_eq "$CODE" "0" "non-text format exits 0"
+
+section "--format bad value -> exit 64"
+run_cli "clean-app" --format xml
+assert_eq "$CODE" "64" "invalid --format exits 64"
+
 echo
 if (( fails == 0 )); then echo "test-cli: ALL PASSED"; else echo "test-cli: $fails FAILED"; fi
 exit "$fails"

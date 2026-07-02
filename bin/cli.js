@@ -36,6 +36,7 @@ function printHelp() {
     `Options:\n` +
     `  --dir <path>        Directory to scan (default: current directory)\n` +
     `  --fail-on <level>   Exit non-zero at RED (default) or YELLOW\n` +
+    `  --format <fmt>      Output format: text (default), json, or sarif\n` +
     `  -v, --version       Print the version and exit\n` +
     `  -h, --help          Show this help and exit\n` +
     `\n` +
@@ -53,7 +54,7 @@ function fail(message, code) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: process.cwd(), failOn: 'RED' };
+  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text' };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') { printHelp(); process.exit(0); }
@@ -67,6 +68,12 @@ function parseArgs(argv) {
       const v = (argv[++i] || '').toUpperCase();
       if (v !== 'RED' && v !== 'YELLOW') fail('--fail-on must be RED or YELLOW', 64);
       opts.failOn = v;
+      continue;
+    }
+    if (a === '--format') {
+      const v = (argv[++i] || '').toLowerCase();
+      if (v !== 'text' && v !== 'json' && v !== 'sarif') fail('--format must be text, json, or sarif', 64);
+      opts.format = v;
       continue;
     }
     fail(`unknown option: ${a} (try --help)`, 64);
@@ -84,7 +91,8 @@ function main() {
     fail(`not a directory: ${opts.dir}`, 64);
   }
 
-  const scan = spawnSync('bash', [SCAN], {
+  const scanArgs = opts.format === 'text' ? [SCAN] : [SCAN, '--format', opts.format];
+  const scan = spawnSync('bash', scanArgs, {
     cwd: opts.dir,
     encoding: 'utf8',
     maxBuffer: 32 * 1024 * 1024,
@@ -96,6 +104,10 @@ function main() {
 
   const scanOut = scan.stdout || '';
   process.stdout.write(scanOut);
+
+  if (opts.format !== 'text') {
+    process.exit(scan.status === 0 ? 0 : (scan.status || 0));
+  }
 
   const verdict = spawnSync('bash', [VERDICT], { input: scanOut, encoding: 'utf8' });
   if (verdict.error) fail(`failed to compute the verdict: ${verdict.error.message}`, 70);
