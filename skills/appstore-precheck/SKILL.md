@@ -226,7 +226,9 @@ After Phase 3, Pierre runs the **Review Simulator**: 28 read-only, evidence-base
 static scanner cannot fully judge (**22 Tier A** + **6 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
-Phase 4.
+Phase 4. When screenshots are present, also run the structured screenshot vision review in
+[`references/screenshot-vision-review.md`](references/screenshot-vision-review.md) (non-blocking;
+host vision model; never changes the verdict).
 
 **What Pierre does:** read Swift, metadata, entitlements, xcstrings, paywall views, review notes,
 screenshot/preview assets; fetch privacy and support URLs; cross-check claims vs code, policy vs
