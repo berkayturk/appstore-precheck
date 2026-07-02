@@ -39,6 +39,21 @@ assert_eq "true" "$(jq -e '.runs[0].tool.driver.rules|map(.id)|index("private-ap
 assert_eq "2.5.1" "$(jq -r '.runs[0].tool.driver.rules[]|select(.id=="private-api").shortDescription.text' <<<"$out")" "rule shortDescription = guideline"
 rm -f "$FINDINGS_TMP"
 
+section "scan.sh --format sarif end-to-end"
+SCAN="$HERE/../skills/appstore-precheck/scripts/scan.sh"
+tmp="$(mktemp -d)"; cp -R "$HERE/fixtures/sample-app/." "$tmp/"
+e2e="$(cd "$tmp" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format sarif 2>/dev/null)"
+rm -rf "$tmp"
+assert_eq "2.1.0" "$(jq -r .version <<<"$e2e")" "e2e: valid SARIF version"
+assert_eq "true" "$(jq -e '.runs[0].results|length > 0' <<<"$e2e")" "e2e: sample-app produces results"
+assert_eq "true" "$(jq -e '[.runs[0].results[].level]|any(.=="error" or .=="warning")' <<<"$e2e")" "e2e: results carry error/warning levels"
+
+section "scan.sh --format bad value -> exit 64"
+tmp="$(mktemp -d)"; cp -R "$HERE/fixtures/clean-app/." "$tmp/"
+( cd "$tmp" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format xml >/dev/null 2>&1 ); code=$?
+rm -rf "$tmp"
+assert_eq "64" "$code" "invalid --format exits 64"
+
 echo
 if (( fails == 0 )); then echo "[test-sarif.sh] OK"; else echo "[test-sarif.sh] $fails FAILED"; fi
 exit "$fails"
