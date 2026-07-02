@@ -5,6 +5,37 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-07-02
+
+Smarter analysis (roadmap #2c): a deterministic **semantic guideline-drift**
+detector. Beyond the existing section-number check, the tool now fingerprints the
+*text* of every guideline section our checks depend on and reports when Apple
+rewrites a section's meaning (even if its number is unchanged), naming the
+affected check(s). It is a maintainer/CI tool — network-using (`curl`), never
+sourced by `scan.sh`, never in the offline user scan path. Zero new runtime
+dependency for the distributed scanner; default scan output stays byte-identical.
+
+### Added
+- **`scripts/guideline-drift.sh`** (maintainer/CI): fetches the full live App
+  Store Review Guidelines and reports section-number drift AND text drift of
+  covered sections, deriving the affected check(s) from `scan.sh`'s `set_rule`
+  blocks. Non-blocking (WARN lines, always exits 0); the parse/diff logic is
+  unit-tested offline via `--html`. `--reconcile` regenerates the fingerprint
+  baseline (a deliberate human step) and skips/ WARNs on sections Apple has
+  removed rather than writing empty placeholders.
+- **`skills/appstore-precheck/guidelines-fingerprints.json`** — human-reconciled
+  per-covered-section text fingerprints (57 sections).
+- A non-blocking scheduled + manual GitHub workflow (`guideline-drift.yml`) that
+  surfaces drift; it never gates a PR.
+
+### Changed
+- **Baseline reconciled to Apple's current guidelines** (the drift tool's first
+  run caught real drift): Apple consolidated section 5.6 to end at **5.6.4** —
+  the removed **5.6.5–5.6.7** were dropped from the baseline and Pierre
+  deep-review check 28 (rating/review-manipulation) was remapped to the surviving
+  **5.6.1 / 5.6.3**. Six sub-sections a prior truncated fetch had missed
+  (2.5.7, 2.5.10, 4.2.4, 4.2.5, 4.4.3, 4.6) were added to `all_sections`.
+
 ## [1.7.0] - 2026-07-02
 
 Smarter analysis (roadmap #2b): the scanner now resolves the iOS source directory
