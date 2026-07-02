@@ -1,0 +1,245 @@
+{
+  "sections": {
+    "1.2": {
+      "fingerprint": "ce18f5618681eafe5b4010d3162e0cdfe026aed127295d1762a1fe0c23f68026",
+      "snapshot": "1.2 user-generated content apps with user-generated content present particular challenges, ranging from intellectual property infringement to anonymous bullying"
+    },
+    "1.2.1": {
+      "fingerprint": "ffadee3ecbf75b6cf5b293fa2d9f59b2d68c1ba61e6e4c0cb33852324081e84b",
+      "snapshot": "1.2.1 creator content apps which feature content from a specific community of users called “creators” are a great opportunity if properly moderated. these apps "
+    },
+    "1.4.1": {
+      "fingerprint": "30045ffe09e8c2fe50923eb5f718ddec394b048bef67c6b7959abadb178c8406",
+      "snapshot": "1.4.1 medical apps that could provide inaccurate data or information, or that could be used for diagnosing or treating patients may be reviewed with greater scr"
+    },
+    "1.5": {
+      "fingerprint": "5553347bd97263487f23eae8b7577d036a875ba0934bbde44ac4216218fe85fa",
+      "snapshot": "1.5 developer information people need to know how to reach you with questions and support issues. make sure your app and its support url include an easy way to "
+    },
+    "1.6": {
+      "fingerprint": "0620b0807840c795dfcdf546b4a9e648564a192b48a995e3b507f60f26ee690f",
+      "snapshot": "1.6 data security apps should implement appropriate security measures to ensure proper handling of user information collected pursuant to the apple developer pr"
+    },
+    "2.1": {
+      "fingerprint": "f5cd98793df128268b4fe5b3b31b006776b0678f6d79d0b88d0d9b3986ea5fd4",
+      "snapshot": "2.1 app completeness (a) submissions to app review, including apps you make available for pre-order, should be final versions with all necessary metadata and fu"
+    },
+    "2.2": {
+      "fingerprint": "5df8bc50bf6ef5ce31be95dc03f8bc4ece4cd107055a5124add9336b49471a0d",
+      "snapshot": "2.2 beta testing demos, betas, and trial versions of your app don’t belong on the app store – use testflight instead. any app submitted for beta distribution vi"
+    },
+    "2.3": {
+      "fingerprint": "f7b9c31377de7f721ecb9f203a2f107d3600c464ce0633e0d79dd5318250d4df",
+      "snapshot": "2.3 accurate metadata customers should know what they’re getting when they download or buy your app, so make sure all your app metadata, including privacy infor"
+    },
+    "2.3.1": {
+      "fingerprint": "4745cb96a6e7665103163daa8a6f07dfc08008288116132a1f3c668d621c61b3",
+      "snapshot": "2.3.1 (a) don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and app review. all new"
+    },
+    "2.3.10": {
+      "fingerprint": "a770ee4d270784e3bfa0784aab62563acccae50f02e4d85c4bb65bda14a4133d",
+      "snapshot": "2.3.10 make sure your app is focused on the experience of the apple platforms it supports, and don’t include names, icons, or imagery of other mobile platforms "
+    },
+    "2.3.11": {
+      "fingerprint": "393e4075d4b403ff201771e040768963299b7df6f01693317ea87c208276b63a",
+      "snapshot": "2.3.11 apps you submit for pre-order on the app store must be complete and deliverable as submitted. ensure that the app you ultimately release is not materiall"
+    },
+    "2.3.12": {
+      "fingerprint": "c4fe778434d20e2157b2093ceab8e780d6a98f85c05c57823507992f58de54a3",
+      "snapshot": "2.3.12 apps must clearly describe new features and product changes in their “what’s new” text. simple bug fixes, security updates, and performance improvements "
+    },
+    "2.3.13": {
+      "fingerprint": "40d66f89efc57625525782e40afc24aabd8a4cbe2a745eca725a7a2d6324f742",
+      "snapshot": "2.3.13 in-app events are timely events that happen within your app. to feature your event on the app store, it must fall within an event type provided in app st"
+    },
+    "2.3.2": {
+      "fingerprint": "e070f3780bbbbf41f191f71ef396904f9d42d531ab782f6f35b4e0c9b95dbf0a",
+      "snapshot": "2.3.2 if your app includes in-app purchases, make sure your app description, screenshots, and previews clearly indicate whether any featured items, levels, subs"
+    },
+    "2.3.3": {
+      "fingerprint": "599fcbd06e68d93bab64101dc412f5c6ffb13eb76e8490c7e93d95d95e4dafae",
+      "snapshot": "2.3.3 screenshots should show the app in use, and not merely the title art, login page, or splash screen. they may also include text and image overlays (e.g. to"
+    },
+    "2.3.4": {
+      "fingerprint": "581fe91e7677d96de480c0edca7761023e5606f5d6cd39ae42a06d29081ab393",
+      "snapshot": "2.3.4 previews are a great way for customers to see what your app looks like and what it does. to ensure people understand what they’ll be getting with your app"
+    },
+    "2.3.5": {
+      "fingerprint": "b4fb364fef12344219399d477daa73bca645261f6feee1a67dc88916a417c5c5",
+      "snapshot": "2.3.5 select the most appropriate category for your app, and check out the app store category definitions if you need help. if you’re way off base, we may chang"
+    },
+    "2.3.6": {
+      "fingerprint": "a6804ee336bd78da1ddc44613ea6fe131b5dcf4cbe482b8cb696ef3720435c3d",
+      "snapshot": "2.3.6 answer the age rating questions in app store connect honestly so that your app aligns properly with parental controls. if your app is mis-rated, customers"
+    },
+    "2.3.7": {
+      "fingerprint": "3493119147fdb0b4735ce6760d2a0186a4941531ff209e4198879f0a1c201a2c",
+      "snapshot": "2.3.7 choose a unique app name, assign keywords that accurately describe your app, and don’t try to pack any of your metadata with trademarked terms, popular ap"
+    },
+    "2.3.8": {
+      "fingerprint": "9c1bc1fbee57f292a14e4b6cfa465021ad0f7acb79691337b2a0f5c2e41392bb",
+      "snapshot": "2.3.8 metadata should be appropriate for all audiences, so make sure your app and in-app purchase icons, screenshots, and previews adhere to a 4+ age rating eve"
+    },
+    "2.3.9": {
+      "fingerprint": "5161fcd6aaa9dfd7b3cfff5f32912448dc937083d095fe9049cef0f80a09fa32",
+      "snapshot": "2.3.9 you are responsible for securing the rights to use all materials in your app icons, screenshots, and previews, and you should display fictional account in"
+    },
+    "2.5.1": {
+      "fingerprint": "7b055c4d2438faeaee3b1b77f5ce9b9cec38e713466ea0c85d31117d6484ba8b",
+      "snapshot": "2.5.1 apps may only use public apis and must run on the currently shipping os. learn more about public apis . keep your apps up-to-date and make sure you phase "
+    },
+    "2.5.2": {
+      "fingerprint": "353ebb9358966707a33b8b1b29575e44c1a2db44e8a42c013bcd48ca296fec44",
+      "snapshot": "2.5.2 apps should be self-contained in their bundles, and may not read or write data outside the designated container area, nor may they download, install, or e"
+    },
+    "2.5.4": {
+      "fingerprint": "9695ae52e1472dc7f5d977a88287c590b468401dd6a1fb30ddbe252029c59c81",
+      "snapshot": "2.5.4 multitasking apps may only use background services for their intended purposes: voip, audio playback, location, task completion, local notifications, etc."
+    },
+    "3.1.1": {
+      "fingerprint": "16d14be80e2243e9456be40bbc6c8dfb2cb6e90c6e98e5c36ba6e7f7147a61e8",
+      "snapshot": "3.1.1 in-app purchase: if you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, acce"
+    },
+    "3.1.2": {
+      "fingerprint": "015f5baa628e085d550f8bc6d47f0cc33508915a5dced6d8b238e6a52616690a",
+      "snapshot": "3.1.2 subscriptions: apps may offer auto-renewable in-app purchase subscriptions, regardless of category on the app store. when incorporating auto-renewable sub"
+    },
+    "3.1.5": {
+      "fingerprint": "ff34b24b578bec14defe707f1333593160535ab927d03676f1e533b4d9ef03bb",
+      "snapshot": "3.1.5 cryptocurrencies: (i) wallets: apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) min"
+    },
+    "4.2": {
+      "fingerprint": "381768384e5d58de6c2c75ccfae3524279669ea710b29bd12994561ba002e9d6",
+      "snapshot": "4.2 minimum functionality your app should include features, content, and ui that elevate it beyond a repackaged website. if your app is not particularly useful,"
+    },
+    "4.2.1": {
+      "fingerprint": "186350931d2f6ae6faf4fab30b4ad0000cb386890f59dfc1f0d55904e0d31ebc",
+      "snapshot": "4.2.1 apps using arkit should provide rich and integrated augmented reality experiences; merely dropping a model into an ar view or replaying animation is not e"
+    },
+    "4.2.2": {
+      "fingerprint": "504f8404893912593ded8f89748de71a847897cc0cf7f987e475323edef8650a",
+      "snapshot": "4.2.2 other than catalogs, apps shouldn’t primarily be marketing materials, advertisements, web clippings, content aggregators, or a collection of links."
+    },
+    "4.2.3": {
+      "fingerprint": "60bde0e85a028024660dd1b6da7a487083fea5c8e346e1f9d4ef287e6bce7829",
+      "snapshot": "4.2.3 (i) your app should work on its own without requiring installation of another app to function. (ii) if your app needs to download additional resources in "
+    },
+    "4.2.7": {
+      "fingerprint": "debd395643a03b8dec28d32aed55ec883b91ce24df156ed8365846245a56d436",
+      "snapshot": "4.2.7 remote desktop clients: if your remote desktop app acts as a mirror of specific software or services rather than a generic mirror of the host device, it m"
+    },
+    "4.4.1": {
+      "fingerprint": "520a1ac7a5d13b54061b05bdc57a851e7d5f541a352144623b16c52ae578e5c6",
+      "snapshot": "4.4.1 keyboard extensions have some additional rules. they must: provide keyboard input functionality (e.g. typed characters); follow sticker guidelines if the "
+    },
+    "4.4.2": {
+      "fingerprint": "6b7f6bde5787ba828a1f18833340140d858d1cc520430b0519f487a7d86dc54c",
+      "snapshot": "4.4.2 safari extensions must run on the current version of safari on the relevant apple operating system. they may not interfere with system or safari ui elemen"
+    },
+    "4.5.1": {
+      "fingerprint": "9a82e38f4117ddc59f65993ff1ba5c8fba392fb91f7aad3936725e289d348b38",
+      "snapshot": "4.5.1 apps may use approved apple rss feeds such as the itunes store rss feed, but may not scrape any information from apple sites (e.g. apple.com, the itunes s"
+    },
+    "4.5.2": {
+      "fingerprint": "285371a2e18e84a6b20f61f4b9e4f342c2890debecfaf527c57051d4e15c48b4",
+      "snapshot": "4.5.2 apple music (i) musickit on ios lets users play apple music and their local music library natively from your apps and games. when a user provides permissi"
+    },
+    "4.5.3": {
+      "fingerprint": "66dcdc8015b616f09d2dc81e96567f1e003d3c71d8549e89d911ff1a7a3a528e",
+      "snapshot": "4.5.3 do not use apple services to spam, phish, or send unsolicited messages to customers, including game center, push notifications, live activities, etc. do n"
+    },
+    "4.8": {
+      "fingerprint": "4d97c6a408a925e9209c7f01ca4377b17c52eeb837a15023ac776b198f3f203e",
+      "snapshot": "4.8 login services apps that use a third-party or social login service (such as facebook login, google sign-in, log in with x, sign in with linkedin, login with"
+    },
+    "4.9": {
+      "fingerprint": "6ac6eb5bc1047758fde6986c12411e5ccd0901ae38c71facf71076dab9a8f671",
+      "snapshot": "4.9 apple pay apps using apple pay must provide all material purchase information to the user prior to sale of any good or service and must use apple pay brandi"
+    },
+    "5.1.1": {
+      "fingerprint": "fed9edf9021681ed9f27139e162f963bf4823e95775d6efad1156c59e9bd7baf",
+      "snapshot": "5.1.1 data collection and storage (i) privacy policies: all apps must include a link to their privacy policy in the app store connect metadata field and within "
+    },
+    "5.1.2": {
+      "fingerprint": "9817b825aa227ee7959bdecde672a78dffa147ce2ded3e3bcc0c0a4b3010f80c",
+      "snapshot": "5.1.2 data use and sharing (i) unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their perm"
+    },
+    "5.1.3": {
+      "fingerprint": "12a61190ea01b69c11d8d029b473777b5e9590739fd3043afa25f4f0f05c114a",
+      "snapshot": "5.1.3 health and health research health, fitness, and medical data are especially sensitive and apps in this space have some additional rules to make sure custo"
+    },
+    "5.1.4": {
+      "fingerprint": "43671205363120d06dd34eb1971c4751e8582fb8f7dfe69abbcadf2cd36195ea",
+      "snapshot": "5.1.4 kids (a) for many reasons, it is critical to use care when dealing with personal data from kids, and we encourage you to carefully review all the requirem"
+    },
+    "5.1.5": {
+      "fingerprint": "07911be837521693da654a46f08e84c9ca2ec3cf9ad87c65f54ae9624d157b3e",
+      "snapshot": "5.1.5 location services use location services in your app only when it is directly relevant to the features and services provided by the app. location-based api"
+    },
+    "5.2.1": {
+      "fingerprint": "358d2d81a7b375d308077bbb71b07989235f5667d2cda7fffb14ac1b006c7ae8",
+      "snapshot": "5.2.1 generally: don’t use protected third-party material such as trademarks, copyrighted works, or patented ideas in your app without permission, and don’t inc"
+    },
+    "5.2.2": {
+      "fingerprint": "b7e091540eb347bfa61de6c24a960913e95e67bfe4b40197a464d56b21c45424",
+      "snapshot": "5.2.2 third-party sites/services: if your app uses, accesses, monetizes access to, or displays content from a third-party service, ensure that you are specifica"
+    },
+    "5.2.3": {
+      "fingerprint": "af448918a1af7645066c9cce2be68952a841908a49efe143123b5641e8cf2215",
+      "snapshot": "5.2.3 audio/video downloading: apps should not facilitate illegal file sharing or include the ability to save, convert, or download media from third-party sourc"
+    },
+    "5.3.1": {
+      "fingerprint": "b1b9f19d97e0303c2b658f1b7d9d0db70dc417bdff7ce826c1e5b93b4a35ca55",
+      "snapshot": "5.3.1 sweepstakes and contests must be sponsored by the developer of the app."
+    },
+    "5.3.2": {
+      "fingerprint": "49577a0affde1ea6a425b47803c251eaede1565ee4a92676587bda910b5f0632",
+      "snapshot": "5.3.2 official rules for sweepstakes, contests, and raffles must be presented in the app and make clear that apple is not a sponsor or involved in the activity "
+    },
+    "5.3.3": {
+      "fingerprint": "7770603fbb406eeaa5d1320ca6baa5f57a72ee680200d82373bbc9dd6e41b8fe",
+      "snapshot": "5.3.3 apps may not use in-app purchase to purchase credit or currency for use in conjunction with real money gaming of any kind."
+    },
+    "5.3.4": {
+      "fingerprint": "aaca06600d77f4c3d63ffd9c6c3f5eef979135c2ce3f1263bb5349420d036387",
+      "snapshot": "5.3.4 apps that offer real money gaming (e.g. sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions in t"
+    },
+    "5.4": {
+      "fingerprint": "3d639b21b98c7d15167fdfbd71559a91a5de51a7b5c22f300203e5f341af8616",
+      "snapshot": "5.4 vpn apps apps offering vpn services must utilize the nevpnmanager api and may only be offered by developers enrolled as an organization. you must make a cle"
+    },
+    "5.5": {
+      "fingerprint": "f8c3db6e7237d7c5a5002a507e20296153e906118b7ce05c537d1873e2adeab0",
+      "snapshot": "5.5 mobile device management mobile device management apps that offer mobile device management (mdm) services must request this capability from apple. such apps"
+    },
+    "5.6.1": {
+      "fingerprint": "17224df537dcc818fd69678e5f067156127cc8513cb0188ad6e3431641673172",
+      "snapshot": "5.6.1 app store reviews app store customer reviews can be an integral part of the app experience, so you should treat customers with respect when responding to "
+    },
+    "5.6.2": {
+      "fingerprint": "960f0c0dab8442a42b03926ae1123ffabbc676ecd4dc1890d31fd58c3ba9cf36",
+      "snapshot": "5.6.2 developer identity providing verifiable information to apple and customers is critical to customer trust. your representation of yourself, your business, "
+    },
+    "5.6.3": {
+      "fingerprint": "1d9e3acfb31ec0ba65a77d09e230f5a3c408bc4438343437aa8dc3bd17d5967b",
+      "snapshot": "5.6.3 discovery fraud participating in the app store requires integrity and a commitment to building and maintaining customer trust. manipulating any element of"
+    },
+    "5.6.4": {
+      "fingerprint": "2f63efa4160b309b6ef4d1280e3d16a06165676f1421c3c36f6dbe305ca1291a",
+      "snapshot": "5.6.4 app quality customers expect the highest quality from the app store, and maintaining high quality content, services, and experiences promotes customer tru"
+    },
+    "5.6.5": {
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "snapshot": ""
+    },
+    "5.6.6": {
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "snapshot": ""
+    },
+    "5.6.7": {
+      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "snapshot": ""
+    }
+  },
+  "reconciled_on": "2026-07-02"
+}

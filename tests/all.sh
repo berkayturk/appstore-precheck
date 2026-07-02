@@ -19,6 +19,7 @@ SUITE=(
   "test-suppress.sh"  # suppress.sh + emit-time .precheck-ignore wiring
   "test-scorecard.sh" # scorecard.sh metric math + --check staleness gate
   "test-project-model.sh" # project-model.sh pbxproj parser + resolver
+  "test-guideline-drift.sh" # guideline-drift.sh parse/diff + coverage↔fingerprint consistency
 )
 
 failed=()

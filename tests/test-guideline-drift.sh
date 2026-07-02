@@ -82,5 +82,19 @@ rm -f "$FIX/baseline-cov.json" "$FIX/empty.html"
 gd_main --bogus >/dev/null 2>&1; assert_eq "$?" "0" "unknown flag exits 0 (non-blocking)"
 gd_main --html >/dev/null 2>&1;  assert_eq "$?" "0" "flag with missing value exits 0 (non-blocking)"
 
+
+# --- consistency: every covered section has a fingerprint; no orphan fingerprints ---
+BASE="$ROOT/skills/appstore-precheck/guidelines-baseline.json"
+FP="$ROOT/skills/appstore-precheck/guidelines-fingerprints.json"
+covered_sorted="$(jq -r '((.covered_by_scan // []) + (.covered_by_pierre_deep_review // [])) | unique[]' "$BASE" | sort)"
+fp_sorted="$(jq -r '.sections | keys[]' "$FP" | sort)"
+missing="$(comm -23 <(printf '%s\n' "$covered_sorted") <(printf '%s\n' "$fp_sorted"))"
+orphan="$(comm -13 <(printf '%s\n' "$covered_sorted") <(printf '%s\n' "$fp_sorted"))"
+assert_eq "$missing" "" "every covered section has a fingerprint entry"
+assert_eq "$orphan" "" "no fingerprint for a non-covered section"
+# every fingerprint is a 64-hex sha256
+bad="$(jq -r '.sections | to_entries[] | select(.value.fingerprint | test("^[0-9a-f]{64}$") | not) | .key' "$FP")"
+assert_eq "$bad" "" "all fingerprints are 64-hex sha256"
+
 echo "test-guideline-drift: OK"
 exit "$fails"
