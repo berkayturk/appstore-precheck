@@ -468,8 +468,10 @@ CI runs ShellCheck, JSON validation, the version-consistency guard, and the fixt
 
 This is a static heuristic tool plus Pierre's semantic deep review. A GREEN result **lowers but does
 not eliminate** rejection risk; Apple's guidelines change frequently and reviewer decisions are
-judgment calls. `REVIEW-FINDING` lines are advisory and do not block the token by themselves. It
-performs no runtime crash testing; always do a final manual review before you submit. Not affiliated
+judgment calls. `REVIEW-FINDING` lines are advisory and do not block the token by themselves. The
+default flow performs no runtime crash testing; an optional, opt-in local simulator tier (Maestro
++ `xcrun simctl`) adds a pre-submit smoke signal but is not a TestFlight / crash-reporter / QA
+replacement. Always do a final manual review before you submit. Not affiliated
 with Apple.
 
 ## Star History
