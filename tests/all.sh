@@ -22,6 +22,7 @@ SUITE=(
   "test-guideline-drift.sh" # guideline-drift.sh parse/diff + coverage↔fingerprint consistency
   "test-image-dims.sh" # image-dims.sh PNG magic + IHDR dimension parse + accepted-size match
   "test-sarif.sh"     # sarif.sh render_sarif SARIF 2.1.0 output
+  "test-action-sarif.sh" # action.yml opt-in SARIF/annotation inputs default off
 )
 
 failed=()
