@@ -61,6 +61,7 @@ jobs:
                    corpus/synthetic/labels.json \
                    corpus/real/manifest.json \
                    corpus/real/labels.json \
+                   corpus/outcomes/ledger.json \
                    package.json; do
             echo "validating $f"
             jq empty "$f"
