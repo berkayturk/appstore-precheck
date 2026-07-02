@@ -17,13 +17,19 @@ gd_section_ids() {
 
 # gd_section_text <html> <id> -> normalized prose for exactly that section.
 gd_section_text() {
-  local html="$1" id="$2" needle="id=\"$2\""
-  # Put every guideline anchor at the start of its own line, then accumulate the
-  # block from the target anchor up to (not including) the next guideline anchor.
-  sed -E 's/(id="[1-5](\.[0-9]+)*")/\'$'\n''\1/g' "$html" \
-  | awk -v n="$needle" '
-      /^id="[1-5]([.][0-9]+)*"/ { insec = (index($0, n) == 1) }
-      insec { buf = buf $0 " " }
+  local html="$1" want="$2"
+  # Replace each opening guideline-anchor tag (e.g. <span id="2.3.3"> or <li id="2.3.3" ...>)
+  # with a whole-tag sentinel @@SEC:<id>@@ on its own line, so no partial tag leaks.
+  sed -E 's#<[a-zA-Z]+[^>]*id="([1-5](\.[0-9]+)*)"[^>]*>#\'$'\n''@@SEC:\1@@#g' "$html" \
+  | awk -v want="$want" '
+      {
+        if ($0 ~ /^@@SEC:/) {
+          id=$0; sub(/^@@SEC:/,"",id); sub(/@@.*/,"",id)
+          insec = (id == want)
+          sub(/^@@SEC:[^@]*@@/,"")   # drop the sentinel, keep any trailing content on the line
+        }
+        if (insec) buf = buf $0 " "
+      }
       END { printf "%s", buf }
     ' \
   | sed -E 's/<[^>]+>/ /g' \
