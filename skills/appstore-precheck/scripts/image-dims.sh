@@ -28,24 +28,39 @@ png_dims() {
   printf '%s %s\n' "$w" "$h"
 }
 
-# ACCEPTED_SIZES — current Apple App Store screenshot pixel sizes (portrait "W H").
-# The matcher tries both orientations. Verified against Apple's official page:
+# ACCEPTED_SIZES — Apple App Store screenshot pixel sizes (portrait "W H").
+# The matcher tries both orientations. This table is intentionally generous
+# (includes current + legacy device sizes) because this check is WARN-only.
+# Verified against Apple's official page:
 # https://developer.apple.com/help/app-store-connect/reference/screenshot-specifications/
 ACCEPTED_SIZES="
-1320 2868
+1260 2736
 1290 2796
+1320 2868
 1284 2778
 1242 2688
 1179 2556
+1206 2622
 1170 2532
+1125 2436
+1080 2340
 1242 2208
 750 1334
+640 1096
 640 1136
+640 920
+640 960
 2064 2752
 2048 2732
+1488 2266
+1668 2420
 1668 2388
+1640 2360
 1668 2224
+1536 2008
 1536 2048
+768 1004
+768 1024
 "
 
 # dims_match_accepted <W> <H> -> return 0 if W×H or H×W is an accepted size.
