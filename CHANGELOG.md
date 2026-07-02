@@ -5,6 +5,38 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-07-02
+
+Roadmap #5 (final roadmap item): an **optional, opt-in local dynamic simulator tier** —
+agent-mode, advisory, and off by default. It never changes the verdict and never runs
+in the offline CLI / npx / GitHub-Action path.
+
+When the user explicitly asks for a dynamic check and supplies a built app (or a booted
+simulator UDID + bundle id), the host model can run the app on a disposable simulator via
+`xcrun simctl` + Maestro MCP tools and observe real behavior a static scan cannot — launch
+without crashing (2.1), core screen reachable, paywall actually renders with terms (3.1.2),
+permission prompt matches its `Info.plist` purpose string (5.1.1), a demo/login path works
+(2.1), and live UI matches the marketing screenshots (2.3.5). It emits advisory
+`DYNAMIC-PASS:` / `DYNAMIC-FINDING:` lines, exactly like Pierre deep-review's `REVIEW-*`
+lines. It is the free/local alternative to a paid cloud device farm — a pre-submit local
+smoke signal, **not** a TestFlight / crash-reporter / QA replacement.
+
+### Added
+- **`skills/appstore-precheck/references/simulator-dynamic-review.md`** — the 6-check
+  agent-mode dynamic checklist (D1–D6) with advisory output format, modeled on the existing
+  deep-review reference docs.
+- **`SKILL.md`** — an optional "Phase 6" section (off by default) plus a scoped READ-ONLY
+  caveat and an updated "Known limits" note.
+- Methodology + README notes describing the tier.
+
+### Notes
+- Documentation-only: the offline scan path (`scan.sh`/`verdict.sh`/`bin/cli.js`/`action.yml`)
+  is byte-identical. READ-ONLY preserved — the tier touches only disposable simulator state,
+  never the user's repo. It is permanently local-only (macOS + Xcode + a simulator; it cannot
+  run in this project's `ubuntu-latest` CI). A deterministic `simulator-smoke.sh` and authored
+  Maestro flows are deliberately deferred (simulator crash-timing is too flaky to ship as an
+  unvalidated deterministic check).
+
 ## [1.11.0] - 2026-07-02
 
 Roadmap #3: **rejection-outcome feedback loop** — a third, honestly-scoped measurement
