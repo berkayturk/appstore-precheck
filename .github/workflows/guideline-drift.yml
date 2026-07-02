@@ -1,0 +1,15 @@
+name: Guideline drift
+
+on:
+  schedule:
+    - cron: "0 9 * * 1"   # Mondays 09:00 UTC — maintainer signal, never blocks a PR
+  workflow_dispatch:
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Check for guideline drift (non-blocking)
+        run: |
+          bash scripts/guideline-drift.sh | tee "$GITHUB_STEP_SUMMARY" || true

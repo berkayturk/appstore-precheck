@@ -52,6 +52,13 @@ number is unchanged but whose *text* changed is not caught here, but is partly c
 Phase 2 (Apple's own rule engine) and Phase 3 (Pierre explains every FAIL/WARN). Apple does not expose a
 machine-readable "last updated" date in the page DOM, so the section-number set is the signal.
 
+**Automated detector:** `scripts/guideline-drift.sh` is the deterministic, curl-based counterpart
+to the two-pass technique above — it runs unattended in CI (see
+`.github/workflows/guideline-drift.yml`, scheduled + `workflow_dispatch`, always non-blocking) and
+also covers text (semantic) drift of covered sections via `guidelines-fingerprints.json`, naming
+the affected check(s) when a section's fingerprint no longer matches. Reconcile the fingerprint
+baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
+
 ---
 
 ## Phase 1: Rejection vectors

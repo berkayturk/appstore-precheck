@@ -44,7 +44,8 @@ jobs:
                      tests/test-scorecard.sh \
                      scripts/check-versions.sh \
                      scripts/scorecard.sh \
-                     scripts/scorecard-real.sh
+                     scripts/scorecard-real.sh \
+                     scripts/guideline-drift.sh
 
       - name: Validate JSON
         run: |

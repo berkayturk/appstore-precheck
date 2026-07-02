@@ -104,6 +104,12 @@ two-pass technique; the exact prompts and the reconciliation procedure are in
 [`references/methodology.md`](references/methodology.md#phase-0-guideline-drift-check). The
 baseline is **never auto-updated**. Reconciliation is a deliberate human step.
 
+The deterministic, full-page drift detector is `scripts/guideline-drift.sh` (maintainer/CI;
+curl-based, so it also covers the 5.5–5.6.x tail that `WebFetch` truncates). It reports
+section-number drift AND text (semantic) drift of covered sections, naming the affected
+check(s). It is non-blocking and never runs in the offline user scan; the fingerprint baseline
+(`guidelines-fingerprints.json`) is human-reconciled via `guideline-drift.sh --reconcile`.
+
 ### Phase 1: Static scan
 
 ```bash
