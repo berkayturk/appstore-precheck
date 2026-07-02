@@ -42,9 +42,11 @@ jobs:
                      tests/test-format-json.sh \
                      tests/test-suppress.sh \
                      tests/test-scorecard.sh \
+                     tests/test-scorecard-outcomes.sh \
                      scripts/check-versions.sh \
                      scripts/scorecard.sh \
                      scripts/scorecard-real.sh \
+                     scripts/scorecard-outcomes.sh \
                      scripts/guideline-drift.sh
 
       - name: Validate JSON
@@ -61,6 +63,7 @@ jobs:
                    corpus/synthetic/labels.json \
                    corpus/real/manifest.json \
                    corpus/real/labels.json \
+                   corpus/outcomes/ledger.json \
                    package.json; do
             echo "validating $f"
             jq empty "$f"
