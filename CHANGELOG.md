@@ -5,6 +5,38 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-07-02
+
+Roadmap #4: **SARIF output + opt-in GitHub PR annotations** — read-only, no auto-fix.
+
+The scanner can now emit its deterministic findings as **SARIF 2.1.0**
+(`scan.sh --format sarif`, also `npx appstore-precheck --format sarif`), built from
+the same structured findings as `--format json` with pure `jq` (no new dependency).
+`results[]` contains the non-suppressed FAIL and WARN findings (FAIL → `error`,
+WARN → `warning`); PASS and suppressed findings are excluded; findings that carry a
+`file`/`line` become SARIF `physicalLocation`s so GitHub can anchor annotations. Only
+the deterministic scan findings are included — the agent-mode Pierre deep-review
+findings are not (SARIF is a deterministic CI artifact).
+
+The GitHub Action gains two **opt-in** inputs (both default `false`, so existing
+usage is unchanged): `sarif` uploads the SARIF to code-scanning via `upload-sarif`
+(PR annotations + Security tab; needs `permissions: security-events: write`), and
+`annotations` emits inline `::error`/`::warning` PR annotations. Both run even when
+the scan verdict fails, and neither modifies the project.
+
+### Added
+- **`skills/appstore-precheck/scripts/sarif.sh`** — `render_sarif()`, a SARIF 2.1.0
+  writer over the findings buffer (pure `jq`).
+- **`scan.sh --format sarif`** (and `bin/cli.js --format text|json|sarif`).
+- **`action.yml`** opt-in inputs `sarif` and `annotations` (default off): SARIF
+  upload via `github/codeql-action/upload-sarif@v3` and inline PR annotations.
+- Tests: `tests/test-sarif.sh` and `tests/test-action-sarif.sh`.
+
+### Notes
+- Read-only preserved: the scanner writes only to stdout; the Action redirects SARIF
+  to a CI workspace file. No auto-fix. Default `--format text`/`--format json` output
+  and the Action's default behavior are byte-identical to before.
+
 ## [1.9.0] - 2026-07-02
 
 Smarter analysis (roadmap #2a): **screenshot vision**, in two layers.
