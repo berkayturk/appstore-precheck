@@ -5,6 +5,51 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-07-02
+
+Smarter analysis (roadmap #2a): **screenshot vision**, in two layers.
+
+**Layer 1 (deterministic, offline, zero-dependency).** The static scanner now
+reads each in-repo screenshot's file format and, for PNGs, its pixel dimensions —
+a new `screenshot-dimensions` check (catalog vector 42) under guideline 2.3.3. It
+WARNs on a file whose content does not match its extension, a truncated PNG, or a
+PNG whose dimensions match no known App Store screenshot size (either orientation).
+WARN-only: it never forces a RED verdict, and the offline scan stays
+byte-identical on inputs without real screenshots. Parsing uses only `bash`+`od`+
+`awk` — no new runtime dependency.
+
+**Layer 2 (agent-mode, non-blocking).** A dedicated structured screenshot vision
+review that uses the host model's vision capability to check screenshots for
+placeholder / dev-debug / empty-state content, text overflow / truncation, wrong
+device frame / aspect, misleading marketing (2.3.3 "show the app in use" / 2.3.10),
+and metadata mismatches. Like Pierre deep-review it is advisory (`REVIEW-FINDING`)
+and never changes the GREEN/YELLOW/RED verdict. It runs only in agent-skill mode
+(host vision model), never in the CLI / npx / GitHub-Action path.
+
+### Added
+- **`skills/appstore-precheck/scripts/image-dims.sh`** — zero-dependency PNG
+  magic-byte + IHDR pixel-dimension parser (pure `bash`+`od`+`awk`) and the Apple
+  accepted-screenshot-size table (verified against Apple's screenshot
+  specifications page).
+- **`scan.sh` §7b** — screenshot format + PNG-dimension validation (rule
+  `screenshot-dimensions`, catalog vector 42), WARN-only.
+- **`skills/appstore-precheck/references/screenshot-vision-review.md`** — agent-mode
+  structured screenshot vision checklist (5 checks), non-blocking, wired into
+  Pierre deep-review check #8 and SKILL.md Phase 4.
+- Tests: `tests/test-image-dims.sh` (parser unit tests) and
+  `tests/fixtures/screenshots-app/` (end-to-end fixture); `tests/make-png.py`
+  fixture generator.
+
+### Changed
+- Advertised deterministic rejection-vector count **41 → 42** (the new
+  screenshot-dimensions check) across README, SKILL.md, and methodology.
+- Existing screenshot test fixtures: replaced 1-byte placeholders with real
+  accepted-size PNGs (scan output byte-identical).
+
+### Notes
+- JPEG dimensions are not parsed in this release; JPEGs are format-validated
+  (magic bytes) and counted only.
+
 ## [1.8.0] - 2026-07-02
 
 Smarter analysis (roadmap #2c): a deterministic **semantic guideline-drift**
