@@ -83,6 +83,26 @@ gd_main --bogus >/dev/null 2>&1; assert_eq "$?" "0" "unknown flag exits 0 (non-b
 gd_main --html >/dev/null 2>&1;  assert_eq "$?" "0" "flag with missing value exits 0 (non-blocking)"
 
 
+# --- gd_main --reconcile: missing covered section must not become an empty placeholder ---
+cat > "$FIX/baseline-missing.json" <<'JSON'
+{ "all_sections": ["1.2","2.3.3","3.1.1","5.1.1","4.9"],
+  "covered_by_scan": ["2.3.3","4.9"],
+  "covered_by_pierre_deep_review": [] }
+JSON
+recfp="$FIX/reconcile-out.json"
+rout="$(gd_main --reconcile --html "$FIX/sample.html" \
+               --baseline "$FIX/baseline-missing.json" \
+               --fingerprints "$recfp"; echo "RC=$?")"
+assert_contains "$rout" "WARN: reconcile — 4.9 not found on live page" "reconcile warns and skips a section missing from the live page"
+assert_contains "$rout" "WARN: guideline-drift section-number change: REMOVED 4.9" "reconcile also surfaces number drift for the missing section"
+assert_contains "$rout" "RC=0" "reconcile still exits 0 despite a missing section"
+missing_entry="$(jq -r '.sections["4.9"] // "ABSENT"' "$recfp")"
+assert_eq "$missing_entry" "ABSENT" "no placeholder entry written for the missing section"
+present_entry="$(jq -r '.sections["2.3.3"].fingerprint // ""' "$recfp")"
+[ -n "$present_entry" ] && r=0 || r=1
+assert_eq "$r" "0" "present covered section still gets a real fingerprint"
+rm -f "$FIX/baseline-missing.json" "$recfp"
+
 # --- consistency: every covered section has a fingerprint; no orphan fingerprints ---
 BASE="$ROOT/skills/appstore-precheck/guidelines-baseline.json"
 FP="$ROOT/skills/appstore-precheck/guidelines-fingerprints.json"

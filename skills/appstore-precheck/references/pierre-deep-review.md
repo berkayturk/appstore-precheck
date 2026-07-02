@@ -87,7 +87,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 | 25 | **5.2.1–5.2.3** | Obvious third-party trademark/brand misuse in metadata, assets, or UI copy? | metadata, asset filenames, Swift strings |
 | 26 | **5.3.1–5.3.3** | Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata? | description, keywords, in-app contest UI |
 | 27 | **5.6.2–5.6.3** | Developer identity consistent: app name, support URL content, bundle/marketing domain match? | fetch support URL, metadata, legal/footer copy |
-| 28 | **5.6.4–5.6.7** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
+| 28 | **5.6.1 / 5.6.3** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
 
 ---
 
@@ -253,7 +253,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 2. Compare app name, support domain, and privacy policy domain for consistency.
 3. Flag placeholder support pages or identity mismatch.
 
-### 28 — 5.6.4–5.6.7 Rating manipulation *(Tier B v1)*
+### 28 — 5.6.1 / 5.6.3 Rating/review manipulation *(Tier B v1)*
 
 1. Grep Swift and metadata for: `itms-apps://` write-review URLs, `apps.apple.com/.../write-review`,
    "rate 5 stars", "only enable after review", custom star-rating UI tied to App Store review.

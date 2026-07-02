@@ -106,17 +106,35 @@ gd_main() {
   local covered; covered="$(jq -r '(.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) | unique[]' "$baseline" 2>/dev/null)"
 
   if [[ "$reconcile" == 1 ]]; then
+    # Surface section-number drift first — --reconcile should never silently paper
+    # over an ADDED/REMOVED section number just because it's about to rewrite text
+    # fingerprints for the (possibly stale) covered set.
+    local liveids_r; liveids_r="$(mktemp)"; gd_section_ids "$html" > "$liveids_r"
+    gd_number_drift "$liveids_r" "$baseline" | while IFS= read -r line; do
+      [[ -n "$line" ]] && echo "WARN: guideline-drift section-number change: $line"
+    done
+    rm -f "$liveids_r"
+
     # Rewrite the fingerprints file from the live page (deliberate human step).
-    local obj='{}' sec norm hash snap
+    # A covered section that no longer resolves to any prose on the live page
+    # (removed/renumbered) must NOT get an empty-hash placeholder — that would
+    # silently pass future drift checks forever. Warn and omit it instead; a
+    # human must reconcile guidelines-baseline.json to point at the new number.
+    local obj='{}' sec norm hash snap written=0
     while IFS= read -r sec; do
       [[ -z "$sec" ]] && continue
       norm="$(gd_section_text "$html" "$sec")"
+      if [[ -z "$norm" ]]; then
+        echo "WARN: reconcile — $sec not found on live page (removed/renumbered?); skipping"
+        continue
+      fi
       hash="$(printf '%s' "$norm" | gd_hash)"
       snap="$(printf '%s' "$norm" | cut -c1-160)"
       obj="$(printf '%s' "$obj" | jq --arg s "$sec" --arg h "$hash" --arg n "$snap" '.sections[$s] = {fingerprint:$h, snapshot:$n}')"
+      written=$((written + 1))
     done <<< "$covered"
     printf '%s' "$obj" | jq '. + {reconciled_on: "RECONCILE_DATE"}' > "$fingerprints"
-    echo "reconciled ${fingerprints} ($(printf '%s' "$covered" | grep -c .) sections)"
+    echo "reconciled ${fingerprints} (${written} sections)"
     [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
   fi
 

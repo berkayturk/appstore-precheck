@@ -147,7 +147,7 @@ finds; Pierre explains.
 After Phase 3, Pierre runs the **Review Simulator**: 28 evidence-based checks the static scanner
 cannot fully judge — **22 Tier A** (high-confidence) plus **6 Tier B v1** heuristic checks (items
 **4, 5, 7, 10, 15, 28** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
-5.6.4–5.6.7). Full procedure, output format, and per-check steps are in
+5.6.1/5.6.3). Full procedure, output format, and per-check steps are in
 [`pierre-deep-review.md`](pierre-deep-review.md).
 
 **Verdict impact:** none. Phase 4 emits `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`.

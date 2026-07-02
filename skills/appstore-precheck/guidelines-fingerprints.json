@@ -227,18 +227,6 @@
     "5.6.4": {
       "fingerprint": "2f63efa4160b309b6ef4d1280e3d16a06165676f1421c3c36f6dbe305ca1291a",
       "snapshot": "5.6.4 app quality customers expect the highest quality from the app store, and maintaining high quality content, services, and experiences promotes customer tru"
-    },
-    "5.6.5": {
-      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "snapshot": ""
-    },
-    "5.6.6": {
-      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "snapshot": ""
-    },
-    "5.6.7": {
-      "fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "snapshot": ""
     }
   },
   "reconciled_on": "2026-07-02"

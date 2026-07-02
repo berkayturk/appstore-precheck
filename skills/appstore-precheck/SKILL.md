@@ -265,7 +265,7 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 | 25 | **5.2.1–5.2.3** | Obvious trademark/brand misuse in metadata or UI? |
 | 26 | **5.3.1–5.3.3** | Contest/sweepstakes copy includes official rules? |
 | 27 | **5.6.2–5.6.3** | Developer identity consistent (support URL, domains, app name)? |
-| 28 † | **5.6.4–5.6.7** | Rating manipulation dark patterns beyond scan §25? |
+| 28 † | **5.6.1 / 5.6.3** | Rating manipulation dark patterns beyond scan §25? |
 
 Use this prompt after Phase 3:
 
