@@ -69,6 +69,74 @@ gd_checks_for_section() {
   ' "$1" | awk '!seen[$0]++'
 }
 
-# main runs only when executed directly (so tests can source the functions).
-gd_main() { :; }   # fleshed out in Task 3
+# gd_main [--html f] [--baseline f] [--fingerprints f] [--scan f] [--reconcile]
+gd_main() {
+  local html="" reconcile=0
+  local here; here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+  local baseline="$here/skills/appstore-precheck/guidelines-baseline.json"
+  local fingerprints="$here/skills/appstore-precheck/guidelines-fingerprints.json"
+  local scan="$here/skills/appstore-precheck/scripts/scan.sh"
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --html) html="$2"; shift 2 ;;
+      --baseline) baseline="$2"; shift 2 ;;
+      --fingerprints) fingerprints="$2"; shift 2 ;;
+      --scan) scan="$2"; shift 2 ;;
+      --reconcile) reconcile=1; shift ;;
+      *) echo "unknown arg: $1" >&2; return 2 ;;
+    esac
+  done
+
+  # 1. Obtain the HTML (local file or curl).
+  local tmp=""
+  if [[ -z "$html" ]]; then
+    tmp="$(mktemp)"; curl -sL --max-time 30 "$GD_URL" -o "$tmp" 2>/dev/null; html="$tmp"
+  fi
+  if [[ ! -s "$html" ]]; then
+    echo "WARN: guideline-drift-check degraded — fetch empty/failed; verify manually."
+    [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
+  fi
+
+  # Covered sections = covered_by_scan ∪ covered_by_pierre_deep_review.
+  local covered; covered="$(jq -r '(.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) | unique[]' "$baseline" 2>/dev/null)"
+
+  if [[ "$reconcile" == 1 ]]; then
+    # Rewrite the fingerprints file from the live page (deliberate human step).
+    local obj='{}' sec norm hash snap
+    while IFS= read -r sec; do
+      [[ -z "$sec" ]] && continue
+      norm="$(gd_section_text "$html" "$sec")"
+      hash="$(printf '%s' "$norm" | gd_hash)"
+      snap="$(printf '%s' "$norm" | cut -c1-160)"
+      obj="$(printf '%s' "$obj" | jq --arg s "$sec" --arg h "$hash" --arg n "$snap" '.sections[$s] = {fingerprint:$h, snapshot:$n}')"
+    done <<< "$covered"
+    printf '%s' "$obj" | jq '. + {reconciled_on: "RECONCILE_DATE"}' > "$fingerprints"
+    echo "reconciled ${fingerprints} ($(printf '%s' "$covered" | grep -c .) sections)"
+    [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
+  fi
+
+  # 2. Number drift (full page vs baseline all_sections).
+  local liveids; liveids="$(mktemp)"; gd_section_ids "$html" > "$liveids"
+  gd_number_drift "$liveids" "$baseline" | while IFS= read -r line; do
+    [[ -n "$line" ]] && echo "WARN: guideline-drift section-number change: $line"
+  done
+  rm -f "$liveids"
+
+  # 3. Text (semantic) drift for covered sections.
+  local sec live_hash base_hash checks
+  while IFS= read -r sec; do
+    [[ -z "$sec" ]] && continue
+    base_hash="$(jq -r --arg s "$sec" '.sections[$s].fingerprint // ""' "$fingerprints" 2>/dev/null)"
+    [[ -z "$base_hash" ]] && continue   # no baseline fingerprint -> nothing to compare
+    live_hash="$(gd_section_text "$html" "$sec" | gd_hash)"
+    if [[ "$live_hash" != "$base_hash" ]]; then
+      checks="$(gd_checks_for_section "$scan" "$sec" | tr '\n' ' ' | sed 's/ *$//')"
+      [[ -z "$checks" ]] && checks="(covered — review manually)"
+      echo "WARN: guideline text drift — $sec changed since baseline; review check(s): $checks"
+    fi
+  done <<< "$covered"
+
+  [[ -n "$tmp" ]] && rm -f "$tmp"
+  return 0
+}
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then gd_main "$@"; fi

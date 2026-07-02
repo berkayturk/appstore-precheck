@@ -1,0 +1,8 @@
+{
+  "reconciled_on": "2026-07-02",
+  "sections": {
+    "2.3.3": { "fingerprint": "ac682d2c57b7a13929812ba328830fab8bc05ea9243521fd98439fdb10d6122f", "snapshot": "2.3.3 screenshots should show the app in use" },
+    "3.1.1": { "fingerprint": "0000000000000000000000000000000000000000000000000000000000000000", "snapshot": "3.1.1 in-app purchase" },
+    "5.1.1": { "fingerprint": "288a648094aa0dd0140464cae32a8fa96b0f84214179607ca1098a2620b43563", "snapshot": "5.1.1 data collection" }
+  }
+}

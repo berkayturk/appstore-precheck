@@ -52,5 +52,31 @@ c511="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "
 assert_contains "$c511" "privacy-manifest-parity" "5.1.1 maps to its real checks"
 assert_absent "$c511" "safari-extension" "5.1.1 does not pick up the §38 header-comment false extra"
 
+# --- gd_main: --html mode, number+text drift, degraded fetch ---
+
+# A tiny baseline whose covered lists point at the fixture sections.
+cat > "$FIX/baseline-cov.json" <<'JSON'
+{ "all_sections": ["1.2","2.3.3","3.1.1","5.1.1"],
+  "covered_by_scan": ["2.3.3","3.1.1","5.1.1"],
+  "covered_by_pierre_deep_review": [] }
+JSON
+
+out="$(gd_main --html "$FIX/sample.html" \
+               --baseline "$FIX/baseline-cov.json" \
+               --fingerprints "$FIX/fingerprints.json" \
+               --scan "$ROOT/skills/appstore-precheck/scripts/scan.sh"; echo "RC=$?")"
+assert_contains "$out" "RC=0" "drift check is non-blocking (exit 0)"
+assert_contains "$out" "3.1.1" "the stale-hash section is flagged as text drift"
+assert_contains "$out" "external-purchase-link" "the text-drift WARN names 3.1.1's scan check"
+assert_absent "$out" "WARN: guideline text drift — 2.3.3" "unchanged section 2.3.3 not flagged"
+
+# degraded fetch: empty html file -> degraded WARN, still exit 0
+: > "$FIX/empty.html"
+deg="$(gd_main --html "$FIX/empty.html" --baseline "$FIX/baseline-cov.json" \
+               --fingerprints "$FIX/fingerprints.json" --scan "$ROOT/skills/appstore-precheck/scripts/scan.sh"; echo "RC=$?")"
+assert_contains "$deg" "degraded" "empty fetch produces a degraded WARN"
+assert_contains "$deg" "RC=0" "degraded fetch still exits 0"
+rm -f "$FIX/baseline-cov.json" "$FIX/empty.html"
+
 echo "test-guideline-drift: OK"
 exit "$fails"
