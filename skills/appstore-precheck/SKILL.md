@@ -92,7 +92,7 @@ Rules:
   **English** (Français + user lang, or just Français if they asked in French).
 - Keep each one-liner short (one sentence). Vary wording each run; stay in Pierre's dry critic voice.
 
-## Flow (6 phases: 0–5)
+## Flow (Phases 0–5; plus an optional opt-in Phase 6)
 
 ### Phase 0: Live guideline drift check
 
@@ -314,9 +314,27 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
 7. Print the final manual checklist (see
    [`references/methodology.md`](references/methodology.md#pre-submit-manual-checklist)).
 
+### Phase 6: local dynamic simulator tier (optional, opt-in — off by default)
+
+**This phase does not run by default.** Run it ONLY when the user explicitly asks for a dynamic /
+simulator check AND supplies a built app (a simulator `.app` path, or a booted simulator UDID +
+bundle id). It uses `xcrun simctl` + Maestro MCP tools (`mcp__maestro__*`) to launch the app on a
+disposable simulator and observe real behavior — the free/local alternative to a paid cloud device
+farm.
+
+It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` lines and **never changes the
+GREEN/YELLOW/RED verdict** (the verdict stays derived only from Phases 0–2). It is read-only w.r.t.
+the user's project — it touches only disposable simulator state, never the repo. It requires macOS +
+Xcode + a simulator runtime and is permanently local-only (it cannot run in CI). It is a pre-submit
+local smoke signal, not a TestFlight / crash-reporter / QA replacement.
+
+Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-review.md) for the
+6-check dynamic checklist and output format.
+
 ## Rules
 
-- **READ-ONLY:** never change code or assets. Only report and write the token.
+- **READ-ONLY:** never change code or assets. Only report and write the token. (The optional Phase 6
+  simulator tier touches disposable simulator state only — never the user's project.)
 - **Speed > exhaustiveness:** `scan.sh` uses parallel grep/jq and finishes in seconds.
 - **No error swallowing:** if any scan command fails, that line is reported as FAIL and the scan continues.
 - **Token location:** `.precheck-pass` at the repo root; the guard tests it with an `mmin -60` filter.
@@ -324,7 +342,9 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
 
 ## Known limits
 
-- No runtime crash testing; that's TestFlight + a crash reporter. Static analysis only.
+- The default flow is static analysis only. Runtime crash/behavior testing is available as an
+  optional, opt-in local simulator tier (Phase 6, `references/simulator-dynamic-review.md`); it is a
+  pre-submit local smoke signal, not a TestFlight / crash-reporter replacement.
 - Several checks are advisory WARNs gated on detected signals (Sign in with Apple 4.8,
   external-purchase 3.1.1(a), tracking/IDFA without ATT, analytics vs privacy manifest, metadata
   URLs and placeholder copy). The export-compliance key is flagged when absent, but the actual

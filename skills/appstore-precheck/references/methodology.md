@@ -246,6 +246,19 @@ which rules fire. Contribute an outcome via the "App Store outcome" issue templa
 
 ---
 
+### Optional local dynamic simulator tier
+
+Beyond the static scan and the agent-mode deep reviews, an **opt-in** local dynamic tier
+(`references/simulator-dynamic-review.md`, SKILL.md Phase 6) can run the app on a simulator
+(`xcrun simctl` + Maestro MCP) and emit advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` observations —
+launch/crash, paywall render, permission prompt vs purpose string, demo-login path, live UI vs
+marketing screenshots. It is off by default, never changes the verdict, is read-only w.r.t. the
+user's project (touches disposable simulator state only), and is permanently local-only (it cannot
+run in CI). It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA
+replacement.
+
+---
+
 ## Pre-submit manual checklist
 
 Things the scanner cannot verify; confirm by hand before you submit:
