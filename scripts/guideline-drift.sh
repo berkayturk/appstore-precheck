@@ -39,6 +39,36 @@ gd_section_text() {
   | sed -E 's/^ +//; s/ +$//'
 }
 
+# gd_hash -> sha256 hex of stdin (portable across macOS/Linux).
+gd_hash() {
+  if command -v sha256sum >/dev/null 2>&1; then sha256sum | cut -d' ' -f1
+  else shasum -a 256 | cut -d' ' -f1; fi
+}
+
+# gd_number_drift <live-ids-file> <baseline-json> -> ADDED/REMOVED lines.
+gd_number_drift() {
+  local live="$1" base="$2" bfile
+  bfile="$(mktemp)"; jq -r '.all_sections[]' "$base" 2>/dev/null | sort -u > "$bfile"
+  comm -23 <(sort -u "$live") "$bfile" | sed 's/^/ADDED /'
+  comm -13 <(sort -u "$live") "$bfile" | sed 's/^/REMOVED /'
+  rm -f "$bfile"
+}
+
+# gd_checks_for_section <scan.sh> <section> -> scan rule-id(s) whose set_rule block
+# cites that guideline number, one per line. Derived, never stored (cannot rot).
+gd_checks_for_section() {
+  awk -v want="$2" '
+    /set_rule "/ { if (match($0, /set_rule "([^"]+)"/)) slug = substr($0, RSTART+10, RLENGTH-11) }
+    slug != "" {
+      s = $0
+      while (match(s, /[1-5]\.[0-9]+(\.[0-9]+)?/)) {
+        if (substr(s, RSTART, RLENGTH) == want) { print slug; break }
+        s = substr(s, RSTART + RLENGTH)
+      }
+    }
+  ' "$1" | awk '!seen[$0]++'
+}
+
 # main runs only when executed directly (so tests can source the functions).
 gd_main() { :; }   # fleshed out in Task 3
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then gd_main "$@"; fi

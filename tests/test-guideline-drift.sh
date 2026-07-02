@@ -25,5 +25,27 @@ assert_absent "$t" "@@SEC" "no sentinel leaks into normalized prose"
 t31="$(gd_section_text "$FIX/sample.html" "3.1")"
 assert_eq "$t31" "" "no section 3.1 present (3.1.1 is not a prefix match)"
 
+# --- gd_hash: stable + differs on change ---
+h1="$(printf 'hello world' | gd_hash)"
+h2="$(printf 'hello world' | gd_hash)"
+h3="$(printf 'hello worlds' | gd_hash)"
+assert_eq "$h1" "$h2" "hash is stable"
+[ "$h1" != "$h3" ] && r=0 || r=1
+assert_eq "$r" "0" "hash changes when text changes"
+
+# --- gd_number_drift: added + removed vs baseline.all_sections ---
+printf '1.2\n2.3.3\n3.1.1\n5.1.1\n4.9\n' > "$FIX/live-added.ids"    # 4.9 is new; nothing removed
+drift="$(gd_number_drift "$FIX/live-added.ids" "$FIX/baseline.json")"
+assert_contains "$drift" "ADDED 4.9" "new live section flagged as ADDED"
+assert_absent "$drift" "REMOVED" "nothing removed when live is a superset"
+printf '1.2\n3.1.1\n5.1.1\n' > "$FIX/live-removed.ids"              # 2.3.3 gone
+drift2="$(gd_number_drift "$FIX/live-removed.ids" "$FIX/baseline.json")"
+assert_contains "$drift2" "REMOVED 2.3.3" "missing baseline section flagged as REMOVED"
+rm -f "$FIX/live-added.ids" "$FIX/live-removed.ids"
+
+# --- gd_checks_for_section: derives the affected scan rule-id from scan.sh ---
+checks="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "2.3.3")"
+assert_contains "$checks" "screenshots-per-locale" "2.3.3 maps to its scan check"
+
 echo "test-guideline-drift: OK"
 exit "$fails"
