@@ -149,7 +149,7 @@ REVIEW-PASS: <guideline> — not applicable (<reason>)
 3. Flag screenshots showing features absent from the build or metadata.
 4. For the full structured screenshot vision review (placeholder/empty-state, text overflow,
    wrong device frame, misleading marketing, metadata mismatch), follow
-   `references/screenshot-vision-review.md`.
+   `screenshot-vision-review.md` (sibling file in this same `references/` directory).
 
 ### 9 — 2.3.6 Pricing language
 
@@ -271,6 +271,6 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 28 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 28 if any fired).
+3. Phase 4 summary table: 28 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 28 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 28" count.
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.

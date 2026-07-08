@@ -1,11 +1,11 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 42 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 42 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.12.0
-allowed-tools: Bash Read Grep Glob WebFetch
+  version: 1.12.1
+allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maestro__run mcp__maestro__inspect_screen mcp__maestro__take_screenshot mcp__maestro__cheat_sheet
 ---
 
 # App Store Precheck
@@ -112,7 +112,13 @@ check(s). It is non-blocking and never runs in the offline user scan; the finger
 
 ### Phase 1: Static scan
 
+Run the bundled scanner from the app repo root. `scripts/` here is relative to THIS skill's own
+directory (wherever the skill is installed — a plugin dir, `.claude/skills/`, `.agents/skills/`,
+or a clone of the source repo):
+
 ```bash
+bash <skill-dir>/scripts/scan.sh
+# from a clone of the source repo, that is:
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
@@ -151,7 +157,9 @@ output is unchanged.
 ### Phase 2: Apple's official `fastlane precheck`
 
 Requires `bundleId` in config (or pass `app_identifier` directly) and App Store Connect API
-credentials. **Never commit the key.** The bundled wrapper builds the ASC API key JSON from your
+credentials. **This phase is optional: if no ASC credentials are available, skip it, note the
+skip in the report, and continue to Phase 3 — do not stall waiting for credentials.**
+**Never commit the key.** The bundled wrapper builds the ASC API key JSON from your
 environment, runs precheck, and deletes the key on exit (use `--dry-run` to preview the command
 with no credentials and no network):
 
@@ -305,6 +313,8 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
 3. Present **Phase 3 commentary** — Pierre's 2–3 sentence explanation for every FAIL and WARN.
 4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 28), then
    every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 28 passed.
+   The 5 screenshot-vision checks (S1–S5) emit the same `REVIEW-*` prefixes but count as a
+   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 28" denominator.
 5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, then for each
    FAIL a `file:line` reference and a suggested fix (one line each, surgical, not paraphrased).
 6. State the verdict and token action (example one-liners — each goes in its own language block, not inline):
@@ -360,5 +370,7 @@ Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-r
 ## Optional: upload guard hook
 
 `hooks/fastlane-guard.sh` blocks `fastlane deliver/pilot/release` unless a fresh `.precheck-pass`
-token exists. In Claude Code it auto-wires via `hooks/hooks.json`. In other environments, wire it
+token exists. In Claude Code it auto-wires via `hooks/hooks.json` **when installed as a plugin**
+(the hook path uses `${CLAUDE_PLUGIN_ROOT}`; an `install.sh`-vendored copy gets no automatic
+hook). In other environments, wire it
 as a pre-command check yourself, or treat the token as a manual go/no-go signal.
