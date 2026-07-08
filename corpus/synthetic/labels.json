@@ -1,21 +1,31 @@
 {
   "_doc": "Synthetic-corpus labels for scripts/scorecard.sh. expect_fire/expect_absent reflect each fixture's DESIGNED INTENT (derived from tests/run.sh assert_present/assert_absent lines and tests/test-config.sh for config-app), not merely observed scanner output. See docs/scorecard.md methodology + .superpowers/sdd/task-4-report.md for the derivation reasoning.",
-
   "sample-app": {
-    "expect_fire": ["competitor-mentions", "subscription-links-restore"],
-    "expect_absent": ["private-api"]
+    "expect_fire": [
+      "competitor-mentions",
+      "subscription-links-restore"
+    ],
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "no-iap-app": {
     "expect_fire": [],
-    "expect_absent": ["subscription-links-restore"]
+    "expect_absent": [
+      "subscription-links-restore"
+    ]
   },
   "review-prompt-app": {
     "expect_fire": [],
-    "expect_absent": ["subscription-links-restore"]
+    "expect_absent": [
+      "subscription-links-restore"
+    ]
   },
   "root-app": {
     "expect_fire": [],
-    "expect_absent": ["private-api"]
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "clean-app": {
     "expect_fire": [],
@@ -31,11 +41,18 @@
   },
   "watch-app": {
     "expect_fire": [],
-    "expect_absent": ["private-api"]
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "social-login-app": {
-    "expect_fire": ["siwa-parity", "external-purchase-link"],
-    "expect_absent": ["private-api"]
+    "expect_fire": [
+      "siwa-parity",
+      "external-purchase-link"
+    ],
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "tracking-app": {
     "expect_fire": [
@@ -45,7 +62,9 @@
       "analytics-privacyinfo-mismatch",
       "placeholder-metadata"
     ],
-    "expect_absent": ["private-api"]
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "risky-app": {
     "expect_fire": [
@@ -60,7 +79,10 @@
       "health-icloud-sync",
       "vpn-networkextension"
     ],
-    "expect_absent": ["kids-ads-analytics", "private-api"]
+    "expect_absent": [
+      "kids-ads-analytics",
+      "private-api"
+    ]
   },
   "risky-app-2": {
     "expect_fire": [
@@ -75,34 +97,75 @@
       "realmoney-gambling",
       "mdm"
     ],
-    "expect_absent": ["kids-wording", "ats-arbitrary-loads"]
+    "expect_absent": [
+      "kids-wording",
+      "ats-arbitrary-loads"
+    ]
   },
   "webview-app": {
-    "expect_fire": ["webview-wrapper"],
-    "expect_absent": ["private-api"]
+    "expect_fire": [
+      "webview-wrapper"
+    ],
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "segmented-ui-app": {
     "expect_fire": [],
-    "expect_absent": ["analytics-privacyinfo-mismatch"]
+    "expect_absent": [
+      "analytics-privacyinfo-mismatch"
+    ]
   },
   "config-app": {
     "expect_fire": [],
-    "expect_absent": ["private-api"]
+    "expect_absent": [
+      "private-api"
+    ]
   },
   "audio-playback-app": {
     "expect_fire": [],
-    "expect_absent": ["usage-description-crosscheck"]
+    "expect_absent": [
+      "usage-description-crosscheck"
+    ]
   },
   "photos-picker-app": {
     "expect_fire": [],
-    "expect_absent": ["usage-description-crosscheck"]
+    "expect_absent": [
+      "usage-description-crosscheck"
+    ]
   },
   "camera-capture-app": {
-    "expect_fire": ["usage-description-crosscheck"],
+    "expect_fire": [
+      "usage-description-crosscheck"
+    ],
     "expect_absent": []
   },
   "voice-recorder-app": {
-    "expect_fire": ["usage-description-crosscheck"],
+    "expect_fire": [
+      "usage-description-crosscheck"
+    ],
     "expect_absent": []
+  },
+  "storekit2-paywall-app": {
+    "expect_fire": [],
+    "expect_absent": [
+      "subscription-links-restore"
+    ]
+  },
+  "revenuecat-paywall-app": {
+    "expect_fire": [
+      "subscription-links-restore"
+    ],
+    "expect_absent": [
+      "private-api"
+    ]
+  },
+  "objc-camera-app": {
+    "expect_fire": [
+      "usage-description-crosscheck"
+    ],
+    "expect_absent": [
+      "private-api"
+    ]
   }
 }
