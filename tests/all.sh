@@ -24,6 +24,7 @@ SUITE=(
   "test-image-dims.sh" # image-dims.sh PNG magic + IHDR dimension parse + accepted-size match
   "test-sarif.sh"     # sarif.sh render_sarif SARIF 2.1.0 output
   "test-action-sarif.sh" # action.yml opt-in SARIF/annotation inputs default off
+  "test-pack.sh"      # npm tarball self-containment (files array regression guard)
 )
 
 failed=()
