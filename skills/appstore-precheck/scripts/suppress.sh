@@ -8,11 +8,12 @@ _SUPP_PATHS=""        # path globs excluded from scanning, one per line (trailin
 _SUPP_REASON=""       # set by is_suppressed on a hit
 
 # _is_catalog_rule <token> -> 0 if token is a known rule slug.
+# The bound is derived from the catalog itself (rule_slug returns "" past the
+# last rule), so a newly added rule can never be silently unsuppressable again.
 _is_catalog_rule() {
   local n s
   n=1
-  while [[ $n -le 41 ]]; do
-    s="$(rule_slug "$n")"
+  while s="$(rule_slug "$n")" && [[ -n "$s" ]]; do
     [[ "$s" == "$1" ]] && return 0
     n=$((n + 1))
   done

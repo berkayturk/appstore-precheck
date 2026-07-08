@@ -47,9 +47,13 @@ fails=$(count '^FAIL:')
 warns=$(count '^WARN:')
 passes=$(count '^PASS:')
 
-if (( fails >= 1 )); then
+# Thresholds live in thresholds.sh (shared with findings.sh's JSON renderer).
+# shellcheck source=thresholds.sh
+. "$(dirname "${BASH_SOURCE[0]}")/thresholds.sh"
+
+if (( fails >= RED_FAIL_MIN )); then
   verdict="RED";    token="remove"; code=1
-elif (( warns >= 5 )); then
+elif (( warns >= YELLOW_WARN_MIN )); then
   verdict="YELLOW"; token="hold";   code=2
 else
   verdict="GREEN";  token="write";  code=0
