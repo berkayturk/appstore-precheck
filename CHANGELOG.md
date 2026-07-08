@@ -5,6 +5,61 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.12.1] - 2026-07-08
+
+Quality patch from a full fresh-eyes review (three independent review passes over the
+scanner core, the tooling shell, and the docs). No new checks; every change either removes
+a false-RED path, fixes a real bug, or hardens the release surface.
+
+### Fixed (scanner accuracy — false-RED cluster)
+- **3.1.2 Restore Purchases** no longer misses StoreKit 2 paywalls: the match is
+  case-insensitive and recognizes `AppStore.sync()` (a capitalized `Button("Restore
+  Purchases")` used to force a false RED).
+- **3.1.2 Terms/Privacy links** match human-readable labels ("Terms of Use", "Privacy
+  Policy") and nonstandard URL paths (`/legal/tos`, `/eula`, `datenschutz`, `gizlilik`),
+  case-insensitively.
+- **Remote-configured paywalls** (RevenueCatUI `PaywallView`, `presentPaywall`,
+  `paywallFooter`, AdaptyUI): missing Restore/Terms/Privacy in app source now downgrades
+  to a verify-in-dashboard WARN instead of a hard FAIL — the SDK renders those controls
+  from the vendor dashboard.
+- **5.1.1 FileTimestamp Required Reason** check is anchored to real filesystem APIs;
+  plain `creationDate` / `modificationDate` model properties no longer false-FAIL.
+
+### Fixed (coverage and correctness)
+- **Objective-C blind spot closed**: all code-level greps now share one include-set
+  (`*.swift`, `*.m`, `*.mm`, `*.h`). Camera/mic/photo purpose-string FAILs, ATT/tracking
+  signals, SIWA, analytics and the other code checks now fire on ObjC sources too.
+- **`--dir` is authoritative**: `scan.sh --dir <path>` (new flag) scans exactly that
+  directory instead of snapping to the enclosing git toplevel; the npx CLI passes it
+  through and the GitHub Action uses it, fixing monorepo-subdir scans and SARIF paths
+  (SARIF upload now also sets `checkout_path`).
+- **Rule 42 suppressible**: `.precheck-ignore` accepted only rules 1–41; the bound is now
+  derived from the catalog, so `screenshot-dimensions` (and any future rule) can be
+  suppressed.
+- **Verdict thresholds deduplicated** into `scripts/thresholds.sh`, shared by `verdict.sh`
+  and the JSON renderer so the two can never diverge.
+- **CLI**: a signal-killed scanner now exits 70 instead of masquerading as success.
+
+### Added
+- Fixtures + assertions for every fix above (`storekit2-paywall-app`,
+  `revenuecat-paywall-app`, `objc-camera-app`, monorepo `--dir` case, rule-42 suppression),
+  all labelled in the synthetic scorecard corpus.
+- **`tests/test-pack.sh`**: packs the real npm tarball and runs the CLI from the extracted
+  layout — a `files`-array regression can no longer ship silently.
+
+### Changed (docs and CI hardening)
+- README: CI example pins `@v1` (was stale `@v1.5.0`), "How it works" gains the opt-in
+  Phase 6 row and the screenshot-vision mention, new Troubleshooting section, Windows/exit-code
+  notes; coverage table reflects ObjC support.
+- SKILL.md: Phase 6's Maestro MCP tools added to `allowed-tools`; Phase 2 gains an explicit
+  skip-without-credentials instruction; scanner paths phrased skill-relative; the Phase 4
+  summary separates the "+5 vision checks" from the "of 28" count; upload-guard hook note
+  scoped to plugin installs. `simulator-dynamic-review.md` now names the real Maestro MCP
+  tools (`list_devices`, `run`, `inspect_screen`, `take_screenshot`).
+- Workflows: least-privilege `permissions:` blocks everywhere; all third-party actions
+  pinned to commit SHAs (also in `action.yml`).
+- MAINTENANCE.md: stale "41 vectors" corrected; docs index expanded.
+
 ## [1.12.0] - 2026-07-02
 
 Roadmap #5 (final roadmap item): an **optional, opt-in local dynamic simulator tier** —
