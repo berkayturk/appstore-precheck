@@ -245,7 +245,8 @@ appstore-precheck --dir path/to/your-ios-app
 ```
 
 **fastlane** — gate a lane on the verdict with the
-[`appstore_precheck` plugin](https://github.com/berkayturk/fastlane-plugin-appstore_precheck):
+[`appstore_precheck` plugin](https://github.com/berkayturk/fastlane-plugin-appstore_precheck)
+([RubyGems](https://rubygems.org/gems/fastlane-plugin-appstore_precheck)):
 
 ```ruby
 # fastlane add_plugin appstore_precheck
