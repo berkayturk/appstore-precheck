@@ -5,6 +5,17 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Fixed
+- **`iosSourceDir` root scans no longer sweep build checkouts**: the code-level greps
+  scoped to `$IOS_DIR` (purpose-string, tracking/ATT, IAP, private-API, and the other
+  `${SRC_INC[@]}`-based checks) now apply the same `GREP_PRUNE` exclude-dirs as the
+  repo-wide passes. When `iosSourceDir` resolves to the repo root (a common config, e.g.
+  `"."`), these greps previously swept gitignored `build/`, `DerivedData/`, and
+  `SourcePackages/checkouts/` output, misreading vendored SDK code as the app's own and
+  producing false FAILs/WARNs — observed in the wild as an ATT 5.1.2 FAIL citing a
+  RevenueCat mock under a `build/SourcePackages` checkout, and a 2.5.1 private-API FAIL
+  citing the `sentry-cocoa` checkout under `.build/`.
+
 ## [1.12.1] - 2026-07-08
 
 Quality patch from a full fresh-eyes review (three independent review passes over the

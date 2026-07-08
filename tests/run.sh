@@ -111,12 +111,19 @@ finish_fixture
 
 # ---------------------------------------------------------------------------
 # root-app — Xcode source + fastlane live at the fixture ROOT (no ios/ nesting).
-# Auto-detection must still resolve a non-empty iOS source dir.
+# Auto-detection must still resolve a non-empty iOS source dir. The fixture
+# also carries a vendored build/SourcePackages/checkouts/ SPM checkout (as
+# would exist on disk, gitignored, once Xcode resolves packages) containing a
+# tracking-SDK import. With ios='.', the IOS_DIR-scoped greps must prune it
+# like the repo-wide greps do — otherwise the checkout's own SDK code is
+# misread as this app's code and produces a false WARN/FAIL.
 # ---------------------------------------------------------------------------
 check_fixture "root-app" "flat root layout"
 assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
 assert_has "PASS: layout — ios='.'"                                       "iOS dir auto-detected at root"
 assert_absent "ios='?'"                                                   "iOS source dir is not empty"
+assert_has "PASS: 5.1.2 ATT — not used (no tracking)"                     "vendored build/SourcePackages checkout is pruned, not scanned"
+assert_absent "5.1.2 Tracking SDK"                                        "no false tracking-SDK WARN from the build checkout"
 finish_fixture
 
 # ---------------------------------------------------------------------------

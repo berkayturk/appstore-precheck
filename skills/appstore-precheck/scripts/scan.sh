@@ -237,7 +237,7 @@ echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='
 set_rule "privacy-manifest-parity"
 check_required_reason_api() {
   local cat="$1" pattern="$2" hits declared
-  hits=$(grep -rEl "$pattern" "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -3)
+  hits=$(grep -rEl "$pattern" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -3)
   declared=$(grep -c "NSPrivacyAccessedAPICategory${cat}" "$PRIVACY_FILE" 2>/dev/null)
   if [[ -n "$hits" && "${declared:-0}" -eq 0 ]]; then
     fail "5.1.1 Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy" "$PRIVACY_FILE"
@@ -277,7 +277,7 @@ else
     "Contacts:NSContactsUsageDescription" \
     "HealthKit:NSHealthShareUsageDescription"; do
     framework="${fw%%:*}"; needed_key="${fw##*:}"
-    if grep -rqE "import ($framework)|($framework)\." "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+    if grep -rqE "import ($framework)|($framework)\." "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
       if ! grep -qE "$needed_key" "$INFO_PLIST" 2>/dev/null; then
         fail "5.1.1 framework '${framework%%|*}' imported but Info.plist is missing '${needed_key%%|*}'" "$INFO_PLIST"
       fi
@@ -289,7 +289,7 @@ else
   # AVAudioPlayer/AVPlayer, and Photos/PhotosUI's PhotosPicker/PHPickerViewController
   # run out-of-process and need no Info.plist key at all).
   # Camera: purpose string required only when a capture API is actually used.
-  if grep -rqE 'AVCaptureDevice|AVCaptureSession|UIImagePickerController' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+  if grep -rqE 'AVCaptureDevice|AVCaptureSession|UIImagePickerController' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     grep -qE 'NSCameraUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "$INFO_PLIST"
   fi
@@ -297,15 +297,15 @@ else
   # separately from the camera check above: a bare AVCaptureDevice only
   # implies microphone use when it is audio-typed (`.audio` device/media
   # type), not for a video-only capture device.
-  if grep -rqE 'AVAudioRecorder|installTap\(|AVAudioEngine\(|AVAudioSession[^;]*\.(playAndRecord|record)|AVCaptureDevice[^;)]*\.audio|for:[[:space:]]*\.audio' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+  if grep -rqE 'AVAudioRecorder|installTap\(|AVAudioEngine\(|AVAudioSession[^;]*\.(playAndRecord|record)|AVCaptureDevice[^;)]*\.audio|for:[[:space:]]*\.audio' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     grep -qE 'NSMicrophoneUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "$INFO_PLIST"
   fi
   # Photo library READ: PhotosPicker/PHPicker need no key; only true read/fetch APIs do.
-  if grep -rqE 'PHAsset\b|PHFetchResult|PHImageManager|fetchAssets|PHAssetCollection' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+  if grep -rqE 'PHAsset\b|PHFetchResult|PHImageManager|fetchAssets|PHAssetCollection' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     grep -qE 'NSPhotoLibraryUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 Photos read API used but Info.plist is missing 'NSPhotoLibraryUsageDescription'" "$INFO_PLIST"
-  elif grep -rqE 'PHAssetCreationRequest|UIImageWriteToSavedPhotosAlbum|performChanges' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+  elif grep -rqE 'PHAssetCreationRequest|UIImageWriteToSavedPhotosAlbum|performChanges' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     # Add-only save: covered by the add-only key.
     grep -qE 'NSPhotoLibraryAddUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 Photos add-only API used but Info.plist is missing 'NSPhotoLibraryAddUsageDescription'" "$INFO_PLIST"
@@ -319,8 +319,8 @@ fi
 # when the ATT framework IS imported; §16 fires when a tracking SDK is present but
 # the ATT prompt is NOT. Computed once here so the two checks never contradict.
 set_rule "att-usage"
-tracking_sdk=$(grep -rlE 'advertisingIdentifier|ASIdentifierManager|GADMobileAds|GoogleMobileAds|AppLovinSDK|ALSdk|AppsFlyerLib|import Adjust|Adjust\.|FBAudienceNetwork|BranchSDK|IronSource' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
-att_used=$(grep -rlE 'AppTrackingTransparency|ATTrackingManager' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+tracking_sdk=$(grep -rlE 'advertisingIdentifier|ASIdentifierManager|GADMobileAds|GoogleMobileAds|AppLovinSDK|ALSdk|AppsFlyerLib|import Adjust|Adjust\.|FBAudienceNetwork|BranchSDK|IronSource' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+att_used=$(grep -rlE 'AppTrackingTransparency|ATTrackingManager' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
 if [[ -n "$att_used" ]]; then
   if grep -q "NSUserTrackingUsageDescription" "$INFO_PLIST" 2>/dev/null; then
     pass "5.1.2 ATT — used + NSUserTrackingUsageDescription present"
@@ -459,7 +459,7 @@ fi
 # In-app purchase gate — only run 3.1.2 checks if IAP signals exist
 # ===================================================================
 iap_detected=""
-grep -rqE 'SKPaymentQueue|SKProduct|SKMutablePayment|Product\.products|Product\(for:|Product\(id:|\.purchase\(|Transaction\.currentEntitlements|Transaction\.updates|RevenueCat|Purchases\.(shared|configure|logIn|getProducts)|Adapty|Glassfy|import Qonversion' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null && iap_detected=1
+grep -rqE 'SKPaymentQueue|SKProduct|SKMutablePayment|Product\.products|Product\(for:|Product\(id:|\.purchase\(|Transaction\.currentEntitlements|Transaction\.updates|RevenueCat|Purchases\.(shared|configure|logIn|getProducts)|Adapty|Glassfy|import Qonversion' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null && iap_detected=1
 [[ -n "$SUB_VIEW" ]] && iap_detected=1
 
 if [[ -z "$iap_detected" ]]; then
@@ -511,7 +511,7 @@ else
     # would false-RED a compliant app; downgrade the missing-link findings to
     # verify-in-dashboard WARNs when that signal is present.
     remote_paywall=""
-    grep -rqE 'RevenueCatUI|presentPaywall|paywallFooter|AdaptyUI' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null && remote_paywall=1
+    grep -rqE 'RevenueCatUI|presentPaywall|paywallFooter|AdaptyUI' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null && remote_paywall=1
     # paywall_req <label> <pattern> [pass-suffix]: PASS when the pattern is in
     # any paywall view, WARN when a remote paywall likely renders it, else FAIL.
     paywall_req() {
@@ -537,7 +537,7 @@ fi
 # ===================================================================
 set_rule "private-api"
 banned_api='UIWebView|setSelectionIndicatorImage|_UIBackdropView|NSURLConnection[^a-zA-Z]|UIAlertView[^Q]|UIActionSheet[^Q]'
-banned_hits=$(grep -rEnI "$banned_api" "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -5)
+banned_hits=$(grep -rEnI "$banned_api" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -5)
 if [[ -n "$banned_hits" ]]; then
   pa_first="$(printf '%s\n' "$banned_hits" | head -1)"   # "path:line:match"
   pa_file="${pa_first%%:*}"
@@ -576,9 +576,9 @@ fi
 # ===================================================================
 set_rule "siwa-parity"
 if [[ -n "$IOS_DIR" ]]; then
-  social_login=$(grep -rlE 'GIDSignIn|import GoogleSignIn|FBSDKLoginKit|FBSDKLoginManager|FacebookLogin|import Auth0|LineSDK|VKSdkAuthorization' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  social_login=$(grep -rlE 'GIDSignIn|import GoogleSignIn|FBSDKLoginKit|FBSDKLoginManager|FacebookLogin|import Auth0|LineSDK|VKSdkAuthorization' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$social_login" ]]; then
-    if grep -rqE 'ASAuthorizationAppleID|SignInWithAppleButton|AppleIDProvider' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+    if grep -rqE 'ASAuthorizationAppleID|SignInWithAppleButton|AppleIDProvider' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
       pass "4.8 Sign in with Apple — present alongside third-party login"
     else
       warn "4.8 Sign in with Apple — third-party social login detected (e.g. $(basename "$social_login")) but no Sign in with Apple found; Apple requires an equivalent option (4.8). Some account systems are exempt — verify."
@@ -591,8 +591,8 @@ fi
 # ===================================================================
 set_rule "external-purchase-link"
 ext_purchase=""
-grep -rqE 'ExternalPurchase|ExternalPurchaseLink|ExternalPurchaseCustomLink' "${IOS_DIR:-.}" "${SRC_INC[@]}" 2>/dev/null && ext_purchase=1
-grep -rqE 'external-purchase' "${IOS_DIR:-.}" --include='*.entitlements' 2>/dev/null && ext_purchase=1
+grep -rqE 'ExternalPurchase|ExternalPurchaseLink|ExternalPurchaseCustomLink' "${IOS_DIR:-.}" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null && ext_purchase=1
+grep -rqE 'external-purchase' "${IOS_DIR:-.}" "${GREP_PRUNE[@]}" --include='*.entitlements' 2>/dev/null && ext_purchase=1
 if [[ -n "$ext_purchase" ]]; then
   warn "3.1.1(a) External purchase link detected — ensure the External Purchase entitlement, eligible storefronts, the required disclosure sheet, and App Store Connect reporting are in place (3.1.1(a))."
 fi
@@ -666,7 +666,7 @@ fi
 # incomplete. Soft "verify" wording (a crash-only Sentry may genuinely collect
 # nothing), so WARN, never FAIL.
 set_rule "analytics-privacyinfo-mismatch"
-analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|import Amplitude|Amplitude\(|import Mixpanel|Mixpanel\.|import Sentry|SentrySDK|import Segment|SEGAnalytics|Analytics\.shared\(|import Bugsnag|Bugsnag\.|AppCenterAnalytics|import Datadog|DatadogCore' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|import Amplitude|Amplitude\(|import Mixpanel|Mixpanel\.|import Sentry|SentrySDK|import Segment|SEGAnalytics|Analytics\.shared\(|import Bugsnag|Bugsnag\.|AppCenterAnalytics|import Datadog|DatadogCore' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
 if [[ -n "$analytics_sdk" ]]; then
   declared_data=""
   if [[ -n "$PRIVACY_FILE" && -f "$PRIVACY_FILE" ]]; then
@@ -709,7 +709,7 @@ fi
 # content. We can't tell digital from physical statically, so this is advisory.
 set_rule "thirdparty-payment-sdk"
 if [[ -n "$IOS_DIR" ]]; then
-  payment_sdk=$(grep -rlE 'import Stripe|StripePaymentSheet|StripeApplePay|import Braintree|BTPaymentFlow|import PayPal|PayPalCheckout|PayPalNativeCheckout|import Square|SquareInAppPayments|import Adyen|AdyenComponents|RazorpaySDK|import Paddle' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  payment_sdk=$(grep -rlE 'import Stripe|StripePaymentSheet|StripeApplePay|import Braintree|BTPaymentFlow|import PayPal|PayPalCheckout|PayPalNativeCheckout|import Square|SquareInAppPayments|import Adyen|AdyenComponents|RazorpaySDK|import Paddle' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$payment_sdk" ]]; then
     warn "3.1.1 Third-party payment SDK — '$(basename "$payment_sdk")' detected; selling digital content/functionality must use in-app purchase, not an external processor (3.1.1). Allowed only for physical goods/services — verify your offering."
   fi
@@ -723,9 +723,9 @@ fi
 # warn when no report/block/moderation affordance is found anywhere in the source.
 set_rule "ugc-no-moderation"
 if [[ -n "$IOS_DIR" ]]; then
-  ugc_signal=$(grep -rlE 'userGeneratedContent|\bUGC\b|StreamChat|MessageKit|SendbirdSDK|PubNub|postComment|submitComment|createPost|publishPost|uploadUserPhoto|uploadVideo' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  ugc_signal=$(grep -rlE 'userGeneratedContent|\bUGC\b|StreamChat|MessageKit|SendbirdSDK|PubNub|postComment|submitComment|createPost|publishPost|uploadUserPhoto|uploadVideo' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$ugc_signal" ]]; then
-    if grep -rqiE 'report(Content|User|Abuse|Post|Comment|Message|Reason|ed)|block(ed)?User|unblockUser|moderat(e|ion|or)|flag(Content|Post|User|Comment|Message)|content.?filter' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+    if grep -rqiE 'report(Content|User|Abuse|Post|Comment|Message|Reason|ed)|block(ed)?User|unblockUser|moderat(e|ion|or)|flag(Content|Post|User|Comment|Message)|content.?filter' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
       pass "1.2 UGC — user-generated content with report/block/moderation affordances present"
     else
       warn "1.2 UGC — user-generated content detected (e.g. $(basename "$ugc_signal")) but no report/block/moderation mechanism found; UGC apps must offer content filtering, a report mechanism, user blocking, and published contact info (1.2)"
@@ -757,7 +757,7 @@ fi
 # auto-renew copy or a one-time PassKit payment with recurring Apple Pay. We don't
 # try to detect the disclosure text (too noisy) — we flag it for manual verify.
 set_rule "applepay-recurring-disclosure"
-if [[ -n "$IOS_DIR" ]] && grep -rqE 'PKRecurringPaymentRequest' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+if [[ -n "$IOS_DIR" ]] && grep -rqE 'PKRecurringPaymentRequest' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
   warn "4.9 Apple Pay — recurring Apple Pay (PKRecurringPaymentRequest) detected; verify you disclose the renewal term, what's provided, the charges, and how to cancel before purchase (4.9)"
 fi
 
@@ -768,9 +768,9 @@ fi
 # use the system SKStoreReviewController / requestReview API.
 set_rule "custom-review-prompt"
 if [[ -n "$IOS_DIR" ]]; then
-  review_link=$(grep -rlE 'write-review|action=write-review|itms-apps[^"]*review' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  review_link=$(grep -rlE 'write-review|action=write-review|itms-apps[^"]*review' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$review_link" ]]; then
-    if grep -rqE 'requestReview|SKStoreReviewController|\.requestReview' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+    if grep -rqE 'requestReview|SKStoreReviewController|\.requestReview' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
       pass "5.6.1 App reviews — uses the system requestReview API alongside the review link"
     else
       warn "5.6.1 App reviews — a direct App Store review link/prompt was found (e.g. $(basename "$review_link")) but no system requestReview (SKStoreReviewController) call; Apple disallows custom review prompts (5.6.1)"
@@ -834,8 +834,8 @@ fi
 # Personal health information must not be stored in iCloud, and HealthKit data
 # may not be used for advertising/marketing.
 set_rule "health-icloud-sync"
-if [[ -n "$IOS_DIR" ]] && grep -rqE 'import HealthKit|HKHealthStore' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
-  if grep -rqE 'import CloudKit|CKRecord|CKContainer|NSUbiquitousKeyValueStore|NSUbiquitousContainer' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+if [[ -n "$IOS_DIR" ]] && grep -rqE 'import HealthKit|HKHealthStore' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
+  if grep -rqE 'import CloudKit|CKRecord|CKContainer|NSUbiquitousKeyValueStore|NSUbiquitousContainer' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     warn "5.1.3 Health data — HealthKit and iCloud/CloudKit are both used; personal health information must not be stored in iCloud (5.1.3). Verify HealthKit data is not synced to iCloud."
   else
     pass "5.1.3 Health data — HealthKit used without an obvious iCloud sync path"
@@ -849,7 +849,7 @@ fi
 # on-screen before use, and may not sell/share data.
 set_rule "vpn-networkextension"
 if [[ -n "$IOS_DIR" ]]; then
-  vpn_use=$(grep -rlE 'NEVPNManager|NETunnelProviderManager|NEPacketTunnelProvider|NEVPNProtocol' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  vpn_use=$(grep -rlE 'NEVPNManager|NETunnelProviderManager|NEPacketTunnelProvider|NEVPNProtocol' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$vpn_use" ]]; then
     warn "5.4 VPN — NetworkExtension/NEVPNManager usage detected (e.g. $(basename "$vpn_use")); VPN apps must be offered by an organization account, disclose data collection on-screen before use, and not sell/share data (5.4). Verify compliance."
   fi
@@ -864,7 +864,7 @@ fi
 # the reviewer-prep notes. Social-only logins are not gated here (too noisy).
 set_rule "demo-account"
 if [[ -n "$IOS_DIR" ]]; then
-  auth_signal=$(grep -rlE 'SecureField' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  auth_signal=$(grep -rlE 'SecureField' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   [[ -z "$auth_signal" ]] && auth_signal=$(find "$IOS_DIR" "${PRUNE[@]}" \( -name '*Login*View*.swift' -o -name '*SignIn*View*.swift' \) 2>/dev/null | head -1)
   if [[ -n "$auth_signal" ]]; then
     demo_present=""
@@ -891,7 +891,7 @@ fi
 # JS-bundle OTA for React Native (CodePush) is allowed, so we do NOT flag it.
 set_rule "executable-code-download"
 if [[ -n "$IOS_DIR" ]]; then
-  hotcode=$(grep -rlE 'import JSPatch|JSPatch\.|[Jj][Ss][Pp]atch|import Rollout|Rollout\.|rollout\.io|DynamicCocoa|import SwiftPatch' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  hotcode=$(grep -rlE 'import JSPatch|JSPatch\.|[Jj][Ss][Pp]atch|import Rollout|Rollout\.|rollout\.io|DynamicCocoa|import SwiftPatch' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$hotcode" ]]; then
     warn "2.5.2 Executable code — a hot-patch / remote-code framework was detected (e.g. $(basename "$hotcode")); apps may not download or run code that changes features (JSPatch/Rollout-style native hot-patching). Allowed JS-bundle OTA (e.g. React Native CodePush) is fine — verify this is not native hot-patching (2.5.2)"
   fi
@@ -911,13 +911,13 @@ if [[ -f "$INFO_PLIST" && -n "$IOS_DIR" ]]; then
     while IFS= read -r m; do
       [[ -z "$m" ]] && continue
       case "$m" in
-        location) grep -rqE 'CLLocationManager|CoreLocation' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused location" ;;
-        audio) grep -rqE 'AVAudioSession|AVPlayer|AVAudioPlayer|AVQueuePlayer|AVAudioEngine|AVKit|VideoPlayer|AVPlayerViewController|MPMusicPlayerController|MPNowPlayingInfoCenter' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused audio" ;;
-        voip) grep -rqE 'PushKit|PKPushRegistry|CallKit|CXProvider' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused voip" ;;
-        fetch) grep -rqE 'BGAppRefreshTask|BGTaskScheduler|BackgroundTasks|setMinimumBackgroundFetchInterval|performFetchWithCompletionHandler' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused fetch" ;;
-        processing) grep -rqE 'BGProcessingTask|BGTaskScheduler|BackgroundTasks' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused processing" ;;
-        bluetooth-central|bluetooth-peripheral) grep -rqE 'CoreBluetooth|CBCentralManager|CBPeripheralManager' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused $m" ;;
-        remote-notification) grep -rqE 'didReceiveRemoteNotification|UNUserNotificationCenter|registerForRemoteNotifications' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null || unused="$unused remote-notification" ;;
+        location) grep -rqE 'CLLocationManager|CoreLocation' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused location" ;;
+        audio) grep -rqE 'AVAudioSession|AVPlayer|AVAudioPlayer|AVQueuePlayer|AVAudioEngine|AVKit|VideoPlayer|AVPlayerViewController|MPMusicPlayerController|MPNowPlayingInfoCenter' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused audio" ;;
+        voip) grep -rqE 'PushKit|PKPushRegistry|CallKit|CXProvider' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused voip" ;;
+        fetch) grep -rqE 'BGAppRefreshTask|BGTaskScheduler|BackgroundTasks|setMinimumBackgroundFetchInterval|performFetchWithCompletionHandler' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused fetch" ;;
+        processing) grep -rqE 'BGProcessingTask|BGTaskScheduler|BackgroundTasks' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused processing" ;;
+        bluetooth-central|bluetooth-peripheral) grep -rqE 'CoreBluetooth|CBCentralManager|CBPeripheralManager' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused $m" ;;
+        remote-notification) grep -rqE 'didReceiveRemoteNotification|UNUserNotificationCenter|registerForRemoteNotifications' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null || unused="$unused remote-notification" ;;
       esac
     done <<< "$modes"
     if [[ -n "$unused" ]]; then
@@ -933,7 +933,7 @@ fi
 # ===================================================================
 set_rule "crypto-wallet-mining"
 if [[ -n "$IOS_DIR" ]]; then
-  crypto_sdk=$(grep -rlE 'import Web3|web3swift|Web3Swift|WalletConnect|TrustWalletCore|CoinbaseWalletSDK|SolanaSwift|CryptoMining|coinhive|MoneroMiner' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  crypto_sdk=$(grep -rlE 'import Web3|web3swift|Web3Swift|WalletConnect|TrustWalletCore|CoinbaseWalletSDK|SolanaSwift|CryptoMining|coinhive|MoneroMiner' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$crypto_sdk" ]]; then
     warn "3.1.5(a) Cryptocurrency — a crypto wallet/exchange/mining signal was detected (e.g. $(basename "$crypto_sdk")); wallets & exchanges have entity and licensing requirements, and on-device mining is not permitted (3.1.5(a)). Verify eligibility."
   fi
@@ -947,7 +947,7 @@ fi
 # files. WARN (verify) — this is the most false-positive-prone of the batch.
 set_rule "webview-wrapper"
 if [[ -n "$IOS_DIR" ]]; then
-  if grep -rqE 'WKWebView' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+  if grep -rqE 'WKWebView' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     swift_n=$(find "$IOS_DIR" "${PRUNE[@]}" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')
     if (( swift_n > 0 && swift_n <= 4 )); then
       warn "4.2.3 Minimum functionality — the app appears to be a WKWebView wrapper with only $swift_n Swift file(s); a thin wrapper around a website is rejected under 4.2.3. Add native value, or verify this is a real app rather than a repackaged site."
@@ -960,7 +960,7 @@ fi
 # ===================================================================
 set_rule "remote-desktop"
 if [[ -n "$IOS_DIR" ]]; then
-  remote_desktop=$(grep -rlE 'import libvncclient|LibVNC|VNCClient|RDPSession|RDPKit|RemoteDesktopClient|import FreeRDP|JumpDesktop' "$IOS_DIR" "${SRC_INC[@]}" --include="*.m" 2>/dev/null | head -1)
+  remote_desktop=$(grep -rlE 'import libvncclient|LibVNC|VNCClient|RDPSession|RDPKit|RemoteDesktopClient|import FreeRDP|JumpDesktop' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" --include="*.m" 2>/dev/null | head -1)
   if [[ -n "$remote_desktop" ]]; then
     warn "4.2.7 Remote desktop — a remote-desktop/mirroring signal was detected (e.g. $(basename "$remote_desktop")); host-mirroring apps must only show/control the owner's host, display host content (not App Store content), and be free or use IAP (4.2.7). Verify."
   fi
@@ -983,9 +983,9 @@ fi
 # for an in-app deletion path. Deletion via a web page is missed → WARN, not FAIL.
 set_rule "account-no-delete"
 if [[ -n "$IOS_DIR" ]]; then
-  signup=$(grep -rlE 'createUser|signUp|signup|createAccount|registerUser|registerNewUser|Auth\.auth\(\)\.createUser' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  signup=$(grep -rlE 'createUser|signUp|signup|createAccount|registerUser|registerNewUser|Auth\.auth\(\)\.createUser' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$signup" ]]; then
-    if grep -rqiE 'delete.?account|account.?deletion|closeAccount|deleteUser|removeAccount|deleteMyAccount' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null; then
+    if grep -rqiE 'delete.?account|account.?deletion|closeAccount|deleteUser|removeAccount|deleteMyAccount' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
       pass "5.1.1(v) Account deletion — account creation present and an in-app account-deletion path was found"
     else
       warn "5.1.1(v) Account deletion — account creation was detected (e.g. $(basename "$signup")) but no in-app account-deletion path found; apps that support account creation must let users delete their account from within the app (5.1.1(v))"
@@ -1030,7 +1030,7 @@ fi
 # ===================================================================
 set_rule "mdm"
 if [[ -n "$IOS_DIR" ]]; then
-  mdm_sig=$(grep -rlE 'import DeviceManagement|MDMConfiguration|ManagedAppConfiguration|com\.apple\.mdm' "$IOS_DIR" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  mdm_sig=$(grep -rlE 'import DeviceManagement|MDMConfiguration|ManagedAppConfiguration|com\.apple\.mdm' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   [[ -z "$mdm_sig" ]] && mdm_sig=$(grep -rlE 'com\.apple\.configuration\.managed' --include='*.plist' "${GREP_PRUNE[@]}" . 2>/dev/null | pick_shallowest)
   if [[ -n "$mdm_sig" ]]; then
     warn "5.5 MDM — a Mobile Device Management signal was detected (e.g. $(basename "$mdm_sig")); MDM apps require a commercial enterprise/education entity, may request the MDM capability only for that purpose, and must not sell or use the data for other ends (5.5). Verify eligibility."
