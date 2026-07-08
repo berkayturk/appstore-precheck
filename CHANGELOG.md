@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.12.2] - 2026-07-08
+
 ### Fixed
 - **`iosSourceDir` root scans no longer sweep build checkouts**: the code-level greps
   scoped to `$IOS_DIR` (purpose-string, tracking/ATT, IAP, private-API, and the other
