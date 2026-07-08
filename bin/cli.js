@@ -91,7 +91,11 @@ function main() {
     fail(`not a directory: ${opts.dir}`, 64);
   }
 
-  const scanArgs = opts.format === 'text' ? [SCAN] : [SCAN, '--format', opts.format];
+  // --dir is passed through explicitly: scan.sh treats it as authoritative,
+  // so a monorepo subdirectory is scanned as requested instead of snapping to
+  // the enclosing git toplevel.
+  const scanArgs = [SCAN, '--dir', opts.dir];
+  if (opts.format !== 'text') scanArgs.push('--format', opts.format);
   const scan = spawnSync('bash', scanArgs, {
     cwd: opts.dir,
     encoding: 'utf8',
@@ -101,6 +105,7 @@ function main() {
     fail('bash is required to run the scanner (install bash, or use WSL / Git Bash on Windows)', 70);
   }
   if (scan.error) fail(`failed to run the scanner: ${scan.error.message}`, 70);
+  if (scan.signal) fail(`scanner was killed by signal ${scan.signal}`, 70);
 
   const scanOut = scan.stdout || '';
   process.stdout.write(scanOut);

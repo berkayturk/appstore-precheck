@@ -39,7 +39,7 @@ runs:
         verdict="$APC_ACTION_PATH/skills/appstore-precheck/scripts/verdict.sh"
 
         cd "$APC_WORKDIR"
-        out="$(bash "$scan")"
+        out="$(bash "$scan" --dir .)"
         echo "$out"
         echo "----------------------------------------"
         summary="$(printf '%s\n' "$out" | bash "$verdict")"
@@ -68,12 +68,15 @@ runs:
         set -euo pipefail
         scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
         cd "$APC_WORKDIR"
-        bash "$scan" --format sarif > "$GITHUB_WORKSPACE/appstore-precheck.sarif"
+        bash "$scan" --dir . --format sarif > "$GITHUB_WORKSPACE/appstore-precheck.sarif"
     - name: Upload SARIF
       if: ${{ (success() || failure()) && inputs.sarif == 'true' }}
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@411c4c9a36b3fca4d674f06b6396b2c6d23522c6 # v3
       with:
         sarif_file: appstore-precheck.sarif
+        # Finding paths are relative to working-directory; tell code-scanning
+        # where that checkout root is so subdir scans annotate the right files.
+        checkout_path: ${{ github.workspace }}/${{ inputs.working-directory }}
     - name: Emit PR annotations
       if: ${{ (success() || failure()) && inputs.annotations == 'true' }}
       shell: bash
@@ -84,7 +87,7 @@ runs:
         set -euo pipefail
         scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
         cd "$APC_WORKDIR"
-        bash "$scan" --format json \
+        bash "$scan" --dir . --format json \
           | jq -r '.findings[]
                    | select(.suppressed==false and (.severity=="FAIL" or .severity=="WARN"))
                    | (if .severity=="FAIL" then "error" else "warning" end) as $lvl
