@@ -237,6 +237,25 @@ npx appstore-precheck            # scans the current directory, prints the verdi
 npx appstore-precheck --fail-on YELLOW
 ```
 
+**Homebrew** — same CLI, installed on PATH:
+
+```bash
+brew install berkayturk/tap/appstore-precheck
+appstore-precheck --dir path/to/your-ios-app
+```
+
+**fastlane** — gate a lane on the verdict with the
+[`appstore_precheck` plugin](https://github.com/berkayturk/fastlane-plugin-appstore_precheck):
+
+```ruby
+# fastlane add_plugin appstore_precheck
+lane :beta do
+  appstore_precheck              # fails the lane on a RED verdict
+  build_app
+  upload_to_testflight
+end
+```
+
 **Standalone Bash** — same static scan, run by hand or in CI:
 
 ```bash
