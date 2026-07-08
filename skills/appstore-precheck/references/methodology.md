@@ -13,6 +13,7 @@ whole file to run the skill.
 - [Verdict thresholds](#verdict-thresholds)
 - [SARIF output](#sarif-output---format-sarif)
 - [Real App Store outcomes](#real-app-store-outcomes-corpusoutcomes)
+- [Optional local dynamic simulator tier](#optional-local-dynamic-simulator-tier)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)
 
 ---

@@ -142,13 +142,14 @@ static scan already flagged a guideline, the deep check adds semantic context th
 ### Supported app types
 
 Every check that reads store metadata, the privacy manifest, screenshots, or the export-compliance
-key works on **any iOS app**. The code-level checks read Swift source, so their coverage depends on
+key works on **any iOS app**. The code-level checks read Swift and Objective-C(++) source
+(`.swift`, `.m`, `.mm`, `.h`), so their coverage depends on
 how the app is built:
 
 | App type | Coverage |
 |----------|----------|
 | 🟢 **Native Swift / SwiftUI** | **Full.** All 42 vectors apply. |
-| 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The Swift-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
+| 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The native-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
 
@@ -275,7 +276,7 @@ Drop the static scan into a workflow with the bundled composite action. It fails
 job on a RED verdict; set `fail-on: YELLOW` to be stricter:
 
 ```yaml
-- uses: berkayturk/appstore-precheck@v1.5.0
+- uses: berkayturk/appstore-precheck@v1
   with:
     working-directory: .   # optional, default: . (repo root)
     fail-on: RED           # optional, default: RED (RED | YELLOW)
@@ -315,8 +316,9 @@ nothing is auto-fixed.
 | **1** | **Static scan**: `scan.sh` over the 42 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
-| **4** | **Pierre deep review**: 28 semantic checks (22 Tier A + 6 Tier B v1 heuristic). Advisory only. |
+| **4** | **Pierre deep review**: 28 semantic checks (22 Tier A + 6 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
+| **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/permission smoke checks on a local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict. |
 
 ## Demo
 
@@ -464,6 +466,8 @@ App Store apps (DuckDuckGo, Pocket Casts, Wikipedia).
 `bash`, `git`, `grep`, `find` are all the static scan, `npx appstore-precheck`, and the GitHub
 Action need, and they run with **zero credentials and no network**. `jq` (config + String Catalog
 checks) and `python3` (exact Unicode length counts) are optional and sharpen a few checks.
+On Windows, run the CLI under WSL or Git Bash. CLI exit codes: `0` ok, `1` verdict at or past
+`--fail-on`, `64` bad usage, `70` environment error (`bash` or the bundled scanner missing).
 
 Only the **optional Phase 2** (`fastlane precheck`) needs `fastlane` and an
 [App Store Connect API key](https://developer.apple.com/documentation/appstoreconnectapi/creating-api-keys-for-app-store-connect-api).
@@ -471,6 +475,26 @@ Everything else works without one.
 
 **Secrets**: the ASC API key is read from your environment at runtime and deleted immediately after
 `fastlane precheck`. Never commit it; `.gitignore` blocks `*asc-key*.json` and `.env`.
+
+## Troubleshooting
+
+- **Wrong source directory detected** (`PASS: layout — ios='…'` names the wrong folder): set
+  `.iosSourceDir` in `.appstore-precheck.json` (copy
+  [`config.example.json`](skills/appstore-precheck/config.example.json)). In a monorepo, pass
+  `--dir path/to/app` — an explicit `--dir` is authoritative and never snaps to the git root.
+- **Unexpected YELLOW**: YELLOW means 5+ WARNs, no FAILs. Advisory checks (background modes,
+  tracking SDKs, screenshot sizes) can pile up on legitimate apps — review each WARN, then
+  suppress the accepted ones via [`.precheck-ignore`](#suppressing-findings-precheck-ignore)
+  so real signals stay visible.
+- **Paywall FAILs on a remote-configured paywall** (RevenueCat dashboard paywalls and similar):
+  the scanner downgrades these to a verify-in-dashboard WARN when it sees `RevenueCatUI` /
+  `presentPaywall`. If your setup isn't detected, check the dashboard paywall manually and
+  suppress with `.precheck-ignore`.
+- **`fastlane precheck` auth errors** (Phase 2): confirm the three `ASC_KEY_*` env vars are set
+  and the API key has App Manager access. Phase 2 is optional — skipping it only skips Apple's
+  metadata linter, the static verdict is unaffected.
+- **`jq` or `python3` missing**: the scan still runs; config-file overrides, String Catalog
+  checks, and exact Unicode length counts degrade gracefully (noted in the output).
 
 ## Uninstall
 

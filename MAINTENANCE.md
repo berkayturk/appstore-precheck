@@ -20,7 +20,7 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 
 ### Quarterly: vector and pattern review
 
-Walk the 41 vectors in the methodology table and confirm each still matches how Apple reviews
+Walk the 42 vectors in the methodology table and confirm each still matches how Apple reviews
 today. Also spot-check the 28 Pierre deep-review checks in
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
@@ -62,7 +62,7 @@ reconciliation as required, not optional:
   `bash scripts/update-brew-formula.sh` (fetches the published tarball, rewrites the formula's
   `url` + `sha256`, pushes the tap). The guard is the weekly `brew-sync` workflow, which fails
   when the tap drifts from npm latest.
-- **Vector count:** the count appears in the README intro and table, `SKILL.md`, `plugin.json`,
+- **Vector count:** the count appears in the README intro and table, `SKILL.md`,
   the methodology table, and the changelog. When you add or remove a check, update all of them.
 - **Output format:** tests assert on the exact `FAIL:` / `WARN:` / `PASS: <topic> — <detail>`
   shape. The em-dash in those output lines is machine format and stays. Prose everywhere else

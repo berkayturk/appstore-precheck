@@ -71,6 +71,19 @@ section "--format bad value -> exit 64"
 run_cli "clean-app" --format xml
 assert_eq "$CODE" "64" "invalid --format exits 64"
 
+section "--dir inside a git repo scans the subdir, not the git toplevel"
+# Regression guard: scan.sh used to snap to `git rev-parse --show-toplevel`,
+# silently ignoring --dir for tracked monorepo subdirectories.
+mono="$(mktemp -d)"
+git -C "$mono" init -q
+mkdir -p "$mono/apps"
+cp -R "$FIXTURES/clean-app/." "$mono/apps/ios-app/"
+OUT="$(node "$CLI" --dir "$mono/apps/ios-app" 2>&1)"; CODE=$?
+assert_contains "$OUT" "ios='./ios/CleanApp'" "layout detected relative to --dir, not the enclosing git root"
+assert_contains "$OUT" "VERDICT: GREEN" "subdir scan reaches the same GREEN as a standalone scan"
+assert_eq "$CODE" "0" "exit 0 for the subdir GREEN"
+rm -rf "$mono"
+
 echo
 if (( fails == 0 )); then echo "test-cli: ALL PASSED"; else echo "test-cli: $fails FAILED"; fi
 exit "$fails"

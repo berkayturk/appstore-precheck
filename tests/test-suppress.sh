@@ -35,6 +35,16 @@ assert_eq "$r" "1" "rule not suppressed outside path"
 # --- path exclusion collected ---
 assert_eq "$(precheck_prune_globs | tr '\n' ' ' | grep -c vendor)" "1" "vendor path glob collected"
 
+# --- rule 42 (last catalog entry) is suppressible — off-by-one regression guard ---
+cat > "$work/.precheck-ignore" <<'EOF'
+screenshot-dimensions
+EOF
+err42="$(load_precheck_ignore "$work" 2>&1 >/dev/null)"
+assert_eq "$(printf '%s' "$err42" | grep -c 'unknown rule-id')" "0" "rule 42 recognized as a catalog rule (no unknown-rule warning)"
+load_precheck_ignore "$work"   # reload outside command substitution: state must land in this shell
+is_suppressed "screenshot-dimensions" "" "" && r=0 || r=1
+assert_eq "$r" "0" "rule 42 (screenshot-dimensions) suppressed everywhere"
+
 # --- unknown rule-id reported, not treated as rule ---
 cat > "$work/.precheck-ignore" <<'EOF'
 not-a-real-rule

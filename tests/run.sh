@@ -358,6 +358,28 @@ assert_has "not a valid PNG"        "the renamed non-PNG is flagged as invalid"
 assert_absent "01.png is 1290x2796" "an accepted-size PNG does not produce a size WARN"
 finish_fixture
 
+check_fixture "storekit2-paywall-app" "StoreKit 2 paywall: AppStore.sync restore + labelled legal links"
+assert_has    "PASS: 3.1.2 Restore Purchases"   "capitalized 'Restore Purchases' + AppStore.sync() is recognized"
+assert_absent "FAIL: 3.1.2 Restore Purchases"   "no false Restore FAIL on a StoreKit 2 paywall"
+assert_has    "PASS: 3.1.2 Terms of Use"        "labelled Terms link with a /legal/tos path is recognized"
+assert_absent "FAIL: 3.1.2 Terms of Use"        "no false Terms FAIL on a labelled link"
+assert_has    "PASS: 3.1.2 Privacy Policy"      "labelled Privacy Policy link is recognized"
+assert_absent "FAIL: 3.1.2 Privacy Policy"      "no false Privacy FAIL on a labelled link"
+assert_absent "FAIL: 5.1.1 Required Reason API — 'FileTimestamp'" "a plain 'creationDate' model property is not a filesystem timestamp API"
+finish_fixture
+
+check_fixture "revenuecat-paywall-app" "RevenueCat remote-configured paywall (links live in the dashboard)"
+assert_absent "FAIL: 3.1.2 Restore Purchases"   "remote paywall: Restore FAIL downgraded"
+assert_absent "FAIL: 3.1.2 Terms of Use"        "remote paywall: Terms FAIL downgraded"
+assert_absent "FAIL: 3.1.2 Privacy Policy"      "remote paywall: Privacy FAIL downgraded"
+assert_has    "remote-configured paywall"       "the downgrade explains itself as a remote-paywall WARN"
+assert_has    "WARN: 3.1.2"                     "the remote-paywall signal still surfaces as a WARN"
+finish_fixture
+
+check_fixture "objc-camera-app" "Objective-C camera capture without NSCameraUsageDescription"
+assert_has    "FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "purpose-string check fires on ObjC sources"
+finish_fixture
+
 # ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then

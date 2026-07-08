@@ -20,7 +20,7 @@ Three independent measurements, three methodologies:
 
 | metric | value |
 |---|---|
-| true positives  | 32 |
+| true positives  | 34 |
 | false positives | 0 |
 | false negatives | 0 |
 | **precision**   | 1.00 |

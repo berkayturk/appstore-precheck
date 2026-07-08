@@ -49,17 +49,27 @@ reporter, or real-device QA.
 
 ## Per-check procedure
 
+The Maestro MCP tools are: `mcp__maestro__list_devices` (pick a booted simulator's `device_id`),
+`mcp__maestro__run` (execute a declarative YAML flow — `launchApp`, `tapOn`, `assertVisible`, …),
+`mcp__maestro__inspect_screen` (view hierarchy), `mcp__maestro__take_screenshot`, and
+`mcp__maestro__cheat_sheet` (YAML command reference). Every local tool needs a `device_id` from
+`list_devices` first. `xcrun simctl` is the fallback when Maestro is unavailable.
+
 ### D1 — Launch without crash
-1. `mcp__maestro__start_device` (or `xcrun simctl boot`) a disposable simulator; `launch_app` the supplied app/bundle id.
+1. `mcp__maestro__list_devices` for a booted disposable simulator (boot one with
+   `xcrun simctl boot` if needed); then `mcp__maestro__run` a flow that declares the `appId` and
+   starts with `launchApp` (fallback: `xcrun simctl launch`).
 2. Observe for a short window; if the app process disappears or a crash alert shows, `DYNAMIC-FINDING`.
-3. `take_screenshot` at launch as evidence.
+3. `mcp__maestro__take_screenshot` at launch as evidence.
 
 ### D2 — Core screen reachable
-1. After launch, inspect the first real screen (`inspect_view_hierarchy` / `take_screenshot`).
+1. After launch, inspect the first real screen (`mcp__maestro__inspect_screen` /
+   `mcp__maestro__take_screenshot`).
 2. Flag if stuck on a splash, blank, or an error/"something went wrong" state.
 
 ### D3 — Paywall renders
-1. If a paywall exists (per the static scan / app structure), navigate to it (`tap_on` / a flow).
+1. If a paywall exists (per the static scan / app structure), navigate to it with a
+   `mcp__maestro__run` flow (`tapOn` steps; check `mcp__maestro__cheat_sheet` for selector syntax).
 2. Confirm price + trial/auto-renew/cancel terms are visibly rendered; screenshot. Not applicable if no paywall.
 
 ### D4 — Permission prompt vs purpose string
