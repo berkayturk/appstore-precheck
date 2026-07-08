@@ -57,6 +57,11 @@ reconciliation as required, not optional:
 - **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `package.json`, and
   `SKILL.md` must share one version. The guard
   is `npm run check-versions`; CI runs it on every push.
+- **Homebrew formula:** the tap ([`berkayturk/homebrew-tap`](https://github.com/berkayturk/homebrew-tap))
+  pins the npm tarball of one exact version, so every npm release MUST be followed by
+  `bash scripts/update-brew-formula.sh` (fetches the published tarball, rewrites the formula's
+  `url` + `sha256`, pushes the tap). The guard is the weekly `brew-sync` workflow, which fails
+  when the tap drifts from npm latest.
 - **Vector count:** the count appears in the README intro and table, `SKILL.md`, `plugin.json`,
   the methodology table, and the changelog. When you add or remove a check, update all of them.
 - **Output format:** tests assert on the exact `FAIL:` / `WARN:` / `PASS: <topic> — <detail>`
@@ -78,3 +83,6 @@ exemption-prone checks are WARN, never FAIL.
 - The changelog has an entry and the version is bumped in lockstep.
 - The manual pre-submit checklist at the end of the methodology reference still reflects what the
   scanner cannot verify.
+- **After `npm publish`:** run `bash scripts/update-brew-formula.sh` so the Homebrew tap ships the
+  new version. Not optional — brew users stay on the old release until this runs, and the weekly
+  `brew-sync` CI check goes red on drift.
