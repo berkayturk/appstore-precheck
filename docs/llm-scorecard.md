@@ -19,10 +19,10 @@ embedded in the case (a deliberate determinism trade-off).
 
 | field | value |
 |---|---|
-| model | `claude-sonnet-5` |
+| model | `claude-opus-4-8` |
 | generation params | max_tokens=1024, thinking=disabled, effort=low |
 | repeats per case | 3 |
-| run date | 2026-07-11T20:47:53Z |
+| run date | 2026-07-11T23:58:46Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | cases | 21 scored, 0 UNLABELED, 0 not run |
 
@@ -36,7 +36,7 @@ embedded in the case (a deliberate determinism trade-off).
 
 **Tier-B false-positive rate:** 0.00 (0 FP over 7 clean Tier-B case(s))
 
-**Consistency:** 21/21 case(s) unanimous across 3 repeats (1.00)
+**Consistency:** 20/21 case(s) unanimous across 3 repeats (0.95)
 
 ## Per-check breakdown
 
@@ -48,7 +48,7 @@ embedded in the case (a deliberate determinism trade-off).
 | 4 | B | 2.1 | check04-placeholder-demo-account | finding | finding | finding/finding/finding | yes |
 | 4 | B | 2.1 | check04-vague-review-notes | finding | finding | finding/finding/finding | yes |
 | 5 | B | 2.2 | check05-beta-in-release-notes | finding | finding | finding/finding/finding | yes |
-| 5 | B | 2.2 | check05-clean-release-notes | pass | pass | pass/pass/pass | yes |
+| 5 | B | 2.2 | check05-clean-release-notes | pass | pass | pass/pass/not-applicable | no |
 | 5 | B | 2.2 | check05-experimental-ui-string | finding | finding | finding/finding/finding | yes |
 | 7 | B | 2.3.4 | check07-no-preview-assets | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 10 | B | 2.3.9 | check10-clean-review-prompt | pass | pass | pass/pass/pass | yes |
@@ -63,6 +63,8 @@ embedded in the case (a deliberate determinism trade-off).
 | 18 | A | 5.1.1(ii) | check18-specific-purpose-strings | pass | pass | pass/pass/pass | yes |
 | 28 | B | 5.6.1/5.6.3 | check28-clean-system-prompt | pass | pass | pass/pass/pass | yes |
 | 28 | B | 5.6.1/5.6.3 | check28-write-review-deeplink | finding | finding | finding/finding/finding | yes |
+
+Non-unanimous cases (majority used for scoring): `check05-clean-release-notes`
 
 ## Honesty
 
