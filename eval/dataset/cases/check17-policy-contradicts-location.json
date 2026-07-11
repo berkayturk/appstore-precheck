@@ -5,7 +5,7 @@
   "guideline": "5.1.1(i)",
   "expected": "finding",
   "rationale": "The pre-fetched privacy policy states location data is never collected, while the code imports CoreLocation and starts continuous location updates — the direct contradiction named in procedure step 3.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check17-policy-contradicts-location/",
   "fetched_urls": {
     "privacy_policy": "RunTracker Privacy Policy\n\nLast updated: March 2026\n\nWhat we collect: your workout history is stored on your device and, if you enable sync, in your private iCloud container.\n\nLocation: We do not collect, process, or store your location data. RunTracker works entirely without knowing where you are.\n\nThird parties: we do not share any data with third parties.\n\nContact: privacy@runtracker.example"

@@ -5,6 +5,6 @@
   "guideline": "5.6.1/5.6.3",
   "expected": "finding",
   "rationale": "Custom star UI routes 4-5 star ratings to an itms-apps write-review URL and everything else to a private feedback form — the review-gating dark pattern named in procedure steps 1 and 3.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check28-write-review-deeplink/"
 }

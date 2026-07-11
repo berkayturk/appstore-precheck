@@ -5,7 +5,7 @@
   "guideline": "2.2",
   "expected": "finding",
   "rationale": "Store metadata is clean but a user-visible Settings toggle label says 'Experimental ... may be unstable' — unfinished-build language shown to users, per procedure step 1.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check05-experimental-ui-string/",
   "notes": "Harder variant of check 5: the signal is in a SwiftUI Text() string, not in fastlane metadata."
 }

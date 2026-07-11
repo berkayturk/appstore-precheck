@@ -5,6 +5,6 @@
   "guideline": "4.5.1-4.5.3",
   "expected": "finding",
   "rationale": "HomeKit is imported but the app is a wallpaper browser with no home-automation UI anywhere — the misuse pattern named in procedure step 3.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check15-homekit-no-home-ui/"
 }

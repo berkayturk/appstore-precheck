@@ -5,7 +5,7 @@
   "guideline": "2.3.4",
   "expected": "not-applicable",
   "rationale": "No preview assets (preview*, .mov, .mp4) anywhere in the metadata tree; per procedure step 2 the check must report not applicable.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check07-no-preview-assets/",
   "notes": "In-repo preview videos are binary, so a positive check-7 case cannot ship as a text fixture; only the not-applicable branch is coverable here."
 }
