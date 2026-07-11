@@ -11,7 +11,7 @@ dataset/fixtures/<id>/    minimal fixture each case points at
 lib/                      build_request.py, parse_verdict.py, validate_case.py
 run.sh                    call the API, cache raw responses (needs ANTHROPIC_API_KEY)
 score.py                  offline scorer -> docs/llm-scorecard.md
-baseline/<date>/          committed response caches CI scores against
+baseline/<date>-<model>/  committed response caches CI scores against
 runs/                     local runs (gitignored)
 ```
 

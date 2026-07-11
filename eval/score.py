@@ -36,9 +36,22 @@ DEFAULT_FLOOR = 0.80
 def newest_baseline():
     if not BASELINE_DIR.is_dir():
         return None
-    runs = sorted(d for d in BASELINE_DIR.iterdir()
-                  if d.is_dir() and (d / "manifest.json").is_file())
-    return runs[-1] if runs else None
+    runs = [d for d in BASELINE_DIR.iterdir()
+            if d.is_dir() and (d / "manifest.json").is_file()]
+    if not runs:
+        return None
+
+    # Newest by the manifest's run_date, not by directory name: baseline dirs
+    # are named <date>-<model>, so same-day runs of two models would otherwise
+    # sort by model name rather than by recency.
+    def run_date(d):
+        try:
+            manifest = json.loads((d / "manifest.json").read_text(encoding="utf-8"))
+            return (manifest.get("run_date") or "", d.name)
+        except (OSError, ValueError):
+            return ("", d.name)
+
+    return max(runs, key=run_date)
 
 
 def load_cases(dataset_dir):
@@ -127,7 +140,7 @@ def render(run_dir, dataset_dir):
             "",
             "_No committed baseline run yet. Run `eval/run.sh --baseline` (needs",
             "`ANTHROPIC_API_KEY`), review the cached responses, and commit",
-            "`eval/baseline/<date>/`. Until then the CI Tier-A F1 floor is inactive._",
+            "`eval/baseline/<date>-<model>/`. Until then the CI Tier-A F1 floor is inactive._",
             "",
             _honesty(),
         ]

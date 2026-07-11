@@ -417,7 +417,7 @@ and its own scorecard, [`docs/llm-scorecard.md`](docs/llm-scorecard.md).
   that is where false positives live.
 - **Runner** — `bash eval/run.sh [--repeat 3] [--model claude-sonnet-5] [--cases 'check05-*']`
   calls the Anthropic Messages API once per case per repeat and caches every raw response under
-  `eval/runs/<timestamp>/` (or `--baseline` → `eval/baseline/<date>/`, which is committed). Needs
+  `eval/runs/<timestamp>/` (or `--baseline` → `eval/baseline/<date>-<model>/`, which is committed). Needs
   `ANTHROPIC_API_KEY` in the environment; the key is never logged or written to disk. Model and
   generation parameters are pinned in the run's `manifest.json`.
 - **Scorer** — `python3 eval/score.py --write` re-parses the cached responses **offline** (no key,

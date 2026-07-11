@@ -84,6 +84,16 @@ else
   assert_contains "$out" "floor inactive" "--check reports inactive floor without a baseline"
 fi
 
+section "run.sh model-mismatch guard"
+# A cache dir produced with one model must not be resumed with another:
+# the guard fires before any request is built, so no key/network is needed.
+GUARD="$TMP/guard"; mkdir -p "$GUARD"
+jq -n '{model:"claude-test"}' > "$GUARD/manifest.json"
+out="$(ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
+  --out "$GUARD" --model claude-other 2>&1)"; rc=$?
+assert_eq "$rc" "1" "run.sh exits 1 when the cache dir holds another model's run"
+assert_contains "$out" "refusing to mix models" "guard names the conflict"
+
 section "floor enforcement"
 # Against the synthetic run the Tier-A F1 is 0.00 -> a 0.80 floor must fail.
 # --check needs a matching card on disk; emulate by scoring in a sandbox repo? No:

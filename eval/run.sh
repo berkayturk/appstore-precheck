@@ -4,7 +4,7 @@
 #   --repeat <N>     repeats per case for the consistency metric (default 3)
 #   --cases <glob>   case-file basename glob, e.g. 'check05-*' (default all)
 #   --out <dir>      output dir (default eval/runs/<UTC timestamp>)
-#   --baseline       shorthand: write to eval/baseline/<UTC date> (commit this dir)
+#   --baseline       shorthand: write to eval/baseline/<UTC date>-<model> (commit this dir)
 #
 # Requires ANTHROPIC_API_KEY in the environment (read at request time, never
 # logged, never written to disk). Scoring is offline: eval/score.py re-reads the
@@ -18,6 +18,7 @@ MODEL="claude-sonnet-5"
 REPEAT=3
 GLOB="*"
 OUT=""
+BASELINE=0
 MAX_TOKENS=1024
 
 while [[ $# -gt 0 ]]; do
@@ -26,10 +27,13 @@ while [[ $# -gt 0 ]]; do
     --repeat)   REPEAT="$2"; shift 2 ;;
     --cases)    GLOB="$2"; shift 2 ;;
     --out)      OUT="$2"; shift 2 ;;
-    --baseline) OUT="$ROOT/eval/baseline/$(date -u +%F)"; shift ;;
+    --baseline) BASELINE=1; shift ;;
     *) echo "run.sh: unknown arg '$1'" >&2; exit 64 ;;
   esac
 done
+# Resolved after parsing so --baseline picks up a --model given in any order.
+# The model is part of the dir name so two models can never share a cache dir.
+[[ $BASELINE -eq 1 && -z "$OUT" ]] && OUT="$ROOT/eval/baseline/$(date -u +%F)-$MODEL"
 [[ -z "$OUT" ]] && OUT="$ROOT/eval/runs/$(date -u +%Y%m%dT%H%M%SZ)"
 
 [[ -n "${ANTHROPIC_API_KEY:-}" ]] || {
@@ -45,6 +49,16 @@ bash "$ROOT/eval/validate.sh" >/dev/null || {
   echo "run.sh: dataset validation failed — fix cases before running" >&2; exit 1; }
 
 mkdir -p "$OUT"
+
+# Resume guard: cached rep files are only reusable if they were produced with
+# the same model. Refuse to mix rather than silently skip or mislabel.
+if [[ -s "$OUT/manifest.json" ]]; then
+  prev_model="$(jq -r '.model' "$OUT/manifest.json")"
+  if [[ "$prev_model" != "$MODEL" ]]; then
+    echo "run.sh: $OUT already holds a $prev_model run — refusing to mix models in one cache dir (use --out <fresh dir>)" >&2
+    exit 1
+  fi
+fi
 
 # Dataset fingerprint: content hash over cases + fixtures, so the manifest pins
 # exactly what was measured.
