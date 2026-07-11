@@ -5,8 +5,8 @@
   "effort": "low",
   "repeat": 3,
   "cases_glob": "*",
-  "dataset_sha256": "6a92e70db48a032dd7fba317ec971f3304f4b0daafd2f6b4c61e3199910d8a61",
-  "run_date": "2026-07-11T20:18:56Z",
+  "dataset_sha256": "eeaa8a69db75289adf4fb8287e16ee8fd1a56ab7bb15a342071520cadcb4c4ac",
+  "run_date": "2026-07-11T20:47:53Z",
   "api": "https://api.anthropic.com/v1/messages",
   "generator": "eval/run.sh"
 }

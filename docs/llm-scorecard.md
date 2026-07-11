@@ -22,47 +22,47 @@ embedded in the case (a deliberate determinism trade-off).
 | model | `claude-sonnet-5` |
 | generation params | max_tokens=1024, thinking=disabled, effort=low |
 | repeats per case | 3 |
-| run date | 2026-07-11T20:18:56Z |
-| dataset sha256 | `6a92e70db48a032d…` |
-| cases | 8 scored, 0 UNLABELED, 13 not run |
+| run date | 2026-07-11T20:47:53Z |
+| dataset sha256 | `eeaa8a69db75289a…` |
+| cases | 21 scored, 0 UNLABELED, 0 not run |
 
 ## Per-tier metrics
 
 | tier | cases | TP | FP | FN | TN | precision | recall | F1 |
 |---|---|---|---|---|---|---|---|---|
-| A (high-confidence) | 2 | 1 | 0 | 0 | 1 | 1.00 | 1.00 | 1.00 |
-| B (heuristic) | 6 | 3 | 0 | 0 | 3 | 1.00 | 1.00 | 1.00 |
-| all | 8 | 4 | 0 | 0 | 4 | 1.00 | 1.00 | 1.00 |
+| A (high-confidence) | 6 | 3 | 0 | 0 | 3 | 1.00 | 1.00 | 1.00 |
+| B (heuristic) | 15 | 8 | 0 | 0 | 7 | 1.00 | 1.00 | 1.00 |
+| all | 21 | 11 | 0 | 0 | 10 | 1.00 | 1.00 | 1.00 |
 
-**Tier-B false-positive rate:** 0.00 (0 FP over 3 clean Tier-B case(s))
+**Tier-B false-positive rate:** 0.00 (0 FP over 7 clean Tier-B case(s))
 
-**Consistency:** 8/8 case(s) unanimous across 3 repeats (1.00)
+**Consistency:** 21/21 case(s) unanimous across 3 repeats (1.00)
 
 ## Per-check breakdown
 
 | check | tier | guideline | case | expected | predicted (majority) | repeats | unanimous |
 |---|---|---|---|---|---|---|---|
-| 3 | A | 2.1 | check03-claims-implemented | pass | not-run | — | no |
+| 3 | A | 2.1 | check03-claims-implemented | pass | pass | pass/pass/pass | yes |
 | 3 | A | 2.1 | check03-unimplemented-claims | finding | finding | finding/finding/finding | yes |
 | 4 | B | 2.1 | check04-no-login-not-applicable | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 4 | B | 2.1 | check04-placeholder-demo-account | finding | finding | finding/finding/finding | yes |
-| 4 | B | 2.1 | check04-vague-review-notes | finding | not-run | — | no |
+| 4 | B | 2.1 | check04-vague-review-notes | finding | finding | finding/finding/finding | yes |
 | 5 | B | 2.2 | check05-beta-in-release-notes | finding | finding | finding/finding/finding | yes |
 | 5 | B | 2.2 | check05-clean-release-notes | pass | pass | pass/pass/pass | yes |
-| 5 | B | 2.2 | check05-experimental-ui-string | finding | not-run | — | no |
-| 7 | B | 2.3.4 | check07-no-preview-assets | not-applicable | not-run | — | no |
+| 5 | B | 2.2 | check05-experimental-ui-string | finding | finding | finding/finding/finding | yes |
+| 7 | B | 2.3.4 | check07-no-preview-assets | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 10 | B | 2.3.9 | check10-clean-review-prompt | pass | pass | pass/pass/pass | yes |
-| 10 | B | 2.3.9 | check10-feedback-ask-pass | pass | not-run | — | no |
+| 10 | B | 2.3.9 | check10-feedback-ask-pass | pass | pass | pass/pass/pass | yes |
 | 10 | B | 2.3.9 | check10-incentivized-review | finding | finding | finding/finding/finding | yes |
-| 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | not-run | — | no |
-| 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-run | — | no |
-| 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | not-run | — | no |
-| 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | not-run | — | no |
-| 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | not-run | — | no |
-| 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | not-run | — | no |
+| 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
+| 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
+| 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
+| 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
+| 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
 | 18 | A | 5.1.1(ii) | check18-specific-purpose-strings | pass | pass | pass/pass/pass | yes |
-| 28 | B | 5.6.1/5.6.3 | check28-clean-system-prompt | pass | not-run | — | no |
-| 28 | B | 5.6.1/5.6.3 | check28-write-review-deeplink | finding | not-run | — | no |
+| 28 | B | 5.6.1/5.6.3 | check28-clean-system-prompt | pass | pass | pass/pass/pass | yes |
+| 28 | B | 5.6.1/5.6.3 | check28-write-review-deeplink | finding | finding | finding/finding/finding | yes |
 
 ## Honesty
 
