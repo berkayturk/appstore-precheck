@@ -1,0 +1,10 @@
+{
+  "id": "check18-specific-purpose-strings",
+  "check_id": 18,
+  "tier": "A",
+  "guideline": "5.1.1(ii)",
+  "expected": "pass",
+  "rationale": "Both NS*UsageDescription strings are specific and tied to a visible receipt-scanning feature implemented in ReceiptScannerView.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check18-specific-purpose-strings/"
+}

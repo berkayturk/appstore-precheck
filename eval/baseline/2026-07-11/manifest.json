@@ -1,0 +1,12 @@
+{
+  "model": "claude-sonnet-5",
+  "max_tokens": 1024,
+  "thinking": "disabled",
+  "effort": "low",
+  "repeat": 3,
+  "cases_glob": "*",
+  "dataset_sha256": "6a92e70db48a032dd7fba317ec971f3304f4b0daafd2f6b4c61e3199910d8a61",
+  "run_date": "2026-07-11T20:18:56Z",
+  "api": "https://api.anthropic.com/v1/messages",
+  "generator": "eval/run.sh"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "check04-placeholder-demo-account",
+  "check_id": 4,
+  "tier": "B",
+  "guideline": "2.1",
+  "expected": "finding",
+  "rationale": "App is login-gated (SecureField login screen) but review_information carries placeholder credentials ('test'/'changeme') and a TBD note — not actionable for App Review.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check04-placeholder-demo-account/"
+}

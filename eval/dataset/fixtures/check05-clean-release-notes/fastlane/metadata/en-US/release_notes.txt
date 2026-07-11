@@ -1,0 +1,2 @@
+Fixed a crash when adding a task with an emoji title. Faster launch on
+older devices. Thanks for the feedback!

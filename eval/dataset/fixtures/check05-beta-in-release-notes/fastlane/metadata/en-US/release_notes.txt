@@ -1,0 +1,2 @@
+Welcome to the TaskTide public beta! We're still testing the new sync
+feature, so expect rough edges. Please report anything broken.

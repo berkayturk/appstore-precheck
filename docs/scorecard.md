@@ -16,6 +16,10 @@ Three independent measurements, three methodologies:
   rejected + cited guideline), human-reviewed, with a sample-size floor before any rate is shown.
   Measures **correlation with actual review outcomes** (honestly, only once enough data exists).
 
+This scorecard covers the **static scanner** only. Pierre's LLM deep-review layer
+(28 semantic checks) is measured separately in `docs/llm-scorecard.md`, generated
+by `eval/score.py` from the labelled dataset in `eval/`.
+
 ## Synthetic aggregate
 
 | metric | value |

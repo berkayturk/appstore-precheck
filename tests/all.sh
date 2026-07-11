@@ -25,6 +25,8 @@ SUITE=(
   "test-sarif.sh"     # sarif.sh render_sarif SARIF 2.1.0 output
   "test-action-sarif.sh" # action.yml opt-in SARIF/annotation inputs default off
   "test-pack.sh"      # npm tarball self-containment (files array regression guard)
+  "test-eval-parse.sh" # eval parse_verdict.py + build_request.py (LLM eval, no network)
+  "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
 )
 
 failed=()
