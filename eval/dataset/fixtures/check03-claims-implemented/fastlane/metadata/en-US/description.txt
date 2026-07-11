@@ -1,0 +1,4 @@
+InkNote — quick notes that never need the cloud.
+
+- Works fully offline: everything is stored on your device
+- Export any note as a clean PDF with one tap

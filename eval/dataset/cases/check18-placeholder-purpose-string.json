@@ -1,0 +1,11 @@
+{
+  "id": "check18-placeholder-purpose-string",
+  "check_id": 18,
+  "tier": "A",
+  "guideline": "5.1.1(ii)",
+  "expected": "finding",
+  "rationale": "NSCameraUsageDescription is a generic template sentence and NSLocationWhenInUseUsageDescription is literally 'TODO' — placeholder/generic purpose strings per procedure step 2.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check18-placeholder-purpose-string/",
+  "notes": "Positive pair for check18-specific-purpose-strings."
+}

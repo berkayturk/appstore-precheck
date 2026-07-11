@@ -1,0 +1,11 @@
+{
+  "id": "check03-claims-implemented",
+  "check_id": 3,
+  "tier": "A",
+  "guideline": "2.1",
+  "expected": "pass",
+  "rationale": "The description claims offline storage and PDF export, and both have direct code evidence (local persistence, UIGraphicsPDFRenderer) — no unimplemented claim remains.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check03-claims-implemented/",
+  "notes": "Negative pair for check03-unimplemented-claims: same check, claims fully backed by code."
+}

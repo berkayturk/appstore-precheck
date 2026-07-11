@@ -1,0 +1,11 @@
+{
+  "id": "check10-feedback-ask-pass",
+  "check_id": 10,
+  "tier": "B",
+  "guideline": "2.3.9",
+  "expected": "pass",
+  "rationale": "The banner asks for feedback and triggers the system requestReview sheet; there is no reward, unlock, or star-count ask — an allowed review prompt, not a quid-pro-quo.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check10-feedback-ask-pass/",
+  "notes": "Borderline trap: enthusiastic 'love to hear from you' copy sits right next to a review call, but nothing is offered in exchange."
+}
