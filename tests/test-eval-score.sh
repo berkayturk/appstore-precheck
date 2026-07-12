@@ -114,6 +114,8 @@ ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
   --out "$MOUT2" --model claude-sonnet-5 --cases 'zzz-nomatch' >/dev/null 2>&1
 assert_eq "$(jq -r '.thinking + "/" + (.max_tokens|tostring)' "$MOUT2/manifest.json")" \
   "disabled/1024" "non-fable manifest keeps disabled thinking and 1024 max_tokens"
+assert_eq "$(jq -r '.prompt_sha256 | test("^[0-9a-f]{64}$")' "$MOUT2/manifest.json")" \
+  "true" "manifest fingerprints pierre-deep-review.md (prompt_sha256)"
 
 section "floor enforcement"
 # Against the synthetic run the Tier-A F1 is 0.00 -> a 0.80 floor must fail.

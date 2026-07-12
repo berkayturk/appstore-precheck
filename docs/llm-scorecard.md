@@ -36,6 +36,7 @@ All committed baselines, newest first. Full per-run details follow.
 | repeats per case | 3 |
 | run date | 2026-07-12T00:27:08Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
+| prompt sha256 | not recorded (run predates the prompt fingerprint) |
 | cases | 21 scored, 0 UNLABELED, 0 not run |
 
 ### Per-tier metrics
@@ -89,6 +90,7 @@ Non-unanimous cases (majority used for scoring): `check10-clean-review-prompt`
 | repeats per case | 3 |
 | run date | 2026-07-11T23:58:46Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
+| prompt sha256 | not recorded (run predates the prompt fingerprint) |
 | cases | 21 scored, 0 UNLABELED, 0 not run |
 
 ### Per-tier metrics
@@ -142,6 +144,7 @@ Non-unanimous cases (majority used for scoring): `check05-clean-release-notes`
 | repeats per case | 3 |
 | run date | 2026-07-11T20:47:53Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
+| prompt sha256 | not recorded (run predates the prompt fingerprint) |
 | cases | 21 scored, 0 UNLABELED, 0 not run |
 
 ### Per-tier metrics

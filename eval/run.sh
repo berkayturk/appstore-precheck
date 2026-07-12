@@ -68,16 +68,21 @@ if [[ -s "$OUT/manifest.json" ]]; then
   fi
 fi
 
-# Dataset fingerprint: content hash over cases + fixtures, so the manifest pins
-# exactly what was measured.
+# Fingerprints: the dataset hash pins what was measured, the prompt hash pins
+# which pierre-deep-review.md the requests were built from — a prompt edit
+# invalidates cached responses, and the manifest must make that visible.
 dataset_sha="$(cd "$ROOT/eval/dataset" && find . -type f ! -name .DS_Store -print0 \
   | sort -z | xargs -0 shasum -a 256 | shasum -a 256 | awk '{print $1}')"
+prompt_sha="$(shasum -a 256 \
+  "$ROOT/skills/appstore-precheck/references/pierre-deep-review.md" | awk '{print $1}')"
 
 jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
       --arg sha "$dataset_sha" --arg glob "$GLOB" --arg thinking "$THINKING" \
+      --arg prompt_sha "$prompt_sha" \
       --argjson repeat "$REPEAT" --argjson max_tokens "$MAX_TOKENS" \
   '{model:$model, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
-    repeat:$repeat, cases_glob:$glob, dataset_sha256:$sha, run_date:$date,
+    repeat:$repeat, cases_glob:$glob, dataset_sha256:$sha,
+    prompt_sha256:$prompt_sha, run_date:$date,
     api:"https://api.anthropic.com/v1/messages", generator:"eval/run.sh"}' \
   > "$OUT/manifest.json"
 

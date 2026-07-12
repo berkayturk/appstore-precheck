@@ -54,6 +54,12 @@ If a check is **not applicable** (e.g. no HealthKit, no VPN, no contest copy), s
 REVIEW-PASS: <guideline> — not applicable (<reason>)
 ```
 
+"Not applicable" is only for checks whose subject matter is entirely absent from the
+project (no HealthKit import, no VPN entitlement, no contest copy anywhere). When the
+material a check inspects exists and is clean — release notes present but free of beta
+language, a review prompt present but using the system API — report a plain
+`REVIEW-PASS` with the evidence pointer, not "not applicable".
+
 ---
 
 ## The 28 checks (guideline order)
