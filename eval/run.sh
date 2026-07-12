@@ -58,16 +58,6 @@ bash "$ROOT/eval/validate.sh" >/dev/null || {
 
 mkdir -p "$OUT"
 
-# Resume guard: cached rep files are only reusable if they were produced with
-# the same model. Refuse to mix rather than silently skip or mislabel.
-if [[ -s "$OUT/manifest.json" ]]; then
-  prev_model="$(jq -r '.model' "$OUT/manifest.json")"
-  if [[ "$prev_model" != "$MODEL" ]]; then
-    echo "run.sh: $OUT already holds a $prev_model run — refusing to mix models in one cache dir (use --out <fresh dir>)" >&2
-    exit 1
-  fi
-fi
-
 # Fingerprints: the dataset hash pins what was measured, the prompt hash pins
 # which pierre-deep-review.md the requests were built from — a prompt edit
 # invalidates cached responses, and the manifest must make that visible.
@@ -75,6 +65,22 @@ dataset_sha="$(cd "$ROOT/eval/dataset" && find . -type f ! -name .DS_Store -prin
   | sort -z | xargs -0 shasum -a 256 | shasum -a 256 | awk '{print $1}')"
 prompt_sha="$(shasum -a 256 \
   "$ROOT/skills/appstore-precheck/references/pierre-deep-review.md" | awk '{print $1}')"
+
+# Resume guard: cached rep files are only reusable if they were produced with
+# the same model AND the same prompt. Refuse to mix rather than silently skip
+# or mislabel (a missing prompt fingerprint counts as a different prompt).
+if [[ -s "$OUT/manifest.json" ]]; then
+  prev_model="$(jq -r '.model' "$OUT/manifest.json")"
+  if [[ "$prev_model" != "$MODEL" ]]; then
+    echo "run.sh: $OUT already holds a $prev_model run — refusing to mix models in one cache dir (use --out <fresh dir>)" >&2
+    exit 1
+  fi
+  prev_prompt="$(jq -r '.prompt_sha256 // "unrecorded"' "$OUT/manifest.json")"
+  if [[ "$prev_prompt" != "$prompt_sha" ]]; then
+    echo "run.sh: $OUT was produced with a different pierre-deep-review.md (prompt sha $prev_prompt) — refusing to mix prompt versions (use --out <fresh dir>)" >&2
+    exit 1
+  fi
+fi
 
 jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
       --arg sha "$dataset_sha" --arg glob "$GLOB" --arg thinking "$THINKING" \

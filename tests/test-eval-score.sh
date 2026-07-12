@@ -98,6 +98,13 @@ out="$(ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
   --out "$GUARD" --model claude-other 2>&1)"; rc=$?
 assert_eq "$rc" "1" "run.sh exits 1 when the cache dir holds another model's run"
 assert_contains "$out" "refusing to mix models" "guard names the conflict"
+# Same model but a different (or unrecorded) prompt fingerprint must also refuse.
+GUARD2="$TMP/guard-prompt"; mkdir -p "$GUARD2"
+jq -n '{model:"claude-other",prompt_sha256:"deadbeef"}' > "$GUARD2/manifest.json"
+out="$(ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
+  --out "$GUARD2" --model claude-other 2>&1)"; rc=$?
+assert_eq "$rc" "1" "run.sh exits 1 when the cache dir was built from another prompt"
+assert_contains "$out" "refusing to mix prompt versions" "prompt guard names the conflict"
 
 section "run.sh per-model manifest params"
 # A no-match case glob makes run.sh exit right after writing the manifest,
