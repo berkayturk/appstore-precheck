@@ -80,6 +80,11 @@ out="$(cd "$ROOT" && python3 eval/score.py --check 2>&1)"; rc=$?
 assert_eq "$rc" "0" "--check exits 0 against the committed scorecard"
 if [ -d "$ROOT/eval/baseline" ] && [ -n "$(ls -A "$ROOT/eval/baseline" 2>/dev/null)" ]; then
   assert_contains "$out" "Tier-A F1" "--check reports the Tier-A F1 floor when a baseline exists"
+  n_baselines="$(find "$ROOT/eval/baseline" -mindepth 2 -maxdepth 2 -name manifest.json | wc -l | tr -d ' ')"
+  assert_contains "$out" "$n_baselines baseline(s) at or above the floor" \
+    "--check gates every committed baseline, not just the newest"
+  assert_contains "$(cat "$ROOT/docs/llm-scorecard.md")" "## Model comparison" \
+    "committed card carries the model comparison table"
 else
   assert_contains "$out" "floor inactive" "--check reports inactive floor without a baseline"
 fi
