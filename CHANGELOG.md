@@ -5,6 +5,34 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-07-12
+
+### Added
+- **LLM eval harness (`eval/`)**: Pierre's Phase 4 deep review (28 semantic checks,
+  incl. the 6 heuristic Tier B checks) is now measured, not just described. Additive and
+  opt-in — nothing in the default scan path changes, no new network calls, verdict logic
+  untouched.
+  - 21-case human-labelled dataset (`eval/dataset/`): positive+negative pairs per check,
+    deliberate false-positive traps, borderline cases, and pre-fetched-URL cases for the
+    privacy-policy check. Unconfirmed labels report as UNLABELED and never enter headline
+    metrics.
+  - Runner (`eval/run.sh`): pinned model + generation params recorded per run, `--repeat`
+    for consistency measurement, response caching with resume; `ANTHROPIC_API_KEY` read
+    from the environment only. Baseline cache dirs are per-model
+    (`eval/baseline/<date>-<model>/`) and a resume guard refuses to mix models in one dir.
+  - Offline scorer (`eval/score.py` → `docs/llm-scorecard.md`): per-check and per-tier
+    precision/recall/F1, Tier-B false-positive rate, majority-vote scoring, unanimity-based
+    consistency metric.
+  - Committed baselines: Sonnet 5 and Opus 4.8, both 21/21 correct (Tier-A F1 1.00,
+    Tier-B FP rate 0.00); consistency 1.00 (Sonnet) vs 0.95 (Opus — one pass/not-applicable
+    wording drift). See the honesty section in `docs/llm-scorecard.md` for what these
+    numbers do and do not mean.
+  - CI: blocking offline gate (dataset validity, scorecard freshness, Tier-A F1 ≥ 0.80
+    floor on the committed baseline) plus a non-blocking live smoke job that skips politely
+    without the API secret.
+  - Tests: verdict parsing, request building, scorer math, and the model-mismatch guard —
+    all offline, no key needed.
+
 ## [1.12.2] - 2026-07-08
 
 ### Fixed
