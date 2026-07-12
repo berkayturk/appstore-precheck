@@ -162,6 +162,7 @@ def _header():
 def run_body(stats, h):
     """Card body for one run. `h` is the section heading prefix ('##' or '###')."""
     manifest, results, scored = stats["manifest"], stats["results"], stats["scored"]
+    prompt_sha = manifest.get("prompt_sha256")
     lines = [
         f"{h} Run manifest",
         "",
@@ -172,6 +173,8 @@ def run_body(stats, h):
         f"| repeats per case | {manifest['repeat']} |",
         f"| run date | {manifest['run_date']} |",
         f"| dataset sha256 | `{manifest['dataset_sha256'][:16]}…` |",
+        f"| prompt sha256 | `{prompt_sha[:16]}…` |" if prompt_sha
+        else "| prompt sha256 | not recorded (run predates the prompt fingerprint) |",
         f"| cases | {len(scored)} scored, {len(stats['unlabeled'])} UNLABELED, "
         f"{len(stats['not_run'])} not run |",
         "",
