@@ -4,7 +4,7 @@ description: Read-only pre-submission check for an iOS app before App Store revi
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.13.0
+  version: 1.13.1
 allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maestro__run mcp__maestro__inspect_screen mcp__maestro__take_screenshot mcp__maestro__cheat_sheet
 ---
 

@@ -5,6 +5,27 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.13.1] - 2026-07-12
+
+### Fixed
+- **Pierre pass-vs-not-applicable boundary**: the deep-review output format now states
+  explicitly that "not applicable" is only for checks whose subject matter is entirely
+  absent from the project; material that exists and is clean gets a plain `REVIEW-PASS`
+  with evidence. Found by the eval consistency metric (3 of 63 clean-case verdicts drifted
+  across Opus 4.8 and Fable 5); verified fixed by full re-runs of all three models —
+  consistency 1.00 across the board, with no regression on genuine not-applicable cases.
+
+### Added (eval)
+- **Multi-model scorecard**: `docs/llm-scorecard.md` now opens with a comparison table and
+  renders every committed baseline (currently Sonnet 5, Opus 4.8, and Fable 5 — before and
+  after the prompt clarification); the CI Tier-A F1 floor gates each baseline separately.
+- **Always-on-thinking model support**: `eval/run.sh --model claude-fable-5` works — the
+  request omits the `thinking` field for Fable/Mythos-tier models and raises `max_tokens`
+  for thinking headroom, both recorded in the manifest.
+- **Prompt fingerprint + stricter resume**: every run manifest records a `prompt_sha256` of
+  `pierre-deep-review.md`, and the resume guard refuses to reuse a cache dir produced with
+  a different model or a different (or unrecorded) prompt version.
+
 ## [1.13.0] - 2026-07-12
 
 ### Added
