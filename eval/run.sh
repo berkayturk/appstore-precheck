@@ -36,6 +36,14 @@ done
 [[ $BASELINE -eq 1 && -z "$OUT" ]] && OUT="$ROOT/eval/baseline/$(date -u +%F)-$MODEL"
 [[ -z "$OUT" ]] && OUT="$ROOT/eval/runs/$(date -u +%Y%m%dT%H%M%SZ)"
 
+# Fable/Mythos-tier models have always-on thinking: build_request.py omits the
+# thinking field for them (explicit config is a 400), and their thinking tokens
+# draw from max_tokens, so the budget needs headroom. The manifest records both.
+case "$MODEL" in
+  claude-fable*|claude-mythos*) THINKING="always-on (model default)"; MAX_TOKENS=8192 ;;
+  *)                            THINKING="disabled" ;;
+esac
+
 [[ -n "${ANTHROPIC_API_KEY:-}" ]] || {
   echo "run.sh: ANTHROPIC_API_KEY is not set (export it; it is never logged)" >&2
   exit 1; }
@@ -66,9 +74,9 @@ dataset_sha="$(cd "$ROOT/eval/dataset" && find . -type f ! -name .DS_Store -prin
   | sort -z | xargs -0 shasum -a 256 | shasum -a 256 | awk '{print $1}')"
 
 jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
-      --arg sha "$dataset_sha" --arg glob "$GLOB" \
+      --arg sha "$dataset_sha" --arg glob "$GLOB" --arg thinking "$THINKING" \
       --argjson repeat "$REPEAT" --argjson max_tokens "$MAX_TOKENS" \
-  '{model:$model, max_tokens:$max_tokens, thinking:"disabled", effort:"low",
+  '{model:$model, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
     repeat:$repeat, cases_glob:$glob, dataset_sha256:$sha, run_date:$date,
     api:"https://api.anthropic.com/v1/messages", generator:"eval/run.sh"}' \
   > "$OUT/manifest.json"

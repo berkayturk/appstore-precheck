@@ -99,6 +99,22 @@ out="$(ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
 assert_eq "$rc" "1" "run.sh exits 1 when the cache dir holds another model's run"
 assert_contains "$out" "refusing to mix models" "guard names the conflict"
 
+section "run.sh per-model manifest params"
+# A no-match case glob makes run.sh exit right after writing the manifest,
+# so the model-dependent params are testable offline with a dummy key.
+MOUT="$TMP/manifest-fable"
+ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
+  --out "$MOUT" --model claude-fable-5 --cases 'zzz-nomatch' >/dev/null 2>&1
+assert_eq "$(jq -r '.thinking' "$MOUT/manifest.json")" "always-on (model default)" \
+  "fable manifest records always-on thinking"
+assert_eq "$(jq -r '.max_tokens' "$MOUT/manifest.json")" "8192" \
+  "fable manifest records the raised max_tokens headroom"
+MOUT2="$TMP/manifest-sonnet"
+ANTHROPIC_API_KEY=dummy bash "$ROOT/eval/run.sh" \
+  --out "$MOUT2" --model claude-sonnet-5 --cases 'zzz-nomatch' >/dev/null 2>&1
+assert_eq "$(jq -r '.thinking + "/" + (.max_tokens|tostring)' "$MOUT2/manifest.json")" \
+  "disabled/1024" "non-fable manifest keeps disabled thinking and 1024 max_tokens"
+
 section "floor enforcement"
 # Against the synthetic run the Tier-A F1 is 0.00 -> a 0.80 floor must fail.
 # --check needs a matching card on disk; emulate by scoring in a sandbox repo? No:
