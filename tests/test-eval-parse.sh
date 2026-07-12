@@ -45,4 +45,12 @@ assert_contains "$(jq -r '.messages[0].content' <<<"$req")" "public beta" "fixtu
 assert_contains "$(jq -r '.messages[0].content' <<<"$req")" "### 5 — 2.2 Beta / test language" "target check procedure embedded"
 assert_absent "$(jq -r '.messages[0].content' <<<"$req")" "### 4 — 2.1 Review notes" "other checks' procedures not embedded"
 
+# Fable/Mythos-tier: thinking is always on, the field must be omitted entirely.
+req="$(python3 "$ROOT/eval/lib/build_request.py" \
+  "$ROOT/eval/dataset/cases/check05-beta-in-release-notes.json" claude-fable-5 8192)"
+assert_eq "$(jq -r 'has("thinking")' <<<"$req")" "false" \
+  "fable request omits the thinking field (explicit config would 400)"
+assert_eq "$(jq -r '.output_config.effort' <<<"$req")" "low" \
+  "fable request keeps effort pinned to low"
+
 exit "$fails"

@@ -100,16 +100,22 @@ def build_user(case, pierre_text):
     return "\n\n".join(parts)
 
 
+def thinking_always_on(model):
+    """Fable/Mythos-tier models have always-on thinking: the `thinking` field
+    must be omitted entirely (any explicit configuration is rejected with 400)."""
+    return model.startswith(("claude-fable", "claude-mythos"))
+
+
 def main(argv):
     if len(argv) != 4:
         print("usage: build_request.py <case.json> <model> <max_tokens>", file=sys.stderr)
         return 64
     case = json.loads(Path(argv[1]).read_text(encoding="utf-8"))
     pierre_text = PIERRE_MD.read_text(encoding="utf-8")
+    model = argv[2]
     body = {
-        "model": argv[2],
+        "model": model,
         "max_tokens": int(argv[3]),
-        "thinking": {"type": "disabled"},
         "output_config": {"effort": "low"},
         "system": [{
             "type": "text",
@@ -118,6 +124,8 @@ def main(argv):
         }],
         "messages": [{"role": "user", "content": build_user(case, pierre_text)}],
     }
+    if not thinking_always_on(model):
+        body["thinking"] = {"type": "disabled"}
     json.dump(body, sys.stdout, ensure_ascii=False)
     return 0
 
