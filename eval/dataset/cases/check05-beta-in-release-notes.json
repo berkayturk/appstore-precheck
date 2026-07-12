@@ -1,0 +1,10 @@
+{
+  "id": "check05-beta-in-release-notes",
+  "check_id": 5,
+  "tier": "B",
+  "guideline": "2.2",
+  "expected": "finding",
+  "rationale": "release_notes.txt says 'public beta' and 'still testing' — store-facing copy implying the App Store build is unfinished.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check05-beta-in-release-notes/"
+}

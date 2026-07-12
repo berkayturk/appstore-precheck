@@ -50,7 +50,11 @@ jobs:
                      scripts/scorecard.sh \
                      scripts/scorecard-real.sh \
                      scripts/scorecard-outcomes.sh \
-                     scripts/guideline-drift.sh
+                     scripts/guideline-drift.sh \
+                     eval/run.sh \
+                     eval/validate.sh \
+                     tests/test-eval-parse.sh \
+                     tests/test-eval-score.sh
 
       - name: Validate JSON
         run: |
@@ -67,6 +71,7 @@ jobs:
                    corpus/real/manifest.json \
                    corpus/real/labels.json \
                    corpus/outcomes/ledger.json \
+                   eval/schema/case.schema.json \
                    package.json; do
             echo "validating $f"
             jq empty "$f"
@@ -81,6 +86,16 @@ jobs:
       - name: Scorecard up to date (synthetic)
         run: bash scripts/scorecard.sh --check
 
+      - name: LLM eval dataset valid
+        run: bash eval/validate.sh
+
+      - name: LLM scorecard up to date (cached baseline, Tier-A F1 floor)
+        # Scores the committed eval/baseline/ caches offline — no API key, no
+        # network. Fails if docs/llm-scorecard.md is stale or Tier-A F1 < 0.80
+        # (LLM_F1_FLOOR overridable). With no baseline committed yet, the floor
+        # reports itself inactive and passes.
+        run: python3 eval/score.py --check
+
   real-panel:
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -89,3 +104,20 @@ jobs:
 
       - name: Real-app panel (informational)
         run: bash scripts/scorecard.sh --real
+
+  llm-eval-live:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+
+      - name: LLM eval smoke (informational, needs ANTHROPIC_API_KEY secret)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+            echo "ANTHROPIC_API_KEY secret not configured — smoke run skipped"
+            exit 0
+          fi
+          bash eval/run.sh --repeat 1 --cases 'check05-*' --out /tmp/llm-smoke
+          python3 eval/score.py --run /tmp/llm-smoke

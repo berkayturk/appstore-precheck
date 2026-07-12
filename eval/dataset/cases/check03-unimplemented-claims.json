@@ -1,0 +1,10 @@
+{
+  "id": "check03-unimplemented-claims",
+  "check_id": 3,
+  "tier": "A",
+  "guideline": "2.1",
+  "expected": "finding",
+  "rationale": "Description claims a built-in ad blocker and AI-powered suggestions; the entire codebase is a plain task list with no matching implementation or imports.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check03-unimplemented-claims/"
+}

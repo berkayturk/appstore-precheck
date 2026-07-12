@@ -1,0 +1,1 @@
+GardenLog helps you track what you planted, when you watered, and what actually grew.

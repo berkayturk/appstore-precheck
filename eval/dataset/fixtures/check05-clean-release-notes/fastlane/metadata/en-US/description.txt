@@ -1,0 +1,3 @@
+TaskTide keeps your daily tasks organized with lists, reminders, and a
+simple weekly planner. Add a task in two taps, set a due date, and get a
+gentle nudge when it's time.

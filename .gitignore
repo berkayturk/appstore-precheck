@@ -18,3 +18,6 @@ node_modules/
 # OS noise
 .DS_Store
 .superpowers/
+
+# LLM eval — local run outputs (committed baseline lives in eval/baseline/)
+eval/runs/

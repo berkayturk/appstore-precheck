@@ -1,0 +1,10 @@
+{
+  "id": "check15-push-spam-copy",
+  "check_id": 15,
+  "tier": "B",
+  "guideline": "4.5.1-4.5.3",
+  "expected": "finding",
+  "rationale": "Push entitlement is present and the store description promises hourly, unlimited promotional notifications — the spam pattern named in procedure step 2.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check15-push-spam-copy/"
+}

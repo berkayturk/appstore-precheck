@@ -1,0 +1,11 @@
+{
+  "id": "check28-clean-system-prompt",
+  "check_id": 28,
+  "tier": "B",
+  "guideline": "5.6.1/5.6.3",
+  "expected": "pass",
+  "rationale": "Review ask uses the system SKStoreReviewController.requestReview with no rating gate; the only App Store URL is a plain share link, not a write-review deep link.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check28-clean-system-prompt/",
+  "notes": "Deliberate false-positive trap: an apps.apple.com URL exists but only in the share sheet, without ?action=write-review."
+}

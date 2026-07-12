@@ -1,0 +1,11 @@
+{
+  "id": "check04-vague-review-notes",
+  "check_id": 4,
+  "tier": "B",
+  "guideline": "2.1",
+  "expected": "finding",
+  "rationale": "Credentials look real, but the app is login-gated with a subscription paywall and the review notes say only 'n/a' — they do not explain how to reach the paid core features (procedure step 2).",
+  "label_confirmed": true,
+  "fixture": "fixtures/check04-vague-review-notes/",
+  "notes": "Harder variant of check 4: no placeholder credentials; the defect is the empty explanation, not the password."
+}

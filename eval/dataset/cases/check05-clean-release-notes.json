@@ -1,0 +1,11 @@
+{
+  "id": "check05-clean-release-notes",
+  "check_id": 5,
+  "tier": "B",
+  "guideline": "2.2",
+  "expected": "pass",
+  "rationale": "Store copy is finished-product language; the only 'beta' token is a Swift code comment on an internal QA flag, never shown to users.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check05-clean-release-notes/",
+  "notes": "Deliberate false-positive trap: a naive grep for 'beta' hits the code comment."
+}

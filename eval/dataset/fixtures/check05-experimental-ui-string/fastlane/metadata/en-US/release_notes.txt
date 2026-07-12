@@ -1,0 +1,1 @@
+New AI Sort option in Settings, plus faster search and bug fixes.

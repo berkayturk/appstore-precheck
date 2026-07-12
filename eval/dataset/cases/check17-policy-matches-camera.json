@@ -1,0 +1,14 @@
+{
+  "id": "check17-policy-matches-camera",
+  "check_id": 17,
+  "tier": "A",
+  "guideline": "5.1.1(i)",
+  "expected": "pass",
+  "rationale": "The pre-fetched privacy policy discloses on-device camera use for receipt scanning, which is exactly what the code does; there is no location, tracking, or health usage to contradict it.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check17-policy-matches-camera/",
+  "fetched_urls": {
+    "privacy_policy": "BillFold Privacy Policy\n\nLast updated: January 2026\n\nCamera: BillFold uses your camera solely to scan receipts. Images are processed on your device with the Vision framework and are never uploaded.\n\nWhat we store: scanned totals and merchant names stay in the app's local database on your device.\n\nWhat we do not do: no analytics SDKs, no advertising identifiers, no location access, no data sharing with third parties.\n\nContact: privacy@billfold.example"
+  },
+  "notes": "Negative pair for check17-policy-contradicts-location."
+}

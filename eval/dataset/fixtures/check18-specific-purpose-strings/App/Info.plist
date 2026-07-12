@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDisplayName</key>
+    <string>TaskTide</string>
+    <key>NSCameraUsageDescription</key>
+    <string>TaskTide uses the camera to scan paper receipts you attach to a task.</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>TaskTide saves scanned receipt images to your photo library when you tap Export.</string>
+</dict>
+</plist>

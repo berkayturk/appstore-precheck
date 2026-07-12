@@ -1,0 +1,10 @@
+{
+  "id": "check15-no-push-no-homekit",
+  "check_id": 15,
+  "tier": "B",
+  "guideline": "4.5.1-4.5.3",
+  "expected": "not-applicable",
+  "rationale": "No push entitlement, no UserNotifications scheduling, no HomeKit import anywhere; per procedure step 4 the check must report not applicable.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check15-no-push-no-homekit/"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "check10-clean-review-prompt",
+  "check_id": 10,
+  "tier": "B",
+  "guideline": "2.3.9",
+  "expected": "pass",
+  "rationale": "App uses the system SKStoreReviewController.requestReview after organic engagement; no incentive or star-count language anywhere.",
+  "label_confirmed": true,
+  "fixture": "fixtures/check10-clean-review-prompt/",
+  "notes": "Negative control for check 10: 'review' vocabulary is present but compliant."
+}

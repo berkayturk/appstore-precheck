@@ -405,6 +405,39 @@ measures intended-behaviour fidelity against fixtures this project wrote; real-p
 measures the false-positive rate on real, unrelated open-source code. See
 [`docs/scorecard.md`](docs/scorecard.md) for the current numbers and full methodology.
 
+## Eval (LLM deep-review scorecard)
+
+The static scanner above is measured by `docs/scorecard.md`; Pierre's **LLM deep-review layer**
+(28 semantic checks, incl. the 6 heuristic Tier B checks) has its own harness under [`eval/`](eval/)
+and its own scorecard, [`docs/llm-scorecard.md`](docs/llm-scorecard.md).
+
+- **Dataset** — `eval/dataset/`: one labelled case per file (target check, expected
+  `finding`/`pass`/`not-applicable`, one-line rationale, minimal fixture), validated against
+  `eval/schema/case.schema.json` by `bash eval/validate.sh`. Tier B is deliberately over-represented —
+  that is where false positives live.
+- **Runner** — `bash eval/run.sh [--repeat 3] [--model claude-sonnet-5] [--cases 'check05-*']`
+  calls the Anthropic Messages API once per case per repeat and caches every raw response under
+  `eval/runs/<timestamp>/` (or `--baseline` → `eval/baseline/<date>-<model>/`, which is committed). Needs
+  `ANTHROPIC_API_KEY` in the environment; the key is never logged or written to disk. Model and
+  generation parameters are pinned in the run's `manifest.json`.
+- **Scorer** — `python3 eval/score.py --write` re-parses the cached responses **offline** (no key,
+  no re-billing) and regenerates `docs/llm-scorecard.md`: per-check and per-tier precision/recall/F1
+  with TP/FP/FN/TN counts, the **Tier-B false-positive rate**, a **consistency** metric (share of
+  cases unanimous across repeats; majority vote is scored and disagreements are flagged), and the
+  count of **UNLABELED** cases — any label a human has not confirmed is excluded from headline
+  metrics, same rule as the real-panel scorecard.
+- **CI** — the blocking job validates the dataset and fails if `docs/llm-scorecard.md` is stale or
+  **Tier-A F1 drops below 0.80** (`LLM_F1_FLOOR`), scored purely from the committed baseline caches.
+  A separate **non-blocking, informational** job (`continue-on-error: true`) runs a tiny live smoke
+  subset when the `ANTHROPIC_API_KEY` secret is configured — mirroring the real-panel job.
+
+**Limitations, stated up front:** the numbers measure fidelity to this project's own human labels on
+minimal synthetic fixtures — **not agreement with Apple's actual review decisions**. Each case
+isolates a single check (cross-check interference is unmeasured), and Pierre's live URL fetches are
+substituted with pre-fetched content embedded in the case for determinism. Non-determinism is
+treated as a metric (consistency), not hidden: generation parameters are pinned and recorded, and
+every rate is printed next to its raw counts so small samples stay visible.
+
 ## Configuration
 
 Zero config for a standard fastlane + Xcode layout. The scanner auto-detects your source directory,
