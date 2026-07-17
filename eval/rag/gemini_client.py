@@ -14,6 +14,23 @@ import urllib.request
 
 MAX_RETRIES = 5
 DEFAULT_RETRY_DELAY = 15.0
+OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
+
+
+def truncate_and_normalize(vector):
+    """Matryoshka (MRL) truncation to OUTPUT_DIMENSIONALITY dims, then
+    L2-normalize. gemini-embedding-001 supports requesting a smaller
+    embedding directly via embedContentConfig.outputDimensionality, but in
+    practice the API has been observed to ignore it and return the full
+    native size (3072) regardless — this enforces the OUTPUT_DIMENSIONALITY
+    contract client-side no matter what the API actually returns. Cosine
+    distance (pgvector's `<=>` operator, used throughout this project) is
+    scale-invariant, so normalizing here does not change similarity
+    rankings — it only satisfies the model's documented requirement that
+    truncated (non-native-size) embeddings be renormalized by the caller."""
+    truncated = vector[:OUTPUT_DIMENSIONALITY]
+    norm = sum(x * x for x in truncated) ** 0.5
+    return [x / norm for x in truncated] if norm else truncated
 
 
 def parse_retry_delay(error_body_json):

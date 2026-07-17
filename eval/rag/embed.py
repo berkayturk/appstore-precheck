@@ -16,13 +16,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-from gemini_client import post_json
+from gemini_client import OUTPUT_DIMENSIONALITY, post_json, truncate_and_normalize
 
 REPO = Path(__file__).resolve().parents[2]
 DEFAULT_CORPUS = REPO / "eval" / "rag" / "corpus" / "sections.json"
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents"
 MODEL = "models/gemini-embedding-001"
-OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
 MAX_BATCH_SIZE = 100  # Gemini's batchEmbedContents hard limit per request
 
 
@@ -71,7 +70,7 @@ def build_upsert_sql(section_numbers, texts, embeddings):
 def _fetch_batch(texts, api_key):
     """texts: at most MAX_BATCH_SIZE strings -> list of embedding vectors, same order."""
     body = post_json(GEMINI_URL, build_gemini_request(texts), api_key, "embed.py")
-    return [item["values"] for item in body["embeddings"]]
+    return [truncate_and_normalize(item["values"]) for item in body["embeddings"]]
 
 
 def fetch_embeddings(texts, api_key):

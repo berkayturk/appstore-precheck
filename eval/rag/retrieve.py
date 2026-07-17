@@ -19,14 +19,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-from gemini_client import post_json
+from gemini_client import OUTPUT_DIMENSIONALITY, post_json, truncate_and_normalize
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from build_request import PIERRE_MD, extract_check_row, extract_procedure  # noqa: E402
 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent"
 MODEL = "models/gemini-embedding-001"
-OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
 
 
 def query_from_case(case_path):
@@ -62,7 +61,7 @@ def build_similarity_sql(embedding, top_k):
 
 def fetch_query_embedding(query, api_key):
     body = post_json(GEMINI_URL, build_gemini_query_request(query), api_key, "retrieve.py")
-    return body["embeddings"][0]["values"]
+    return truncate_and_normalize(body["embeddings"][0]["values"])
 
 
 def main(argv):

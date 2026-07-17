@@ -1,11 +1,35 @@
 #!/usr/bin/env bash
-# test-rag-gemini-client.sh — eval/rag/gemini_client.py retry-delay parsing and
-# 429 retry/backoff, no real network or real sleep (urlopen/time.sleep stubbed).
+# test-rag-gemini-client.sh — eval/rag/gemini_client.py retry-delay parsing,
+# 429 retry/backoff, and MRL truncate/normalize, no real network or real sleep
+# (urlopen/time.sleep stubbed).
 set -uo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$DIR/.." && pwd)"
 # shellcheck source=tests/_assert.sh
 source "$DIR/_assert.sh"
+
+section "gemini_client.truncate_and_normalize"
+
+trunc_result="$(cd "$ROOT/eval/rag" && python3 -c "
+import gemini_client as gc
+
+# A fake 3072-dim vector (Gemini's native output size when outputDimensionality
+# is ignored) -> must be cut down to OUTPUT_DIMENSIONALITY (1024) and re-normalized.
+native = [1.0] * 3072
+result = gc.truncate_and_normalize(native)
+print(len(result))
+norm_sq = sum(x * x for x in result)
+print(round(norm_sq, 6))
+
+# Zero vector edge case: must not divide by zero.
+zero_result = gc.truncate_and_normalize([0.0] * 3072)
+print(len(zero_result))
+print(all(x == 0.0 for x in zero_result))
+")"
+assert_eq "$(echo "$trunc_result" | sed -n '1p')" "1024" "3072-dim vector truncated to OUTPUT_DIMENSIONALITY (1024)"
+assert_eq "$(echo "$trunc_result" | sed -n '2p')" "1.0" "truncated vector is L2-normalized (sum of squares == 1)"
+assert_eq "$(echo "$trunc_result" | sed -n '3p')" "1024" "zero vector still truncated to the right length"
+assert_eq "$(echo "$trunc_result" | sed -n '4p')" "True" "zero vector does not raise a divide-by-zero error"
 
 section "gemini_client.parse_retry_delay"
 
