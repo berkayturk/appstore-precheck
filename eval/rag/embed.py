@@ -115,6 +115,21 @@ def main(argv):
         return 1
 
     embeddings = fetch_embeddings(texts, api_key)
+    if len(embeddings) != len(section_numbers):
+        print(f"embed.py: expected {len(section_numbers)} embeddings back, "
+              f"got {len(embeddings)} — Gemini's batch response is misaligned "
+              f"with the request", file=sys.stderr)
+        return 1
+    bad = [(section_numbers[i], len(vec)) for i, vec in enumerate(embeddings)
+           if len(vec) != OUTPUT_DIMENSIONALITY]
+    print(f"embed.py: fetched {len(embeddings)} embeddings, "
+          f"{OUTPUT_DIMENSIONALITY} dims each (expected)", file=sys.stderr)
+    if bad:
+        detail = ", ".join(f"{num}={dims}d" for num, dims in bad[:5])
+        more = f" (+{len(bad) - 5} more)" if len(bad) > 5 else ""
+        print(f"embed.py: {len(bad)} embeddings have the wrong dimension "
+              f"after truncate_and_normalize: {detail}{more}", file=sys.stderr)
+        return 1
     sql = build_upsert_sql(section_numbers, texts, embeddings)
     result = subprocess.run(["psql", db_url, "-v", "ON_ERROR_STOP=1"],
                              input=sql, text=True)

@@ -40,4 +40,23 @@ print(','.join(str(n) for n in seen_batch_sizes))
 ")"
 assert_eq "$batch_sizes" "100,25" "125 texts split into a 100-batch then a 25-batch (Gemini's per-request cap)"
 
+section "embed.py main() rejects wrong-dimension embeddings before calling psql"
+
+wrong_dim_output="$(cd "$ROOT/eval/rag" && GEMINI_API_KEY=fake RAG_DATABASE_URL=fake python3 -c "
+import sys
+import embed
+
+# Simulate the exact failure mode that caused a live Postgres error: Gemini
+# returning un-truncated (native 3072-dim) vectors that slipped past
+# truncate_and_normalize somehow. embed.py must catch this itself, with a
+# clear message, rather than letting psql fail with a cryptic dimension error.
+embed.fetch_embeddings = lambda texts, api_key: [[0.0] * 3072 for _ in texts]
+sys.argv = ['embed.py', '--corpus', '$TMP/corpus.json']
+rc = embed.main(sys.argv)
+print(f'exit_code={rc}')
+" 2>&1)"
+assert_contains "$wrong_dim_output" "exit_code=1" "main() exits 1 instead of invoking psql"
+assert_contains "$wrong_dim_output" "wrong dimension after truncate_and_normalize" "diagnostic names the actual defect"
+assert_contains "$wrong_dim_output" "2.3.3=3072d" "diagnostic names the specific section and its actual dimension"
+
 exit "$fails"
