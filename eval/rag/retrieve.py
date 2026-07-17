@@ -17,9 +17,9 @@ import json
 import os
 import subprocess
 import sys
-import urllib.error
-import urllib.request
 from pathlib import Path
+
+from gemini_client import post_json
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from build_request import PIERRE_MD, extract_check_row, extract_procedure  # noqa: E402
@@ -61,18 +61,7 @@ def build_similarity_sql(embedding, top_k):
 
 
 def fetch_query_embedding(query, api_key):
-    req = urllib.request.Request(
-        GEMINI_URL,
-        data=json.dumps(build_gemini_query_request(query)).encode("utf-8"),
-        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            body = json.loads(resp.read())
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise SystemExit(f"retrieve.py: Gemini API error {exc.code}: {detail}") from None
+    body = post_json(GEMINI_URL, build_gemini_query_request(query), api_key, "retrieve.py")
     return body["embeddings"][0]["values"]
 
 

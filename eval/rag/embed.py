@@ -14,9 +14,9 @@ import json
 import os
 import subprocess
 import sys
-import urllib.error
-import urllib.request
 from pathlib import Path
+
+from gemini_client import post_json
 
 REPO = Path(__file__).resolve().parents[2]
 DEFAULT_CORPUS = REPO / "eval" / "rag" / "corpus" / "sections.json"
@@ -70,18 +70,7 @@ def build_upsert_sql(section_numbers, texts, embeddings):
 
 def _fetch_batch(texts, api_key):
     """texts: at most MAX_BATCH_SIZE strings -> list of embedding vectors, same order."""
-    req = urllib.request.Request(
-        GEMINI_URL,
-        data=json.dumps(build_gemini_request(texts)).encode("utf-8"),
-        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
-        method="POST",
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            body = json.loads(resp.read())
-    except urllib.error.HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
-        raise SystemExit(f"embed.py: Gemini API error {exc.code}: {detail}") from None
+    body = post_json(GEMINI_URL, build_gemini_request(texts), api_key, "embed.py")
     return [item["values"] for item in body["embeddings"]]
 
 
