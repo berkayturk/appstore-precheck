@@ -23,6 +23,7 @@ DEFAULT_CORPUS = REPO / "eval" / "rag" / "corpus" / "sections.json"
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents"
 MODEL = "models/gemini-embedding-001"
 OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
+MAX_BATCH_SIZE = 100  # Gemini's batchEmbedContents hard limit per request
 
 
 def load_corpus(path):
@@ -67,7 +68,8 @@ def build_upsert_sql(section_numbers, texts, embeddings):
     return "\n".join(lines)
 
 
-def fetch_embeddings(texts, api_key):
+def _fetch_batch(texts, api_key):
+    """texts: at most MAX_BATCH_SIZE strings -> list of embedding vectors, same order."""
     req = urllib.request.Request(
         GEMINI_URL,
         data=json.dumps(build_gemini_request(texts)).encode("utf-8"),
@@ -81,6 +83,15 @@ def fetch_embeddings(texts, api_key):
         detail = exc.read().decode("utf-8", errors="replace")
         raise SystemExit(f"embed.py: Gemini API error {exc.code}: {detail}") from None
     return [item["values"] for item in body["embeddings"]]
+
+
+def fetch_embeddings(texts, api_key):
+    """texts: list[str] of any length -> list of embedding vectors, same order.
+    Splits into MAX_BATCH_SIZE-sized requests (Gemini's batchEmbedContents hard limit)."""
+    embeddings = []
+    for i in range(0, len(texts), MAX_BATCH_SIZE):
+        embeddings.extend(_fetch_batch(texts[i:i + MAX_BATCH_SIZE], api_key))
+    return embeddings
 
 
 def main(argv):
