@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS vector;
 CREATE TABLE IF NOT EXISTS sections (
   section_number TEXT PRIMARY KEY,
   text TEXT NOT NULL,
-  embedding VECTOR(1024)  -- voyage-3 dimensionality
+  embedding VECTOR(1024)  -- gemini-embedding-001, truncated via outputDimensionality
 );
 
 -- HNSW index: not a performance necessity at ~130 rows, included for realism/

@@ -1,8 +1,12 @@
 # Design: RAG-grounded Pierre — measured retrieval-augmented grounding (eval-only)
 
 **Date:** 2026-07-17
-**Status:** Approved (brainstorming) — pending implementation plan
+**Status:** Approved (brainstorming) — implemented
 **Depends on:** `eval/` harness (run.sh, build_request.py, score.py, dataset/cases), `guidelines-baseline.json` (`all_sections`)
+**Amendment (2026-07-17):** embedding provider switched from Voyage AI to Gemini
+(`gemini-embedding-001`, `outputDimensionality: 1024` to match `schema.sql`'s `VECTOR(1024)`) after
+implementation — this doc's Voyage references below reflect the original design decision; the code
+is the source of truth for the actual provider in use.
 
 ## Problem
 

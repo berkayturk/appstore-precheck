@@ -23,9 +23,9 @@ Dev-only: nothing here ships in the npm/brew package or affects `scan.sh`.
    (cd eval/rag && docker compose up -d)
    ```
 
-3. Embed the corpus (requires `VOYAGE_API_KEY`):
+3. Embed the corpus (requires `GEMINI_API_KEY`):
    ```bash
-   export VOYAGE_API_KEY="..."
+   export GEMINI_API_KEY="..."
    python3 eval/rag/embed.py
    ```
 

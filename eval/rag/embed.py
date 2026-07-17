@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""embed.py — embed eval/rag/corpus/sections.json with Voyage AI and load into
-the local pgvector 'sections' table via psql.
+"""embed.py — embed eval/rag/corpus/sections.json with the Gemini embeddings API
+and load into the local pgvector 'sections' table via psql.
 
-Requires VOYAGE_API_KEY in the environment (read at request time, never logged,
+Requires GEMINI_API_KEY in the environment (read at request time, never logged,
 never written to disk) and RAG_DATABASE_URL pointing at the pgvector instance
 started by eval/rag/docker-compose.yml.
 
 Usage: embed.py [--corpus path] [--dry-run]
-  --dry-run   print the generated SQL to stdout instead of calling Voyage/psql
+  --dry-run   print the generated SQL to stdout instead of calling Gemini/psql
               (used by tests — no network, no DB required; embeds zero-vectors)
 """
 import json
@@ -19,8 +19,9 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DEFAULT_CORPUS = REPO / "eval" / "rag" / "corpus" / "sections.json"
-VOYAGE_URL = "https://api.voyageai.com/v1/embeddings"
-MODEL = "voyage-3"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:batchEmbedContents"
+MODEL = "models/gemini-embedding-001"
+OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
 
 
 def load_corpus(path):
@@ -28,9 +29,21 @@ def load_corpus(path):
     return data["sections"]
 
 
-def build_voyage_request(texts):
-    """texts: list[str] -> Voyage embeddings request body."""
-    return {"input": texts, "model": MODEL, "input_type": "document"}
+def build_gemini_request(texts):
+    """texts: list[str] -> Gemini batchEmbedContents request body."""
+    return {
+        "requests": [
+            {
+                "model": MODEL,
+                "content": {"parts": [{"text": text}]},
+                "embedContentConfig": {
+                    "taskType": "RETRIEVAL_DOCUMENT",
+                    "outputDimensionality": OUTPUT_DIMENSIONALITY,
+                },
+            }
+            for text in texts
+        ]
+    }
 
 
 def sql_literal(value):
@@ -55,14 +68,14 @@ def build_upsert_sql(section_numbers, texts, embeddings):
 
 def fetch_embeddings(texts, api_key):
     req = urllib.request.Request(
-        VOYAGE_URL,
-        data=json.dumps(build_voyage_request(texts)).encode("utf-8"),
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        GEMINI_URL,
+        data=json.dumps(build_gemini_request(texts)).encode("utf-8"),
+        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
         method="POST",
     )
     with urllib.request.urlopen(req, timeout=60) as resp:
         body = json.loads(resp.read())
-    return [item["embedding"] for item in body["data"]]
+    return [item["values"] for item in body["embeddings"]]
 
 
 def main(argv):
@@ -88,9 +101,9 @@ def main(argv):
         print(build_upsert_sql(section_numbers, texts, fake_embeddings))
         return 0
 
-    api_key = os.environ.get("VOYAGE_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("embed.py: VOYAGE_API_KEY is not set", file=sys.stderr)
+        print("embed.py: GEMINI_API_KEY is not set", file=sys.stderr)
         return 1
     db_url = os.environ.get("RAG_DATABASE_URL")
     if not db_url:

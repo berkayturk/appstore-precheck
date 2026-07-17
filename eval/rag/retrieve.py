@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""retrieve.py — embed a query with Voyage AI and return the top-k most similar
-guideline sections from the local pgvector 'sections' table.
+"""retrieve.py — embed a query with the Gemini embeddings API and return the
+top-k most similar guideline sections from the local pgvector 'sections' table.
 
-Requires VOYAGE_API_KEY and RAG_DATABASE_URL (see embed.py). Prints a JSON array
+Requires GEMINI_API_KEY and RAG_DATABASE_URL (see embed.py). Prints a JSON array
 of {section_number, text, similarity} to stdout, ordered most-similar first.
 
 Usage:
@@ -23,8 +23,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib"))
 from build_request import PIERRE_MD, extract_check_row, extract_procedure  # noqa: E402
 
-VOYAGE_URL = "https://api.voyageai.com/v1/embeddings"
-MODEL = "voyage-3"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent"
+MODEL = "models/gemini-embedding-001"
+OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
 
 
 def query_from_case(case_path):
@@ -35,8 +36,14 @@ def query_from_case(case_path):
             + extract_procedure(pierre_text, check_id))
 
 
-def build_voyage_query_request(query):
-    return {"input": [query], "model": MODEL, "input_type": "query"}
+def build_gemini_query_request(query):
+    return {
+        "content": {"parts": [{"text": query}]},
+        "embedContentConfig": {
+            "taskType": "RETRIEVAL_QUERY",
+            "outputDimensionality": OUTPUT_DIMENSIONALITY,
+        },
+    }
 
 
 def build_similarity_sql(embedding, top_k):
@@ -54,14 +61,14 @@ def build_similarity_sql(embedding, top_k):
 
 def fetch_query_embedding(query, api_key):
     req = urllib.request.Request(
-        VOYAGE_URL,
-        data=json.dumps(build_voyage_query_request(query)).encode("utf-8"),
-        headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+        GEMINI_URL,
+        data=json.dumps(build_gemini_query_request(query)).encode("utf-8"),
+        headers={"x-goog-api-key": api_key, "Content-Type": "application/json"},
         method="POST",
     )
     with urllib.request.urlopen(req, timeout=60) as resp:
         body = json.loads(resp.read())
-    return body["data"][0]["embedding"]
+    return body["embeddings"][0]["values"]
 
 
 def main(argv):
@@ -99,9 +106,9 @@ def main(argv):
         print(build_similarity_sql(fake_embedding, top_k))
         return 0
 
-    api_key = os.environ.get("VOYAGE_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
-        print("retrieve.py: VOYAGE_API_KEY is not set", file=sys.stderr)
+        print("retrieve.py: GEMINI_API_KEY is not set", file=sys.stderr)
         return 1
     db_url = os.environ.get("RAG_DATABASE_URL")
     if not db_url:
