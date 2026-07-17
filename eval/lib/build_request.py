@@ -49,6 +49,17 @@ def extract_procedure(text, check_id):
     return match.group(0).strip()
 
 
+def format_retrieved(retrieved):
+    """retrieved: list of {section_number, text, similarity} -> markdown block."""
+    parts = [f"## Retrieved guideline text (semantic search, top-{len(retrieved)})"]
+    for item in retrieved:
+        parts.append(
+            f"### {item['section_number']} (similarity: {item['similarity']:.2f})\n"
+            f"{item['text']}"
+        )
+    return "\n\n".join(parts)
+
+
 def fixture_files(fixture_dir):
     """Yield (relative_path, content) for every fixture file, sorted for determinism."""
     paths = sorted(p for p in fixture_dir.rglob("*")
@@ -75,7 +86,7 @@ def build_system(pierre_text):
     )
 
 
-def build_user(case, pierre_text):
+def build_user(case, pierre_text, retrieved=None):
     check_id = case["check_id"]
     parts = [
         f"# Target check: {check_id} (guideline {case['guideline']})",
@@ -93,6 +104,8 @@ def build_user(case, pierre_text):
         parts.append("## Pre-fetched URL contents")
         for kind in sorted(fetched):
             parts.append(f"### {kind}\n```\n{fetched[kind].rstrip()}\n```")
+    if retrieved:
+        parts.append(format_retrieved(retrieved))
     parts.append(
         f"Run check {check_id} now and output its single REVIEW-PASS: or "
         "REVIEW-FINDING: line."
@@ -107,24 +120,38 @@ def thinking_always_on(model):
 
 
 def main(argv):
-    if len(argv) != 4:
-        print("usage: build_request.py <case.json> <model> <max_tokens>", file=sys.stderr)
+    args = argv[1:]
+    if len(args) < 3:
+        print("usage: build_request.py <case.json> <model> <max_tokens> [--retrieved <path>]",
+              file=sys.stderr)
         return 64
-    case = json.loads(Path(argv[1]).read_text(encoding="utf-8"))
+    case_path, model, max_tokens_s = args[0], args[1], args[2]
+    rest = args[3:]
+    retrieved = None
+    while rest:
+        arg = rest.pop(0)
+        if arg == "--retrieved":
+            retrieved = json.loads(Path(rest.pop(0)).read_text(encoding="utf-8"))
+        else:
+            print(f"build_request.py: unknown arg {arg}", file=sys.stderr)
+            return 64
+
+    case = json.loads(Path(case_path).read_text(encoding="utf-8"))
     pierre_text = PIERRE_MD.read_text(encoding="utf-8")
-    model = argv[2]
+    model_name = model
+    max_tokens = int(max_tokens_s)
     body = {
-        "model": model,
-        "max_tokens": int(argv[3]),
+        "model": model_name,
+        "max_tokens": max_tokens,
         "output_config": {"effort": "low"},
         "system": [{
             "type": "text",
             "text": build_system(pierre_text),
             "cache_control": {"type": "ephemeral"},
         }],
-        "messages": [{"role": "user", "content": build_user(case, pierre_text)}],
+        "messages": [{"role": "user", "content": build_user(case, pierre_text, retrieved)}],
     }
-    if not thinking_always_on(model):
+    if not thinking_always_on(model_name):
         body["thinking"] = {"type": "disabled"}
     json.dump(body, sys.stdout, ensure_ascii=False)
     return 0

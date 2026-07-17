@@ -29,6 +29,7 @@ SUITE=(
   "test-action-sarif.sh" # action.yml opt-in SARIF/annotation inputs default off
   "test-pack.sh"      # npm tarball self-containment (files array regression guard)
   "test-eval-parse.sh" # eval parse_verdict.py + build_request.py (LLM eval, no network)
+  "test-rag-build-request.sh" # eval/lib/build_request.py --retrieved flag (RAG eval, no network)
   "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
 )
 
