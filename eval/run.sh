@@ -20,6 +20,7 @@ GLOB="*"
 OUT=""
 BASELINE=0
 MAX_TOKENS=1024
+RAG=0
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -28,12 +29,13 @@ while [[ $# -gt 0 ]]; do
     --cases)    GLOB="$2"; shift 2 ;;
     --out)      OUT="$2"; shift 2 ;;
     --baseline) BASELINE=1; shift ;;
+    --rag)      RAG=1; shift ;;
     *) echo "run.sh: unknown arg '$1'" >&2; exit 64 ;;
   esac
 done
 # Resolved after parsing so --baseline picks up a --model given in any order.
 # The model is part of the dir name so two models can never share a cache dir.
-[[ $BASELINE -eq 1 && -z "$OUT" ]] && OUT="$ROOT/eval/baseline/$(date -u +%F)-$MODEL"
+[[ $BASELINE -eq 1 && -z "$OUT" ]] && OUT="$ROOT/eval/baseline/$(date -u +%F)-$MODEL$([[ $RAG -eq 1 ]] && echo "-rag")"
 [[ -z "$OUT" ]] && OUT="$ROOT/eval/runs/$(date -u +%Y%m%dT%H%M%SZ)"
 
 # Fable/Mythos-tier models have always-on thinking: build_request.py omits the
@@ -80,15 +82,22 @@ if [[ -s "$OUT/manifest.json" ]]; then
     echo "run.sh: $OUT was produced with a different pierre-deep-review.md (prompt sha $prev_prompt) — refusing to mix prompt versions (use --out <fresh dir>)" >&2
     exit 1
   fi
+  prev_rag="$(jq -r '.rag // false' "$OUT/manifest.json")"
+  want_rag="$([[ $RAG -eq 1 ]] && echo true || echo false)"
+  if [[ "$prev_rag" != "$want_rag" ]]; then
+    echo "run.sh: $OUT was produced with rag=$prev_rag — refusing to mix grounded/ungrounded runs (use --out <fresh dir>)" >&2
+    exit 1
+  fi
 fi
 
 jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
       --arg sha "$dataset_sha" --arg glob "$GLOB" --arg thinking "$THINKING" \
       --arg prompt_sha "$prompt_sha" \
       --argjson repeat "$REPEAT" --argjson max_tokens "$MAX_TOKENS" \
+      --argjson rag "$([[ $RAG -eq 1 ]] && echo true || echo false)" \
   '{model:$model, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
     repeat:$repeat, cases_glob:$glob, dataset_sha256:$sha,
-    prompt_sha256:$prompt_sha, run_date:$date,
+    prompt_sha256:$prompt_sha, run_date:$date, rag:$rag,
     api:"https://api.anthropic.com/v1/messages", generator:"eval/run.sh"}' \
   > "$OUT/manifest.json"
 
@@ -98,8 +107,17 @@ for case_file in "$CASES_DIR"/$GLOB.json; do
   case_id="$(basename "$case_file" .json)"
   mkdir -p "$OUT/$case_id"
   req="$(mktemp)"
-  python3 "$ROOT/eval/lib/build_request.py" "$case_file" "$MODEL" "$MAX_TOKENS" > "$req" || {
-    echo "run.sh: request build failed for $case_id" >&2; rm -f "$req"; exit 1; }
+  if [[ $RAG -eq 1 ]]; then
+    retrieved_file="$OUT/$case_id/retrieved.json"
+    python3 "$ROOT/eval/rag/retrieve.py" --case "$case_file" --top-k 3 > "$retrieved_file" || {
+      echo "run.sh: retrieval failed for $case_id" >&2; exit 1; }
+    python3 "$ROOT/eval/lib/build_request.py" "$case_file" "$MODEL" "$MAX_TOKENS" \
+      --retrieved "$retrieved_file" > "$req" || {
+      echo "run.sh: request build failed for $case_id" >&2; rm -f "$req"; exit 1; }
+  else
+    python3 "$ROOT/eval/lib/build_request.py" "$case_file" "$MODEL" "$MAX_TOKENS" > "$req" || {
+      echo "run.sh: request build failed for $case_id" >&2; rm -f "$req"; exit 1; }
+  fi
   rep=1
   while [[ $rep -le $REPEAT ]]; do
     out_file="$OUT/$case_id/rep$rep.json"
