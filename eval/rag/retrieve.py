@@ -59,9 +59,24 @@ def build_similarity_sql(embedding, top_k):
     )
 
 
+def extract_single_embedding(body):
+    """The single (non-batch) embedContent endpoint returns a singular
+    {"embedding": {"values": [...]}} shape — different from
+    batchEmbedContents' plural {"embeddings": [{"values": [...]}]} (which
+    embed.py consumes). Accept both defensively rather than assume one."""
+    if "embedding" in body:
+        return body["embedding"]["values"]
+    if "embeddings" in body:
+        return body["embeddings"][0]["values"]
+    raise SystemExit(
+        f"retrieve.py: unexpected Gemini response shape, no 'embedding'/'embeddings' "
+        f"key: {list(body.keys())}"
+    )
+
+
 def fetch_query_embedding(query, api_key):
     body = post_json(GEMINI_URL, build_gemini_query_request(query), api_key, "retrieve.py")
-    return truncate_and_normalize(body["embeddings"][0]["values"])
+    return truncate_and_normalize(extract_single_embedding(body))
 
 
 def main(argv):

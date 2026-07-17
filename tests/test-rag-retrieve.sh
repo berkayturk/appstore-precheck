@@ -19,4 +19,28 @@ case_sql="$(python3 "$ROOT/eval/rag/retrieve.py" --case \
   "$ROOT/eval/dataset/cases/check05-beta-in-release-notes.json" --dry-run-query)"
 assert_contains "$case_sql" "ORDER BY embedding <=>" "--case mode also builds a similarity query"
 
+section "retrieve.py.extract_single_embedding (both Gemini response shapes)"
+
+shapes_result="$(cd "$ROOT/eval/rag" && python3 -c "
+import retrieve
+
+# Real shape from the single embedContent endpoint (singular 'embedding').
+singular = retrieve.extract_single_embedding({'embedding': {'values': [1, 2, 3]}})
+print(singular)
+
+# Defensive fallback: batchEmbedContents' plural shape, in case a future
+# Gemini API version or endpoint switch returns it here too.
+plural = retrieve.extract_single_embedding({'embeddings': [{'values': [4, 5, 6]}]})
+print(plural)
+
+try:
+    retrieve.extract_single_embedding({'unexpected': 'shape'})
+    print('NO_EXCEPTION_RAISED')
+except SystemExit as exc:
+    print(str(exc))
+")"
+assert_eq "$(echo "$shapes_result" | sed -n '1p')" "[1, 2, 3]" "singular {embedding: {values}} shape extracted"
+assert_eq "$(echo "$shapes_result" | sed -n '2p')" "[4, 5, 6]" "plural {embeddings: [{values}]} shape also accepted"
+assert_contains "$(echo "$shapes_result" | sed -n '3p')" "unexpected Gemini response shape" "unrecognized shape raises a clear SystemExit, not a bare KeyError"
+
 exit "$fails"
