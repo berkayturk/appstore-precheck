@@ -42,7 +42,7 @@ All committed baselines, newest first. Full per-run details follow.
 | run date | 2026-07-17T22:19:58Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | `82345a5cc17ed05b…` |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -75,6 +75,8 @@ All committed baselines, newest first. Full per-run details follow.
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -94,7 +96,7 @@ All committed baselines, newest first. Full per-run details follow.
 | run date | 2026-07-17T22:07:33Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | `82345a5cc17ed05b…` |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -127,6 +129,8 @@ All committed baselines, newest first. Full per-run details follow.
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -146,7 +150,7 @@ All committed baselines, newest first. Full per-run details follow.
 | run date | 2026-07-12T00:56:39Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | `82345a5cc17ed05b…` |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -179,6 +183,8 @@ All committed baselines, newest first. Full per-run details follow.
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -198,7 +204,7 @@ All committed baselines, newest first. Full per-run details follow.
 | run date | 2026-07-12T00:48:48Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | `82345a5cc17ed05b…` |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -231,6 +237,8 @@ All committed baselines, newest first. Full per-run details follow.
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -250,7 +258,7 @@ All committed baselines, newest first. Full per-run details follow.
 | run date | 2026-07-12T00:48:48Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | `82345a5cc17ed05b…` |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -283,6 +291,8 @@ All committed baselines, newest first. Full per-run details follow.
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -302,7 +312,7 @@ All committed baselines, newest first. Full per-run details follow.
 | run date | 2026-07-12T00:27:08Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | not recorded (run predates the prompt fingerprint) |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -335,6 +345,8 @@ All committed baselines, newest first. Full per-run details follow.
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -356,7 +368,7 @@ Non-unanimous cases (majority used for scoring): `check10-clean-review-prompt`
 | run date | 2026-07-11T23:58:46Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | not recorded (run predates the prompt fingerprint) |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -389,6 +401,8 @@ Non-unanimous cases (majority used for scoring): `check10-clean-review-prompt`
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |
@@ -410,7 +424,7 @@ Non-unanimous cases (majority used for scoring): `check05-clean-release-notes`
 | run date | 2026-07-11T20:47:53Z |
 | dataset sha256 | `eeaa8a69db75289a…` |
 | prompt sha256 | not recorded (run predates the prompt fingerprint) |
-| cases | 21 scored, 0 UNLABELED, 0 not run |
+| cases | 21 scored, 2 UNLABELED, 0 not run |
 
 ### Per-tier metrics
 
@@ -443,6 +457,8 @@ Non-unanimous cases (majority used for scoring): `check05-clean-release-notes`
 | 15 | B | 4.5.1-4.5.3 | check15-homekit-no-home-ui | finding | finding | finding/finding/finding | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-no-push-no-homekit | not-applicable | not-applicable | not-applicable/not-applicable/not-applicable | yes |
 | 15 | B | 4.5.1-4.5.3 | check15-push-spam-copy | finding | finding | finding/finding/finding | yes |
+| 16 | A | 4.8 | check16-eid-login-exempt | pass | UNLABELED | — | no |
+| 16 | A | 4.8 | check16-google-login-only | finding | UNLABELED | — | no |
 | 17 | A | 5.1.1(i) | check17-policy-contradicts-location | finding | finding | finding/finding/finding | yes |
 | 17 | A | 5.1.1(i) | check17-policy-matches-camera | pass | pass | pass/pass/pass | yes |
 | 18 | A | 5.1.1(ii) | check18-placeholder-purpose-string | finding | finding | finding/finding/finding | yes |

@@ -86,11 +86,24 @@ above:
   (full Apple guideline prose in a public repo); reproducing this run requires regenerating it
   with `eval/rag/ingest.sh`, and Apple may have revised the page since `fetched_on: 2026-07-17`.
 
-## Possible follow-up (not started)
+## Possible follow-up (started 2026-07-18)
 
 Add cases to `eval/dataset/cases/` designed to be sensitive to guideline drift or to
 parametric-memory error — e.g. a case whose expected verdict only makes sense against the
 *current* wording of a section that has been revised since training, or a case testing a
 guideline number that's easy to confuse with a similarly-worded neighbor. Re-run both
-configurations against the expanded dataset and compare again. This is a real next step, not
-committed to here.
+configurations against the expanded dataset and compare again.
+
+**Status:** two check-16 (guideline 4.8) cases added, both `label_confirmed: false` (UNLABELED,
+excluded from all metrics) pending human label review:
+
+- `check16-eid-login-exempt` — sole login is a government/industry-backed eID (BankID); the
+  *current* 4.8 wording explicitly exempts this, while the older "must offer Sign in with Apple"
+  framing a model may remember from training would flag it. Expected: `pass`. This is the
+  drift-sensitive case proper — grounded and ungrounded runs may genuinely diverge here.
+- `check16-google-login-only` — Google Sign-In as the only primary-account login in a consumer
+  app, no exemption applies; a violation under both old and current wording. Expected: `finding`.
+  Control twin, guarding against grounding causing false passes on the same check.
+
+Remaining: human-confirm both labels, then re-run both configurations (`--baseline` and
+`--baseline --rag`) against the 23-case dataset and compare.

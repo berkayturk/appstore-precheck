@@ -27,6 +27,18 @@ All notable changes to this project are documented here. Versioning follows
 - **RAG corpus deliberately not committed**: `eval/rag/corpus/sections.json` (full Apple
   guideline prose) is now gitignored with the copyright rationale documented in
   `eval/rag/README.md`; the design spec's "this file is committed" line is amended.
+- **RAG CLI/network edge cases hardened** (dev-only): `retrieve.py` malformed args exit 64
+  with a usage message instead of a traceback; a bare network failure (no HTTP response) in
+  the shared Gemini client raises a clear error instead of an unhandled traceback; `run.sh
+  --rag` no longer leaks its temp request file when retrieval fails.
+
+### Added (eval, dev-only — not part of the distributed package)
+- **Two guideline-drift-sensitive check-16 (4.8) cases** — the follow-up proposed in
+  `docs/rag-eval-results.md`: `check16-eid-login-exempt` (sole eID/BankID login — exempt under
+  the *current* 4.8 wording, likely flagged by stale parametric memory; the first case where
+  grounded and ungrounded runs may genuinely diverge) and `check16-google-login-only` (clear
+  violation under any wording; control twin). Both `label_confirmed: false` (UNLABELED,
+  excluded from all metrics) pending human label review; first eval coverage for check 16.
 
 ## [1.13.1] - 2026-07-12
 

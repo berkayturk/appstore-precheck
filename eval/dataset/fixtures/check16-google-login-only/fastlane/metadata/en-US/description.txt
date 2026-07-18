@@ -1,0 +1,9 @@
+RecipeBox — your recipes, everywhere.
+
+Save recipes from anywhere on the web, plan your week's meals, and generate a shopping list in one tap. Sign in with your Google account and your whole collection syncs instantly across iPhone, iPad, and the web.
+
+Features:
+- One-tap Google sign-in
+- Import recipes from any website
+- Weekly meal planner
+- Smart shopping lists that merge duplicate ingredients

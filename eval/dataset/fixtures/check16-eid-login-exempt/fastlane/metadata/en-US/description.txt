@@ -1,0 +1,9 @@
+Skattefil — file your Swedish tax return from your phone.
+
+Identify yourself securely with BankID, review your pre-filled declaration, and submit it to Skatteverket in minutes. Your identity is verified through BankID, Sweden's national electronic identification system — no separate account or password to manage.
+
+Features:
+- Log in with BankID (mobile or on this device)
+- Review and adjust your pre-filled income figures
+- Submit your declaration and get a digital receipt
+- Reminders before the filing deadline
