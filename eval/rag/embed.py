@@ -37,10 +37,12 @@ def build_gemini_request(texts):
             {
                 "model": MODEL,
                 "content": {"parts": [{"text": text}]},
-                "embedContentConfig": {
-                    "taskType": "RETRIEVAL_DOCUMENT",
-                    "outputDimensionality": OUTPUT_DIMENSIONALITY,
-                },
+                # Top-level REST fields, per the official curl examples — a
+                # nested embedContentConfig is silently ignored by the v1beta
+                # endpoint (observed: full 3072-dim vectors came back despite
+                # requesting 1024, meaning taskType was being dropped too).
+                "taskType": "RETRIEVAL_DOCUMENT",
+                "outputDimensionality": OUTPUT_DIMENSIONALITY,
             }
             for text in texts
         ]

@@ -39,10 +39,10 @@ def query_from_case(case_path):
 def build_gemini_query_request(query):
     return {
         "content": {"parts": [{"text": query}]},
-        "embedContentConfig": {
-            "taskType": "RETRIEVAL_QUERY",
-            "outputDimensionality": OUTPUT_DIMENSIONALITY,
-        },
+        # Top-level REST fields — see embed.py's build_gemini_request for why
+        # the embedContentConfig nesting must not be used here.
+        "taskType": "RETRIEVAL_QUERY",
+        "outputDimensionality": OUTPUT_DIMENSIONALITY,
     }
 
 

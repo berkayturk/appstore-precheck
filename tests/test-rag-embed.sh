@@ -22,6 +22,25 @@ assert_contains "$sql" "'2.3.3'" "section number embedded as SQL literal"
 assert_contains "$sql" "ON CONFLICT (section_number) DO UPDATE" "upsert on conflict"
 assert_contains "$sql" "::vector" "embedding cast to vector type"
 
+section "embed.py build_gemini_request field placement"
+
+req_shape="$(cd "$ROOT/eval/rag" && python3 -c "
+import embed
+
+# The v1beta REST endpoint reads taskType/outputDimensionality at the top level
+# of each request item (per the official curl examples); a nested
+# embedContentConfig object is silently ignored — which is exactly how the
+# 3072-dim regression slipped through. Assert the fields sit at the top level
+# and the ignored nesting is gone.
+req = embed.build_gemini_request(['some text'])['requests'][0]
+print(req.get('taskType'))
+print(req.get('outputDimensionality'))
+print('embedContentConfig' in req)
+")"
+assert_eq "$(echo "$req_shape" | sed -n '1p')" "RETRIEVAL_DOCUMENT" "taskType is a top-level request field"
+assert_eq "$(echo "$req_shape" | sed -n '2p')" "1024" "outputDimensionality is a top-level request field"
+assert_eq "$(echo "$req_shape" | sed -n '3p')" "False" "no silently-ignored embedContentConfig nesting"
+
 section "embed.py fetch_embeddings batching (no network — _fetch_batch stubbed)"
 
 batch_sizes="$(cd "$ROOT/eval/rag" && python3 -c "

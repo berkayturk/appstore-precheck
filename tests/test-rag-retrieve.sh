@@ -19,6 +19,23 @@ case_sql="$(python3 "$ROOT/eval/rag/retrieve.py" --case \
   "$ROOT/eval/dataset/cases/check05-beta-in-release-notes.json" --dry-run-query)"
 assert_contains "$case_sql" "ORDER BY embedding <=>" "--case mode also builds a similarity query"
 
+section "retrieve.py build_gemini_query_request field placement"
+
+query_shape="$(cd "$ROOT/eval/rag" && python3 -c "
+import retrieve
+
+# Same contract as embed.py's request builder: taskType/outputDimensionality
+# must be top-level REST fields — a nested embedContentConfig is silently
+# ignored by the v1beta endpoint.
+body = retrieve.build_gemini_query_request('some query')
+print(body.get('taskType'))
+print(body.get('outputDimensionality'))
+print('embedContentConfig' in body)
+")"
+assert_eq "$(echo "$query_shape" | sed -n '1p')" "RETRIEVAL_QUERY" "taskType is a top-level request field"
+assert_eq "$(echo "$query_shape" | sed -n '2p')" "1024" "outputDimensionality is a top-level request field"
+assert_eq "$(echo "$query_shape" | sed -n '3p')" "False" "no silently-ignored embedContentConfig nesting"
+
 section "retrieve.py.extract_single_embedding (both Gemini response shapes)"
 
 shapes_result="$(cd "$ROOT/eval/rag" && python3 -c "

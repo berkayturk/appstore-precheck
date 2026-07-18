@@ -19,11 +19,11 @@ OUTPUT_DIMENSIONALITY = 1024  # matches schema.sql's VECTOR(1024)
 
 def truncate_and_normalize(vector):
     """Matryoshka (MRL) truncation to OUTPUT_DIMENSIONALITY dims, then
-    L2-normalize. gemini-embedding-001 supports requesting a smaller
-    embedding directly via embedContentConfig.outputDimensionality, but in
-    practice the API has been observed to ignore it and return the full
-    native size (3072) regardless — this enforces the OUTPUT_DIMENSIONALITY
-    contract client-side no matter what the API actually returns. Cosine
+    L2-normalize. The request builders ask for OUTPUT_DIMENSIONALITY via the
+    top-level outputDimensionality REST field (a nested embedContentConfig is
+    silently ignored by the v1beta endpoint — the original cause of full
+    3072-dim vectors coming back); this keeps enforcing the contract
+    client-side as a safety net no matter what the API returns. Cosine
     distance (pgvector's `<=>` operator, used throughout this project) is
     scale-invariant, so normalizing here does not change similarity
     rankings — it only satisfies the model's documented requirement that
