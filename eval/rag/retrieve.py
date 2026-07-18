@@ -90,6 +90,9 @@ def main(argv):
     case_path = None
     if args[0] == "--case":
         args.pop(0)
+        if not args:
+            print("retrieve.py: --case requires a path", file=sys.stderr)
+            return 64
         case_path = args.pop(0)
     else:
         query = args.pop(0)
@@ -99,7 +102,14 @@ def main(argv):
     while args:
         arg = args.pop(0)
         if arg == "--top-k":
-            top_k = int(args.pop(0))
+            if not args:
+                print("retrieve.py: --top-k requires a number", file=sys.stderr)
+                return 64
+            try:
+                top_k = int(args.pop(0))
+            except ValueError:
+                print("retrieve.py: --top-k must be an integer", file=sys.stderr)
+                return 64
         elif arg == "--dry-run-query":
             dry_run_query = True
         else:

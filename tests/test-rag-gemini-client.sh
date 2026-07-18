@@ -117,4 +117,27 @@ except SystemExit as exc:
 assert_eq "$(echo "$immediate_fail" | sed -n '1p')" "1" "non-429 error fails on the first attempt, no retry"
 assert_contains "$(echo "$immediate_fail" | sed -n '2p')" "Gemini API error 403" "SystemExit message includes the HTTP status and detail"
 
+section "gemini_client.post_json network failure (URLError, no HTTP response)"
+
+network_fail="$(cd "$ROOT/eval/rag" && python3 -c "
+import urllib.error
+import gemini_client as gc
+
+# DNS failure / connection refused / timeout: urlopen raises a bare URLError
+# with no HTTP status. Must surface as a clear SystemExit naming the caller,
+# not an unhandled traceback.
+def fake_urlopen(req, timeout=60):
+    raise urllib.error.URLError('nodename nor servname provided, or not known')
+
+gc.urllib.request.urlopen = fake_urlopen
+try:
+    gc.post_json('http://example.invalid', {'x': 1}, 'fake-key', 'test')
+    print('NO_EXCEPTION_RAISED')
+except SystemExit as exc:
+    print(str(exc))
+" 2>&1)"
+assert_contains "$network_fail" "test: network error" "URLError becomes a SystemExit naming the caller"
+assert_contains "$network_fail" "nodename" "SystemExit message includes the underlying reason"
+assert_absent "$network_fail" "Traceback" "no unhandled traceback on network failure"
+
 exit "$fails"

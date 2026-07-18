@@ -73,3 +73,8 @@ def post_json(url, body, api_key, caller):
             print(f"{caller}: rate limited (429), retrying in {delay:.0f}s "
                   f"(attempt {attempt}/{MAX_RETRIES})", file=sys.stderr)
             time.sleep(delay)
+        except urllib.error.URLError as exc:
+            # No HTTP response at all (DNS failure, connection refused,
+            # timeout) — nothing to retry against, fail with a clear message.
+            raise SystemExit(f"{caller}: network error calling Gemini API: "
+                             f"{exc.reason}") from None

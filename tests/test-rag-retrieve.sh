@@ -19,6 +19,21 @@ case_sql="$(python3 "$ROOT/eval/rag/retrieve.py" --case \
   "$ROOT/eval/dataset/cases/check05-beta-in-release-notes.json" --dry-run-query)"
 assert_contains "$case_sql" "ORDER BY embedding <=>" "--case mode also builds a similarity query"
 
+section "retrieve.py malformed CLI args exit 64 with a message, not a traceback"
+
+missing_case_out="$(python3 "$ROOT/eval/rag/retrieve.py" --case 2>&1)"; missing_case_rc=$?
+assert_eq "$missing_case_rc" "64" "--case without a value exits 64"
+assert_contains "$missing_case_out" "--case requires" "--case without a value prints a usage message"
+assert_absent "$missing_case_out" "Traceback" "--case without a value does not dump a traceback"
+
+bad_topk_out="$(python3 "$ROOT/eval/rag/retrieve.py" "some query" --top-k lots 2>&1)"; bad_topk_rc=$?
+assert_eq "$bad_topk_rc" "64" "non-numeric --top-k exits 64"
+assert_absent "$bad_topk_out" "Traceback" "non-numeric --top-k does not dump a traceback"
+
+missing_topk_out="$(python3 "$ROOT/eval/rag/retrieve.py" "some query" --top-k 2>&1)"; missing_topk_rc=$?
+assert_eq "$missing_topk_rc" "64" "--top-k without a value exits 64"
+assert_absent "$missing_topk_out" "Traceback" "--top-k without a value does not dump a traceback"
+
 section "retrieve.py build_gemini_query_request field placement"
 
 query_shape="$(cd "$ROOT/eval/rag" && python3 -c "

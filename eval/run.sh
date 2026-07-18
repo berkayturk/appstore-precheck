@@ -110,7 +110,7 @@ for case_file in "$CASES_DIR"/$GLOB.json; do
   if [[ $RAG -eq 1 ]]; then
     retrieved_file="$OUT/$case_id/retrieved.json"
     python3 "$ROOT/eval/rag/retrieve.py" --case "$case_file" --top-k 3 > "$retrieved_file" || {
-      echo "run.sh: retrieval failed for $case_id" >&2; exit 1; }
+      echo "run.sh: retrieval failed for $case_id" >&2; rm -f "$req"; exit 1; }
     python3 "$ROOT/eval/lib/build_request.py" "$case_file" "$MODEL" "$MAX_TOKENS" \
       --retrieved "$retrieved_file" > "$req" || {
       echo "run.sh: request build failed for $case_id" >&2; rm -f "$req"; exit 1; }
