@@ -5,6 +5,17 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Added (eval, dev-only — not part of the distributed package)
+- **RAG-grounded Pierre experiment**: `eval/rag/` — ingests the full App Store Review
+  Guidelines text (all ~125 sections, not just the officially-mapped subset), embeds it
+  (Gemini `gemini-embedding-001`, MRL-truncated to 1024 dims), stores it in a local pgvector
+  instance, and retrieves top-k relevant sections to ground Pierre's eval-harness prompt
+  (`eval/run.sh --rag`, `eval/lib/build_request.py --retrieved`). Measured against the
+  existing 21-case labeled dataset: grounded and ungrounded runs scored identically
+  (F1 1.00 on both, all tiers) — a ceiling effect, not a broken pipeline (retrieval was
+  independently confirmed to surface the correct guideline section per case). See
+  `docs/rag-eval-results.md` and `docs/specs/2026-07-17-rag-grounded-pierre-eval-design.md`.
+
 ## [1.13.1] - 2026-07-12
 
 ### Fixed
