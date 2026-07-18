@@ -16,6 +16,18 @@ All notable changes to this project are documented here. Versioning follows
   independently confirmed to surface the correct guideline section per case). See
   `docs/rag-eval-results.md` and `docs/specs/2026-07-17-rag-grounded-pierre-eval-design.md`.
 
+### Fixed (eval, dev-only)
+- **Gemini embedding requests now actually apply `taskType`/`outputDimensionality`**: the
+  request builders nested both fields inside an `embedContentConfig` object, which the v1beta
+  REST endpoint silently ignores (the documented curl examples put them at the top level) —
+  the published 2026-07-17 run therefore used embeddings without
+  `RETRIEVAL_DOCUMENT`/`RETRIEVAL_QUERY` task optimization, and the API's 3072-dim responses
+  were only tamed by the client-side MRL truncation safety net. Fields moved to the top level;
+  results doc amended (conclusion unchanged — both configurations were at the F1 ceiling).
+- **RAG corpus deliberately not committed**: `eval/rag/corpus/sections.json` (full Apple
+  guideline prose) is now gitignored with the copyright rationale documented in
+  `eval/rag/README.md`; the design spec's "this file is committed" line is amended.
+
 ## [1.13.1] - 2026-07-12
 
 ### Fixed

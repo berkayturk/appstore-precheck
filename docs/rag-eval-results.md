@@ -68,6 +68,24 @@ than 1.00 by also being shown the source text.
 - **No claim is made** that RAG grounding helps or doesn't help Pierre in general — only that it
   made no measurable difference on this dataset, for the reason above.
 
+## Amendments (2026-07-18)
+
+Two caveats found in a post-hoc review of the pipeline, neither of which changes the numbers
+above:
+
+- **Task types were not in effect for this run.** The request builders nested
+  `taskType`/`outputDimensionality` inside an `embedContentConfig` object, which the v1beta REST
+  endpoint silently ignores (the official curl examples put both at the top level). This is why
+  the API returned native 3072-dim vectors (truncated client-side, see the table above) — and it
+  means the run's embeddings were generated *without* `RETRIEVAL_DOCUMENT`/`RETRIEVAL_QUERY`
+  task optimization. Retrieval was still verified correct (see above), and both configurations
+  scored at the F1=1.00 ceiling, so the conclusion stands; the field placement has since been
+  fixed, so any future run will use properly task-typed embeddings and may show different
+  similarity scores.
+- **The corpus is not committed.** `eval/rag/corpus/sections.json` is deliberately gitignored
+  (full Apple guideline prose in a public repo); reproducing this run requires regenerating it
+  with `eval/rag/ingest.sh`, and Apple may have revised the page since `fetched_on: 2026-07-17`.
+
 ## Possible follow-up (not started)
 
 Add cases to `eval/dataset/cases/` designed to be sensitive to guideline drift or to
