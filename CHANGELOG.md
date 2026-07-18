@@ -39,6 +39,14 @@ All notable changes to this project are documented here. Versioning follows
   grounded and ungrounded runs may genuinely diverge) and `check16-google-login-only` (clear
   violation under any wording; control twin). Both `label_confirmed: false` (UNLABELED,
   excluded from all metrics) pending human label review; first eval coverage for check 16.
+  Labels human-confirmed 2026-07-18.
+- **23-case RAG re-run — first measured divergence**: both configurations re-run with
+  task-typed embeddings on the expanded dataset. F1 still 1.00 everywhere (ceiling), but
+  consistency split 0.96 vs 1.00 — the single non-unanimous case was exactly the
+  drift-sensitive `check16-eid-login-exempt` (ungrounded: `pass/pass/not-applicable` wording
+  drift; grounded: unanimous `pass`, citing the retrieved 4.8 exemption, top-1 similarity
+  0.76). A consistency effect, not an accuracy effect — documented with scope caveats in
+  `docs/rag-eval-results.md`.
 
 ## [1.13.1] - 2026-07-12
 

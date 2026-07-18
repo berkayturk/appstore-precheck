@@ -105,5 +105,44 @@ excluded from all metrics) pending human label review:
   app, no exemption applies; a violation under both old and current wording. Expected: `finding`.
   Control twin, guarding against grounding causing false passes on the same check.
 
-Remaining: human-confirm both labels, then re-run both configurations (`--baseline` and
-`--baseline --rag`) against the 23-case dataset and compare.
+Labels were human-confirmed and both configurations re-run on 2026-07-18 — see the next section.
+
+## 23-case re-run (2026-07-18): first measurable divergence
+
+Both configurations re-run against the expanded 23-case dataset (labels human-confirmed), with
+one pipeline difference from the 2026-07-17 run: the corpus was re-embedded after fixing the
+request-field placement bug (see Amendments above), so this run's embeddings are properly
+task-typed (`RETRIEVAL_DOCUMENT`/`RETRIEVAL_QUERY`).
+
+| | ungrounded (baseline) | grounded (`--rag`) |
+|---|---|---|
+| model | `claude-sonnet-5` | `claude-sonnet-5` |
+| run date | 2026-07-18T17:19:14Z | 2026-07-18T17:26:47Z |
+| repeats per case | 3 | 3 |
+| dataset sha256 | `7e5203b803fc0a76…` | `7e5203b803fc0a76…` (identical) |
+| Tier A / B / all F1 | 1.00 / 1.00 / 1.00 | 1.00 / 1.00 / 1.00 |
+| Tier-B FP rate | 0.00 (0/7) | 0.00 (0/7) |
+| **consistency** | **0.96 (22/23)** | **1.00 (23/23)** |
+
+F1 is still at the ceiling in both configurations — majority voting across 3 repeats absorbed
+the one disagreement. But the per-case tables differ in exactly one row, and it is exactly the
+case designed to be drift-sensitive:
+
+- **`check16-eid-login-exempt`, ungrounded:** `pass/pass/not-applicable` — non-unanimous. All
+  three repeats reached the right conclusion from parametric knowledge (BankID is an exempt
+  eID), but rep 3 drifted into "not applicable" wording — the same pass-vs-not-applicable drift
+  mode previously seen (and prompt-patched) in v1.13.1.
+- **`check16-eid-login-exempt`, grounded:** `pass/pass/pass` — unanimous, and the responses cite
+  the retrieved text directly ("falls under the explicit 4.8 exemption for government/
+  industry-backed citizen ID systems"). Retrieval surfaced section 4.8 itself as top-1 at 0.76
+  similarity.
+- `check16-google-login-only` (control twin): unanimous `finding` in both configurations, as
+  designed — grounding did not cause false passes on the same check.
+
+**Honest scope note:** this is a consistency effect, not an accuracy effect — n=1 case, same
+majority verdict, and it shows grounding *stabilizing wording* on a case the model already gets
+right, not correcting a wrong answer. It is nonetheless the first measured behavioral difference
+between the two configurations, it landed precisely on the case engineered to produce it, and
+the mechanism is visible in the transcripts (grounded responses quote the retrieved exemption;
+ungrounded responses reconstruct it from memory with less stable framing). A case where
+grounding flips an actually-wrong verdict still does not exist in this dataset.
