@@ -5,7 +5,7 @@
   "guideline": "4.8",
   "expected": "pass",
   "rationale": "Sole login is BankID, a government/industry-backed electronic ID — explicitly exempt from the equivalent-login requirement under the current 4.8 wording; no social login present, so no Sign in with Apple obligation.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check16-eid-login-exempt/",
   "notes": "Guideline-drift-sensitive by design (docs/rag-eval-results.md follow-up): 4.8's exemption list (own-account systems, eID/citizen-id, alternative marketplaces, enterprise accounts) post-dates the original 'must offer Sign in with Apple' framing. A model reasoning from stale parametric memory may flag the missing Sign in with Apple; the current guideline text says this case is exempt. Verdict deliberately hinges on the current wording."
 }

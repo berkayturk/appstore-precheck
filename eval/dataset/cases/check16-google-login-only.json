@@ -5,7 +5,7 @@
   "guideline": "4.8",
   "expected": "finding",
   "rationale": "Google Sign-In is the only way to set up the primary account in a consumer app; no Sign in with Apple, no equivalent privacy-focused login option, and none of 4.8's exemptions apply.",
-  "label_confirmed": false,
+  "label_confirmed": true,
   "fixture": "fixtures/check16-google-login-only/",
   "notes": "Control twin for check16-eid-login-exempt: a clear-cut 4.8 violation under both the old and the current wording, so grounded and ungrounded runs should agree here — guards against grounding causing false passes on the same check."
 }
