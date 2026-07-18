@@ -47,8 +47,13 @@ Reuses the parsing logic already proven in `scripts/guideline-drift.sh` (`gd_sec
 both `guideline-drift.sh` and `ingest.sh`) rather than duplicating the sed/awk pipeline.
 
 Output: `eval/rag/corpus/sections.json` — `{ "sections": { "<id>": { "text": "<full prose>",
-"char_count": N } }, "fetched_on": "<UTC date>", "source_url": "..." }`. This file is committed
-(small, ~130 sections of plain text) so embedding/retrieval is reproducible without a live fetch.
+"char_count": N } }, "fetched_on": "<UTC date>", "source_url": "..." }`. ~~This file is committed
+(small, ~130 sections of plain text) so embedding/retrieval is reproducible without a live fetch.~~
+**Amended 2026-07-18:** the corpus is deliberately *not* committed — it is the full prose of
+Apple's copyrighted guidelines and this is a public repo. It is gitignored instead; anyone
+reproducing the experiment regenerates it with `ingest.sh`, and the file's own
+`fetched_on`/`source_url` fields record provenance. The trade-off (a re-fetched corpus may
+differ if Apple revises the page) is accepted and noted in `docs/rag-eval-results.md`.
 Re-running `ingest.sh` is a deliberate human step (like `guideline-drift.sh --reconcile`), not
 run automatically.
 

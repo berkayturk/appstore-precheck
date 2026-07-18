@@ -21,3 +21,8 @@ node_modules/
 
 # LLM eval — local run outputs (committed baseline lives in eval/baseline/)
 eval/runs/
+
+# RAG corpus — full Apple guideline prose, deliberately NOT committed to this
+# public repo (Apple's copyrighted text). Regenerate with eval/rag/ingest.sh;
+# provenance is tracked via the file's own fetched_on/source_url fields.
+eval/rag/corpus/sections.json

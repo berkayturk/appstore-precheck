@@ -16,6 +16,11 @@ Dev-only: nothing here ships in the npm/brew package or affects `scan.sh`.
    Writes `eval/rag/corpus/sections.json`. Review the WARN lines (if any) for sections that
    failed to extract before proceeding.
 
+   The corpus file is deliberately **not committed** (gitignored): it is the full prose of
+   Apple's copyrighted guidelines and this repo is public. Provenance lives in the file's own
+   `fetched_on`/`source_url` fields; a re-fetched corpus may differ if Apple has revised the
+   page since a published result.
+
 2. Start the local pgvector instance:
    ```bash
    export RAG_DB_PASSWORD="$(openssl rand -hex 16)"
