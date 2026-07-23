@@ -29,14 +29,20 @@ by `eval/score.py` from the labelled dataset in `eval/`.
 | false negatives | 0 |
 | **precision**   | 1.00 |
 
-## Real App Store outcomes (n=0)
+## Real App Store outcomes (n=1)
 
 Real Apple review outcomes, independently labelled — distinct from the synthetic and real-panel
 measurements above. Neither an approval nor a rejection here proves a finding's correctness in
 general. See `corpus/outcomes/README.md`.
 
-_No real App Store outcomes recorded yet. This section populates as outcomes are contributed
-and reviewed (see `corpus/outcomes/README.md`)._
+| outcome | count |
+|---|---|
+| predicted-and-flagged (rejected; tool had flagged the cited guideline) | 0 |
+| missed (rejected; tool had no finding for the cited guideline) | 1 |
+| approved-clean (approved; 0 FAIL at submission) | 0 |
+| approved-with-warns-unaddressed (approved; >=1 WARN present) | 0 |
+
+**n=1 is too small to compute a meaningful rate; shown for transparency only.**
 
 ## Honesty
 
