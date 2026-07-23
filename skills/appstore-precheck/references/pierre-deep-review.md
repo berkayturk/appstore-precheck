@@ -1,9 +1,9 @@
-# Phase 4: Pierre deep review (28 semantic checks)
+# Phase 4: Pierre deep review (29 semantic checks)
 
 After Phase 3 (explaining every scan FAIL/WARN), Pierre runs a **read-only, project-wide
-semantic review** of 28 guideline areas the static scanner cannot fully judge. The **22 Tier A**
-checks (all 28 except the Tier B items below) are high-confidence; the **6 Tier B v1** checks
-**4, 5, 7, 10, 15, and 28** are heuristic advisory (higher false-positive risk, still useful
+semantic review** of 29 guideline areas the static scanner cannot fully judge. The **23 Tier A**
+checks (all 29 except the Tier B items below) are high-confidence; the **6 Tier B v1** checks
+**4, 5, 7, 10, 15, and 29** are heuristic advisory (higher false-positive risk, still useful
 pre-submit signals).
 
 This is the **Review Simulator** layer: Pierre reads Swift, metadata, entitlements, screenshots,
@@ -19,10 +19,10 @@ that Pierre explains in Phase 5 presentation.
 - **Read-only:** never modify project files.
 - **Evidence-based:** cite `file:line`, metadata path, screenshot filename, or fetched URL text.
   If you cannot read something (private URL, missing file), say so — do not invent findings.
-- **All 28 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
+- **All 29 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
 - **REVIEW-FINDING severity:** always `WARN` (advisory). Never emit `REVIEW-FINDING: … FAIL`.
   A deep-review issue informs the human; it does not block the token by itself.
-- **Tier B checks (4, 5, 7, 10, 15, 28):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
+- **Tier B checks (4, 5, 7, 10, 15, 29):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
   when flagging, use cautious language ("may trigger review questions") — these are heuristics.
 - **Deepen scan hits:** when Phase 1 already flagged a guideline, Phase 4 still runs the matching
   deep check and adds semantic context (do not repeat the machine line verbatim — add what the
@@ -35,7 +35,7 @@ that Pierre explains in Phase 5 presentation.
 
 ## Output format
 
-For each of the 28 checks (in table order):
+For each of the 29 checks (in table order):
 
 ```
 REVIEW-PASS: <guideline> — <one-line why it looks OK, with evidence pointer>
@@ -62,7 +62,7 @@ language, a review prompt present but using the system API — report a plain
 
 ---
 
-## The 28 checks (guideline order)
+## The 29 checks (guideline order)
 
 | # | Guideline | Deep question | Primary sources |
 |---|-----------|---------------|-----------------|
@@ -86,14 +86,15 @@ language, a review prompt present but using the system API — report a plain
 | 18 | **5.1.1(ii)** | Purpose strings are specific and tied to a visible feature (not empty, generic, or copy-paste)? | Info.plist, permission usage in Swift |
 | 19 | **5.1.1(iii)** | Data/permission requests proportionate to stated app purpose (no obvious over-collection)? | permissions, SDKs vs metadata promise |
 | 20 | **5.1.1(iv)** | Permission denial handled gracefully — no infinite re-prompt loops or hard blocks without explanation? | location/camera/notification/auth flows in Swift |
-| 21 | **5.1.2** | ATT prompt, `NSUserTrackingUsageDescription`, privacy policy tracking section, and ad SDK usage align? | Info.plist, policy fetch, ad SDK imports |
-| 22 | **5.1.3** | HealthKit data not used for advertising/marketing; sync paths respect health-data rules? | HealthKit + analytics/ad SDK co-use |
-| 23 | **5.1.4** | Kids-audience signals → parental gate before external links/purchases/account areas? | metadata kids wording, parental gate UI |
-| 24 | **5.4** | VPN/NetworkExtension → on-screen disclosure text visible in UI strings (not only Info.plist)? | Swift strings, NetworkExtension usage |
-| 25 | **5.2.1–5.2.3** | Obvious third-party trademark/brand misuse in metadata, assets, or UI copy? | metadata, asset filenames, Swift strings |
-| 26 | **5.3.1–5.3.3** | Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata? | description, keywords, in-app contest UI |
-| 27 | **5.6.2–5.6.3** | Developer identity consistent: app name, support URL content, bundle/marketing domain match? | fetch support URL, metadata, legal/footer copy |
-| 28 | **5.6.1 / 5.6.3** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
+| 21 | **5.1.1(iv)** | Custom pre-permission priming screens use neutral CTA copy ("Continue"/"Next") — no steering toward Allow/Grant/Enable? | priming/onboarding views, xcstrings CTA strings, §42 scan context |
+| 22 | **5.1.2** | ATT prompt, `NSUserTrackingUsageDescription`, privacy policy tracking section, and ad SDK usage align? | Info.plist, policy fetch, ad SDK imports |
+| 23 | **5.1.3** | HealthKit data not used for advertising/marketing; sync paths respect health-data rules? | HealthKit + analytics/ad SDK co-use |
+| 24 | **5.1.4** | Kids-audience signals → parental gate before external links/purchases/account areas? | metadata kids wording, parental gate UI |
+| 25 | **5.4** | VPN/NetworkExtension → on-screen disclosure text visible in UI strings (not only Info.plist)? | Swift strings, NetworkExtension usage |
+| 26 | **5.2.1–5.2.3** | Obvious third-party trademark/brand misuse in metadata, assets, or UI copy? | metadata, asset filenames, Swift strings |
+| 27 | **5.3.1–5.3.3** | Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata? | description, keywords, in-app contest UI |
+| 28 | **5.6.2–5.6.3** | Developer identity consistent: app name, support URL content, bundle/marketing domain match? | fetch support URL, metadata, legal/footer copy |
+| 29 | **5.6.1 / 5.6.3** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
 
 ---
 
@@ -226,43 +227,58 @@ language, a review prompt present but using the system API — report a plain
 1. Trace location/camera/photo/notification permission flows.
 2. Flag forced loops, dead-ends, or dark patterns after denial.
 
-### 21 — 5.1.2 ATT consistency
+### 21 — 5.1.1(iv) Permission-priming CTA neutrality
+
+1. Find custom pre-permission ("priming") screens: views that explain an upcoming permission
+   request and whose button triggers `requestAccess` / `requestAuthorization` /
+   `requestRecordPermission`.
+2. Read the consent CTA copy on those screens (xcstrings source-language values and hardcoded
+   button titles).
+3. Flag steering wording on the gate button — "Allow …", "Grant …", "Enable …", "Turn on …" —
+   Apple requires neutral wording like "Continue" or "Next"; the grant/deny decision belongs to
+   the system alert. Body copy explaining *why* the permission helps is fine; post-denial
+   "Enable X in Settings" guidance is Apple's own recommended pattern and is fine.
+4. Cross-check scan §42 (`permission-priming-cta`) — Phase 4 adds semantic judgement the static
+   regex cannot: is the flagged string really on a consent gate, and does the flow stay usable
+   if the user declines (ties into check 20)?
+
+### 22 — 5.1.2 ATT consistency
 
 1. If ad/attribution SDK or IDFA access: confirm ATT API usage and description text.
 2. Cross-check privacy policy tracking section vs implementation.
 
-### 22 — 5.1.3 HealthKit + ads
+### 23 — 5.1.3 HealthKit + ads
 
 1. If HealthKit imported: search for analytics/ad SDK sending health-derived signals.
 2. Flag health data paths combined with advertising identifiers.
 
-### 23 — 5.1.4 Parental gate
+### 24 — 5.1.4 Parental gate
 
 1. If kids metadata or child-audience copy: find parental gate before web/links/IAP/account.
 2. Flag child positioning without age gate UI.
 
-### 24 — 5.4 VPN disclosure UI
+### 25 — 5.4 VPN disclosure UI
 
 1. If NetworkExtension/NEVPNManager: search UI strings for data-collection disclosure required at launch/settings.
 2. Flag VPN capability with no user-visible disclosure copy.
 
-### 25 — 5.2.1–5.2.3 IP / trademarks
+### 26 — 5.2.1–5.2.3 IP / trademarks
 
 1. Scan metadata and visible strings for other companies' brands used as if owned.
 2. Flag likely trademark misuse (not generic descriptive use).
 
-### 26 — 5.3.1–5.3.3 Contests
+### 27 — 5.3.1–5.3.3 Contests
 
 1. If sweepstakes/contest/giveaway language: check for rules, eligibility, sponsor, no-purchase-necessary.
 2. Flag contest marketing without rules in metadata or in-app.
 
-### 27 — 5.6.2–5.6.3 Developer identity
+### 28 — 5.6.2–5.6.3 Developer identity
 
 1. Fetch support URL; confirm it resolves and shows developer contact or support path.
 2. Compare app name, support domain, and privacy policy domain for consistency.
 3. Flag placeholder support pages or identity mismatch.
 
-### 28 — 5.6.1 / 5.6.3 Rating/review manipulation *(Tier B v1)*
+### 29 — 5.6.1 / 5.6.3 Rating/review manipulation *(Tier B v1)*
 
 1. Grep Swift and metadata for: `itms-apps://` write-review URLs, `apps.apple.com/.../write-review`,
    "rate 5 stars", "only enable after review", custom star-rating UI tied to App Store review.
@@ -277,6 +293,6 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 28 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 28 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 28" count.
+3. Phase 4 summary table: 29 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 29 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 29" count.
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.

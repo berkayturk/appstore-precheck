@@ -8,7 +8,7 @@ whole file to run the skill.
 - [Phase 0: Guideline drift check](#phase-0-guideline-drift-check)
 - [Phase 1: Rejection vectors](#phase-1-rejection-vectors)
 - [Phase 3: Pierre explains every finding](#phase-3-pierre-explains-every-finding)
-- [Phase 4: Pierre deep review (28 checks)](#phase-4-pierre-deep-review-28-semantic-checks)
+- [Phase 4: Pierre deep review (29 checks)](#phase-4-pierre-deep-review-29-semantic-checks)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [SARIF output](#sarif-output---format-sarif)
@@ -112,9 +112,10 @@ baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
 | 40 | **5.3.4 Gambling** *(advisory)* | Real-money gaming language in metadata (casino, sportsbook, real money, wager); real-money gambling needs licensing, geo-restriction, and must be free on the store |
 | 41 | **5.5 MDM** *(advisory)* | A Mobile Device Management signal (`DeviceManagement`, managed-app-config, `com.apple.mdm`); MDM apps need a commercial enterprise/education entity and purpose-limited data use |
 | 42 | **2.3.3 Screenshot format/dimensions** *(advisory)* | Reads each in-repo screenshot's magic bytes and, for PNGs, its IHDR pixel dimensions; WARNs on a file whose content does not match its extension, a truncated PNG, or a PNG whose size matches no known App Store screenshot size (either orientation). JPEG dimensions are not parsed (format-checked only). WARN-only — never forces a RED verdict. |
+| 43 | **5.1.1(iv) Permission priming** *(advisory)* | Custom pre-permission screens whose consent CTA steers users toward granting access ("Allow and continue", "Grant access to start", bare "Enable notifications" buttons) near a runtime permission request; Apple requires neutral wording ("Continue"/"Next"). Post-denial "Enable X in Settings" guidance is excluded. Source-language strings only (String Catalogs + hardcoded literals) |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–42 are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–43 are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
 ### Screenshot format + dimensions (§7b, 2.3.3)
@@ -172,11 +173,11 @@ finds; Pierre explains.
 
 ---
 
-## Phase 4: Pierre deep review (28 semantic checks)
+## Phase 4: Pierre deep review (29 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 28 evidence-based checks the static scanner
-cannot fully judge — **22 Tier A** (high-confidence) plus **6 Tier B v1** heuristic checks (items
-**4, 5, 7, 10, 15, 28** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
+After Phase 3, Pierre runs the **Review Simulator**: 29 evidence-based checks the static scanner
+cannot fully judge — **23 Tier A** (high-confidence) plus **6 Tier B v1** heuristic checks (items
+**4, 5, 7, 10, 15, 29** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
 5.6.1/5.6.3). Full procedure, output format, and per-check steps are in
 [`pierre-deep-review.md`](pierre-deep-review.md).
 
@@ -188,7 +189,7 @@ These are advisory; FAIL/WARN counts and GREEN/YELLOW/RED come only from Phases 
 5.1.1(i) privacy policy fetch, 2.3.11–13 locale consistency, etc.). Guideline numbers touched
 are tracked in `guidelines-baseline.json` → `covered_by_pierre_deep_review`.
 
-**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 28 findings) and
+**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 29 findings) and
 every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation. Tier B v1 findings are heuristic.
 
 ---

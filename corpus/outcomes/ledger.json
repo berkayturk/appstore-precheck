@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": "2026-07-23-appref01",
+    "app_ref": "appref01",
+    "precheck_version": "1.13.1",
+    "scan_date": "2026-07-22",
+    "verdict_at_submission": "GREEN",
+    "findings_snapshot": [],
+    "submission_date": "2026-07-22",
+    "apple_decision": "rejected",
+    "apple_decision_date": "2026-07-23",
+    "rejected_guidelines": [
+      "5.1.1(iv)"
+    ],
+    "matched_rule_ids": [],
+    "outcome_label": "missed",
+    "evidence_kept_privately": true,
+    "reviewed_by": "berkayturk",
+    "notes": "Custom pre-permission mic-priming screen; consent button text steered toward granting (\"Allow and continue\"). Apple asked for neutral wording (Continue/Next). No rule covered priming-CTA language at scan time; motivated catalog vector 43 (permission-priming-cta) + deep-review check 21. findings_snapshot omitted (scan predates --format json archiving in this app's pipeline)."
+  }
+]

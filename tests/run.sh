@@ -388,6 +388,23 @@ assert_has    "FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NS
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# permission-priming-app — §42 permission-priming-cta fixture. A pre-permission
+# onboarding screen with a steering consent CTA in the String Catalog
+# ("Allow and continue") AND a hardcoded steering literal ("Grant access to
+# start"), next to a mic permission request. The post-denial Settings guidance
+# string and the neutral "Continue" key must NOT be flagged.
+# ---------------------------------------------------------------------------
+check_fixture "permission-priming-app" "steering pre-permission CTA copy (5.1.1(iv))"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 5.1.1(iv) Permission priming"                           "steering CTA copy is flagged"
+assert_has 'onboarding.permissions.cta'                                   "the String Catalog CTA key is cited in the evidence"
+assert_has "Grant access to start"                                        "the hardcoded steering literal is cited too"
+assert_absent "record.permission.denied"                                  "post-denial Settings guidance is not flagged"
+assert_absent '"common.continue"'                                         "a neutral Continue CTA is not flagged"
+assert_absent "ContentView.swift:6"                                       "a code comment mentioning the phrase is not flagged"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 echo "================================================================"
 if (( total_fails == 0 )); then
   echo "ALL TESTS PASSED"

@@ -27,6 +27,7 @@ rule_slug() {
     37) echo safari-extension ;;               38) echo account-no-delete ;;
     39) echo kids-ads-analytics ;;             40) echo realmoney-gambling ;;
     41) echo mdm ;;                            42) echo screenshot-dimensions ;;
+    43) echo permission-priming-cta ;;
     *) echo "" ;;
   esac
 }

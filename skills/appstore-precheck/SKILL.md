@@ -1,10 +1,10 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 42 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 22 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 28 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 43 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 29 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.13.1
+  version: 1.14.0
 allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maestro__run mcp__maestro__inspect_screen mcp__maestro__take_screenshot mcp__maestro__cheat_sheet
 ---
 
@@ -13,7 +13,7 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 A one-command gate to run before every iOS App Store submission. It minimizes the risk of
 rejection by statically scanning the most common rejection vectors, running Apple's own
 metadata linter, watching for guideline drift, having Pierre explain every FAIL and WARN, and
-running 28 semantic deep-review checks (22 Tier A + 6 Tier B v1 heuristic). The deep-review checklist lives in
+running 29 semantic deep-review checks (23 Tier A + 6 Tier B v1 heuristic). The deep-review checklist lives in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md).
 
 **This skill is read-only.** It never edits code, metadata, or assets. It only reports and
@@ -122,7 +122,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 42 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` lines covering 43 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -140,8 +140,8 @@ NetworkExtension usage (5.4), a demo account for a login-gated app (2.1), execut
 (3.1.5(a)), thin WKWebView wrappers (4.2.3), remote-desktop apps (4.2.7), Safari extensions
 (4.4.2), account creation without in-app deletion (5.1.1(v) Account Sign-In), kids audience with
 third-party ads/analytics (5.1.4), real-money gambling copy (5.3.4), MDM signals (5.5), and
-screenshot format/dimension mismatches (2.3.3). The IAP checks (8–10) are skipped automatically
-when no in-app-purchase signals are present, and the signal-gated advisory checks (16–42) stay
+screenshot format/dimension mismatches (2.3.3), and permission-priming CTA copy that steers users toward granting access (5.1.1(iv)). The IAP checks (8–10) are skipped automatically
+when no in-app-purchase signals are present, and the signal-gated advisory checks (16–43) stay
 silent unless their triggering signal is found. The
 full check table is in
 [`references/methodology.md`](references/methodology.md#phase-1-rejection-vectors).
@@ -229,10 +229,10 @@ Use this prompt verbatim after Phases 0–2 complete, pasting in the collected f
 > FAILs and zero WARNs, say so briefly in 2–3 sentences. Read-only — never modify files. Write the
 > explanations in `<USER_LANGUAGE>`.
 
-### Phase 4: Pierre deep review (28 semantic checks)
+### Phase 4: Pierre deep review (29 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 28 read-only, evidence-based checks the
-static scanner cannot fully judge (**22 Tier A** + **6 Tier B v1** heuristic — marked † below).
+After Phase 3, Pierre runs the **Review Simulator**: 29 read-only, evidence-based checks the
+static scanner cannot fully judge (**23 Tier A** + **6 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
 Phase 4. When screenshots are present, also run the structured screenshot vision review in
@@ -245,13 +245,13 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 
 **Rules (summary):**
 
-- Run **all 28 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
+- Run **all 29 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
 - `REVIEW-FINDING:` is always **WARN** (advisory). It does **not** change FAIL/WARN counts or the verdict.
-- † **Tier B v1** checks (4, 5, 7, 10, 15, 28) are heuristic — use cautious language; prefer not applicable when no signal.
+- † **Tier B v1** checks (4, 5, 7, 10, 15, 29) are heuristic — use cautious language; prefer not applicable when no signal.
 - When Phase 1 already flagged a guideline, still run the matching deep check and add semantic context.
 - Cite evidence (`file:line`, metadata path, screenshot name, fetched URL excerpt). Read-only — never edit files.
 
-**The 28 checks (guideline order):**
+**The 29 checks (guideline order):**
 
 | # | Guideline | Deep question |
 |---|-----------|---------------|
@@ -275,23 +275,24 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 | 18 | **5.1.1(ii)** | Purpose strings specific and feature-tied? |
 | 19 | **5.1.1(iii)** | Permissions/SDKs proportionate to app purpose? |
 | 20 | **5.1.1(iv)** | Permission denial handled without forced loops? |
-| 21 | **5.1.2** | ATT, tracking description, policy, and ad SDKs align? |
-| 22 | **5.1.3** | HealthKit data not used for ads/marketing? |
-| 23 | **5.1.4** | Kids signals → parental gate before links/IAP/account? |
-| 24 | **5.4** | VPN → on-screen disclosure copy in UI strings? |
-| 25 | **5.2.1–5.2.3** | Obvious trademark/brand misuse in metadata or UI? |
-| 26 | **5.3.1–5.3.3** | Contest/sweepstakes copy includes official rules? |
-| 27 | **5.6.2–5.6.3** | Developer identity consistent (support URL, domains, app name)? |
-| 28 † | **5.6.1 / 5.6.3** | Rating manipulation dark patterns beyond scan §25? |
+| 21 | **5.1.1(iv)** | Pre-permission priming CTA neutral ("Continue"/"Next"), not steering? |
+| 22 | **5.1.2** | ATT, tracking description, policy, and ad SDKs align? |
+| 23 | **5.1.3** | HealthKit data not used for ads/marketing? |
+| 24 | **5.1.4** | Kids signals → parental gate before links/IAP/account? |
+| 25 | **5.4** | VPN → on-screen disclosure copy in UI strings? |
+| 26 | **5.2.1–5.2.3** | Obvious trademark/brand misuse in metadata or UI? |
+| 27 | **5.3.1–5.3.3** | Contest/sweepstakes copy includes official rules? |
+| 28 | **5.6.2–5.6.3** | Developer identity consistent (support URL, domains, app name)? |
+| 29 † | **5.6.1 / 5.6.3** | Rating manipulation dark patterns beyond scan §25? |
 
 Use this prompt after Phase 3:
 
-> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 28 checks in
+> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 29 checks in
 > [`references/pierre-deep-review.md`](references/pierre-deep-review.md), in table order. For each
 > check emit `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`. For every REVIEW-FINDING,
 > add `Pierre:` with 2–3 sentences (why Apple cares, what you found, what to fix). Read-only.
 > Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Tier B checks
-> (4, 5, 7, 10, 15, 28): prefer not applicable when no signal; use cautious language when flagging.
+> (4, 5, 7, 10, 15, 29): prefer not applicable when no signal; use cautious language when flagging.
 
 ### Phase 5: Consolidation + token
 
@@ -311,10 +312,10 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    from Phase 1 + Phase 0/2 only — Pierre's prose and REVIEW-FINDING lines do not add FAIL/WARN).
 2. Open with Pierre's **trilingual verdict block** using the required format in [Output contract](#trilingual-verdict-block-required-format) — bold language label + blockquote per language, separated by `---`; never one compressed line.
 3. Present **Phase 3 commentary** — Pierre's 2–3 sentence explanation for every FAIL and WARN.
-4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 28), then
-   every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 28 passed.
+4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 29), then
+   every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 29 passed.
    The 5 screenshot-vision checks (S1–S5) emit the same `REVIEW-*` prefixes but count as a
-   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 28" denominator.
+   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 29" denominator.
 5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, then for each
    FAIL a `file:line` reference and a suggested fix (one line each, surgical, not paraphrased).
 6. State the verdict and token action (example one-liners — each goes in its own language block, not inline):

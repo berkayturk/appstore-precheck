@@ -1,0 +1,46 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "onboarding.permissions.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sopravo needs your microphone"
+          }
+        }
+      }
+    },
+    "onboarding.permissions.cta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow and continue"
+          }
+        }
+      }
+    },
+    "record.permission.denied": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enable the microphone in Settings to record."
+          }
+        }
+      }
+    },
+    "common.continue": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

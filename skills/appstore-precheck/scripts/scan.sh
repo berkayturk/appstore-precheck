@@ -1037,6 +1037,63 @@ if [[ -n "$IOS_DIR" ]]; then
   fi
 fi
 
+# ===================================================================
+# §42 — 5.1.1(iv) Permission-priming steering language (catalog vector 43)
+# ===================================================================
+# Apple rejects custom pre-permission ("priming") screens whose consent button
+# pushes the user toward granting access — e.g. "Allow and continue",
+# "Grant access to start", "Enable notifications". Review asks for neutral CTA
+# wording ("Continue", "Next"); the decision belongs to the system alert.
+# Fires only when the code actually requests a runtime permission. Post-denial
+# Settings guidance ("Enable X in Settings") is Apple's own recommended pattern
+# and is excluded. Heuristic: source-language (usually English) strings only.
+set_rule "permission-priming-cta"
+if [[ -n "$IOS_DIR" ]]; then
+  perm_api=$(grep -rlE 'requestRecordPermission|requestAccess[[:space:](]|requestAuthorization|requestWhenInUseAuthorization|requestAlwaysAuthorization|AVCaptureDevice\.requestAccess|PHPhotoLibrary\.requestAuthorization' \
+    "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  if [[ -n "$perm_api" ]]; then
+    # A verb that steers toward granting, and the "…and continue"-style tail
+    # that marks a gate button rather than a sentence of body copy.
+    steer_re='(please )?(allow|grant|enable|authorize|activate|permit|turn on|give access)'
+    tail_re='(continue|proceed|next|start|begin|get started)'
+    bare_re="^${steer_re} ((access|permissions?|the |your )?(microphone|camera|notifications?|location|photos?|contacts|reminders|calendar|bluetooth|tracking|access)[ ]?)+[[:punct:]]?$"
+    prime_hits=""
+    # (a) String Catalog source-language values that read like a steering consent CTA.
+    if have_jq; then
+      while IFS= read -r cat_file; do
+        [[ -z "$cat_file" ]] && continue
+        while IFS=$'\t' read -r sc_key sc_val; do
+          [[ -z "$sc_val" ]] && sc_val="$sc_key"
+          (( ${#sc_val} > 48 )) && continue                       # sentence copy, not a button
+          printf '%s' "$sc_val" | grep -qi 'settings' && continue # post-denial Settings guidance is fine
+          if printf '%s' "$sc_val" | grep -qiE "${steer_re}\b[^.!?]{0,24}\b${tail_re}\b" \
+             || printf '%s' "$sc_val" | grep -qiE "$bare_re"; then
+            prime_hits+="${cat_file}: \"${sc_key}\" = \"${sc_val}\""$'\n'
+          fi
+        done < <(jq -r '(.sourceLanguage // "en") as $src
+                        | .strings | to_entries[]
+                        | [.key, (.value.localizations[$src].stringUnit.value // "")]
+                        | @tsv' "$cat_file" 2>/dev/null)
+      done < <(find . "${PRUNE[@]}" -name '*.xcstrings' -type f 2>/dev/null)
+    fi
+    # (b) Swift/ObjC string literals with the same steering-CTA shape (apps
+    # without a String Catalog, or hardcoded button titles).
+    lit_hits=$(grep -rniE "\"${steer_re}[^\"]{0,24}\\b${tail_re}\\b[^\"]{0,10}\"" \
+      "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
+      | grep -viE 'settings' | grep -vE ':[[:digit:]]+:[[:space:]]*(//|/?\*)' | head -10)
+    [[ -n "$lit_hits" ]] && prime_hits+="$lit_hits"$'\n'
+    prime_hits="$(printf '%s' "$prime_hits" | grep -v '^$' | head -10)"
+    if [[ -n "$prime_hits" ]]; then
+      prime_first="$(printf '%s\n' "$prime_hits" | head -1)"
+      prime_file="${prime_first%%:*}"
+      warn "5.1.1(iv) Permission priming — CTA copy steers users toward granting a permission (e.g. \"Allow and continue\"); Apple requires neutral wording like \"Continue\" or \"Next\" on custom pre-permission screens (5.1.1(iv)):" "$prime_file"
+      detail "$prime_hits"
+    else
+      pass "5.1.1(iv) Permission priming — permission requests present, no steering CTA copy detected (heuristic; source-language strings only)"
+    fi
+  fi
+fi
+
 echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
   printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"

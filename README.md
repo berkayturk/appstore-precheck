@@ -16,8 +16,8 @@
 
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most
 common rejection vectors, runs Apple's own metadata linter, watches the App Store Review Guidelines
-for drift, has Pierre explain every FAIL and WARN, then runs **28 semantic deep-review checks**
-(22 high-confidence Tier A + 6 heuristic Tier B v1 — beta language, review notes quality, app preview,
+for drift, has Pierre explain every FAIL and WARN, then runs **29 semantic deep-review checks**
+(23 high-confidence Tier A + 6 heuristic Tier B v1 — beta language, review notes quality, app preview,
 incentivized review, push/HomeKit abuse, rating manipulation).
 It hands you a single **GREEN / YELLOW / RED** verdict. It never edits your code.
 
@@ -31,7 +31,7 @@ by hand or wire it into CI.
 
 Your verdict is delivered by **Pierre**, a French critic who has seen ten thousand rejections and is
 impressed by none of them. He reviews your build harder than Apple would, in private — first with a
-fast static scan, then with **28 deep semantic checks** (22 confident + 6 heuristic). A GREEN from
+fast static scan, then with **29 deep semantic checks** (23 confident + 6 heuristic). A GREEN from
 Pierre means Apple will wave you through.
 
 - 🔴 **RED**: *"Non. Restore Purchases, absent. Guideline 3.1.2. Suivant."*
@@ -44,7 +44,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-42 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+43 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -93,9 +93,9 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
 signal-gated advisory checks stay silent unless their triggering signal is found.
 
-### Pierre deep review (28 semantic checks)
+### Pierre deep review (29 semantic checks)
 
-After the static scan, Pierre reads your project end-to-end and runs **28 evidence-based checks**
+After the static scan, Pierre reads your project end-to-end and runs **29 evidence-based checks**
 the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (they do **not**
 change the GREEN/YELLOW/RED verdict). Full procedure:
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md).
@@ -135,7 +135,7 @@ signals with a higher false-positive rate; Pierre prefers `not applicable` when 
 | **5.6.2–5.6.3** | Developer identity consistent (app name, support URL content, domains) |
 | **5.6.1 / 5.6.3** † | Rating / review manipulation dark patterns (withhold features until 5 stars, write-review links without `requestReview`) |
 
-Pierre runs **all 28 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
+Pierre runs **all 29 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
 static scan already flagged a guideline, the deep check adds semantic context the scanner could not see.
 † Tier B v1 items are heuristic — treat findings as "verify before submit", not automatic blockers.
 
@@ -148,7 +148,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 42 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | **Full.** All 43 vectors apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The native-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -313,10 +313,10 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 42 vectors above. |
+| **1** | **Static scan**: `scan.sh` over the 43 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
-| **4** | **Pierre deep review**: 28 semantic checks (22 Tier A + 6 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
+| **4** | **Pierre deep review**: 29 semantic checks (23 Tier A + 6 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
 | **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/permission smoke checks on a local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict. |
 
@@ -408,7 +408,7 @@ measures the false-positive rate on real, unrelated open-source code. See
 ## Eval (LLM deep-review scorecard)
 
 The static scanner above is measured by `docs/scorecard.md`; Pierre's **LLM deep-review layer**
-(28 semantic checks, incl. the 6 heuristic Tier B checks) has its own harness under [`eval/`](eval/)
+(29 semantic checks, incl. the 6 heuristic Tier B checks) has its own harness under [`eval/`](eval/)
 and its own scorecard, [`docs/llm-scorecard.md`](docs/llm-scorecard.md).
 
 - **Dataset** — `eval/dataset/`: one labelled case per file (target check, expected

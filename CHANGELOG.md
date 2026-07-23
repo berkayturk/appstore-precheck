@@ -5,6 +5,23 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Added
+- **§42 `permission-priming-cta` (catalog vector 43, 5.1.1(iv))**: static scan for custom
+  pre-permission ("priming") screens whose consent CTA steers users toward granting access
+  ("Allow and continue", "Grant access to start", bare "Enable notifications" buttons).
+  Signal-gated on real permission-request APIs; scans String Catalog source-language values
+  AND hardcoded Swift/ObjC literals; excludes post-denial "Enable X in Settings" guidance
+  (Apple's own recommended pattern) and code comments. Driven by a real July 2026 App Review
+  rejection of a GREEN-verdict app — the exact wording "Allow and continue" was rejected under
+  5.1.1(iv) with Apple asking for "Continue"/"Next" (see `corpus/outcomes/ledger.json`,
+  first `missed` record). Fixture: `tests/fixtures/permission-priming-app`.
+- **Pierre deep-review check 21 (Tier A, 5.1.1(iv))**: pre-permission priming CTA neutrality —
+  the semantic companion to scan §42 (is the flagged string really on a consent gate; does the
+  flow stay usable on decline). Former checks 21–28 renumbered 22–29; Tier B set is now
+  4, 5, 7, 10, 15, 29. Totals: 43 scan vectors, 29 deep-review checks (23 Tier A + 6 Tier B).
+- **First real App Store outcome recorded**: `corpus/outcomes/ledger.json` seeds its first
+  `missed` record (the 5.1.1(iv) rejection above) — the recall gap that motivated vector 43.
+
 ### Added (eval, dev-only — not part of the distributed package)
 - **RAG-grounded Pierre experiment**: `eval/rag/` — ingests the full App Store Review
   Guidelines text (all ~125 sections, not just the officially-mapped subset), embeds it
