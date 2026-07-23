@@ -112,10 +112,19 @@ baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
 | 40 | **5.3.4 Gambling** *(advisory)* | Real-money gaming language in metadata (casino, sportsbook, real money, wager); real-money gambling needs licensing, geo-restriction, and must be free on the store |
 | 41 | **5.5 MDM** *(advisory)* | A Mobile Device Management signal (`DeviceManagement`, managed-app-config, `com.apple.mdm`); MDM apps need a commercial enterprise/education entity and purpose-limited data use |
 | 42 | **2.3.3 Screenshot format/dimensions** *(advisory)* | Reads each in-repo screenshot's magic bytes and, for PNGs, its IHDR pixel dimensions; WARNs on a file whose content does not match its extension, a truncated PNG, or a PNG whose size matches no known App Store screenshot size (either orientation). JPEG dimensions are not parsed (format-checked only). WARN-only — never forces a RED verdict. |
-| 43 | **5.1.1(iv) Permission priming** *(advisory)* | Custom pre-permission screens whose consent CTA steers users toward granting access ("Allow and continue", "Grant access to start", bare "Enable notifications" buttons) near a runtime permission request; Apple requires neutral wording ("Continue"/"Next"). Post-denial "Enable X in Settings" guidance is excluded. Source-language strings only (String Catalogs + hardcoded literals) |
+| 43 | **5.1.1(iv) Permission priming** *(advisory)* | Custom pre-permission screens whose consent CTA steers users toward granting access ("Allow and continue", "Grant access to start", bare "Enable notifications" buttons) near a runtime permission request; Apple requires neutral wording ("Continue"/"Next"). Post-denial "Enable X in Settings" guidance is excluded. Source-language strings only (String Catalogs + hardcoded literals; English + common tr/de/fr/es steering patterns) |
+| 44 | **3.1.2 Trial-emphasized paywall CTA** *(advisory)* | Paywall purchase buttons that promote the free trial over the billed price ("Continue with free trial", "Start your free trial") and "free-trial toggle" paywalls (a Toggle next to trial wording) — the 2026 App Review rejection wave under 3.1.2. A CTA that already shows the price is excluded; the fix is a neutral CTA ("Continue"/"Subscribe") with price + renewal term legible next to it. Source-language strings only (English + common tr/de/fr/es trial patterns, both word orders) |
+| 45 | **2.3.1 Pricing language in name/subtitle** *(advisory)* | "Free", "% off", "sale", "discount", or a currency amount in `name.txt` / `subtitle.txt` (2.3.1 / 2.3.7 accurate metadata): prices vary by storefront and belong in the price field. Hyphen compounds ("ad-free") are excluded; keywords and descriptions are not scanned. The offline complement to `fastlane precheck`'s pricing rules (Phase 2 needs ASC credentials; this does not) |
+| 46 | **5.1.1(ii) Generic purpose strings** *(advisory)* | Non-empty `NS*UsageDescription` values that are very short (<20 chars) or restate the permission without the user-facing feature ("This app needs camera access"). Vector 2 checks presence; this checks substance. Static complement to deep-review check 18 |
+| 47 | **5.1.1 Third-party AI consent** *(advisory)* | An external AI endpoint/SDK (OpenAI, Anthropic, Gemini, Mistral, OpenRouter, Groq, Perplexity, Together) is in the code but no user-facing string names the provider — since 2026 App Review expects a consent screen naming the AI provider and what data is shared (5.1.1 / 5.1.2(i)). The endpoint URL literal itself does not count as a mention |
+| 48 | **3.1.2 Paywall urgency/scarcity** *(advisory)* | Fake-urgency purchase pressure near the paywall: "limited time" / "only today" / "last chance" copy (multilingual), or a countdown timer combined with discount wording in a paywall view (3.1.2 / 2.3.1 misleading purchase pressure) |
+| 49 | **5.6.1 Rating sentiment gate** *(advisory)* | "Enjoying the app?"-style copy next to a rating-prompt API — routing only happy users to the App Store review sheet is rating manipulation (5.6.1). Signal-gated on `requestReview` / `SKStoreReviewController` / a write-review link being present |
+| 50 | **5.1.1(v) Forced login** *(advisory)* | A credential login UI (SecureField / Login view) with no skip / guest / continue-without-account affordance grepped anywhere — requiring login for features that are not account-based is rejected under 5.1.1(v). WARN-verify: an app whose every feature is genuinely account-based is fine |
+| 51 | **4.5.4 Marketing push opt-out** *(advisory)* | A marketing-push SDK (OneSignal, Braze, CleverTap, Iterable, Airship, MoEngage) registers for notifications but no notification-preferences / opt-out signal is found; promotional push requires explicit consent and a working opt-out (4.5.4) |
+| 52 | **2.1 Xcode/SDK minimum** *(advisory)* | The highest `LastUpgradeCheck` across checked-in pbxproj files is clearly pre-26 — since April 2026, App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. WARN-verify: the field tracks the upgrade-check, not the actual build toolchain |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–43 are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–52 are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
 ### Screenshot format + dimensions (§7b, 2.3.3)
@@ -273,4 +282,9 @@ Things the scanner cannot verify; confirm by hand before you submit:
 [ ] Build number incremented from the previous submission
 [ ] Export compliance (encryption) answered
 [ ] If using "Sign in with Apple" alongside other social logins, it is offered
+[ ] Paywall price matches App Store Connect EXACTLY (amount + currency formatting)
+[ ] Free trial is configured as an Introductory Offer in App Store Connect (not app-side only)
+[ ] Updated age-rating questionnaire (13+/16+/18+ tiers) completed in App Store Connect
+[ ] EU DSA trader status declared (required for EU distribution)
+[ ] If user data goes to a third-party AI provider: consent screen names the provider
 ```

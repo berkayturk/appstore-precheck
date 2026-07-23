@@ -1054,8 +1054,10 @@ if [[ -n "$IOS_DIR" ]]; then
   if [[ -n "$perm_api" ]]; then
     # A verb that steers toward granting, and the "…and continue"-style tail
     # that marks a gate button rather than a sentence of body copy.
-    steer_re='(please )?(allow|grant|enable|authorize|activate|permit|turn on|give access)'
-    tail_re='(continue|proceed|next|start|begin|get started)'
+    # English + common tr/de/fr/es steering verbs and gate-button tails, so a
+    # non-English source language ("İzin ver ve devam et") is not a blind spot.
+    steer_re='(please )?(allow|grant|enable|authorize|activate|permit|turn on|give access|(İ|i)zin ver|erişime? izin|etkinleştir|erlauben|zulassen|aktivieren|autoriser|activer|permitir|activar)'
+    tail_re='(continue|proceed|next|start|begin|get started|devam( et)?|başla|ileri|fortfahren|weiter|starten|continuer|commencer|continuar|empezar|siguiente)'
     bare_re="^${steer_re} ((access|permissions?|the |your )?(microphone|camera|notifications?|location|photos?|contacts|reminders|calendar|bluetooth|tracking|access)[ ]?)+[[:punct:]]?$"
     prime_hits=""
     # (a) String Catalog source-language values that read like a steering consent CTA.
@@ -1092,6 +1094,321 @@ if [[ -n "$IOS_DIR" ]]; then
       pass "5.1.1(iv) Permission priming — permission requests present, no steering CTA copy detected (heuristic; source-language strings only)"
     fi
   fi
+fi
+
+# ===================================================================
+# §43 — 3.1.2 Trial-emphasized paywall CTA + free-trial toggle (catalog vector 44)
+# ===================================================================
+# Since early 2026 App Review has been rejecting paywalls whose purchase button
+# promotes the free trial more conspicuously than the billed price ("Continue
+# with free trial", "Start free trial") and "free trial toggle" paywalls,
+# citing 3.1.2 (confusing/misleading subscription flow). The fix that passes
+# review is a neutral CTA ("Continue"/"Subscribe") with the price and renewal
+# term legible next to it. Signal-gated on IAP signals. Heuristic:
+# source-language strings only; button-length strings only (sentences are body
+# copy); a CTA that already shows the price is excluded.
+set_rule "paywall-trial-emphasis"
+if [[ -n "$iap_detected" ]]; then
+  # Two branches: verb→free (English word order: "Start your free trial") and
+  # free→verb (tr/de/fr/es order: "Ücretsiz denemeyi başlat", "Kostenlos testen").
+  trialcta_re='\b(start|begin|continue|claim|activate|redeem|unlock|try|başlat|dene|devam|starten|testen?|essayer|essai|probar|prueba)\b[^.!?"]{0,28}\b(free|(Ü|ü)cretsiz|kostenlos|gratuit(e)?|gratis)\b|\b(free|(Ü|ü)cretsiz|kostenlos|gratuit(e)?|gratis)\b[^.!?"]{0,28}\b(trial|başlat|dene(me)?(yi)?|devam|starten|testen|weiter|essai|continuer|prueba|continuar)\b'
+  price_in_cta_re='[$€£¥₺]|[0-9]+[.,][0-9]{2}|/ ?(year|month|week|yr|mo)\b'
+  cta_hits=""
+  # (a) String Catalog source-language values shaped like a trial-first CTA.
+  if have_jq; then
+    while IFS= read -r cat_file; do
+      [[ -z "$cat_file" ]] && continue
+      while IFS=$'\t' read -r sc_key sc_val; do
+        [[ -z "$sc_val" ]] && sc_val="$sc_key"
+        (( ${#sc_val} > 48 )) && continue                              # sentence copy, not a button
+        printf '%s' "$sc_val" | grep -qiE "$price_in_cta_re" && continue  # CTA already shows the price
+        if printf '%s' "$sc_val" | grep -qiE "$trialcta_re"; then
+          cta_hits+="${cat_file}: \"${sc_key}\" = \"${sc_val}\""$'\n'
+        fi
+      done < <(jq -r '(.sourceLanguage // "en") as $src
+                      | .strings | to_entries[]
+                      | [.key, (.value.localizations[$src].stringUnit.value // "")]
+                      | @tsv' "$cat_file" 2>/dev/null)
+    done < <(find . "${PRUNE[@]}" -name '*.xcstrings' -type f 2>/dev/null)
+  fi
+  # (b) Hardcoded Swift/ObjC string literals with the same trial-first CTA shape.
+  cta_lit_hits=$(grep -rniE "\"(start|begin|continue|claim|activate|redeem|unlock|try|başlat|dene|devam|starten|testen?|essayer|probar)[^\"]{0,28}(free|(Ü|ü)cretsiz|kostenlos|gratuit|gratis)[^\"]{0,14}\"|\"[^\"]{0,10}(free|(Ü|ü)cretsiz|kostenlos|gratuit|gratis)[^\"]{0,28}(trial|başlat|dene(me)?(yi)?|devam|starten|testen|essai|prueba)[^\"]{0,14}\"" \
+    "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
+    | grep -viE "$price_in_cta_re" | grep -vE ':[[:digit:]]+:[[:space:]]*(//|/?\*)' | head -10)
+  [[ -n "$cta_lit_hits" ]] && cta_hits+="$cta_lit_hits"$'\n'
+  cta_hits="$(printf '%s' "$cta_hits" | grep -v '^$' | head -10)"
+  if [[ -n "$cta_hits" ]]; then
+    cta_first="$(printf '%s\n' "$cta_hits" | head -1)"
+    warn "3.1.2 Paywall trial CTA — purchase button copy emphasizes the free trial over the price (e.g. \"Continue with free trial\"); App Review rejects trial-first CTAs under 3.1.2 — use a neutral CTA (\"Continue\"/\"Subscribe\") with the billed price and renewal term legible next to it:" "${cta_first%%:*}"
+    detail "$cta_hits"
+  fi
+  # (c) Free-trial toggle: a Toggle control next to trial wording in a paywall
+  # view — the "toggle paywall" pattern App Review now calls confusing (3.1.2).
+  toggle_hits=""
+  paywall_trial_re='free[[:space:]]?trial|trial[[:space:]]?period|ücretsiz[[:space:]]?dene|essai[[:space:]]?gratuit'
+  for pw in "${PAYWALL_FILES[@]+"${PAYWALL_FILES[@]}"}"; do
+    if grep -qE 'Toggle\(|UISwitch' "$pw" 2>/dev/null && grep -qiE "$paywall_trial_re" "$pw" 2>/dev/null; then
+      toggle_hits+="$pw"$'\n'
+    fi
+  done
+  toggle_hits="$(printf '%s' "$toggle_hits" | grep -v '^$' | awk '!seen[$0]++' | head -5)"
+  if [[ -n "$toggle_hits" ]]; then
+    warn "3.1.2 Free-trial toggle — a paywall view combines a Toggle with free-trial wording; App Review has been rejecting \"free trial toggle\" paywalls as confusing/misleading (3.1.2). Show one clear price + renewal term instead of a trial switch:" "$(printf '%s\n' "$toggle_hits" | head -1)"
+    detail "$toggle_hits"
+  fi
+  if [[ -z "$cta_hits" && -z "$toggle_hits" ]]; then
+    pass "3.1.2 Paywall trial CTA — IAP present, no trial-emphasized CTA or free-trial-toggle pattern detected (heuristic; source-language strings only)"
+  fi
+fi
+
+# ===================================================================
+# §44 — 2.3.1 Pricing / promo language in app name or subtitle (catalog vector 45)
+# ===================================================================
+# "Free", "% off", "sale", or a currency amount in the app NAME or SUBTITLE is
+# a recurring metadata rejection (2.3.1 / 2.3.7 accurate metadata): prices vary
+# by storefront and change over time, so they belong in the price field, not
+# the title. Scoped to name.txt + subtitle.txt only (keywords and descriptions
+# legitimately mention pricing). Compounds like "ad-free" are excluded.
+set_rule "metadata-pricing-language"
+if [[ -d "$META_DIR" ]]; then
+  price_meta_re='\bfree\b|\bgratis\b|\bsale\b|[0-9]+[[:space:]]?%[[:space:]]?off|\bdiscount\b|[$€£¥₺][[:space:]]?[0-9]|[0-9]+[.,][0-9]{2}[[:space:]]?(usd|eur|gbp|try|tl)\b'
+  price_hits=""
+  for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
+    for mf in name.txt subtitle.txt; do
+      f="$META_DIR/$loc/$mf"; [[ -f "$f" ]] || continue
+      # `grep -- '-free'` guard: hyphen compounds ("ad-free", "hassle-free")
+      # are feature claims, not prices; dropping the whole line is acceptable
+      # for a WARN-level heuristic.
+      h=$(grep -HinE "$price_meta_re" "$f" 2>/dev/null | grep -vi -- '-free' | head -3)
+      [[ -n "$h" ]] && price_hits+="$h"$'\n'
+    done
+  done
+  price_hits="$(printf '%s' "$price_hits" | grep -v '^$' | head -10)"
+  if [[ -n "$price_hits" ]]; then
+    price_first="$(printf '%s\n' "$price_hits" | head -1)"
+    warn "2.3.1 Pricing language in app name/subtitle — price or promo wording (\"Free\", \"% off\", a currency amount) in the name or subtitle is a common metadata rejection (2.3.1/2.3.7); prices belong in the price field, not the title:" "${price_first%%:*}"
+    detail "$price_hits"
+  else
+    pass "2.3.1 App name/subtitle — no pricing/promo language detected"
+  fi
+fi
+
+# ===================================================================
+# §45 — 5.1.1(ii) Generic / boilerplate purpose strings (catalog vector 46)
+# ===================================================================
+# §2 checks that purpose strings EXIST; this checks that they say something.
+# App Review rejects boilerplate that restates the permission without the
+# user-facing reason ("This app needs microphone access") under 5.1.1 — the
+# string must explain the feature ("…to record voice notes"). Static
+# complement to deep-review check 18. WARN-only heuristic: very short values
+# or values matching a pure permission-restating template.
+set_rule "generic-purpose-string"
+if [[ -f "$INFO_PLIST" ]]; then
+  ps_generic_re='^(this |our )?(app|application)?[[:space:]]*(needs?|requires?|uses?|would like|wants?|is requesting)([[:space:]]+to)?([[:space:]]+(access|use))?([[:space:]]+to)?([[:space:]]+(the|your))?[[:space:]]*(camera|microphone|mic|location|photos?|photo library|gallery|contacts|calendar|reminders|bluetooth|motion|speech recognition|health data|tracking|notifications?)([[:space:]]+(access|data|permission|usage))?[.! ]*$'
+  ps_total=0 ps_flagged=0
+  while IFS=$'\t' read -r ps_key ps_val; do
+    [[ -z "$ps_key" ]] && continue
+    # Empty values are already a FAIL in §2; skip them here.
+    [[ -z "${ps_val// /}" ]] && continue
+    ps_total=$((ps_total + 1))
+    if (( ${#ps_val} < 20 )); then
+      warn "5.1.1(ii) Purpose string '$ps_key' is very short (\"$ps_val\") — App Review expects the user-facing reason, e.g. \"…to record voice notes for your entries\"" "$INFO_PLIST"
+      ps_flagged=$((ps_flagged + 1))
+    elif printf '%s' "$ps_val" | grep -qiE "$ps_generic_re"; then
+      warn "5.1.1(ii) Purpose string '$ps_key' is boilerplate (\"$ps_val\") — it restates the permission without the feature; explain what the user gets (5.1.1(ii))" "$INFO_PLIST"
+      ps_flagged=$((ps_flagged + 1))
+    fi
+  done < <(awk -F'[<>]' '/<key>NS[A-Za-z]+UsageDescription<\/key>/{k=$3; getline; if ($2=="string") print k"\t"$3}' "$INFO_PLIST" 2>/dev/null)
+  if (( ps_total > 0 && ps_flagged == 0 )); then
+    pass "5.1.1(ii) Purpose strings — $ps_total present, none look generic (heuristic)"
+  fi
+fi
+
+# ===================================================================
+# §46 — 5.1.1 Third-party AI provider without a named consent screen (catalog vector 47)
+# ===================================================================
+# 2026 review practice: an app that sends user data to an external AI service
+# (OpenAI, Anthropic, Google Gemini, …) must show a clear consent screen that
+# NAMES the provider and explains what data is shared (5.1.1 consent /
+# 5.1.2(i) sharing with third parties). Heuristic: if an AI endpoint/SDK is
+# in the code but the provider's name never appears inside any user-facing
+# string literal or String Catalog, the consent screen is probably missing.
+set_rule "ai-provider-consent"
+if [[ -n "$IOS_DIR" ]]; then
+  ai_provider="" ai_sig=""
+  for ai_pair in \
+    'api\.openai\.com|import OpenAI|OpenAIKit:OpenAI' \
+    'api\.anthropic\.com|import Anthropic|AnthropicSwift:Anthropic' \
+    'generativelanguage\.googleapis\.com|GoogleGenerativeAI|FirebaseVertexAI:Gemini' \
+    'api\.mistral\.ai:Mistral' \
+    'openrouter\.ai:OpenRouter' \
+    'api\.groq\.com:Groq' \
+    'api\.perplexity\.ai:Perplexity' \
+    'api\.together\.xyz:Together'; do
+    ai_pat="${ai_pair%%:*}"; ai_name="${ai_pair##*:}"
+    ai_hit=$(grep -rlE "$ai_pat" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+    [[ -n "$ai_hit" ]] && { ai_sig="$ai_hit"; ai_provider="$ai_name"; break; }
+  done
+  if [[ -n "$ai_provider" ]]; then
+    # Provider named anywhere the user can see it: a quoted source literal or
+    # any String Catalog value. Lines containing a URL are excluded — the
+    # endpoint literal itself ("https://api.openai.com/…") is not a user-facing
+    # mention of the provider.
+    ai_named=$(grep -rniE "\"[^\"]*${ai_provider}[^\"]*\"" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | grep -v '://' | head -1)
+    [[ -z "$ai_named" ]] && ai_named=$(grep -rliE "$ai_provider" --include='*.xcstrings' "${GREP_PRUNE[@]}" . 2>/dev/null | head -1)
+    if [[ -z "$ai_named" ]]; then
+      warn "5.1.1 Third-party AI — user data appears to be sent to ${ai_provider} ($(basename "$ai_sig")) but no user-facing string names the provider; since 2026 App Review expects a consent screen naming the AI provider and what data is shared before the first send (5.1.1 / 5.1.2(i))" "$ai_sig"
+    else
+      pass "5.1.1 Third-party AI — ${ai_provider} endpoint/SDK present and the provider is named in user-facing strings; verify the consent screen appears before the first data send"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §47 — 3.1.2 Urgency / scarcity dark patterns on the paywall (catalog vector 48)
+# ===================================================================
+# Fake-urgency purchase pressure — countdown timers next to discount copy,
+# "Only today!", "Last chance", "Offer ends soon" — gets rejected under
+# 3.1.2 / 2.3.1 (misleading purchase pressure). Signal-gated on IAP signals.
+set_rule "paywall-urgency"
+if [[ -n "$iap_detected" ]]; then
+  urgency_re='limited[- ]time|only today|today only|last chance|offer ends|expires (in|today|soon)|act now|hurry|final hours|don.?t miss|(S|s)ınırlı süre|(S|s)on şans|bugüne özel|nur heute|letzte chance|dernière chance|offre limitée|última oportunidad|oferta limitada'
+  urg_hits=""
+  # (a) Urgency copy in String Catalog values or quoted literals.
+  if have_jq; then
+    while IFS= read -r cat_file; do
+      [[ -z "$cat_file" ]] && continue
+      while IFS=$'\t' read -r sc_key sc_val; do
+        [[ -z "$sc_val" ]] && sc_val="$sc_key"
+        if printf '%s' "$sc_val" | grep -qiE "$urgency_re"; then
+          urg_hits+="${cat_file}: \"${sc_key}\" = \"${sc_val}\""$'\n'
+        fi
+      done < <(jq -r '(.sourceLanguage // "en") as $src
+                      | .strings | to_entries[]
+                      | [.key, (.value.localizations[$src].stringUnit.value // "")]
+                      | @tsv' "$cat_file" 2>/dev/null)
+    done < <(find . "${PRUNE[@]}" -name '*.xcstrings' -type f 2>/dev/null)
+  fi
+  urg_lit=$(grep -rniE "\"[^\"]*(${urgency_re})[^\"]*\"" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
+    | grep -vE ':[[:digit:]]+:[[:space:]]*(//|/?\*)' | head -10)
+  [[ -n "$urg_lit" ]] && urg_hits+="$urg_lit"$'\n'
+  urg_hits="$(printf '%s' "$urg_hits" | grep -v '^$' | awk '!seen[$0]++' | head -10)"
+  if [[ -n "$urg_hits" ]]; then
+    urg_first="$(printf '%s\n' "$urg_hits" | head -1)"
+    warn "3.1.2 Paywall urgency — scarcity/urgency copy near the purchase flow (\"limited time\", \"only today\", a countdown); App Review treats fake purchase pressure as misleading (3.1.2 / 2.3.1). If the offer is real and time-boxed in App Store Connect, keep the copy factual:" "${urg_first%%:*}"
+    detail "$urg_hits"
+  fi
+  # (b) Countdown timer inside a paywall view next to discount wording.
+  urg_timer_hits=""
+  for pw in "${PAYWALL_FILES[@]+"${PAYWALL_FILES[@]}"}"; do
+    if grep -qE 'Timer\.publish|timeRemaining|countdown|CADisplayLink' "$pw" 2>/dev/null \
+       && grep -qiE '% ?off|discount|sale|indirim|rabatt|réduction|descuento' "$pw" 2>/dev/null; then
+      urg_timer_hits+="$pw"$'\n'
+    fi
+  done
+  urg_timer_hits="$(printf '%s' "$urg_timer_hits" | grep -v '^$' | awk '!seen[$0]++' | head -5)"
+  if [[ -n "$urg_timer_hits" ]]; then
+    warn "3.1.2 Paywall countdown — a paywall view combines a countdown timer with discount wording; a timer that resets or pressures the purchase is a rejection risk (3.1.2 / 2.3.1). Verify the deadline is real:" "$(printf '%s\n' "$urg_timer_hits" | head -1)"
+    detail "$urg_timer_hits"
+  fi
+  if [[ -z "$urg_hits" && -z "$urg_timer_hits" ]]; then
+    pass "3.1.2 Paywall urgency — IAP present, no urgency/scarcity pattern detected (heuristic)"
+  fi
+fi
+
+# ===================================================================
+# §48 — 5.6.1 Sentiment-gated rating prompt (catalog vector 49)
+# ===================================================================
+# "Enjoying the app?" → happy users get the rating prompt, unhappy users get
+# a feedback form. Pre-filtering who sees the prompt is rating manipulation
+# territory under 5.6.1. Signal-gated on a rating-prompt API being present.
+set_rule "rating-sentiment-gate"
+if [[ -n "$IOS_DIR" ]]; then
+  rate_api=$(grep -rlE 'requestReview|SKStoreReviewController|write-review' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  if [[ -n "$rate_api" ]]; then
+    gate_re='(are you |you )?enjoying (the |this )?app|loving (the |this )?app|having a good (time|experience)|uygulamam?ızı beğen|uygulamayı beğen|gefällt (dir|ihnen) die app|vous aimez l.application|te gusta la (app|aplicación)'
+    gate_hits=""
+    if have_jq; then
+      while IFS= read -r cat_file; do
+        [[ -z "$cat_file" ]] && continue
+        while IFS=$'\t' read -r sc_key sc_val; do
+          [[ -z "$sc_val" ]] && sc_val="$sc_key"
+          if printf '%s' "$sc_val" | grep -qiE "$gate_re"; then
+            gate_hits+="${cat_file}: \"${sc_key}\" = \"${sc_val}\""$'\n'
+          fi
+        done < <(jq -r '(.sourceLanguage // "en") as $src
+                        | .strings | to_entries[]
+                        | [.key, (.value.localizations[$src].stringUnit.value // "")]
+                        | @tsv' "$cat_file" 2>/dev/null)
+      done < <(find . "${PRUNE[@]}" -name '*.xcstrings' -type f 2>/dev/null)
+    fi
+    gate_lit=$(grep -rniE "\"[^\"]*(${gate_re})[^\"]*\"" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
+      | grep -vE ':[[:digit:]]+:[[:space:]]*(//|/?\*)' | head -10)
+    [[ -n "$gate_lit" ]] && gate_hits+="$gate_lit"$'\n'
+    gate_hits="$(printf '%s' "$gate_hits" | grep -v '^$' | awk '!seen[$0]++' | head -10)"
+    if [[ -n "$gate_hits" ]]; then
+      gate_first="$(printf '%s\n' "$gate_hits" | head -1)"
+      warn "5.6.1 Rating sentiment gate — \"Enjoying the app?\"-style copy next to a rating prompt; routing only happy users to the App Store review sheet is rating manipulation under 5.6.1. Show the system prompt without a sentiment pre-filter:" "${gate_first%%:*}"
+      detail "$gate_hits"
+    else
+      pass "5.6.1 Rating prompt — no sentiment pre-gate copy detected (heuristic)"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §49 — 5.1.1(v) Forced login for a possibly account-free app (catalog vector 50)
+# ===================================================================
+# 5.1.1(v): apps may not require login for features that are not
+# account-based. Heuristic: a credential login UI exists but no skip / guest /
+# continue-without-account affordance is grepped. WARN-verify (an app whose
+# every feature is genuinely account-based is fine).
+set_rule "forced-login"
+if [[ -n "$IOS_DIR" ]]; then
+  login_ui=$(grep -rlE 'SecureField|UITextContentType\.password|LoginView|SignInView' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  if [[ -n "$login_ui" ]]; then
+    skip_sig=$(grep -rliE '\"(skip|not now|maybe later|later|continue without|browse as guest|guest( mode)?|misafir|atla|şimdi değil|überspringen|ohne konto|plus tard|passer|omitir|más tarde)|signInAnonymously|continueAsGuest|guestMode|skipLogin|anonymousSession' \
+      "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+    if [[ -z "$skip_sig" ]]; then
+      warn "5.1.1(v) Forced login — a credential login UI exists ($(basename "$login_ui")) but no skip/guest/continue-without-account path was found; requiring login for features that are not account-based is rejected under 5.1.1(v). Add a guest path, or verify every feature genuinely needs the account" "$login_ui"
+    else
+      pass "5.1.1(v) Login — a skip/guest affordance exists alongside the login UI"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §50 — 4.5.4 Marketing push SDK without a visible opt-out (catalog vector 51)
+# ===================================================================
+# Push may not be REQUIRED and promotional push needs explicit consent plus an
+# in-app opt-out (4.5.4). Signal-gated on a marketing-push SDK (not plain APNs).
+set_rule "push-marketing-optout"
+if [[ -n "$IOS_DIR" ]]; then
+  push_mkt=$(grep -rlE 'import OneSignal|OneSignal\.|import Braze|BrazeKit|CleverTapSDK|import CleverTap|IterableSDK|import Iterable|AirshipCore|import Airship|MoEngageSDK|import MoEngage' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  push_reg=$(grep -rlE 'registerForRemoteNotifications|UNUserNotificationCenter' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  if [[ -n "$push_mkt" && -n "$push_reg" ]]; then
+    push_optout=$(grep -rliE 'notification(s)?(Enabled|Preferences|Settings|Toggle)|pushEnabled|marketingConsent|promotional.*(opt|toggle)|bildirim ayar' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+    if [[ -z "$push_optout" ]]; then
+      warn "4.5.4 Marketing push — a marketing-push SDK ($(basename "$push_mkt")) registers for notifications but no in-app notification-preferences/opt-out signal was found; promotional push requires explicit consent and a working opt-out (4.5.4)" "$push_mkt"
+    else
+      pass "4.5.4 Marketing push — SDK present and a notification-preferences signal exists; verify promotional pushes are consent-gated"
+    fi
+  fi
+fi
+
+# ===================================================================
+# §51 — 2.1 Xcode / iOS SDK minimum for uploads (catalog vector 52)
+# ===================================================================
+# Since April 2026, App Store uploads must be built with the iOS 26 SDK
+# (Xcode 26); older toolchains get automated upload rejections. Heuristic:
+# the highest LastUpgradeCheck across checked-in pbxproj files. That value
+# tracks "upgrade to recommended settings", not the actual toolchain, so this
+# is WARN-verify only, and only fires when the value is clearly pre-26.
+set_rule "xcode-sdk-requirement"
+last_upgrade=$(find . "${PRUNE[@]}" -name 'project.pbxproj' -type f 2>/dev/null | head -5 \
+  | xargs grep -h 'LastUpgradeCheck' 2>/dev/null | grep -oE '[0-9]+' | sort -n | tail -1)
+if [[ -n "$last_upgrade" ]] && (( last_upgrade < 2600 )); then
+  warn "2.1 Xcode/SDK minimum — LastUpgradeCheck=$last_upgrade suggests the project was last upgraded with a pre-26 Xcode; since April 2026 App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. Verify the actual build toolchain (heuristic: this field tracks the upgrade-check, not the build)"
 fi
 
 echo "---END-OF-SCAN---"

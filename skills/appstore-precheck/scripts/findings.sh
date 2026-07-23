@@ -27,7 +27,11 @@ rule_slug() {
     37) echo safari-extension ;;               38) echo account-no-delete ;;
     39) echo kids-ads-analytics ;;             40) echo realmoney-gambling ;;
     41) echo mdm ;;                            42) echo screenshot-dimensions ;;
-    43) echo permission-priming-cta ;;
+    43) echo permission-priming-cta ;;      44) echo paywall-trial-emphasis ;;
+    45) echo metadata-pricing-language ;;   46) echo generic-purpose-string ;;
+    47) echo ai-provider-consent ;;         48) echo paywall-urgency ;;
+    49) echo rating-sentiment-gate ;;       50) echo forced-login ;;
+    51) echo push-marketing-optout ;;       52) echo xcode-sdk-requirement ;;
     *) echo "" ;;
   esac
 }

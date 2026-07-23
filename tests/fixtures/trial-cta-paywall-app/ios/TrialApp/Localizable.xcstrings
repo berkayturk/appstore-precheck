@@ -1,0 +1,31 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "paywall.cta.trial" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue with free trial" } }
+      }
+    },
+    "paywall.cta.priced" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Try free, then $29.99/year" } }
+      }
+    },
+    "common.continue" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue" } }
+      }
+    },
+    "subscription_disclosure" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Premium auto-renews at $29.99/year until cancelled in Settings at least 24h before the period ends." } }
+      }
+    },
+    "subscription_trial_disclosure" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "After the 7-day free trial, the subscription auto-renews at $29.99/year unless cancelled." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

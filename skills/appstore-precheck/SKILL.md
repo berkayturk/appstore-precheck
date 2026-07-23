@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 43 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 29 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 52 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 29 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -122,7 +122,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 43 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` lines covering 52 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -140,8 +140,15 @@ NetworkExtension usage (5.4), a demo account for a login-gated app (2.1), execut
 (3.1.5(a)), thin WKWebView wrappers (4.2.3), remote-desktop apps (4.2.7), Safari extensions
 (4.4.2), account creation without in-app deletion (5.1.1(v) Account Sign-In), kids audience with
 third-party ads/analytics (5.1.4), real-money gambling copy (5.3.4), MDM signals (5.5), and
-screenshot format/dimension mismatches (2.3.3), and permission-priming CTA copy that steers users toward granting access (5.1.1(iv)). The IAP checks (8–10) are skipped automatically
-when no in-app-purchase signals are present, and the signal-gated advisory checks (16–43) stay
+screenshot format/dimension mismatches (2.3.3), permission-priming CTA copy that steers users
+toward granting access (5.1.1(iv)), trial-emphasized paywall CTAs and free-trial toggles (3.1.2),
+pricing/promo language in the app name or subtitle (2.3.1), generic boilerplate purpose
+strings (5.1.1(ii)), a third-party AI endpoint without a provider-naming consent string (5.1.1),
+urgency/scarcity dark patterns on the paywall (3.1.2), sentiment-gated rating prompts (5.6.1),
+forced login without a guest path (5.1.1(v)), a marketing-push SDK without an opt-out signal
+(4.5.4), and a pre-26 Xcode `LastUpgradeCheck` against the April 2026 iOS 26 SDK upload minimum
+(2.1). The IAP checks (8–10) are skipped automatically
+when no in-app-purchase signals are present, and the signal-gated advisory checks (16–52) stay
 silent unless their triggering signal is found. The
 full check table is in
 [`references/methodology.md`](references/methodology.md#phase-1-rejection-vectors).

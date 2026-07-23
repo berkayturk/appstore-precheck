@@ -16,6 +16,9 @@ struct ContentView: View {
                 Button("Grant access to start") {
                     requestMicAccess()
                 }
+                Button("İzin ver ve devam et") {
+                    requestMicAccess()
+                }
             }
         }
     }

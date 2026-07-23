@@ -34,7 +34,7 @@ done
 
 # Count only catalog-tagging set_rule calls (non-empty slug); the IAP-gate's
 # `set_rule ""` reset (Fix C) is intentionally excluded — it is not a section tag.
-assert_eq "43" "$(grep 'set_rule "' "$SCAN" | grep -vc 'set_rule ""')" "all 43 catalog sections tagged"
+assert_eq "52" "$(grep 'set_rule "' "$SCAN" | grep -vc 'set_rule ""')" "all 52 catalog sections tagged"
 
 # Version provenance: the JSON envelope must report the TOOL's own version (read
 # from skills/appstore-precheck/SKILL.md), never the scanned repo's package.json,

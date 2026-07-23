@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
-## [Unreleased]
+## [1.14.0] - 2026-07-23
 
 ### Added
 - **§42 `permission-priming-cta` (catalog vector 43, 5.1.1(iv))**: static scan for custom
@@ -21,6 +21,66 @@ All notable changes to this project are documented here. Versioning follows
   4, 5, 7, 10, 15, 29. Totals: 43 scan vectors, 29 deep-review checks (23 Tier A + 6 Tier B).
 - **First real App Store outcome recorded**: `corpus/outcomes/ledger.json` seeds its first
   `missed` record (the 5.1.1(iv) rejection above) — the recall gap that motivated vector 43.
+- **§43 `paywall-trial-emphasis` (catalog vector 44, 3.1.2)**: flags paywall purchase CTAs that
+  promote the free trial over the billed price ("Continue with free trial", "Start your free
+  trial") and the "free-trial toggle" paywall pattern — the early-2026 App Review rejection wave
+  under 3.1.2 (the field-proven fix is a neutral "Continue"/"Subscribe" CTA with the price and
+  renewal term legible next to it). Signal-gated on IAP signals; scans String Catalog
+  source-language values + hardcoded literals; a CTA that already carries a price is excluded.
+  Fixture: `tests/fixtures/trial-cta-paywall-app`.
+- **§44 `metadata-pricing-language` (catalog vector 45, 2.3.1)**: flags "Free", "% off", "sale",
+  "discount", or currency amounts in `name.txt`/`subtitle.txt` (2.3.1/2.3.7 accurate metadata) —
+  the offline complement to `fastlane precheck`'s pricing rules, which need ASC credentials.
+  Hyphen compounds ("ad-free") excluded; keywords/descriptions not scanned. Fixture:
+  `tests/fixtures/promo-metadata-app`.
+- **§45 `generic-purpose-string` (catalog vector 46, 5.1.1(ii))**: flags non-empty
+  `NS*UsageDescription` values that are very short or pure permission-restating boilerplate
+  ("This app needs camera access") — vector 2 checks presence, this checks substance; the static
+  complement to deep-review check 18. Fixture: `tests/fixtures/generic-purpose-app`.
+- **§46 `ai-provider-consent` (catalog vector 47, 5.1.1)**: an external AI endpoint/SDK
+  (OpenAI, Anthropic, Gemini, Mistral, OpenRouter, Groq, Perplexity, Together) with no
+  user-facing string naming the provider — the 2026 consent-screen requirement for sharing user
+  data with third-party AI (5.1.1 / 5.1.2(i)). The endpoint URL literal itself does not count
+  as a mention. Fixture: `tests/fixtures/ai-chat-app`.
+- **§47 `paywall-urgency` (catalog vector 48, 3.1.2)**: fake-urgency purchase pressure —
+  "limited time" / "only today" / "last chance" copy (multilingual) and countdown timers
+  combined with discount wording in paywall views (3.1.2 / 2.3.1). Fixture:
+  `tests/fixtures/urgency-paywall-app`.
+- **§48 `rating-sentiment-gate` (catalog vector 49, 5.6.1)**: "Enjoying the app?"-style
+  sentiment pre-filtering next to a rating-prompt API — routing only happy users to the review
+  sheet is rating manipulation. Fixture: `tests/fixtures/rating-gate-app`.
+- **§49 `forced-login` (catalog vector 50, 5.1.1(v))**: a credential login UI with no
+  skip/guest/continue-without-account affordance (WARN-verify heuristic). Fixture:
+  `tests/fixtures/forced-login-app`.
+- **§50 `push-marketing-optout` (catalog vector 51, 4.5.4)**: a marketing-push SDK (OneSignal,
+  Braze, CleverTap, Iterable, Airship, MoEngage) registering for notifications without a
+  notification-preferences/opt-out signal. Fixture: `tests/fixtures/push-marketing-app`.
+- **§51 `xcode-sdk-requirement` (catalog vector 52, 2.1)**: `LastUpgradeCheck` clearly pre-26
+  vs the April 2026 iOS 26 SDK (Xcode 26) upload minimum (WARN-verify heuristic — the field
+  tracks the upgrade-check, not the build toolchain). Fixture: `tests/fixtures/old-xcode-app`.
+- **Multilingual steering/trial patterns for vectors 43–44**: the permission-priming (§42) and
+  trial-CTA (§43) regexes now also match common Turkish/German/French/Spanish wording in both
+  word orders ("İzin ver ve devam et", "Ücretsiz denemeyi başlat", "Kostenlos testen") — a
+  non-English source language is no longer a blind spot for these checks.
+- **Pre-submit manual checklist extended** with the ASC-side items the scanner cannot see:
+  exact paywall↔ASC price match, trial configured as an Introductory Offer, the updated
+  age-rating questionnaire (13+/16+/18+), EU DSA trader status, and the AI-consent screen.
+  Totals: 52 scan vectors.
+
+### Fixed
+- **Version lockstep**: `package.json` and both plugin manifests were left at 1.13.1 when
+  SKILL.md moved to 1.14.0 (`scripts/check-versions.sh` was failing); all four now agree.
+- **Last-section fingerprint churn (guideline drift)**: `gd_section_text` ran to end-of-page
+  for the last numbered section (5.6.4), gluing the "After You Submit" block, the
+  "last updated" date, and the whole site footer onto its prose — so ANY footer edit fired a
+  false "5.6.4 text drift" WARN (exactly what happened on 2026-07-23; the actual 5.6.4 prose
+  was unchanged). Extraction now truncates at those page-chrome markers; fingerprints
+  reconciled (only 5.6.4's hash changed).
+- **`--reconcile` wrote a literal placeholder date**: `reconciled_on` was set to the string
+  `"RECONCILE_DATE"` instead of today's date (single-quoted jq program); now `--arg`-injected.
+- **README drift from the vector-43 commit**: the static-scan table was missing the
+  5.1.1(iv) permission-priming row, the deep-review table was missing check 21 (priming CTA
+  neutrality), and the Tier A count still read 22 (should be 23).
 
 ### Added (eval, dev-only — not part of the distributed package)
 - **RAG-grounded Pierre experiment**: `eval/rag/` — ingests the full App Store Review

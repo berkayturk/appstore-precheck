@@ -402,6 +402,106 @@ assert_has "Grant access to start"                                        "the h
 assert_absent "record.permission.denied"                                  "post-denial Settings guidance is not flagged"
 assert_absent '"common.continue"'                                         "a neutral Continue CTA is not flagged"
 assert_absent "ContentView.swift:6"                                       "a code comment mentioning the phrase is not flagged"
+assert_has "İzin ver ve devam et"                                         "a Turkish steering CTA is flagged too (non-English source language)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# trial-cta-paywall-app — §43 paywall-trial-emphasis fixture. A StoreKit 2
+# paywall with a trial-first CTA in the String Catalog ("Continue with free
+# trial"), a hardcoded trial-first literal ("Start your free trial"), and a
+# free-trial Toggle. The priced CTA ("Try free, then $29.99/year") and the
+# neutral "Continue" key must NOT be flagged.
+# ---------------------------------------------------------------------------
+check_fixture "trial-cta-paywall-app" "trial-emphasized paywall CTA + free-trial toggle (3.1.2)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 3.1.2 Paywall trial CTA"                                "trial-first CTA copy is flagged"
+assert_has 'paywall.cta.trial'                                            "the String Catalog CTA key is cited in the evidence"
+assert_has "Start your free trial"                                        "the hardcoded trial-first literal is cited too"
+assert_has "WARN: 3.1.2 Free-trial toggle"                                "the trial-toggle paywall pattern is flagged"
+assert_absent "paywall.cta.priced"                                        "a CTA that already shows the price is not flagged"
+assert_absent '"common.continue"'                                         "a neutral Continue CTA is not flagged"
+assert_has "Ücretsiz denemeyi başlat"                                     "a Turkish trial-first CTA is flagged too (free→verb word order)"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# promo-metadata-app — §44 metadata-pricing-language fixture. "Free" in
+# name.txt must be flagged; the "Ad-free" compound in subtitle.txt must not.
+# ---------------------------------------------------------------------------
+check_fixture "promo-metadata-app" "pricing/promo language in app name (2.3.1)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 2.3.1 Pricing language in app name/subtitle"            "'Free' in the app name is flagged"
+assert_has "name.txt"                                                     "the offending metadata file is cited"
+assert_absent "subtitle.txt:1"                                            "the 'Ad-free' compound in the subtitle is not flagged"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# generic-purpose-app — §45 generic-purpose-string fixture. A boilerplate
+# camera purpose string is flagged; a specific microphone string is not.
+# ---------------------------------------------------------------------------
+check_fixture "generic-purpose-app" "boilerplate purpose string (5.1.1(ii))"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 5.1.1(ii) Purpose string 'NSCameraUsageDescription'"    "the boilerplate camera string is flagged"
+assert_absent "Purpose string 'NSMicrophoneUsageDescription'"             "a specific, feature-tied purpose string is not flagged"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# ai-chat-app — §46 ai-provider-consent fixture. User text is POSTed to
+# api.openai.com but no user-facing string names the provider (the endpoint
+# URL literal itself must not count as a mention).
+# ---------------------------------------------------------------------------
+check_fixture "ai-chat-app" "AI endpoint without a provider-naming consent string (5.1.1)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 5.1.1 Third-party AI"                                   "missing provider-naming consent is flagged"
+assert_has "OpenAI"                                                       "the detected provider is named in the finding"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# urgency-paywall-app — §47 paywall-urgency fixture. Urgency copy + a
+# countdown timer next to discount wording in the paywall view.
+# ---------------------------------------------------------------------------
+check_fixture "urgency-paywall-app" "urgency/scarcity dark patterns on the paywall (3.1.2)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 3.1.2 Paywall urgency"                                  "urgency/scarcity copy is flagged"
+assert_has "Limited time offer"                                           "the urgency literal is cited in the evidence"
+assert_has "WARN: 3.1.2 Paywall countdown"                                "the countdown-plus-discount pattern is flagged"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# rating-gate-app — §48 rating-sentiment-gate fixture. "Enjoying the app?"
+# copy next to a requestReview call.
+# ---------------------------------------------------------------------------
+check_fixture "rating-gate-app" "sentiment-gated rating prompt (5.6.1)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 5.6.1 Rating sentiment gate"                            "the sentiment pre-gate is flagged"
+assert_has "Enjoying the app?"                                            "the gating copy is cited in the evidence"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# forced-login-app — §49 forced-login fixture. A SecureField login screen
+# with no skip / guest affordance anywhere.
+# ---------------------------------------------------------------------------
+check_fixture "forced-login-app" "credential login without a guest/skip path (5.1.1(v))"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 5.1.1(v) Forced login"                                  "the missing guest/skip path is flagged"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# push-marketing-app — §50 push-marketing-optout fixture. OneSignal +
+# registerForRemoteNotifications with no notification-preferences signal.
+# ---------------------------------------------------------------------------
+check_fixture "push-marketing-app" "marketing-push SDK without an opt-out signal (4.5.4)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 4.5.4 Marketing push"                                   "marketing push without an opt-out signal is flagged"
+finish_fixture
+
+# ---------------------------------------------------------------------------
+# old-xcode-app — §51 xcode-sdk-requirement fixture. A pbxproj whose
+# LastUpgradeCheck is clearly pre-26.
+# ---------------------------------------------------------------------------
+check_fixture "old-xcode-app" "pre-26 Xcode LastUpgradeCheck (April 2026 SDK minimum)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_has "WARN: 2.1 Xcode/SDK minimum"                                  "a pre-26 LastUpgradeCheck is flagged"
+assert_has "LastUpgradeCheck=1520"                                        "the detected value is reported"
 finish_fixture
 
 # ---------------------------------------------------------------------------

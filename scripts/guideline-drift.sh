@@ -99,7 +99,7 @@ gd_main() {
       obj="$(printf '%s' "$obj" | jq --arg s "$sec" --arg h "$hash" --arg n "$snap" '.sections[$s] = {fingerprint:$h, snapshot:$n}')"
       written=$((written + 1))
     done <<< "$covered"
-    printf '%s' "$obj" | jq '. + {reconciled_on: "RECONCILE_DATE"}' > "$fingerprints"
+    printf '%s' "$obj" | jq --arg d "$(date +%F)" '. + {reconciled_on: $d}' > "$fingerprints"
     echo "reconciled ${fingerprints} (${written} sections)"
     [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
   fi

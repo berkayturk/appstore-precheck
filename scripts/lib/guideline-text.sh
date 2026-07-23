@@ -35,8 +35,14 @@ gd_section_text() {
   | sed -E 's/&amp;/\&/g; s/&lt;/</g; s/&gt;/>/g; s/&#39;/'\''/g; s/&quot;/"/g; s/&nbsp;/ /g' \
   | tr 'A-Z' 'a-z' \
   | tr -s ' \t\n' ' ' \
-  | sed -E 's/^ +//; s/ +$//'
+  | sed -E 's/^ +//; s/ +$//' \
+  | sed -E 's/ after you submit once .*$//; s/ last updated: .*$//'
 }
+# The final sed guards the LAST numbered section (currently 5.6.4): it has no
+# following section anchor, so the raw extraction runs to end-of-page and would
+# glue the "After You Submit" info block, the "last updated" date, and the whole
+# site footer (program lists etc.) onto its prose — making its fingerprint churn
+# on every footer edit. Both markers are page chrome, never guideline prose.
 
 # gd_hash -> sha256 hex of stdin (portable across macOS/Linux).
 gd_hash() {

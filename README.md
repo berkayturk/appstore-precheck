@@ -44,7 +44,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-43 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+52 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -52,9 +52,11 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **1.6** | App Transport Security disabled app-wide (`NSAllowsArbitraryLoads`) |
 | **2.1** | No placeholder / dummy copy (lorem ipsum, TODO, `example.com`) in store metadata |
 | **2.1** | A login-gated app ships demo credentials / review notes for App Review |
+| **2.1** | Project's `LastUpgradeCheck` vs the April 2026 iOS 26 SDK (Xcode 26) upload minimum *(advisory)* |
 | **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) — also satisfies 1.5 and 5.1.1(i) |
 | **2.3.1** | Metadata length limits (name, subtitle, keywords, promo, description) |
 | **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
+| **2.3.1** | Pricing / promo language ("Free", "% off", a currency amount) in the app name or subtitle |
 | **2.3.3** | At least one screenshot per locale |
 | **2.3.3** | Screenshot format + PNG dimensions match a known App Store screenshot size *(advisory, WARN-only)* |
 | **2.3.7** | Localized metadata parity across every locale |
@@ -67,18 +69,25 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **3.1.1(a)** | External purchase link entitlement + disclosure, when external purchase APIs are used |
 | **3.1.2** | Trial & auto-renew subscription disclosures |
 | **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
+| **3.1.2** | Trial-emphasized paywall CTA ("Continue with free trial") or a free-trial toggle instead of one clear price |
+| **3.1.2** | Urgency / scarcity dark patterns on the paywall ("only today", countdown + discount) |
 | **3.1.5(a)** | Cryptocurrency wallet / exchange / mining signal |
 | **4.2** | Minimum functionality (real navigation) |
 | **4.2.3** | Thin WKWebView wrapper around a website |
 | **4.2.7** | Remote-desktop / host-mirroring app |
 | **4.4.1** | Keyboard extension that requires full access (`RequestsOpenAccess`) |
 | **4.4.2** | Safari content-blocker / web extension |
+| **4.5.4** | Marketing-push SDK registered for notifications without an in-app opt-out signal |
 | **4.8** | Sign in with Apple offered when a third-party social login is used |
 | **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
 | **5.1.1** | A non-empty purpose string for every sensitive framework |
 | **5.1.1** | Analytics SDK present ↔ `PrivacyInfo.xcprivacy` declares collected data / tracking domains |
 | **5.1.1** | Privacy Manifest ↔ Required Reason API parity |
+| **5.1.1** | Third-party AI endpoint/SDK without a consent string naming the provider |
+| **5.1.1(ii)** | Generic boilerplate purpose strings ("This app needs camera access") instead of the user-facing reason |
+| **5.1.1(iv)** | Pre-permission priming screens whose consent CTA steers users toward granting ("Allow and continue") |
 | **5.1.1(v)** | Account creation offered without an in-app account-deletion path |
+| **5.1.1(v)** | Credential login with no guest / skip path (forced login for possibly account-free features) |
 | **5.1.2** | ATT usage ↔ `NSUserTrackingUsageDescription` |
 | **5.1.2** | Tracking / IDFA SDK (AdMob, AppLovin, AppsFlyer, Adjust, …) shipped without an ATT prompt |
 | **5.1.3** | HealthKit data with an iCloud / CloudKit sync path |
@@ -88,6 +97,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **5.4** | VPN / NetworkExtension usage (org account + on-screen data disclosure) |
 | **5.5** | Mobile Device Management (MDM) signal |
 | **5.6.1** | A custom App Store review prompt instead of the system `requestReview` API |
+| **5.6.1** | Sentiment-gated rating flow ("Enjoying the app?" → only happy users see the prompt) |
 | **encryption** | `ITSAppUsesNonExemptEncryption` set, so App Store Connect skips the export-compliance question |
 
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
@@ -100,7 +110,7 @@ the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (
 change the GREEN/YELLOW/RED verdict). Full procedure:
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md).
 
-**22 checks (Tier A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
+**23 checks (Tier A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
 screenshots, paywall copy). **6 checks (Tier B v1, marked †)** are heuristic — useful pre-submit
 signals with a higher false-positive rate; Pierre prefers `not applicable` when no signal is present.
 
@@ -126,6 +136,7 @@ signals with a higher false-positive rate; Pierre prefers `not applicable` when 
 | **5.1.1(ii)** | Purpose strings are specific and tied to a visible feature |
 | **5.1.1(iii)** | Permissions and SDKs proportionate to the app's stated purpose |
 | **5.1.1(iv)** | Permission denial handled without forced re-prompt loops |
+| **5.1.1(iv)** | Pre-permission priming CTA is neutral ("Continue"/"Next"), not steering toward granting |
 | **5.1.2** | ATT prompt, tracking description, privacy policy, and ad SDK usage align |
 | **5.1.3** | HealthKit data not used for advertising or marketing |
 | **5.1.4** | Kids-audience signals → parental gate before external links / IAP / account areas |
@@ -148,7 +159,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 43 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | **Full.** All 52 vectors apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The native-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -313,7 +324,7 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 43 vectors above. |
+| **1** | **Static scan**: `scan.sh` over the 52 vectors above. |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
 | **4** | **Pierre deep review**: 29 semantic checks (23 Tier A + 6 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
