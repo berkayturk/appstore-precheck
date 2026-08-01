@@ -3,6 +3,14 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [Unreleased]
+
+### Fixed
+- **§9 `autorenew-disclosure` — Norwegian locale false positive**: the App Store uses the
+  locale code `no` while Xcode/xcstrings use `nb` (Bokmål), so the per-locale disclosure
+  translation check reported a spurious "translation missing for 'no'" warning on apps that
+  correctly localize into `nb`. The short-code lookup now maps `no` → `nb`.
+
 ## [1.14.0] - 2026-07-23
 
 ### Added
