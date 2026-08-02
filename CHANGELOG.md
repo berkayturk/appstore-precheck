@@ -3,7 +3,7 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
-## [Unreleased]
+## [1.14.1] - 2026-08-02
 
 ### Fixed
 - **§9 `autorenew-disclosure` — Norwegian locale false positive**: the App Store uses the
