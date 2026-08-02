@@ -373,6 +373,8 @@ assert_absent "FAIL: 3.1.2 Terms of Use"        "no false Terms FAIL on a labell
 assert_has    "PASS: 3.1.2 Privacy Policy"      "labelled Privacy Policy link is recognized"
 assert_absent "FAIL: 3.1.2 Privacy Policy"      "no false Privacy FAIL on a labelled link"
 assert_absent "FAIL: 5.1.1 Required Reason API — 'FileTimestamp'" "a plain 'creationDate' model property is not a filesystem timestamp API"
+assert_has    "PASS: 3.1.2 subscription disclosure key" "subscription_disclosure key in the catalog is recognized"
+assert_absent "translation missing for 'no'"    "store locale 'no' maps to xcstrings 'nb' (Bokmål) — no false missing-translation WARN"
 finish_fixture
 
 check_fixture "revenuecat-paywall-app" "RevenueCat remote-configured paywall (links live in the dashboard)"

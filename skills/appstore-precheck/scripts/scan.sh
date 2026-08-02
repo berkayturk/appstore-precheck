@@ -488,6 +488,9 @@ else
       pass "3.1.2 subscription disclosure key '$SUB_KEY' present"
       for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
         short="${loc%%-*}"
+        # App Store locale codes and Xcode locale codes disagree for Norwegian:
+        # the store uses 'no', Xcode/xcstrings use 'nb' (Bokmål).
+        [[ "$short" == "no" ]] && short="nb"
         if ! jq -e ".strings.\"$SUB_KEY\".localizations | (has(\"$loc\") or has(\"$short\"))" "$XCSTRINGS" >/dev/null 2>&1; then
           warn "3.1.2 subscription disclosure — translation missing for '$loc' (key '$SUB_KEY')"
         fi

@@ -1,0 +1,22 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "subscription_disclosure" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscription renews automatically until cancelled. Cancel anytime in Settings."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonnementet fornyes automatisk til det sies opp. Avbryt når som helst i Innstillinger."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
