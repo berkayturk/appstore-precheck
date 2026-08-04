@@ -319,7 +319,7 @@ fi
 # when the ATT framework IS imported; §16 fires when a tracking SDK is present but
 # the ATT prompt is NOT. Computed once here so the two checks never contradict.
 set_rule "att-usage"
-tracking_sdk=$(grep -rlE 'advertisingIdentifier|ASIdentifierManager|GADMobileAds|GoogleMobileAds|AppLovinSDK|ALSdk|AppsFlyerLib|import Adjust|Adjust\.|FBAudienceNetwork|BranchSDK|IronSource' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+tracking_sdk=$(grep -rlE 'advertisingIdentifier|ASIdentifierManager|import AdSupport|GADMobileAds|GoogleMobileAds|AppLovinSDK|ALSdk|AppsFlyerLib|import Adjust|Adjust\.|FBAudienceNetwork|BranchSDK|IronSource|UnityAds|VungleAds|Chartboost|InMobi|IMSdk|MTGSDK|PAGAdSDK|BUAdSDK|import Singular|SingularConfig|KochavaTracker|KVATracker|TenjinSDK' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
 att_used=$(grep -rlE 'AppTrackingTransparency|ATTrackingManager' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
 if [[ -n "$att_used" ]]; then
   if grep -q "NSUserTrackingUsageDescription" "$INFO_PLIST" 2>/dev/null; then
@@ -669,7 +669,7 @@ fi
 # incomplete. Soft "verify" wording (a crash-only Sentry may genuinely collect
 # nothing), so WARN, never FAIL.
 set_rule "analytics-privacyinfo-mismatch"
-analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|import Amplitude|Amplitude\(|import Mixpanel|Mixpanel\.|import Sentry|SentrySDK|import Segment|SEGAnalytics|Analytics\.shared\(|import Bugsnag|Bugsnag\.|AppCenterAnalytics|import Datadog|DatadogCore' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+analytics_sdk=$(grep -rlE 'FirebaseAnalytics|import Firebase|import Amplitude|Amplitude\(|import Mixpanel|Mixpanel\.|import Sentry|SentrySDK|import Segment|SEGAnalytics|Analytics\.shared\(|import Bugsnag|Bugsnag\.|AppCenterAnalytics|import Datadog|DatadogCore|import PostHog|PostHogSDK|import Heap|HeapSwiftCore|Heap\.track|import Countly|Countly\.sharedInstance|MatomoTracker|import Smartlook|SmartlookAnalytics|import Instabug|Instabug\.start|import NewRelic|NewRelic\.start|import EmbraceIO|Embrace\.client|Embrace\.setup' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
 if [[ -n "$analytics_sdk" ]]; then
   declared_data=""
   if [[ -n "$PRIVACY_FILE" && -f "$PRIVACY_FILE" ]]; then
