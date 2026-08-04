@@ -12,6 +12,12 @@
 
 <p align="center"><strong>Catch App Store rejections before a reviewer does.</strong></p>
 
+<p align="center">
+  <img src="assets/demo-fix-loop.gif" width="900" alt="appstore-precheck scanning an app: RED with four FAILs, then GREEN after the paywall is fixed">
+</p>
+
+<p align="center"><em>Four blockers found before Apple saw them, then a clean GREEN after the fix.</em></p>
+
 ---
 
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most

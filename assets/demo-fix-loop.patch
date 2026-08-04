@@ -1,0 +1,45 @@
+diff --git a/ios/SampleApp/SubscriptionView.swift b/ios/SampleApp/SubscriptionView.swift
+index 808809d..fb6f6d3 100644
+--- a/ios/SampleApp/SubscriptionView.swift
++++ b/ios/SampleApp/SubscriptionView.swift
+@@ -1,5 +1,17 @@
+ import SwiftUI
+ import StoreKit
++
+ struct SubscriptionView: View {
+-  var body: some View { Text("Subscribe") }
++  var body: some View {
++    VStack(spacing: 12) {
++      Text("Subscribe")
++      Button("Restore Purchases") {
++        Task { try? await AppStore.sync() }
++      }
++      Link("Terms of Use (EULA)",
++           destination: URL(string: "https://habits.app/terms")!)
++      Link("Privacy Policy",
++           destination: URL(string: "https://habits.app/privacy")!)
++    }
++  }
+ }
+diff --git a/ios/fastlane/metadata/en-US/description.txt b/ios/fastlane/metadata/en-US/description.txt
+index 2a7c15b..3617dea 100644
+--- a/ios/fastlane/metadata/en-US/description.txt
++++ b/ios/fastlane/metadata/en-US/description.txt
+@@ -1 +1 @@
+-A great app. Also available on Android and Google Play.
+\ No newline at end of file
++A great app for building daily habits, with widgets, streaks and reminders.
+diff --git a/ios/fastlane/metadata/en-US/privacy_url.txt b/ios/fastlane/metadata/en-US/privacy_url.txt
+new file mode 100644
+index 0000000..450183e
+--- /dev/null
++++ b/ios/fastlane/metadata/en-US/privacy_url.txt
+@@ -0,0 +1 @@
++https://habits.app/privacy
+diff --git a/ios/fastlane/metadata/en-US/support_url.txt b/ios/fastlane/metadata/en-US/support_url.txt
+new file mode 100644
+index 0000000..fc448c9
+--- /dev/null
++++ b/ios/fastlane/metadata/en-US/support_url.txt
+@@ -0,0 +1 @@
++https://habits.app/support
