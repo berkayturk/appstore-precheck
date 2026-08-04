@@ -25,6 +25,7 @@ SUITE=(
   "test-rag-embed.sh" # eval/rag/embed.py SQL generation (RAG eval, no network)
   "test-rag-gemini-client.sh" # eval/rag/gemini_client.py retry-delay parsing + 429 backoff (RAG eval, no network)
   "test-rag-retrieve.sh" # eval/rag/retrieve.py similarity-query generation (RAG eval, no network)
+  "test-sdk-signals.sh" # per-SDK coverage for the tracking (§16) + analytics (§19) signal lists
   "test-image-dims.sh" # image-dims.sh PNG magic + IHDR dimension parse + accepted-size match
   "test-sarif.sh"     # sarif.sh render_sarif SARIF 2.1.0 output
   "test-action-sarif.sh" # action.yml opt-in SARIF/annotation inputs default off

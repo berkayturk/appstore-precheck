@@ -26,8 +26,10 @@ today. Also spot-check the 28 Pierre deep-review checks in
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
 
 - The tracking / ad SDK list in §16 (`scan.sh`: `tracking_sdk`). New ad and attribution SDKs
-  appear often; add them as they gain adoption.
-- The analytics SDK list in §19 (`scan.sh`: `analytics_sdk`).
+  appear often; add them as they gain adoption. Every signal in the list has a named case in
+  [`tests/test-sdk-signals.sh`](tests/test-sdk-signals.sh) — add one there with the SDK's real
+  module/entry-point symbol, plus a negative case if the symbol is a common English word.
+- The analytics SDK list in §19 (`scan.sh`: `analytics_sdk`), covered by the same test file.
 - The third-party payment SDK list in §21 (`scan.sh`: `payment_sdk`) and the UGC / chat SDK
   signals in §22 (`ugc_signal`); both grow as new SDKs gain adoption.
 - The hot-patch frameworks in §32 (`hotcode`), the crypto SDKs in §34 (`crypto_sdk`), the
