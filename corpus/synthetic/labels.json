@@ -167,5 +167,11 @@
     "expect_absent": [
       "private-api"
     ]
+  },
+  "fetch-assets-app": {
+    "expect_fire": [],
+    "expect_absent": [
+      "usage-description-crosscheck"
+    ]
   }
 }

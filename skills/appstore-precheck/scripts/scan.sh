@@ -302,7 +302,11 @@ else
       fail "5.1.1 microphone/recording API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "$INFO_PLIST"
   fi
   # Photo library READ: PhotosPicker/PHPicker need no key; only true read/fetch APIs do.
-  if grep -rqE 'PHAsset\b|PHFetchResult|PHImageManager|fetchAssets|PHAssetCollection' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
+  # The signal must stay PhotoKit-qualified. A bare `fetchAssets` alternative used to
+  # match any method with that name (a remote-config loader, a wallpaper manager) and
+  # was the single biggest false-positive source in the real-app panel; PHAsset\b
+  # already covers the real `PHAsset.fetchAssets(...)` call.
+  if grep -rqE 'PHAsset\b|PHFetchResult|PHImageManager|PHAssetCollection' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     grep -qE 'NSPhotoLibraryUsageDescription' "$INFO_PLIST" 2>/dev/null || \
       fail "5.1.1 Photos read API used but Info.plist is missing 'NSPhotoLibraryUsageDescription'" "$INFO_PLIST"
   elif grep -rqE 'PHAssetCreationRequest|UIImageWriteToSavedPhotosAlbum|performChanges' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then

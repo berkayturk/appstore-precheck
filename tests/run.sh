@@ -264,6 +264,20 @@ assert_absent "WARN: 5.1.1 Privacy manifest — analytics SDK detected"     "seg
 finish_fixture
 
 # ---------------------------------------------------------------------------
+# fetch-assets-app — a remote-config loader with its own `fetchAssets()` and
+# `fetchAssetsFor(_:)` methods and NO PhotoKit type anywhere. The bare
+# "fetchAssets" alternative in the old §2 photo-read regex matched these plain
+# method names and false-fired the 5.1.1 NSPhotoLibraryUsageDescription FAIL on
+# real apps (duckduckgo-ios, firefox-ios in the real panel); the PhotoKit-
+# qualified regex must stay silent.
+# ---------------------------------------------------------------------------
+check_fixture "fetch-assets-app" "config loader named fetchAssets, no PhotoKit (§2 false-positive regression)"
+assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
+assert_absent "5.1.1 Photos read API used"                                "fetch-assets: no photo-library false positive"
+assert_absent "FAIL:"                                                     "fetch-assets: no FAIL at all"
+finish_fixture
+
+# ---------------------------------------------------------------------------
 # audio-playback-app — `import AVFoundation` used ONLY for playback
 # (AVAudioPlayer + AVAudioSession.setCategory(.playback)), no capture API at
 # all. The old generic framework loop treated the bare import as proof of
