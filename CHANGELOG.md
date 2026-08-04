@@ -3,6 +3,39 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.15.0] - 2026-08-04
+
+### Added
+- **§3/§16 tracking SDK list — 10 new signals**: Unity Ads, Vungle / Liftoff, Chartboost,
+  InMobi, Mintegral, Pangle (`PAGAdSDK` and the legacy `BUAdSDK`), Singular, Kochava, Tenjin,
+  and a bare `import AdSupport`. A missing SDK here is a silent false negative: the 5.1.2 ATT
+  check stays quiet on an app that tracks without an ATT prompt.
+- **§19 analytics SDK list — 8 new signals**: PostHog, Heap, Countly, Matomo, Smartlook,
+  Instabug, New Relic, Embrace. Same failure mode on the 5.1.1 privacy-manifest check.
+- **`tests/test-sdk-signals.sh`**: one minimal app per signal, covering *every* entry in both
+  lists including the pre-existing ones, plus five negative cases for the FP-prone words (a
+  hand-rolled `MinHeap`, `"Singularity"`, `// Adjust the inset`, `// Embrace the whitespace`,
+  a plain SwiftUI screen). Suite is now 27 files.
+- **`corpus/real/rationales.json`**: a one-line reason per `<app>|<rule_id>` behind every
+  real-panel TP/FP verdict, so a label can be audited without re-deriving the evidence.
+
+### Fixed
+- **§2 photo-library read — `fetchAssets` false positive**: the read signal matched a bare
+  `fetchAssets`, so any method with that name raised a 5.1.1 `NSPhotoLibraryUsageDescription`
+  FAIL — a remote-config loader in duckduckgo-ios, a wallpaper manager in firefox-ios. The
+  signal is now PhotoKit-qualified (`PHAsset` already covers the real
+  `PHAsset.fetchAssets(...)` call). Regression guard: `tests/fixtures/fetch-assets-app`.
+
+### Changed
+- **Real-app validation panel is fully labelled**: the last 127 UNLABELED findings across all
+  18 pinned apps now carry a human TP/FP verdict, so the panel reports `tp=184 fp=122
+  unlabeled=0` and a real-code precision of **0.60**. The earlier 0.85 was computed over the
+  labelled third only. `corpus/real/README.md` documents the two rules that produce half the
+  false positives (`screenshot-dimensions`, `xcode-sdk-requirement`) and the label-key
+  collision rule (a key counts as TP only when every finding under it is a true positive).
+- **README**: a RED-to-GREEN fix-loop demo above the fold, rendered from the new
+  `assets/demo-fix-loop.tape` and `assets/demo-fix-loop.patch` so it is reproducible.
+
 ## [1.14.1] - 2026-08-02
 
 ### Fixed
