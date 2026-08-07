@@ -2,9 +2,11 @@
 # Optional PreToolUse hook (Claude Code + Grok Build plugin installs).
 # Blocks `fastlane deliver/pilot/release` unless a fresh `.precheck-pass` token exists.
 # stdin = tool-use JSON. exit 0 = allow, exit 2 = block (stderr is shown to the model).
+# Claude Code sends snake_case keys (.tool_input); Grok Build sends the same event
+# camelCased (.toolInput). Read both, or the guard fails OPEN on Grok.
 
 set -u
-CMD=$(jq -r '.tool_input.command // empty' 2>/dev/null)
+CMD=$(jq -r '.tool_input.command // .toolInput.command // empty' 2>/dev/null)
 [[ -z "$CMD" ]] && exit 0
 
 # Only trigger on fastlane submit/upload commands.

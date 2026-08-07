@@ -28,8 +28,8 @@ The plugin root is the **repository root**. Skills live under `skills/appstore-p
 ### Maintainer checklist
 
 1. Bump version in `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`,
-   `.grok-plugin/plugin.json`, `package.json`, and `skills/appstore-precheck/SKILL.md`
-   (`metadata.version`).
+   `.grok-plugin/plugin.json`, `.grok-plugin/marketplace.json` (`plugins[0].version`),
+   `package.json`, and `skills/appstore-precheck/SKILL.md` (`metadata.version`).
 2. Run `npm run check-versions`, `claude plugin validate .`, and `grok plugin validate .`.
 3. Tag and push (`v1.x.y`). Claude Code marketplace tracks the GitHub repo; users pick up new
    versions on reinstall or marketplace refresh.
@@ -142,6 +142,8 @@ grok plugin marketplace add berkayturk/appstore-precheck
 grok plugin install appstore-precheck --trust
 ```
 
+This installs from GitHub `main` (see [why the index uses a URL source](#why-the-index-uses-a-url-source)).
+
 Direct install (no marketplace step):
 
 ```bash
@@ -160,6 +162,28 @@ grok plugin details appstore-precheck
 Plugins stay off until enabled; after install, `grok plugin enable appstore-precheck` (or `Space`
 in the Plugins tab). The upload-guard hook auto-wires when the plugin is trusted (`--trust`);
 Grok sets `GROK_PLUGIN_ROOT` and the `CLAUDE_PLUGIN_ROOT` alias used by `hooks/hooks.json`.
+Grok's hook payload is camelCase (`.toolInput`) where Claude's is snake_case (`.tool_input`) —
+`hooks/fastlane-guard.sh` reads both, and `tests/test-guard.sh` covers both envelopes. A guard that
+reads only one of them fails **open** on the other host.
+
+### Why the index uses a URL source
+
+Grok's marketplace scanner rejects a self-referential local source: `"source": "./"` (and `"."`,
+and `{"type": "local", "path": "."}`) fail with *marketplace path is empty*, and a local source may
+not contain parent components. The plugin root here **is** the repository root, so the entry uses
+the URL form pointing at this repo. Claude Code and Cursor keep `"./"` — their scanners accept it.
+
+Two consequences worth knowing:
+
+- **The marketplace flow always installs GitHub `main`**, even when the source was added from a
+  local clone (`grok plugin marketplace add .`). Anyone testing an unmerged branch must use the
+  direct path install (`grok plugin install /path/to/appstore-precheck --trust`), which does
+  install the working tree.
+- **The entry is not `sha`-pinned**, so installs are not reproducible and deployments that set
+  `[marketplace] require_sha = true` (or `GROK_MARKETPLACE_REQUIRE_SHA=1`) refuse it. Pinning is a
+  post-merge step: the release commit's sha does not exist until the release lands on `main`. To
+  pin, after the release commit is on `main` add its full sha as `plugins[0].source.sha` and push
+  that as a follow-up commit — see the release checklist in [`MAINTENANCE.md`](../MAINTENANCE.md).
 
 ### Official xAI catalog (optional)
 
@@ -191,6 +215,7 @@ When releasing, keep these in lockstep (enforced by `npm run check-versions`):
 - `.claude-plugin/plugin.json` → `version`
 - `.cursor-plugin/plugin.json` → `version`
 - `.grok-plugin/plugin.json` → `version`
+- `.grok-plugin/marketplace.json` → `plugins[0].version`
 - `package.json` → `version`
 - `skills/appstore-precheck/SKILL.md` → `metadata.version`
 

@@ -96,11 +96,27 @@ grok plugin marketplace add .       # → source added
 grok plugin list --json --available # → appstore-precheck listed as "available"
 ```
 
+What this proves: the manifests are valid, the marketplace entry is discoverable, and the installed
+plugin carries the skill and hooks. It does **not** yet include a headless skill-runtime transcript.
+
 Note on the marketplace index: Grok rejects a self-referential local source (`"source": "./"`
 fails the scanner with *marketplace path is empty*, and a local source may not contain parent
 components). Because the plugin root here **is** the repository root, the entry in
 [`.grok-plugin/marketplace.json`](../.grok-plugin/marketplace.json) uses the URL source form
-pointing at this repo. Claude Code and Cursor keep `"./"` — their scanners accept it.
+pointing at this repo. Claude Code and Cursor keep `"./"` — their scanners accept it. A consequence
+is that the marketplace flow installs GitHub `main` even when the source was added from a local
+clone, so `grok plugin install <path> --trust` is the way to test an unmerged working tree.
+
+Note on the upload-guard hook: `hooks/hooks.json` wires under Grok because Grok sets the
+`CLAUDE_PLUGIN_ROOT` alias and maps a `Bash` matcher onto `run_terminal_command`. The hook body,
+however, needed a fix: Grok's stdin envelope is camelCase (`.toolInput.command`) where Claude's is
+snake_case (`.tool_input.command`), so the guard read an empty command and allowed every fastlane
+submit. It now reads both, verified by `tests/test-guard.sh`:
+
+```bash
+printf '%s' '{"toolName":"run_terminal_command","toolInput":{"command":"fastlane deliver"}}' \
+  | bash hooks/fastlane-guard.sh    # → exit 2 (blocked) with no fresh .precheck-pass
+```
 
 `install.sh grok` vendors into `.grok/skills/appstore-precheck/`. A full headless
 `grok -p "…"` skill-runtime transcript (discover → `scan.sh` → RED) can be recorded the same way

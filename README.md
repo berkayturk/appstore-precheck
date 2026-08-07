@@ -229,7 +229,8 @@ grok plugin marketplace add berkayturk/appstore-precheck
 grok plugin install appstore-precheck --trust
 ```
 
-Or install straight from this repo (local clone or path):
+The marketplace entry points at this repo by URL, so that flow always installs GitHub `main`. To
+install a local clone or an unmerged branch, install the path directly:
 
 ```bash
 grok plugin install /path/to/appstore-precheck --trust

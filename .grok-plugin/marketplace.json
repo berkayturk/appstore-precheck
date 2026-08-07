@@ -10,6 +10,7 @@
       "name": "appstore-precheck",
       "description": "Read-only iOS App Store pre-submission check (static scan, fastlane precheck, guideline drift, Pierre commentary, semantic deep review).",
       "category": "testing",
+      "version": "1.16.0",
       "source": {
         "source": "url",
         "url": "https://github.com/berkayturk/appstore-precheck.git"

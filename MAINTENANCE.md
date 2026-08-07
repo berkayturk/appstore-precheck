@@ -57,8 +57,17 @@ reconciliation as required, not optional:
 ## Keeping the pieces in lockstep
 
 - **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`,
-  `.grok-plugin/plugin.json`, `package.json`, and `SKILL.md` must share one version. The guard
+  `.grok-plugin/plugin.json`, `.grok-plugin/marketplace.json` (`plugins[0].version`),
+  `package.json`, and `SKILL.md` must share one version. The guard
   is `npm run check-versions`; CI runs it on every push.
+- **Grok marketplace `sha` (optional, post-merge):** the `.grok-plugin/marketplace.json` entry
+  points at this repo by URL and is unpinned, so the marketplace flow installs GitHub `main` and
+  deployments with `require_sha` refuse it. To pin a release, once the release commit is on `main`
+  set `plugins[0].source.sha` to its full sha and push that as a follow-up commit. Unpinned is the
+  supported default; see [`docs/publishing-plugins.md`](docs/publishing-plugins.md).
+- **Hook envelopes:** `hooks/fastlane-guard.sh` must read both `.tool_input` (Claude Code) and
+  `.toolInput` (Grok Build). Reading only one fails **open** on the other host —
+  `tests/test-guard.sh` covers both.
 - **Homebrew formula:** the tap ([`berkayturk/homebrew-tap`](https://github.com/berkayturk/homebrew-tap))
   pins the npm tarball of one exact version, so every npm release MUST be followed by
   `bash scripts/update-brew-formula.sh` (fetches the published tarball, rewrites the formula's

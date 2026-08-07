@@ -28,6 +28,11 @@ PILOT='{"tool_input":{"command":"fastlane pilot upload"}}'
 HARMLESS='{"tool_input":{"command":"ls -la && git status"}}'
 NOCMD='{"tool_input":{}}'
 
+# Grok Build sends the same event with camelCase keys (toolInput, not tool_input).
+# A guard that only reads .tool_input would fail OPEN on Grok — allow everything.
+GROK_DELIVER='{"hookEventName":"pre_tool_use","toolName":"run_terminal_command","toolInput":{"command":"bundle exec fastlane deliver --submit"}}'
+GROK_HARMLESS='{"hookEventName":"pre_tool_use","toolName":"run_terminal_command","toolInput":{"command":"ls -la && git status"}}'
+
 section "non-fastlane command is ignored (allow)"
 rm -f "$TOKEN"
 assert_eq "$(guard_exit "$HARMLESS")" "0" "harmless command -> allow (exit 0)"
@@ -47,6 +52,13 @@ assert_eq "$(guard_exit "$PILOT")"   "0" "pilot, fresh token -> allow (exit 0)"
 section "fastlane submit with a STALE token (>60 min) is blocked"
 touch -t 202001010000 "$TOKEN"   # Jan 1 2020 — far older than 60 min, GNU+BSD touch
 assert_eq "$(guard_exit "$DELIVER")" "2" "deliver, stale token -> block (exit 2)"
+
+section "Grok Build camelCase envelope is honoured (no fail-open)"
+rm -f "$TOKEN"
+assert_eq "$(guard_exit "$GROK_DELIVER")"  "2" "grok deliver, no token -> block (exit 2)"
+assert_eq "$(guard_exit "$GROK_HARMLESS")" "0" "grok harmless command -> allow (exit 0)"
+touch "$TOKEN"
+assert_eq "$(guard_exit "$GROK_DELIVER")"  "0" "grok deliver, fresh token -> allow (exit 0)"
 
 section "guard message names Pierre on block"
 rm -f "$TOKEN"
