@@ -4,7 +4,7 @@ description: Read-only pre-submission check for an iOS app before App Store revi
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.15.0
+  version: 1.16.0
 allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maestro__run mcp__maestro__inspect_screen mcp__maestro__take_screenshot mcp__maestro__cheat_sheet
 ---
 
@@ -114,7 +114,7 @@ check(s). It is non-blocking and never runs in the offline user scan; the finger
 
 Run the bundled scanner from the app repo root. `scripts/` here is relative to THIS skill's own
 directory (wherever the skill is installed — a plugin dir, `.claude/skills/`, `.agents/skills/`,
-or a clone of the source repo):
+`.grok/skills/`, or a clone of the source repo):
 
 ```bash
 bash <skill-dir>/scripts/scan.sh
@@ -378,7 +378,11 @@ Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-r
 ## Optional: upload guard hook
 
 `hooks/fastlane-guard.sh` blocks `fastlane deliver/pilot/release` unless a fresh `.precheck-pass`
-token exists. In Claude Code it auto-wires via `hooks/hooks.json` **when installed as a plugin**
-(the hook path uses `${CLAUDE_PLUGIN_ROOT}`; an `install.sh`-vendored copy gets no automatic
-hook). In other environments, wire it
-as a pre-command check yourself, or treat the token as a manual go/no-go signal.
+token exists. In Claude Code and Grok Build it auto-wires via `hooks/hooks.json` **when installed
+as a plugin** (the hook path uses `${CLAUDE_PLUGIN_ROOT}`; Grok also sets that alias alongside
+`${GROK_PLUGIN_ROOT}`, and maps a `Bash` matcher onto `run_terminal_command`). The guard reads
+the snake_case (`.tool_input`), camelCase (`.toolInput`), and top-level (`.command`, Cursor)
+tool-use envelopes, and reports a block on both stderr and stdout, so it blocks on every host that
+wires it. An `install.sh`-vendored copy gets no automatic hook. In other
+environments, wire it as a pre-command check yourself, or treat the token as a manual go/no-go
+signal.

@@ -34,6 +34,7 @@ WARN: 2.3.3 Screenshots — en-US has only 1 image(s)
 | **Codex CLI** | ✅ | `.agents/skills/` | ✅ | ✅ | RED (faithful, Pierre one-liner) | **Verified** |
 | **Gemini CLI** | ✅ | `.agents/skills/`, `.gemini/skills/` | ✅ `gemini skills list` → `appstore-precheck [Enabled]` | ✅ | RED (faithful, Pierre one-liner) | **Verified** |
 | **Cursor** | ✅ | `.agents/skills/`, `.cursor/skills/`, also `.claude/skills/` | ✅ | ✅ | RED (faithful, Pierre one-liner) | **Verified** |
+| **Grok Build** | ✅ plugin | `.grok/skills/` (also `.agents/` + `.claude/` compat) | ✅ `grok plugin validate` + install inventory | ⏳ headless skill run pending | — | **Plugin install verified** |
 
 ### Claude Code: verified
 
@@ -78,6 +79,54 @@ Cursor reads. A headless `cursor-agent -p --force "…"` run discovered the skil
 scanner, and returned a faithful **RED** verdict: Pierre one-liner (*"Non. Quatre faults. Apple
 would have found fewer. Suivant."*), the verbatim scan output, and the deterministic counts
 (`fail=4 warn=1 pass=8`), token withheld.
+
+### Grok Build: plugin install verified
+
+Grok Build (xAI) discovers skills under `.grok/skills/` and, with compat enabled, also under
+`.agents/skills/` and `.claude/skills/`. Native plugin support is via `.grok-plugin/` (marketplace
++ plugin.json); Grok also accepts `.claude-plugin/` equivalents.
+
+Verified on this repo:
+
+```bash
+grok plugin validate .              # → valid: 1 skill dir, hooks
+grok plugin install . --trust       # → appstore-precheck installed with skills + hooks
+grok plugin details appstore-precheck
+grok plugin marketplace add .       # → source added
+grok plugin list --json --available # → appstore-precheck listed as "available"
+```
+
+What this proves: the manifests are valid, the marketplace entry is discoverable, and the installed
+plugin carries the skill and hooks. It does **not** yet include a headless skill-runtime transcript.
+
+Note on the marketplace index: Grok rejects a self-referential local source (`"source": "./"`
+fails the scanner with *marketplace path is empty*, and a local source may not contain parent
+components). Because the plugin root here **is** the repository root, the entry in
+[`.grok-plugin/marketplace.json`](../.grok-plugin/marketplace.json) uses the URL source form
+pointing at this repo. Claude Code and Cursor keep `"./"` — their scanners accept it. A consequence
+is that the marketplace flow installs GitHub `main` even when the source was added from a local
+clone, so `grok plugin install <path> --trust` is the way to test an unmerged working tree.
+
+Note on the upload-guard hook: `hooks/hooks.json` wires under Grok because Grok sets the
+`CLAUDE_PLUGIN_ROOT` alias and maps a `Bash` matcher onto `run_terminal_command`. The hook body,
+however, needed a fix: Grok's stdin envelope is camelCase (`.toolInput.command`) where Claude's is
+snake_case (`.tool_input.command`), so the guard read an empty command and allowed every fastlane
+submit. It now reads `.tool_input.command`, `.toolInput.command`, and Cursor's top-level
+`.command` — every manifest wires the same hook, so a missing shape means a silent fail-open on
+that host. All three are covered by `tests/test-guard.sh`:
+
+```bash
+printf '%s' '{"toolName":"run_terminal_command","toolInput":{"command":"fastlane deliver"}}' \
+  | bash hooks/fastlane-guard.sh    # → exit 2 (blocked) with no fresh .precheck-pass
+```
+
+The block is also emitted as stdout JSON (`{"decision":"deny", …}` plus Claude Code's
+`hookSpecificOutput.permissionDecision`), since Grok honours a stdout deny for `PreToolUse` and
+documents stderr-as-feedback only for `Stop`/`SubagentStop`. Exit 2 remains the authority on both.
+
+`install.sh grok` vendors into `.grok/skills/appstore-precheck/`. A full headless
+`grok -p "…"` skill-runtime transcript (discover → `scan.sh` → RED) can be recorded the same way
+as the other hosts when needed; the scanner itself is host-agnostic Bash.
 
 ---
 

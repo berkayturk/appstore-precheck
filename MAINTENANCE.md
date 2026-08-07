@@ -56,9 +56,23 @@ reconciliation as required, not optional:
 
 ## Keeping the pieces in lockstep
 
-- **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `package.json`, and
-  `SKILL.md` must share one version. The guard
+- **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`,
+  `.grok-plugin/plugin.json`, `.grok-plugin/marketplace.json` (`plugins[0].version`),
+  `package.json`, and `SKILL.md` must share one version. The guard
   is `npm run check-versions`; CI runs it on every push.
+- **Grok marketplace `sha` (optional, post-merge):** the `.grok-plugin/marketplace.json` entry
+  points at this repo by URL and is unpinned, so the marketplace flow installs GitHub `main` and
+  deployments with `require_sha` refuse it. To pin a release, once the release commit is on `main`
+  set `plugins[0].source.sha` to its full sha and push that as a follow-up commit. Unpinned is the
+  supported default; see [`docs/publishing-plugins.md`](docs/publishing-plugins.md).
+- **Hook envelopes:** every plugin manifest wires the same `hooks/hooks.json`, and the hosts
+  disagree on the payload shape: `.tool_input.command` (Claude Code), `.toolInput.command`
+  (Grok Build, camelCase throughout), `.command` (Cursor `beforeShellExecution`). Reading only one
+  shape fails **open** on the others. The guard reads all three and `tests/test-guard.sh` covers
+  each. On a block it writes Pierre's reason to **both** stderr (Claude Code shows stderr on
+  exit 2) and stdout as JSON (`decision: deny` plus `hookSpecificOutput.permissionDecision`),
+  because Grok documents stderr feedback only for `Stop`/`SubagentStop`. When adding a host, add
+  its envelope to the jq chain and a test case, or the guard silently stops guarding.
 - **Homebrew formula:** the tap ([`berkayturk/homebrew-tap`](https://github.com/berkayturk/homebrew-tap))
   pins the npm tarball of one exact version, so every npm release MUST be followed by
   `bash scripts/update-brew-formula.sh` (fetches the published tarball, rewrites the formula's
@@ -81,7 +95,7 @@ exemption-prone checks are WARN, never FAIL.
 
 - `npm test`, `npm run lint`, and `shellcheck -x --severity=warning` on the changed scripts are
   green.
-- `claude plugin validate .` passes.
+- `claude plugin validate .` and `grok plugin validate .` pass.
 - The changelog has an entry and the version is bumped in lockstep.
 - The manual pre-submit checklist at the end of the methodology reference still reflects what the
   scanner cannot verify.

@@ -62,6 +62,8 @@ jobs:
                    .claude-plugin/marketplace.json \
                    .cursor-plugin/plugin.json \
                    .cursor-plugin/marketplace.json \
+                   .grok-plugin/plugin.json \
+                   .grok-plugin/marketplace.json \
                    .agents/plugins/marketplace.json \
                    hooks/hooks.json \
                    skills/appstore-precheck/guidelines-baseline.json \

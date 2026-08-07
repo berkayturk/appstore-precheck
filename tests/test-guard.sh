@@ -28,6 +28,21 @@ PILOT='{"tool_input":{"command":"fastlane pilot upload"}}'
 HARMLESS='{"tool_input":{"command":"ls -la && git status"}}'
 NOCMD='{"tool_input":{}}'
 
+# Grok Build sends the same event with camelCase keys (toolInput, not tool_input).
+# A guard that only reads .tool_input would fail OPEN on Grok — allow everything.
+GROK_DELIVER='{"hookEventName":"pre_tool_use","toolName":"run_terminal_command","toolInput":{"command":"bundle exec fastlane deliver --submit"}}'
+GROK_HARMLESS='{"hookEventName":"pre_tool_use","toolName":"run_terminal_command","toolInput":{"command":"ls -la && git status"}}'
+
+# Cursor's native shell event carries the command at the top level (.command).
+# The same hooks.json is wired by .cursor-plugin/plugin.json, so cover that shape too.
+CURSOR_DELIVER='{"hook_event_name":"beforeShellExecution","command":"fastlane deliver --submit"}'
+CURSOR_HARMLESS='{"hook_event_name":"beforeShellExecution","command":"ls -la && git status"}'
+
+# guard_stdout <json> — feed JSON on stdin from inside the repo, echo stdout only.
+guard_stdout() {
+  ( cd "$REPO" && printf '%s' "$1" | bash "$GUARD" 2>/dev/null )
+}
+
 section "non-fastlane command is ignored (allow)"
 rm -f "$TOKEN"
 assert_eq "$(guard_exit "$HARMLESS")" "0" "harmless command -> allow (exit 0)"
@@ -47,6 +62,32 @@ assert_eq "$(guard_exit "$PILOT")"   "0" "pilot, fresh token -> allow (exit 0)"
 section "fastlane submit with a STALE token (>60 min) is blocked"
 touch -t 202001010000 "$TOKEN"   # Jan 1 2020 — far older than 60 min, GNU+BSD touch
 assert_eq "$(guard_exit "$DELIVER")" "2" "deliver, stale token -> block (exit 2)"
+
+section "Grok Build camelCase envelope is honoured (no fail-open)"
+rm -f "$TOKEN"
+assert_eq "$(guard_exit "$GROK_DELIVER")"  "2" "grok deliver, no token -> block (exit 2)"
+assert_eq "$(guard_exit "$GROK_HARMLESS")" "0" "grok harmless command -> allow (exit 0)"
+touch "$TOKEN"
+assert_eq "$(guard_exit "$GROK_DELIVER")"  "0" "grok deliver, fresh token -> allow (exit 0)"
+touch -t 202001010000 "$TOKEN"
+assert_eq "$(guard_exit "$GROK_DELIVER")"  "2" "grok deliver, stale token -> block (exit 2)"
+
+section "Cursor top-level .command envelope is honoured (no fail-open)"
+rm -f "$TOKEN"
+assert_eq "$(guard_exit "$CURSOR_DELIVER")"  "2" "cursor deliver, no token -> block (exit 2)"
+assert_eq "$(guard_exit "$CURSOR_HARMLESS")" "0" "cursor harmless command -> allow (exit 0)"
+touch "$TOKEN"
+assert_eq "$(guard_exit "$CURSOR_DELIVER")"  "0" "cursor deliver, fresh token -> allow (exit 0)"
+
+section "block also emits a machine-readable deny on stdout"
+rm -f "$TOKEN"
+out="$(guard_stdout "$DELIVER")"
+assert_eq "$(printf '%s' "$out" | jq -r '.decision')" "deny" \
+  "stdout carries decision=deny (Grok / legacy Claude)"
+assert_eq "$(printf '%s' "$out" | jq -r '.hookSpecificOutput.permissionDecision')" "deny" \
+  "stdout carries hookSpecificOutput.permissionDecision=deny (Claude Code)"
+assert_contains "$(printf '%s' "$out" | jq -r '.reason')" "Pierre" "deny reason names Pierre"
+assert_eq "$(guard_stdout "$HARMLESS")" "" "allow path prints nothing on stdout"
 
 section "guard message names Pierre on block"
 rm -f "$TOKEN"

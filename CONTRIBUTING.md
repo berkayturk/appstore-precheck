@@ -24,6 +24,7 @@ it small, portable, and faithful are very welcome.
 npm test                 # fixture + unit suite (tests/all.sh)
 npm run lint             # bash -n on every script
 claude plugin validate . # Claude + Cursor + Codex plugin manifests
+grok plugin validate .   # Grok Build plugin manifest
 shellcheck -x --severity=warning skills/appstore-precheck/scripts/*.sh hooks/*.sh tests/*.sh
 ```
 

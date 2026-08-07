@@ -3,6 +3,35 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.16.0] - 2026-08-07
+
+### Added
+- **Grok Build support**: native [`.grok-plugin/`](.grok-plugin/) marketplace + plugin manifests so
+  users can install with `grok plugin marketplace add berkayturk/appstore-precheck` and
+  `grok plugin install appstore-precheck --trust` (or a direct path/GitHub install). The same
+  `SKILL.md` and upload-guard hook work; Grok sets `GROK_PLUGIN_ROOT` and the `CLAUDE_PLUGIN_ROOT`
+  alias used by `hooks/hooks.json`. The marketplace entry uses a URL source (Grok rejects a
+  self-referential local source), so that flow installs GitHub `main`; install a path directly to
+  test a local clone.
+- **`install.sh grok`**: vendors the skill into `.grok/skills/` (project or user scope). The
+  default `all` target now also populates `.grok/skills/` alongside `.claude/skills/` and
+  `.agents/skills/`.
+- Docs, badge, AGENTS.md, version lockstep (`check-versions`), and install tests updated for the
+  fifth host.
+
+### Fixed
+- **Upload guard no longer fails open on Grok Build (or Cursor)**: `hooks/fastlane-guard.sh` read
+  only Claude Code's snake_case `.tool_input.command`, while Grok sends the same event camelCased
+  as `.toolInput.command` and Cursor's shell event carries `.command` at the top level. The command
+  came back empty and every `fastlane deliver/pilot/release` was allowed. Every plugin manifest
+  wires this hook, so the guard now reads all three envelopes, and `tests/test-guard.sh` covers
+  each.
+- **Block reason reaches the model on every host**: the guard now also writes the deny as stdout
+  JSON (`decision: "deny"` plus Claude Code's `hookSpecificOutput.permissionDecision`) alongside
+  the stderr message. Grok honours a stdout deny for `PreToolUse` and documents stderr feedback
+  only for `Stop`/`SubagentStop`, so Pierre's reason could previously be dropped there. Exit 2 is
+  still the authority.
+
 ## [1.15.0] - 2026-08-04
 
 ### Added
