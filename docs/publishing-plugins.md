@@ -162,9 +162,12 @@ grok plugin details appstore-precheck
 Plugins stay off until enabled; after install, `grok plugin enable appstore-precheck` (or `Space`
 in the Plugins tab). The upload-guard hook auto-wires when the plugin is trusted (`--trust`);
 Grok sets `GROK_PLUGIN_ROOT` and the `CLAUDE_PLUGIN_ROOT` alias used by `hooks/hooks.json`.
-Grok's hook payload is camelCase (`.toolInput`) where Claude's is snake_case (`.tool_input`) —
-`hooks/fastlane-guard.sh` reads both, and `tests/test-guard.sh` covers both envelopes. A guard that
-reads only one of them fails **open** on the other host.
+Grok's hook payload is camelCase (`.toolInput`) where Claude's is snake_case (`.tool_input`) and
+Cursor's shell event puts the command at the top level (`.command`) —
+`hooks/fastlane-guard.sh` reads all three, and `tests/test-guard.sh` covers each envelope. A guard
+that reads only one of them fails **open** on the other hosts. The block is reported twice, on
+stderr and as stdout JSON, because Grok honours a stdout `deny` for `PreToolUse` and documents
+stderr feedback only for `Stop`/`SubagentStop`.
 
 ### Why the index uses a URL source
 

@@ -381,7 +381,8 @@ Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-r
 token exists. In Claude Code and Grok Build it auto-wires via `hooks/hooks.json` **when installed
 as a plugin** (the hook path uses `${CLAUDE_PLUGIN_ROOT}`; Grok also sets that alias alongside
 `${GROK_PLUGIN_ROOT}`, and maps a `Bash` matcher onto `run_terminal_command`). The guard reads
-both the snake_case (`.tool_input`) and camelCase (`.toolInput`) tool-use envelopes, so it blocks
-on either host. An `install.sh`-vendored copy gets no automatic hook. In other
+the snake_case (`.tool_input`), camelCase (`.toolInput`), and top-level (`.command`, Cursor)
+tool-use envelopes, and reports a block on both stderr and stdout, so it blocks on every host that
+wires it. An `install.sh`-vendored copy gets no automatic hook. In other
 environments, wire it as a pre-command check yourself, or treat the token as a manual go/no-go
 signal.

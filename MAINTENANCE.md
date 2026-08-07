@@ -65,9 +65,14 @@ reconciliation as required, not optional:
   deployments with `require_sha` refuse it. To pin a release, once the release commit is on `main`
   set `plugins[0].source.sha` to its full sha and push that as a follow-up commit. Unpinned is the
   supported default; see [`docs/publishing-plugins.md`](docs/publishing-plugins.md).
-- **Hook envelopes:** `hooks/fastlane-guard.sh` must read both `.tool_input` (Claude Code) and
-  `.toolInput` (Grok Build). Reading only one fails **open** on the other host —
-  `tests/test-guard.sh` covers both.
+- **Hook envelopes:** every plugin manifest wires the same `hooks/hooks.json`, and the hosts
+  disagree on the payload shape: `.tool_input.command` (Claude Code), `.toolInput.command`
+  (Grok Build, camelCase throughout), `.command` (Cursor `beforeShellExecution`). Reading only one
+  shape fails **open** on the others. The guard reads all three and `tests/test-guard.sh` covers
+  each. On a block it writes Pierre's reason to **both** stderr (Claude Code shows stderr on
+  exit 2) and stdout as JSON (`decision: deny` plus `hookSpecificOutput.permissionDecision`),
+  because Grok documents stderr feedback only for `Stop`/`SubagentStop`. When adding a host, add
+  its envelope to the jq chain and a test case, or the guard silently stops guarding.
 - **Homebrew formula:** the tap ([`berkayturk/homebrew-tap`](https://github.com/berkayturk/homebrew-tap))
   pins the npm tarball of one exact version, so every npm release MUST be followed by
   `bash scripts/update-brew-formula.sh` (fetches the published tarball, rewrites the formula's

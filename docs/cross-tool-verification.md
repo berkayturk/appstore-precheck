@@ -111,12 +111,18 @@ Note on the upload-guard hook: `hooks/hooks.json` wires under Grok because Grok 
 `CLAUDE_PLUGIN_ROOT` alias and maps a `Bash` matcher onto `run_terminal_command`. The hook body,
 however, needed a fix: Grok's stdin envelope is camelCase (`.toolInput.command`) where Claude's is
 snake_case (`.tool_input.command`), so the guard read an empty command and allowed every fastlane
-submit. It now reads both, verified by `tests/test-guard.sh`:
+submit. It now reads `.tool_input.command`, `.toolInput.command`, and Cursor's top-level
+`.command` — every manifest wires the same hook, so a missing shape means a silent fail-open on
+that host. All three are covered by `tests/test-guard.sh`:
 
 ```bash
 printf '%s' '{"toolName":"run_terminal_command","toolInput":{"command":"fastlane deliver"}}' \
   | bash hooks/fastlane-guard.sh    # → exit 2 (blocked) with no fresh .precheck-pass
 ```
+
+The block is also emitted as stdout JSON (`{"decision":"deny", …}` plus Claude Code's
+`hookSpecificOutput.permissionDecision`), since Grok honours a stdout deny for `PreToolUse` and
+documents stderr-as-feedback only for `Stop`/`SubagentStop`. Exit 2 remains the authority on both.
 
 `install.sh grok` vendors into `.grok/skills/appstore-precheck/`. A full headless
 `grok -p "…"` skill-runtime transcript (discover → `scan.sh` → RED) can be recorded the same way

@@ -20,10 +20,17 @@ All notable changes to this project are documented here. Versioning follows
   fifth host.
 
 ### Fixed
-- **Upload guard no longer fails open on Grok Build**: `hooks/fastlane-guard.sh` read only Claude
-  Code's snake_case `.tool_input.command`, while Grok sends the same event camelCased as
-  `.toolInput.command`. The command came back empty and every `fastlane deliver/pilot/release`
-  was allowed. The guard now reads both envelopes, and `tests/test-guard.sh` covers each.
+- **Upload guard no longer fails open on Grok Build (or Cursor)**: `hooks/fastlane-guard.sh` read
+  only Claude Code's snake_case `.tool_input.command`, while Grok sends the same event camelCased
+  as `.toolInput.command` and Cursor's shell event carries `.command` at the top level. The command
+  came back empty and every `fastlane deliver/pilot/release` was allowed. Every plugin manifest
+  wires this hook, so the guard now reads all three envelopes, and `tests/test-guard.sh` covers
+  each.
+- **Block reason reaches the model on every host**: the guard now also writes the deny as stdout
+  JSON (`decision: "deny"` plus Claude Code's `hookSpecificOutput.permissionDecision`) alongside
+  the stderr message. Grok honours a stdout deny for `PreToolUse` and documents stderr feedback
+  only for `Stop`/`SubagentStop`, so Pierre's reason could previously be dropped there. Exit 2 is
+  still the authority.
 
 ## [1.15.0] - 2026-08-04
 
