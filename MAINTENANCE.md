@@ -56,8 +56,8 @@ reconciliation as required, not optional:
 
 ## Keeping the pieces in lockstep
 
-- **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `package.json`, and
-  `SKILL.md` must share one version. The guard
+- **Versions:** `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`,
+  `.grok-plugin/plugin.json`, `package.json`, and `SKILL.md` must share one version. The guard
   is `npm run check-versions`; CI runs it on every push.
 - **Homebrew formula:** the tap ([`berkayturk/homebrew-tap`](https://github.com/berkayturk/homebrew-tap))
   pins the npm tarball of one exact version, so every npm release MUST be followed by
@@ -81,7 +81,7 @@ exemption-prone checks are WARN, never FAIL.
 
 - `npm test`, `npm run lint`, and `shellcheck -x --severity=warning` on the changed scripts are
   green.
-- `claude plugin validate .` passes.
+- `claude plugin validate .` and `grok plugin validate .` pass.
 - The changelog has an entry and the version is bumped in lockstep.
 - The manual pre-submit checklist at the end of the methodology reference still reflects what the
   scanner cannot verify.

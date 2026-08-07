@@ -3,6 +3,20 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.16.0] - 2026-08-07
+
+### Added
+- **Grok Build support**: native [`.grok-plugin/`](.grok-plugin/) marketplace + plugin manifests so
+  users can install with `grok plugin marketplace add berkayturk/appstore-precheck` and
+  `grok plugin install appstore-precheck --trust` (or a direct path/GitHub install). The same
+  `SKILL.md` and upload-guard hook work; Grok sets `GROK_PLUGIN_ROOT` and the `CLAUDE_PLUGIN_ROOT`
+  alias used by `hooks/hooks.json`.
+- **`install.sh grok`**: vendors the skill into `.grok/skills/` (project or user scope). The
+  default `all` target now also populates `.grok/skills/` alongside `.claude/skills/` and
+  `.agents/skills/`.
+- Docs, badge, AGENTS.md, version lockstep (`check-versions`), and install tests updated for the
+  fifth host.
+
 ## [1.15.0] - 2026-08-04
 
 ### Added

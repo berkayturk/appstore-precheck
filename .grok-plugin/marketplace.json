@@ -1,0 +1,18 @@
+{
+  "name": "appstore-precheck",
+  "description": "iOS App Store pre-submission checks: catch rejections before a reviewer does.",
+  "owner": {
+    "name": "Berkay Turk",
+    "email": "berkayturk@users.noreply.github.com"
+  },
+  "plugins": [
+    {
+      "name": "appstore-precheck",
+      "description": "Read-only iOS App Store pre-submission check (static scan, fastlane precheck, guideline drift, Pierre commentary, semantic deep review).",
+      "category": "testing",
+      "source": "./",
+      "homepage": "https://github.com/berkayturk/appstore-precheck",
+      "keywords": ["ios", "app-store", "fastlane", "review", "precheck", "aso"]
+    }
+  ]
+}

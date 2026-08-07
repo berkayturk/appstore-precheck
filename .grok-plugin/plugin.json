@@ -4,13 +4,12 @@
   "version": "1.16.0",
   "author": {
     "name": "Berkay Turk",
-    "email": "berkayturk@users.noreply.github.com"
+    "url": "https://github.com/berkayturk"
   },
   "homepage": "https://github.com/berkayturk/appstore-precheck",
   "repository": "https://github.com/berkayturk/appstore-precheck",
   "license": "MIT",
   "keywords": ["ios", "app-store", "fastlane", "review", "precheck", "aso", "ios-submission"],
-  "logo": "assets/marketplace-logo.svg",
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json"
 }

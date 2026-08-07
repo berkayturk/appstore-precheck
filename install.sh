@@ -1,19 +1,20 @@
 #!/usr/bin/env bash
 # install.sh — vendor the appstore-precheck skill into a project for any agent host.
 #
-# Agent Skills is an open standard (https://agentskills.io): Claude Code, Codex, Cursor, and
-# Gemini CLI all read a raw SKILL.md. They differ only in WHICH directory they scan. This script
-# copies the skill into the right place(s).
+# Agent Skills is an open standard (https://agentskills.io): Claude Code, Codex, Cursor,
+# Gemini CLI, and Grok Build all read a raw SKILL.md. They differ only in WHICH directory
+# they scan. This script copies the skill into the right place(s).
 #
 # Usage:
 #   ./install.sh [target] [scope]
-#     target: all (default) | claude | codex | cursor | gemini
+#     target: all (default) | claude | codex | cursor | gemini | grok
 #     scope:  project (default, ./) | user (your home dir)
 #
 # Examples:
 #   ./install.sh                 # install for every host, into the current project
 #   ./install.sh claude user     # install only for Claude Code, into ~/.claude/skills
 #   ./install.sh cursor          # install only for Cursor, into ./.agents/skills
+#   ./install.sh grok            # install only for Grok Build, into ./.grok/skills
 
 set -euo pipefail
 
@@ -24,13 +25,15 @@ SCOPE="${2:-project}"
 
 if [[ "$SCOPE" == "user" ]]; then BASE="$HOME"; else BASE="$(pwd)"; fi
 
-# Neutral dir read by Codex + Cursor + Gemini; .claude/skills read by Claude Code (+ Cursor).
+# Neutral dir read by Codex + Cursor + Gemini (+ Grok compat); .claude/skills by Claude (+ Cursor/Grok);
+# .grok/skills by Grok Build natively.
 declare -a DIRS
 case "$TARGET" in
-  all)    DIRS=(".claude/skills" ".agents/skills") ;;
+  all)    DIRS=(".claude/skills" ".agents/skills" ".grok/skills") ;;
   claude) DIRS=(".claude/skills") ;;
   codex|cursor|gemini) DIRS=(".agents/skills") ;;
-  *) echo "Unknown target '$TARGET' (use: all|claude|codex|cursor|gemini)"; exit 1 ;;
+  grok)   DIRS=(".grok/skills") ;;
+  *) echo "Unknown target '$TARGET' (use: all|claude|codex|cursor|gemini|grok)"; exit 1 ;;
 esac
 
 echo "Installing '$SKILL_NAME' (scope: $SCOPE) from:"

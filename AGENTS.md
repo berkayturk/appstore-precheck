@@ -2,7 +2,7 @@
 
 Cross-tool instructions for any coding agent working in or consuming this repository.
 This file follows the [agents.md](https://agents.md) convention and is read by Codex, Cursor,
-Gemini CLI, GitHub Copilot, and others as always-on context.
+Gemini CLI, Grok Build, GitHub Copilot, and others as always-on context.
 
 ## What this repo is
 
@@ -16,7 +16,7 @@ any agent or by hand. Phase 4 runs **28** Pierre deep-review checks (22 Tier A +
 ## Using the skill in your project
 
 The same `SKILL.md` is consumed natively by Claude Code, Claude API/apps, OpenAI Codex, Cursor,
-and Gemini CLI, with no per-tool conversion. They differ only in which directory they scan:
+Gemini CLI, and Grok Build, with no per-tool conversion. They differ only in which directory they scan:
 
 | Host | Skill directory it scans |
 |------|--------------------------|
@@ -24,11 +24,13 @@ and Gemini CLI, with no per-tool conversion. They differ only in which directory
 | OpenAI Codex | `.agents/skills/<name>/` (project), `~/.agents/skills/` (user) |
 | Cursor | `.agents/skills/`, `.cursor/skills/`, also reads `.claude/skills/` |
 | Gemini CLI | `.agents/skills/`, `.gemini/skills/` |
+| Grok Build | `.grok/skills/`, also `.agents/skills/` and `.claude/skills/` (compat) |
 
-**Install:** Claude Code, Cursor, and Codex as native plugins from this repo (see README Quick start).
-Gemini: `gemini skills install https://github.com/berkayturk/appstore-precheck.git --path skills/appstore-precheck`.
-Fallback: `./install.sh` copies the skill into `.claude/skills/` and/or `.agents/skills/` of the
-current project, or `./install.sh <host> <project|user>` for a single host.
+**Install:** Claude Code, Cursor, Codex, and Grok Build as native plugins from this repo (see README
+Quick start). Gemini: `gemini skills install https://github.com/berkayturk/appstore-precheck.git
+--path skills/appstore-precheck`. Fallback: `./install.sh` copies the skill into
+`.claude/skills/`, `.agents/skills/`, and/or `.grok/skills/` of the current project, or
+`./install.sh <host> <project|user>` for a single host.
 
 ## The hard rule
 
@@ -46,7 +48,7 @@ Phase 4 `REVIEW-FINDING` lines are advisory — they do not block the token.
 
 - `scripts/scan.sh` is the engine; keep it portable POSIX-ish Bash, forward-slash paths only.
 - Keep `SKILL.md` under 500 lines; push detail into `references/`.
-- After changing the scanner or manifests, run `npm test` (or `bash tests/run.sh`) and
-  `claude plugin validate .`.
+- After changing the scanner or manifests, run `npm test` (or `bash tests/run.sh`),
+  `claude plugin validate .`, and `grok plugin validate .`.
 - Do not commit secrets. The App Store Connect API key is provided at runtime via env and
   deleted immediately after use; `.gitignore` blocks `*asc-key*.json` and `.env`.

@@ -19,11 +19,12 @@ present() {
   fi
 }
 
-section "install all -> both .claude/skills and .agents/skills"
+section "install all -> .claude/skills, .agents/skills, and .grok/skills"
 P="$(mktemp -d)"
 ( cd "$P" && bash "$INSTALL" all project >/dev/null )
 assert_eq "$(present "$P" ".claude/skills")" "yes" "Claude Code dir populated"
 assert_eq "$(present "$P" ".agents/skills")" "yes" "neutral .agents/skills dir populated"
+assert_eq "$(present "$P" ".grok/skills")" "yes" "Grok Build dir populated"
 rm -rf "$P"
 
 section "install claude -> only .claude/skills"
@@ -31,6 +32,7 @@ P="$(mktemp -d)"
 ( cd "$P" && bash "$INSTALL" claude project >/dev/null )
 assert_eq "$(present "$P" ".claude/skills")" "yes" "Claude Code dir populated"
 assert_eq "$(present "$P" ".agents/skills")" "no"  ".agents/skills left untouched"
+assert_eq "$(present "$P" ".grok/skills")" "no"  ".grok/skills left untouched"
 rm -rf "$P"
 
 section "install codex -> only .agents/skills"
@@ -38,6 +40,15 @@ P="$(mktemp -d)"
 ( cd "$P" && bash "$INSTALL" codex project >/dev/null )
 assert_eq "$(present "$P" ".agents/skills")" "yes" "neutral dir populated"
 assert_eq "$(present "$P" ".claude/skills")" "no"  ".claude/skills left untouched"
+assert_eq "$(present "$P" ".grok/skills")" "no"  ".grok/skills left untouched"
+rm -rf "$P"
+
+section "install grok -> only .grok/skills"
+P="$(mktemp -d)"
+( cd "$P" && bash "$INSTALL" grok project >/dev/null )
+assert_eq "$(present "$P" ".grok/skills")" "yes" "Grok Build dir populated"
+assert_eq "$(present "$P" ".claude/skills")" "no"  ".claude/skills left untouched"
+assert_eq "$(present "$P" ".agents/skills")" "no"  ".agents/skills left untouched"
 rm -rf "$P"
 
 section "installed scanner actually runs"

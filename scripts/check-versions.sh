@@ -6,16 +6,18 @@ cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 plugin_v=$(jq -r '.version' .claude-plugin/plugin.json)
 cursor_v=$(jq -r '.version' .cursor-plugin/plugin.json)
+grok_v=$(jq -r '.version' .grok-plugin/plugin.json)
 pkg_v=$(jq -r '.version' package.json)
 # SKILL.md carries version under frontmatter `metadata: version:`
 skill_v=$(awk '/^metadata:/{m=1;next} m && /version:/{gsub(/[^0-9.]/,"",$2); print $2; exit}' skills/appstore-precheck/SKILL.md)
 
 echo "claude plugin.json : $plugin_v"
 echo "cursor plugin.json : $cursor_v"
+echo "grok plugin.json   : $grok_v"
 echo "package.json       : $pkg_v"
 echo "SKILL.md           : $skill_v"
 
-if [[ "$plugin_v" == "$cursor_v" && "$plugin_v" == "$pkg_v" && "$pkg_v" == "$skill_v" && -n "$plugin_v" ]]; then
+if [[ "$plugin_v" == "$cursor_v" && "$plugin_v" == "$grok_v" && "$plugin_v" == "$pkg_v" && "$pkg_v" == "$skill_v" && -n "$plugin_v" ]]; then
   if [[ "$plugin_v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "OK: versions match ($plugin_v)"
   else

@@ -34,6 +34,7 @@ WARN: 2.3.3 Screenshots — en-US has only 1 image(s)
 | **Codex CLI** | ✅ | `.agents/skills/` | ✅ | ✅ | RED (faithful, Pierre one-liner) | **Verified** |
 | **Gemini CLI** | ✅ | `.agents/skills/`, `.gemini/skills/` | ✅ `gemini skills list` → `appstore-precheck [Enabled]` | ✅ | RED (faithful, Pierre one-liner) | **Verified** |
 | **Cursor** | ✅ | `.agents/skills/`, `.cursor/skills/`, also `.claude/skills/` | ✅ | ✅ | RED (faithful, Pierre one-liner) | **Verified** |
+| **Grok Build** | ✅ plugin | `.grok/skills/` (also `.agents/` + `.claude/` compat) | ✅ `grok plugin validate` + install inventory | ⏳ headless skill run pending | — | **Plugin install verified** |
 
 ### Claude Code: verified
 
@@ -78,6 +79,24 @@ Cursor reads. A headless `cursor-agent -p --force "…"` run discovered the skil
 scanner, and returned a faithful **RED** verdict: Pierre one-liner (*"Non. Quatre faults. Apple
 would have found fewer. Suivant."*), the verbatim scan output, and the deterministic counts
 (`fail=4 warn=1 pass=8`), token withheld.
+
+### Grok Build: plugin install verified
+
+Grok Build (xAI) discovers skills under `.grok/skills/` and, with compat enabled, also under
+`.agents/skills/` and `.claude/skills/`. Native plugin support is via `.grok-plugin/` (marketplace
++ plugin.json); Grok also accepts `.claude-plugin/` equivalents.
+
+Verified on this repo:
+
+```bash
+grok plugin validate .          # → valid: 1 skill dir, hooks
+grok plugin install . --trust   # → appstore-precheck installed with skills + hooks
+grok plugin details appstore-precheck
+```
+
+`install.sh grok` vendors into `.grok/skills/appstore-precheck/`. A full headless
+`grok -p "…"` skill-runtime transcript (discover → `scan.sh` → RED) can be recorded the same way
+as the other hosts when needed; the scanner itself is host-agnostic Bash.
 
 ---
 

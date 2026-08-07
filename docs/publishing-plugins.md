@@ -1,6 +1,6 @@
 # Publishing plugins
 
-This repo ships **one skill** with **native plugin manifests** for three hosts. Gemini CLI has no
+This repo ships **one skill** with **native plugin manifests** for four hosts. Gemini CLI has no
 plugin marketplace yet; use `gemini skills install` instead (see the README Quick start).
 
 | Host | Manifest | Marketplace catalog |
@@ -8,9 +8,11 @@ plugin marketplace yet; use `gemini skills install` instead (see the README Quic
 | Claude Code | [`.claude-plugin/plugin.json`](../.claude-plugin/plugin.json) | [`.claude-plugin/marketplace.json`](../.claude-plugin/marketplace.json) |
 | Cursor | [`.cursor-plugin/plugin.json`](../.cursor-plugin/plugin.json) | [`.cursor-plugin/marketplace.json`](../.cursor-plugin/marketplace.json) |
 | OpenAI Codex | reads `.claude-plugin/plugin.json` (legacy-compatible) | [`.agents/plugins/marketplace.json`](../.agents/plugins/marketplace.json) and `.claude-plugin/marketplace.json` |
+| Grok Build | [`.grok-plugin/plugin.json`](../.grok-plugin/plugin.json) (also accepts `.claude-plugin/`) | [`.grok-plugin/marketplace.json`](../.grok-plugin/marketplace.json) |
 
 The plugin root is the **repository root**. Skills live under `skills/appstore-precheck/`; hooks under
-`hooks/`. After changing manifests, run `npm run check-versions` and `claude plugin validate .`.
+`hooks/`. After changing manifests, run `npm run check-versions`, `claude plugin validate .`, and
+`grok plugin validate .`.
 
 ---
 
@@ -25,9 +27,10 @@ The plugin root is the **repository root**. Skills live under `skills/appstore-p
 
 ### Maintainer checklist
 
-1. Bump version in `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `package.json`, and
-   `skills/appstore-precheck/SKILL.md` (`metadata.version`).
-2. Run `npm run check-versions` and `claude plugin validate .`.
+1. Bump version in `.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`,
+   `.grok-plugin/plugin.json`, `package.json`, and `skills/appstore-precheck/SKILL.md`
+   (`metadata.version`).
+2. Run `npm run check-versions`, `claude plugin validate .`, and `grok plugin validate .`.
 3. Tag and push (`v1.x.y`). Claude Code marketplace tracks the GitHub repo; users pick up new
    versions on reinstall or marketplace refresh.
 
@@ -126,6 +129,46 @@ OpenAI creates a Codex plugin). That is for full apps with connectors, not a ski
 
 ---
 
+## Grok Build — plugin marketplace
+
+Grok Build reads [`.grok-plugin/marketplace.json`](../.grok-plugin/marketplace.json) and
+[`.grok-plugin/plugin.json`](../.grok-plugin/plugin.json). It also accepts the
+`.claude-plugin/` equivalents, so this repo remains dual-readable.
+
+### What users do today
+
+```bash
+grok plugin marketplace add berkayturk/appstore-precheck
+grok plugin install appstore-precheck --trust
+```
+
+Direct install (no marketplace step):
+
+```bash
+grok plugin install berkayturk/appstore-precheck --trust
+# or a local clone:
+grok plugin install /path/to/appstore-precheck --trust
+```
+
+Validate locally:
+
+```bash
+grok plugin validate .
+grok plugin details appstore-precheck
+```
+
+Plugins stay off until enabled; after install, `grok plugin enable appstore-precheck` (or `Space`
+in the Plugins tab). The upload-guard hook auto-wires when the plugin is trusted (`--trust`);
+Grok sets `GROK_PLUGIN_ROOT` and the `CLAUDE_PLUGIN_ROOT` alias used by `hooks/hooks.json`.
+
+### Official xAI catalog (optional)
+
+To list this plugin in the [built-in Grok marketplace](https://github.com/xai-org/plugin-marketplace),
+open a PR there with a remote plugin entry pointing at this repo (pinned `sha` recommended). The
+self-hosted marketplace above works without that listing.
+
+---
+
 ## Gemini CLI — skills install (no plugin marketplace)
 
 Gemini has **no** `gemini plugin install` marketplace today. Native one-liner install:
@@ -147,6 +190,7 @@ When releasing, keep these in lockstep (enforced by `npm run check-versions`):
 
 - `.claude-plugin/plugin.json` → `version`
 - `.cursor-plugin/plugin.json` → `version`
+- `.grok-plugin/plugin.json` → `version`
 - `package.json` → `version`
 - `skills/appstore-precheck/SKILL.md` → `metadata.version`
 

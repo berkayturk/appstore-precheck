@@ -7,7 +7,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License: MIT"></a>
   <img src="https://img.shields.io/badge/platform-iOS-lightgrey.svg" alt="Platform: iOS">
   <img src="https://img.shields.io/badge/Agent%20Skill-open%20standard-1F6FEB.svg" alt="Agent Skill">
-  <img src="https://img.shields.io/badge/works%20with-Claude%20Code%20·%20Codex%20·%20Cursor%20·%20Gemini-2563EB.svg" alt="Works with Claude Code, Codex, Cursor, Gemini">
+  <img src="https://img.shields.io/badge/works%20with-Claude%20Code%20·%20Codex%20·%20Cursor%20·%20Gemini%20·%20Grok%20Build-2563EB.svg" alt="Works with Claude Code, Codex, Cursor, Gemini, Grok Build">
 </p>
 
 <p align="center"><strong>Catch App Store rejections before a reviewer does.</strong></p>
@@ -28,8 +28,8 @@ incentivized review, push/HomeKit abuse, rating manipulation).
 It hands you a single **GREEN / YELLOW / RED** verdict. It never edits your code.
 
 It ships as a portable [Agent Skill](https://agentskills.io): the same `SKILL.md` runs natively in
-Claude Code, OpenAI Codex, Cursor, and Gemini CLI. The scanner is plain Bash, so you can also run it
-by hand or wire it into CI.
+Claude Code, OpenAI Codex, Cursor, Gemini CLI, and Grok Build. The scanner is plain Bash, so you can
+also run it by hand or wire it into CI.
 
 ## Meet Pierre
 
@@ -170,9 +170,10 @@ how the app is built:
 
 ## Quick start
 
-One `SKILL.md`, every host. **Claude Code, Cursor, and Codex** install as native **plugins** from
-this GitHub repo. **Gemini CLI** installs the same skill with `gemini skills install` (no plugin
-marketplace yet). [`install.sh`](install.sh) remains the fallback for vendoring into a project.
+One `SKILL.md`, every host. **Claude Code, Cursor, Codex, and Grok Build** install as native
+**plugins** from this GitHub repo. **Gemini CLI** installs the same skill with
+`gemini skills install` (no plugin marketplace yet). [`install.sh`](install.sh) remains the fallback
+for vendoring into a project.
 
 ### Install the full skill (Pierre + all phases)
 
@@ -181,6 +182,7 @@ marketplace yet). [`install.sh`](install.sh) remains the fallback for vendoring 
 | **Claude Code** | Plugin (recommended) |
 | **Cursor** | Plugin (recommended) |
 | **OpenAI Codex** | Plugin (recommended) |
+| **Grok Build** | Plugin (recommended) |
 | **Gemini CLI** | `gemini skills install` one-liner |
 
 **Claude Code:**
@@ -220,6 +222,24 @@ Refresh after repo updates:
 codex plugin marketplace upgrade appstore-precheck
 ```
 
+**Grok Build:**
+
+```bash
+grok plugin marketplace add berkayturk/appstore-precheck
+grok plugin install appstore-precheck --trust
+```
+
+Or install straight from this repo (local clone or path):
+
+```bash
+grok plugin install /path/to/appstore-precheck --trust
+# or: grok plugin install berkayturk/appstore-precheck --trust
+```
+
+After install, enable the plugin if needed (`grok plugin enable appstore-precheck` or press `Space`
+in the Plugins tab). Skills appear as `/appstore-precheck`. Verify with `grok inspect` or
+`grok plugin details appstore-precheck`.
+
 **Gemini CLI** (native skill install — no plugin marketplace):
 
 ```bash
@@ -229,15 +249,17 @@ gemini skills install https://github.com/berkayturk/appstore-precheck.git \
 
 Use `--scope user` for a global install. Verify with `gemini skills list`.
 
-**Fallback — `install.sh`** (vendors the skill into `.claude/skills/` and/or `.agents/skills/`):
+**Fallback — `install.sh`** (vendors the skill into `.claude/skills/`, `.agents/skills/`, and/or
+`.grok/skills/`):
 
 ```bash
 git clone https://github.com/berkayturk/appstore-precheck.git
 cd your-ios-app
-/path/to/appstore-precheck/install.sh              # all hosts → .claude/skills + .agents/skills
+/path/to/appstore-precheck/install.sh              # all hosts → .claude + .agents + .grok skills
 /path/to/appstore-precheck/install.sh cursor       # Cursor only
 /path/to/appstore-precheck/install.sh codex        # Codex only
 /path/to/appstore-precheck/install.sh gemini       # Gemini only
+/path/to/appstore-precheck/install.sh grok         # Grok Build only → ./.grok/skills
 /path/to/appstore-precheck/install.sh claude user  # Claude Code user-wide → ~/.claude/skills
 ```
 
@@ -504,12 +526,13 @@ Hosts differ only in the directory they scan:
 | OpenAI Codex | `.agents/skills/` · `~/.agents/skills/` |
 | Cursor | `.agents/skills/`, `.cursor/skills/`, also `.claude/skills/` |
 | Gemini CLI | `.agents/skills/`, `.gemini/skills/` |
+| Grok Build | `.grok/skills/` · `~/.grok/skills/`, also `.agents/skills/` and `.claude/skills/` |
 
 A root [`AGENTS.md`](AGENTS.md) covers hosts that read always-on context instead of on-demand skills.
 [`docs/cross-tool-verification.md`](docs/cross-tool-verification.md) records real per-host runs
-(all four hosts verified end-to-end: Claude Code, Codex, Gemini, and Cursor), and
-[`docs/field-tests.md`](docs/field-tests.md) records dogfooding the scanner against real
-App Store apps (DuckDuckGo, Pocket Casts, Wikipedia).
+(Claude Code, Codex, Gemini, and Cursor verified end-to-end; Grok Build plugin install + validate
+verified), and [`docs/field-tests.md`](docs/field-tests.md) records dogfooding the scanner against
+real App Store apps (DuckDuckGo, Pocket Casts, Wikipedia).
 
 ## Requirements
 
@@ -552,9 +575,11 @@ Everything else works without one.
 /plugin uninstall appstore-precheck@appstore-precheck   # Claude Code plugin
 # Codex: run `codex`, open `/plugins`, uninstall appstore-precheck (CLI 0.125.x has no `plugin remove`)
 # Cursor: Customize → Plugins → appstore-precheck → Uninstall
+grok plugin uninstall appstore-precheck --confirm         # Grok Build plugin
 gemini skills uninstall appstore-precheck                 # Gemini (if installed via gemini skills)
 rm -rf .claude/skills/appstore-precheck                # install.sh (Claude Code / Cursor)
 rm -rf .agents/skills/appstore-precheck                # install.sh (Codex / Cursor / Gemini)
+rm -rf .grok/skills/appstore-precheck                  # install.sh (Grok Build)
 rm -rf .cursor/skills/appstore-precheck                # if you mirrored there manually
 rm -rf .gemini/skills/appstore-precheck                # if installed to workspace scope manually
 rm -f .precheck-pass                                   # runtime token
@@ -567,6 +592,7 @@ npm run lint            # bash -n on every script
 npm run check-versions  # plugin manifests / package.json / SKILL.md in lockstep
 npm test                # run scan.sh against fixture projects and assert
 claude plugin validate .
+grok plugin validate .
 ```
 
 CI runs ShellCheck, JSON validation, the version-consistency guard, and the fixture tests on every push.

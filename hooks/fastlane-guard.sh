@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Optional Claude Code PreToolUse hook.
+# Optional PreToolUse hook (Claude Code + Grok Build plugin installs).
 # Blocks `fastlane deliver/pilot/release` unless a fresh `.precheck-pass` token exists.
 # stdin = tool-use JSON. exit 0 = allow, exit 2 = block (stderr is shown to the model).
 
