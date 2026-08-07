@@ -89,10 +89,18 @@ Grok Build (xAI) discovers skills under `.grok/skills/` and, with compat enabled
 Verified on this repo:
 
 ```bash
-grok plugin validate .          # → valid: 1 skill dir, hooks
-grok plugin install . --trust   # → appstore-precheck installed with skills + hooks
+grok plugin validate .              # → valid: 1 skill dir, hooks
+grok plugin install . --trust       # → appstore-precheck installed with skills + hooks
 grok plugin details appstore-precheck
+grok plugin marketplace add .       # → source added
+grok plugin list --json --available # → appstore-precheck listed as "available"
 ```
+
+Note on the marketplace index: Grok rejects a self-referential local source (`"source": "./"`
+fails the scanner with *marketplace path is empty*, and a local source may not contain parent
+components). Because the plugin root here **is** the repository root, the entry in
+[`.grok-plugin/marketplace.json`](../.grok-plugin/marketplace.json) uses the URL source form
+pointing at this repo. Claude Code and Cursor keep `"./"` — their scanners accept it.
 
 `install.sh grok` vendors into `.grok/skills/appstore-precheck/`. A full headless
 `grok -p "…"` skill-runtime transcript (discover → `scan.sh` → RED) can be recorded the same way
