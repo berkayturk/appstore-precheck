@@ -1,1 +1,2 @@
 A focus and screen-time app that helps you build better habits.
+Terms of Use (EULA): https://example-app.com/terms/

@@ -30,6 +30,7 @@ assert_eq "metadata-pricing-language" "$(rule_slug 45)" "catalog lookup §45 met
 assert_eq "generic-purpose-string" "$(rule_slug 46)" "catalog lookup §46 generic-purpose-string"
 assert_eq "ai-provider-consent" "$(rule_slug 47)" "catalog lookup §47 ai-provider-consent"
 assert_eq "xcode-sdk-requirement" "$(rule_slug 52)" "catalog lookup §52 xcode-sdk-requirement"
+assert_eq "subscription-eula-metadata" "$(rule_slug 53)" "catalog lookup §53 subscription-eula-metadata"
 rm -f "$FINDINGS_TMP"
 
 FINDINGS_TMP="$(mktemp)"; : > "$FINDINGS_TMP"

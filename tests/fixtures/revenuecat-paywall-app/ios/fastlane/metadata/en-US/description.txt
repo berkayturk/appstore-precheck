@@ -1,2 +1,4 @@
 A clean, well-formed focus app with a clear subscription paywall, restore
 purchases, and links to the terms of use and privacy policy.
+
+Terms of Use (EULA): https://example-app.com/terms/

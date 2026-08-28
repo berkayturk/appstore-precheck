@@ -32,6 +32,7 @@ rule_slug() {
     47) echo ai-provider-consent ;;         48) echo paywall-urgency ;;
     49) echo rating-sentiment-gate ;;       50) echo forced-login ;;
     51) echo push-marketing-optout ;;       52) echo xcode-sdk-requirement ;;
+    53) echo subscription-eula-metadata ;;
     *) echo "" ;;
   esac
 }

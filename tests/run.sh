@@ -82,6 +82,7 @@ assert_has "FAIL: 2.3.10 Other-platform mention"                          "Andro
 assert_has "FAIL: 3.1.2 Restore Purchases"                                "missing Restore Purchases flagged"
 assert_has "FAIL: 3.1.2 Terms of Use"                                     "missing Terms link flagged"
 assert_has "FAIL: 3.1.2 Privacy Policy"                                   "missing Privacy link flagged"
+assert_has "FAIL: 3.1.2 Terms of Use (EULA) link missing from App Store description" "missing EULA link in store description flagged (§53)"
 assert_has "PASS: 4.2 Minimum functionality"                              "TabView navigation hub detected"
 assert_absent "FAIL: 2.5.1"                                               "no false private-API positive"
 finish_fixture
@@ -135,6 +136,7 @@ assert_has "---END-OF-SCAN---"                                            "scann
 assert_has "PASS: 3.1.2 Restore Purchases — present"                      "restore purchases detected"
 assert_has "PASS: 3.1.2 Terms of Use (EULA) link — present"               "terms link detected"
 assert_has "PASS: 3.1.2 Privacy Policy link — present"                    "privacy link detected"
+assert_has "PASS: 3.1.2 Terms of Use (EULA) link present in every locale"   "EULA link in store description (§53)"
 assert_absent "FAIL:"                                                     "no FAIL lines at all"
 assert_absent "4.8 Sign in with Apple"                                    "no 4.8 flag without third-party login"
 assert_absent "3.1.1(a) External purchase"                                "no 3.1.1(a) flag without external purchase"
