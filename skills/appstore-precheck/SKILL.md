@@ -1,10 +1,10 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 52 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 29 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 53 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 29 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.16.0
+  version: 1.17.0
 allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maestro__run mcp__maestro__inspect_screen mcp__maestro__take_screenshot mcp__maestro__cheat_sheet
 ---
 
@@ -122,7 +122,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 52 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` lines covering 53 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -147,7 +147,7 @@ strings (5.1.1(ii)), a third-party AI endpoint without a provider-naming consent
 urgency/scarcity dark patterns on the paywall (3.1.2), sentiment-gated rating prompts (5.6.1),
 forced login without a guest path (5.1.1(v)), a marketing-push SDK without an opt-out signal
 (4.5.4), and a pre-26 Xcode `LastUpgradeCheck` against the April 2026 iOS 26 SDK upload minimum
-(2.1). The IAP checks (8–10) are skipped automatically
+(2.1). The IAP checks (8–10 and 53) are skipped automatically
 when no in-app-purchase signals are present, and the signal-gated advisory checks (16–52) stay
 silent unless their triggering signal is found. The
 full check table is in

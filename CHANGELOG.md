@@ -3,6 +3,20 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.17.0] - 2026-08-28
+
+### Added
+- **§53 `subscription-eula-metadata` (3.1.2)**: new IAP-gated scan vector requiring a functional
+  Terms of Use (EULA) URL in every locale's App Store `description.txt`. Apple's automated
+  metadata review rejects auto-renewable-subscription submissions whose app metadata has no
+  EULA link (standard Apple EULA linked in the description, or a custom EULA set in App Store
+  Connect); the description link is the checkable signal, so its absence in any locale is a
+  FAIL, and a missing fastlane metadata dir downgrades to a verify-manually WARN. Caught in the
+  wild: a live rejection ("does not include a functional link to the Terms of Use (EULA) in the
+  app metadata") passed every existing check — §10 covers the in-app paywall links, but nothing
+  covered the store description. Catalog, findings slug, methodology table, SKILL.md/README
+  counts (52 → 53), and tests updated.
+
 ## [1.16.0] - 2026-08-07
 
 ### Added

@@ -122,9 +122,10 @@ baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
 | 50 | **5.1.1(v) Forced login** *(advisory)* | A credential login UI (SecureField / Login view) with no skip / guest / continue-without-account affordance grepped anywhere — requiring login for features that are not account-based is rejected under 5.1.1(v). WARN-verify: an app whose every feature is genuinely account-based is fine |
 | 51 | **4.5.4 Marketing push opt-out** *(advisory)* | A marketing-push SDK (OneSignal, Braze, CleverTap, Iterable, Airship, MoEngage) registers for notifications but no notification-preferences / opt-out signal is found; promotional push requires explicit consent and a working opt-out (4.5.4) |
 | 52 | **2.1 Xcode/SDK minimum** *(advisory)* | The highest `LastUpgradeCheck` across checked-in pbxproj files is clearly pre-26 — since April 2026, App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. WARN-verify: the field tracks the upgrade-check, not the actual build toolchain |
+| 53 | **3.1.2 EULA link in metadata** *(IAP-gated)* | Every locale’s App Store `description.txt` contains a functional Terms of Use (EULA) URL — auto-renewable-subscription apps are rejected without one in the app metadata (a custom EULA set in App Store Connect also satisfies Apple, but the description link is the checkable signal) |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–52 are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–52 (plus the IAP-gated 53) are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
 ### Screenshot format + dimensions (§7b, 2.3.3)

@@ -537,6 +537,30 @@ else
   else
     warn "3.1.2 IAP detected but no paywall/subscription view found — set .paywallGlobs so required-link checks can run"
   fi
+
+  # ---- §53 3.1.2 Terms of Use (EULA) link in the App Store description ----------
+  # (IAP-gated, lives with §10.) Apple rejects auto-renewable-subscription
+  # submissions whose app metadata (the App Store description) has no functional
+  # Terms of Use (EULA) link. Standard Apple EULA: link it in the description;
+  # a custom EULA set in App Store Connect also satisfies Apple, but the
+  # description link is the checkable signal.
+  set_rule "subscription-eula-metadata"
+  if [[ -n "$META_DIR" && -d "$META_DIR" ]]; then
+    eula_url_re='apple\.com/legal/internet-services/itunes/dev/stdeula|https?://[^[:space:]]*(terms|eula|tos|conditions|nutzungsbedingungen)'
+    eula_missing=()
+    for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
+      d="$META_DIR/$loc"
+      [[ -f "$d/description.txt" ]] || continue
+      grep -qiE "$eula_url_re" "$d/description.txt" || eula_missing+=("$loc")
+    done
+    if (( ${#eula_missing[@]} > 0 )); then
+      fail "3.1.2 Terms of Use (EULA) link missing from App Store description for: ${eula_missing[*]} — auto-renewable subscriptions require a functional EULA link in the app metadata (add it to description.txt, or set a custom EULA in App Store Connect)"
+    else
+      pass "3.1.2 Terms of Use (EULA) link present in every locale's App Store description"
+    fi
+  else
+    warn "3.1.2 EULA-in-metadata check skipped — no fastlane metadata dir detected; verify the App Store description contains a functional Terms of Use (EULA) link"
+  fi
 fi
 
 # ===================================================================
