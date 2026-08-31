@@ -38,7 +38,47 @@ rule_slug() {
 }
 
 _CURRENT_RULE=""
-set_rule() { _CURRENT_RULE="$1"; }
+_EVIDENCE_OVERRIDE=""
+_CONFIDENCE_OVERRIDE=""
+# set_rule also clears any per-finding overrides, so a refinement made for one
+# branch can never leak into the next rule.
+set_rule() { _CURRENT_RULE="$1"; _EVIDENCE_OVERRIDE=""; _CONFIDENCE_OVERRIDE=""; }
+
+# set_evidence <class> / set_confidence <level> — refine the labels for the NEXT
+# finding(s) of the current rule. A rule-level label is the honest default for the
+# rule as a whole, but individual branches differ: §2 concludes its empty-purpose-
+# string FAIL from Info.plist rather than a source grep (stronger evidence), while
+# its "Info.plist not found" branch is an advisory, not the upload blocker the rule
+# is otherwise about (weaker confidence). Without these, a degraded-read branch
+# would inherit "validator-blocking" and overstate exactly what this layer exists
+# to stop. Both are cleared by the next set_rule; inside a `| while read` subshell
+# they scope themselves automatically.
+set_evidence()   { _EVIDENCE_OVERRIDE="$1"; }
+set_confidence() { _CONFIDENCE_OVERRIDE="$1"; }
+
+# Resolvers degrade to empty when evidence.sh is not sourced (findings.sh is used
+# standalone in tests), so an unclassified finding is reported as such, never guessed.
+_evidence_of() {
+  [[ -n "$_EVIDENCE_OVERRIDE" ]] && { printf '%s' "$_EVIDENCE_OVERRIDE"; return; }
+  command -v rule_evidence >/dev/null 2>&1 && rule_evidence "$_CURRENT_RULE" || printf ''
+}
+_confidence_of() {
+  [[ -n "$_CONFIDENCE_OVERRIDE" ]] && { printf '%s' "$_CONFIDENCE_OVERRIDE"; return; }
+  command -v rule_confidence >/dev/null 2>&1 && rule_confidence "$_CURRENT_RULE" || printf ''
+}
+# _needs_build_of <severity> — the qualifier is a statement about an UNESTABLISHED
+# violation ("this blocks the upload if it ships as-is"), so it is meaningless on a
+# PASS: nothing is being claimed against the build. Evidence and confidence stay on
+# a PASS — they still say how the rule reached its conclusion — but the qualifier
+# does not.
+_needs_build_of() {
+  [[ "${1:-}" == "PASS" ]] && { printf 'false'; return; }
+  command -v needs_build_verification >/dev/null 2>&1 \
+    && needs_build_verification "$(_evidence_of)" "$(_confidence_of)" || printf 'false'
+}
+_guideline_url_of() {
+  command -v guideline_url >/dev/null 2>&1 && guideline_url "$1" || printf ''
+}
 
 : "${FINDINGS_TMP:=}"
 
@@ -49,9 +89,15 @@ _record() {
   guideline="$(printf '%s' "$msg" | awk '{print $1}')"
   jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
         --arg m "$msg" --arg f "$file" --arg l "$line" \
+        --arg ev "$(_evidence_of)" --arg cf "$(_confidence_of)" \
+        --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
     '{rule_id:$r, severity:$s, guideline:$g, message:$m,
       file:(if $f=="" then null else $f end),
       line:(if $l=="" then null else ($l|tonumber) end),
+      evidence:(if $ev=="" then null else $ev end),
+      confidence:(if $cf=="" then null else $cf end),
+      needs_build_verification:($nb=="true"),
+      guideline_url:(if $gu=="" then null else $gu end),
       suppressed:false}' >> "$FINDINGS_TMP"
 }
 
@@ -65,9 +111,15 @@ _record_suppressed() {
   guideline="$(printf '%s' "$msg" | awk '{print $1}')"
   jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
         --arg m "$msg" --arg f "$file" --arg l "$line" \
+        --arg ev "$(_evidence_of)" --arg cf "$(_confidence_of)" \
+        --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
     '{rule_id:$r, severity:$s, guideline:$g, message:$m,
       file:(if $f=="" then null else $f end),
       line:(if $l=="" then null else ($l|tonumber) end),
+      evidence:(if $ev=="" then null else $ev end),
+      confidence:(if $cf=="" then null else $cf end),
+      needs_build_verification:($nb=="true"),
+      guideline_url:(if $gu=="" then null else $gu end),
       suppressed:true}' >> "$FINDINGS_TMP"
   _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1))
 }
@@ -82,7 +134,11 @@ render_json() {
   # shellcheck source=thresholds.sh
   . "$(dirname "${BASH_SOURCE[0]}")/thresholds.sh"
   [[ -s "$buf" ]] || { printf '%s\n' '{"findings":[]}' | jq \
-     --arg v "$PRECHECK_VERSION" '{tool:"appstore-precheck",version:$v,verdict:"GREEN",summary:{fail:0,warn:0,pass:0,suppressed:0},findings:[]}'; return 0; }
+     --arg v "$PRECHECK_VERSION" '{tool:"appstore-precheck",version:$v,verdict:"GREEN",
+       summary:{fail:0,warn:0,pass:0,suppressed:0,
+                by_confidence:{"validator-blocking":0,"review-risk":0,"judgment-call":0,unclassified:0},
+                needs_build_verification:0},
+       findings:[]}'; return 0; }
   jq -s --arg v "$PRECHECK_VERSION" \
      --argjson fmin "$RED_FAIL_MIN" --argjson wmin "$YELLOW_WARN_MIN" '
     (map(select(.suppressed==false))) as $live
@@ -91,7 +147,17 @@ render_json() {
     | ($live|map(select(.severity=="PASS"))|length) as $p
     | (map(select(.suppressed==true))|length) as $s
     | (if $f>=$fmin then "RED" elif $w>=$wmin then "YELLOW" else "GREEN" end) as $verdict
+    # by_confidence counts live ISSUES (FAIL + WARN) only. A PASS carries the same
+    # labels, but rolling passes into the confidence mix would misread as risk.
+    | ($live|map(select(.severity=="FAIL" or .severity=="WARN"))) as $issues
+    | ($issues|map(select(.needs_build_verification==true))|length) as $nb
     | {tool:"appstore-precheck", version:$v, verdict:$verdict,
-       summary:{fail:$f, warn:$w, pass:$p, suppressed:$s},
+       summary:{fail:$f, warn:$w, pass:$p, suppressed:$s,
+                by_confidence:{
+                  "validator-blocking":($issues|map(select(.confidence=="validator-blocking"))|length),
+                  "review-risk":($issues|map(select(.confidence=="review-risk"))|length),
+                  "judgment-call":($issues|map(select(.confidence=="judgment-call"))|length),
+                  unclassified:($issues|map(select(.confidence==null))|length)},
+                needs_build_verification:$nb},
        findings: .}' "$buf"
 }

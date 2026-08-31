@@ -21,6 +21,8 @@ SUITE=(
   "test-scorecard-outcomes.sh" # scorecard-outcomes.sh tally + honesty floor
   "test-project-model.sh" # project-model.sh pbxproj parser + resolver
   "test-guideline-drift.sh" # guideline-drift.sh parse/diff + coverage↔fingerprint consistency
+  "test-evidence.sh"  # evidence.sh per-rule evidence class + confidence + derived build-verification
+  "test-guideline-cite.sh" # guideline-cite.sh offline pinned-quote citation lookup
   "test-rag-ingest.sh" # eval/rag/ingest.sh full-corpus extraction (RAG eval, no network)
   "test-rag-embed.sh" # eval/rag/embed.py SQL generation (RAG eval, no network)
   "test-rag-gemini-client.sh" # eval/rag/gemini_client.py retry-delay parsing + 429 backoff (RAG eval, no network)

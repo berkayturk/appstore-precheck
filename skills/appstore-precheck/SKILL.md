@@ -4,7 +4,7 @@ description: Read-only pre-submission check for an iOS app before App Store revi
 license: MIT
 metadata:
   author: Berkay Turk
-  version: 1.17.0
+  version: 1.18.0
 allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maestro__run mcp__maestro__inspect_screen mcp__maestro__take_screenshot mcp__maestro__cheat_sheet
 ---
 
@@ -156,10 +156,28 @@ full check table is in
 The scanner is portable Bash, so you can also run it directly, outside any agent, for a quick CI
 or pre-commit check.
 
+Every `FAIL:` / `WARN:` is followed by an indented **evidence line**:
+
+```
+FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription' [App/CameraView.swift:42]
+      evidence: source · validator-blocking · needs build verification
+```
+
+It answers what severity cannot: *which artifact this was read from*, and *who enforces it*.
+`source` findings are concluded from a code grep, so dead code, `#if DEBUG`, and files excluded
+from the shipping target can make them wrong; `metadata` and `manifest` findings are read from
+files that ship as authored. `needs build verification` appears when a `validator-blocking` claim
+rests on `source` or `build-setting` evidence — the upload validator runs against the built
+product, which no repository read can see. Set `APPSTORE_PRECHECK_NO_EVIDENCE=1` to suppress the
+line if you parse the text output strictly. Full rationale and the per-rule table:
+[`references/methodology.md`](references/methodology.md#evidence-strength-and-confidence).
+
 `scan.sh --format json` emits a structured findings envelope (`rule_id`, `severity`, `guideline`,
-`message`, optional `file`/`line` per finding, plus the verdict summary) instead of the default
-text lines, for tooling and measurement to consume. It's read-only and additive; the default text
-output is unchanged.
+`guideline_url`, `message`, optional `file`/`line`, plus `evidence`, `confidence` and the derived
+`needs_build_verification` per finding, and a verdict summary with a `by_confidence` roll-up)
+instead of the default text lines, for tooling and measurement to consume. `--format sarif` carries
+the same labels in each result's `properties` bag. It's read-only and additive; the default text
+output gains only the evidence line above.
 
 ### Phase 2: Apple's official `fastlane precheck`
 
@@ -208,6 +226,30 @@ already did the detection. Pierre **explains every FAIL and WARN** the pipeline 
 - **2–3 sentences per FAIL or WARN** in Pierre's voice: (1) which guideline Apple cares about and
   why it matters at review, (2) what the scan found in plain language, (3) the concrete fix or
   what to verify before submitting.
+- **Never quote guideline wording from memory.** Before explaining a finding, get Apple's actual
+  text for its guideline number:
+
+  ```bash
+  bash skills/appstore-precheck/scripts/guideline-cite.sh 5.1.1     # or 5.1.1(v), 3.1.1(a), …
+  ```
+
+  It is offline and deterministic — it prints a **pinned** quote taken from the live guidelines at
+  the last reconciliation, plus a deep link and the verification date. Use that quote (or a short
+  excerpt of it) for the "why Apple cares" half of the explanation, in quotation marks.
+  - **Exit 3 / `NO PINNED CITATION`** → say plainly that the exact wording could not be verified
+    this run and link the section. Do **not** reconstruct the text from memory; a plausible
+    paraphrase presented as Apple's words is worse than no quote.
+  - **`STALE`** → still quote it, but say the pinned wording is older than the staleness window and
+    should be re-checked against the live page.
+- **Carry the evidence label.** Every FAIL/WARN in the scan output is followed by an indented
+  `evidence: <class> · <confidence>` line (also in `--format json` / `sarif`). Reflect it:
+  - `validator-blocking` → Apple's own validation stops this; say so with certainty.
+  - `review-risk` → a human reviewer rejects this frequently; say it is a likely rejection, not a
+    mechanical one.
+  - `judgment-call` → a heuristic. Say it may be a false positive and what would confirm it.
+  - `· needs build verification` → the claim rests on a source grep or a build setting, not on the
+    shipping build. Say explicitly that it blocks the upload **if that code ships as-is**, and name
+    what would settle it (conditional compilation, target membership, the actual archive).
 - Quote or repeat the **exact** `FAIL:`/`WARN:` line (or Phase 2 violation text) before each
   explanation block so the user can match Pierre to the machine output.
 - **Read-only:** never modify files; if a line lacks a path, say what to check manually — do not
@@ -232,9 +274,14 @@ Use this prompt verbatim after Phases 0–2 complete, pasting in the collected f
 > never impressed. Phases 0–2 already ran. Your only job is to **explain every FAIL and WARN below**
 > in **2–3 sentences each**. Do not pick random guidelines. Do not hunt for extra issues. Do not skip
 > any line. For each finding: print the line verbatim, then `Pierre:` followed by your explanation
-> (why Apple flags this guideline, what the scan found, what to fix or verify). If there are zero
-> FAILs and zero WARNs, say so briefly in 2–3 sentences. Read-only — never modify files. Write the
-> explanations in `<USER_LANGUAGE>`.
+> (why Apple flags this guideline, what the scan found, what to fix or verify). Before each
+> explanation run `bash skills/appstore-precheck/scripts/guideline-cite.sh <guideline>` and quote the
+> pinned wording it returns; if it exits 3 with `NO PINNED CITATION`, say the exact wording could not
+> be verified this run and **never** quote guideline text from memory. Reflect the finding's
+> `evidence:` line — in particular, when it says `needs build verification`, say the claim rests on a
+> source grep or a build setting rather than on the shipping build. If there are zero FAILs and zero
+> WARNs, say so briefly in 2–3 sentences. Read-only — never modify files. Write the explanations in
+> `<USER_LANGUAGE>`.
 
 ### Phase 4: Pierre deep review (29 semantic checks)
 
@@ -323,13 +370,18 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 29 passed.
    The 5 screenshot-vision checks (S1–S5) emit the same `REVIEW-*` prefixes but count as a
    **separate "+5 vision checks" sub-block** in the summary, never inside the "of 29" denominator.
-5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, then for each
-   FAIL a `file:line` reference and a suggested fix (one line each, surgical, not paraphrased).
-6. State the verdict and token action (example one-liners — each goes in its own language block, not inline):
+5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, with its
+   `evidence:` line, then for each FAIL a `file:line` reference and a suggested fix (one line each,
+   surgical, not paraphrased).
+6. Add a short **"what this run could not establish"** note whenever any finding carries
+   `needs build verification` (`summary.needs_build_verification` in `--format json` counts them).
+   Name the count and say those claims rest on source or build settings, not on the shipping
+   archive. This never changes the verdict — it tells the user which findings a build would settle.
+7. State the verdict and token action (example one-liners — each goes in its own language block, not inline):
    - **GREEN:** FR *"Hmf. Je ne trouve rien. Acceptable. Ne me faites pas regretter."* · EN *"Hmf. I find nothing. Acceptable. Do not make me regret this."* · + user-language line → write `.precheck-pass` (valid 60 min).
    - **YELLOW:** FR *"Quelques petites laideurs. Je ne rejette pas, mais j'ai remarqué."* · EN *"A few small uglinesses. I would not reject, but I noticed."* · + user-language line → ask "confirm and submit anyway?"; token only on confirmation.
    - **RED:** FR *"Non. {n} fautes. Apple en aurait trouvé moins. Suivant."* · EN *"No. {n} faults. Apple would have found fewer. Next."* · + user-language line → no token; state submission is BLOCKED.
-7. Print the final manual checklist (see
+8. Print the final manual checklist (see
    [`references/methodology.md`](references/methodology.md#pre-submit-manual-checklist)).
 
 ### Phase 6: local dynamic simulator tier (optional, opt-in — off by default)
@@ -374,6 +426,13 @@ Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-r
   React Native (JavaScript) or Flutter (Dart) they under-detect rather than false-fire.
 - iOS only.
 - Phase 0 detects only **structural** drift (added/removed section numbers); see the reference for why.
+- Guideline citations are **pinned snapshots**, not a live fetch: they are offline and reproducible,
+  but only as current as the last reconciliation. `guideline-cite.sh` prints the verification date
+  and marks a citation `STALE` past the staleness window; the scheduled drift job is what catches a
+  section whose text moved underneath a pinned quote.
+- Evidence and confidence labels are **per rule**, refined per branch where a branch is clearly
+  stronger or weaker than its rule. They describe the artifact the finding was read from and who
+  enforces the guideline — not a probability that Apple will reject this particular submission.
 
 ## Optional: upload guard hook
 

@@ -353,12 +353,86 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 53 vectors above. |
+| **1** | **Static scan**: `scan.sh` over the 53 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
-| **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each. |
+| **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
 | **4** | **Pierre deep review**: 29 semantic checks (23 Tier A + 6 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
 | **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/permission smoke checks on a local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict. |
+
+### Evidence strength
+
+Severity says how bad a finding is. It does not say how firmly it is *established* — so every
+`FAIL:` / `WARN:` carries an evidence line:
+
+```
+FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription' [App/CameraView.swift:42]
+      evidence: source · validator-blocking · needs build verification
+
+WARN: 2.3.1 Pricing language in app name/subtitle [fastlane/metadata/en-US/name.txt]
+      evidence: metadata · judgment-call
+```
+
+Apple's upload validators run against the **built product**; this scanner reads a **repository**.
+The two labels make that gap explicit instead of leaving it implicit:
+
+| Evidence | Read from | How faithfully it represents what ships |
+|---|---|---|
+| `metadata` | `fastlane/metadata/**` | uploaded to App Store Connect verbatim |
+| `manifest` | `Info.plist`, entitlements, `PrivacyInfo.xcprivacy` | ships as authored |
+| `resource` | String Catalogs, screenshot assets | shipped / uploaded files |
+| `build-setting` | `project.pbxproj` values | resolved per target *and* configuration — a proxy |
+| `source` | `.swift` / `.m` / `.h` greps | weakest: in a file ≠ in the shipping binary |
+
+| Confidence | Who acts on it |
+|---|---|
+| `validator-blocking` | Apple's automated validation blocks this. Mechanical. |
+| `review-risk` | A human reviewer rejects this pattern frequently. |
+| `judgment-call` | A heuristic. A false positive is expected. |
+
+`needs build verification` is **derived**, never stored: it appears when a `validator-blocking`
+claim rests on `source` or `build-setting` evidence. It means *this will block the upload if it
+ships as-is, and the repository cannot show that it ships* — dead code, `#if DEBUG`, and files
+excluded from the shipping target all break the inference. Pierre says so in plain words rather
+than presenting a grep as a certainty.
+
+The labels are pinned per rule in [`scripts/evidence.sh`](skills/appstore-precheck/scripts/evidence.sh)
+and gated by `tests/test-evidence.sh`, which fails the build if any rule is unclassified — a new
+check cannot ship unlabelled. They appear in the text output, in `--format json`
+(`evidence`, `confidence`, `needs_build_verification`, plus a `summary.by_confidence` roll-up) and
+in each SARIF result's `properties` bag. `APPSTORE_PRECHECK_NO_EVIDENCE=1` suppresses the text line.
+
+One thing the table makes plain: **no rule reads a lockfile.** Every SDK signal is a source grep,
+which is why so many signal-gated checks sit at the weakest class — and the most honest available
+account of where the real-panel false positives come from.
+
+### Guideline citations
+
+A guideline explanation is only worth reading if the wording is Apple's. `guideline-cite.sh` returns
+a **pinned** quote — offline, deterministic, reviewable in git:
+
+```bash
+bash skills/appstore-precheck/scripts/guideline-cite.sh 5.1.1
+```
+
+```
+5.1.1 — https://developer.apple.com/app-store/review/guidelines/#5.1.1
+"5.1.1 Data Collection and Storage (i) Privacy Policies: All apps must include a link to their
+privacy policy in the App Store Connect metadata field and within the app in an easily accessible
+manner. …"
+  pinned quote, verified 2026-08-31
+```
+
+The quotes live in `guidelines-fingerprints.json`, beside the hashes that already detect when Apple
+changes a section — so a quote that has gone out of date is a **detectable condition**, not a silent
+lie. Past a staleness window the citation prints `STALE` and says its age. When a section has no
+pinned quote the tool exits `3` with `NO PINNED CITATION`, and Phase 3 requires Pierre to say the
+wording could not be verified this run — **never** to reconstruct guideline text from memory. Every
+finding also carries a `guideline_url` deep link so a human can read the source directly.
+
+Maintainers refresh the quotes with `bash scripts/guideline-drift.sh --quotes`, which writes only
+the quotes and refuses to re-quote a section that has drifted since its fingerprint baseline —
+reconcile first, then re-quote.
 
 ## Demo
 
@@ -439,6 +513,12 @@ independent measurements:
   a human reviews it, so **no unreviewed number is ever published**. Run it yourself with
   `bash scripts/scorecard.sh --real`; CI runs it as a separate **non-blocking, informational** job
   (`continue-on-error: true`) that never gates a PR.
+
+Since v1.18.0 every finding also carries an [evidence class and confidence level](#evidence-strength).
+That is not a second accuracy metric — it is the mechanism behind the first one: the real-panel
+false positives concentrate in `source`-evidence rules, because every SDK signal is a code grep
+rather than a lockfile read, and a grep cannot tell shipping code from dead code. The labels make
+that visible per finding instead of leaving it buried in an aggregate.
 
 **Neither measurement claims agreement with Apple's actual review decisions.** Synthetic precision
 measures intended-behaviour fidelity against fixtures this project wrote; real-panel precision

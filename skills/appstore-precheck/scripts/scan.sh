@@ -40,6 +40,7 @@ fi
 cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit 0; }
 
 source "$SCRIPT_DIR/findings.sh"
+source "$SCRIPT_DIR/evidence.sh"
 source "$SCRIPT_DIR/suppress.sh"
 source "$SCRIPT_DIR/project-model.sh"
 source "$SCRIPT_DIR/image-dims.sh"
@@ -73,8 +74,20 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
 }
 
 _LAST_SUPPRESSED=0
-fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
-warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
+
+# _tag — print the evidence/confidence line under the finding just emitted, at the
+# same indent as detail(). Skipped for PASS (noise) and for an unclassified rule
+# (evidence_label returns empty rather than guessing). Opt out with
+# APPSTORE_PRECHECK_NO_EVIDENCE=1 if you parse the text output strictly; the
+# machine-readable channels (--format json|sarif) always carry the fields.
+_tag() {
+  [[ "${APPSTORE_PRECHECK_NO_EVIDENCE:-}" == 1 ]] && return 0
+  local lbl; lbl="$(evidence_label "$(_evidence_of)" "$(_confidence_of)")"
+  [[ -n "$lbl" ]] && printf '      %s\n' "$lbl"
+  return 0
+}
+fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
+warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
 pass() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
 
 # detail <text> — indented evidence under the previous finding; skipped when it was suppressed.
@@ -242,13 +255,19 @@ check_required_reason_api() {
   if [[ -n "$hits" && "${declared:-0}" -eq 0 ]]; then
     fail "5.1.1 Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy" "$PRIVACY_FILE"
   elif [[ -z "$hits" && "${declared:-0}" -gt 0 ]]; then
+    # An over-declaration is not an upload blocker, and the message says so itself.
+    set_confidence "judgment-call"
     warn "5.1.1 PrivacyInfo — '$cat' declared but no code usage grepped (may be a false positive, verify manually)" "$PRIVACY_FILE"
+    set_confidence ""
   elif [[ -n "$hits" && "${declared:-0}" -gt 0 ]]; then
     pass "5.1.1 Required Reason API — '$cat' parity OK"
   fi
 }
 if [[ -z "$IOS_DIR" ]]; then
+  # The check could not run at all; it establishes nothing about the build.
+  set_confidence "judgment-call"
   warn "layout — could not auto-detect iOS source dir; set .iosSourceDir in $CONFIG"
+  set_confidence ""
 elif [[ -z "$PRIVACY_FILE" ]]; then
   fail "5.1.1 Required Reason API — PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)" "$INFO_PLIST"
 else
@@ -266,9 +285,13 @@ fi
 # ===================================================================
 set_rule "usage-description-crosscheck"
 if [[ ! -f "$INFO_PLIST" ]]; then
+  # Degraded read, not a violation: no plist to cross-check against.
+  set_evidence "manifest"; set_confidence "judgment-call"
   [[ -n "$IOS_DIR" ]] && warn "5.1.1 Info.plist not found at $INFO_PLIST (modern Xcode may auto-generate it; verify purpose strings in build settings)" "$INFO_PLIST"
 else
   awk '/NS[A-Za-z]+UsageDescription/{key=$0; getline; if($0 ~ /<string>[[:space:]]*<\/string>/) print "EMPTY:"key}' "$INFO_PLIST" | while read -r line; do
+    # Read directly from the shipped plist, so it does not inherit the source floor.
+    set_evidence "manifest"
     [[ -n "$line" ]] && fail "5.1.1 Purpose String — $line (empty usage description is rejected by App Review)" "$INFO_PLIST"
   done
   for fw in \
@@ -441,7 +464,10 @@ if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
         fi
         dims="$(png_dims "$img")"
         if [[ -z "$dims" ]]; then
+          # A degraded read, not a dimension violation.
+          set_confidence "judgment-call"
           warn "2.3.3 Screenshot $img — could not read PNG dimensions (possibly truncated)" "$img"
+          set_confidence ""
         else
           w="${dims% *}"; h="${dims#* }"
           if ! dims_match_accepted "$w" "$h"; then
@@ -535,7 +561,10 @@ else
     paywall_req "Terms of Use (EULA) link" 'terms[ _]?of[ _]?(use|service)|termsURL|subscription_terms|EULA|/terms|/tos\b|/eula'
     paywall_req "Privacy Policy link" 'privacy[ _]?policy|privacyURL|subscription_privacy|/privacy|datenschutz|gizlilik'
   else
+    # The required-link checks did not run; this is a configuration hint.
+    set_confidence "judgment-call"
     warn "3.1.2 IAP detected but no paywall/subscription view found — set .paywallGlobs so required-link checks can run"
+    set_confidence ""
   fi
 
   # ---- §53 3.1.2 Terms of Use (EULA) link in the App Store description ----------
@@ -559,7 +588,10 @@ else
       pass "3.1.2 Terms of Use (EULA) link present in every locale's App Store description"
     fi
   else
+    # Skipped for lack of input, so it establishes nothing about the listing.
+    set_confidence "judgment-call"
     warn "3.1.2 EULA-in-metadata check skipped — no fastlane metadata dir detected; verify the App Store description contains a functional Terms of Use (EULA) link"
+    set_confidence ""
   fi
 fi
 

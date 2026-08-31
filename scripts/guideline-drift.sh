@@ -35,9 +35,9 @@ gd_checks_for_section() {
   ' "$1" | awk '!seen[$0]++'
 }
 
-# gd_main [--html f] [--baseline f] [--fingerprints f] [--scan f] [--reconcile]
+# gd_main [--html f] [--baseline f] [--fingerprints f] [--scan f] [--reconcile] [--quotes]
 gd_main() {
-  local html="" reconcile=0
+  local html="" reconcile=0 quotes=0
   local here; here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   local baseline="$here/skills/appstore-precheck/guidelines-baseline.json"
   local fingerprints="$here/skills/appstore-precheck/guidelines-fingerprints.json"
@@ -54,6 +54,10 @@ gd_main() {
         esac
         shift 2 ;;
       --reconcile) reconcile=1; shift ;;
+      --quotes) quotes=1; shift ;;
+      --quote-chars)
+        if [[ $# -lt 2 ]]; then echo "WARN: guideline-drift — missing value for --quote-chars; ignoring."; shift; continue; fi
+        GD_QUOTE_CHARS="$2"; shift 2 ;;
       *) echo "WARN: guideline-drift — unknown arg: $1; ignoring."; shift ;;
     esac
   done
@@ -70,6 +74,47 @@ gd_main() {
 
   # Covered sections = covered_by_scan ∪ covered_by_pierre_deep_review.
   local covered; covered="$(jq -r '(.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) | unique[]' "$baseline" 2>/dev/null)"
+
+  # --quotes: fill in the citable `quote` for each covered section WITHOUT touching
+  # fingerprints or reconciled_on. Kept separate from --reconcile on purpose: writing
+  # a quote must never double as accepting a drift.
+  #
+  # A section is only re-quoted when its LIVE fingerprint still matches the pinned
+  # one. Quoting a section that has drifted would take the new wording while the
+  # fingerprint still claims the old — papering over exactly the change the drift
+  # check exists to surface. Drifted sections are warned about and left alone, so a
+  # human reconciles the fingerprint first, then re-runs --quotes.
+  if [[ "$quotes" == 1 ]]; then
+    local qobj sec qnorm qhash qbase qtext written=0 skipped=0 today
+    today="$(date +%F)"
+    qobj="$(cat "$fingerprints")"
+    while IFS= read -r sec; do
+      [[ -z "$sec" ]] && continue
+      qbase="$(jq -r --arg s "$sec" '.sections[$s].fingerprint // ""' "$fingerprints")"
+      [[ -z "$qbase" ]] && continue          # not pinned at all; --reconcile owns that
+      qnorm="$(gd_section_text "$html" "$sec")"
+      if [[ -z "$qnorm" ]]; then
+        echo "WARN: quotes — $sec not found on live page; leaving its quote untouched"
+        skipped=$((skipped + 1)); continue
+      fi
+      qhash="$(printf '%s' "$qnorm" | gd_hash)"
+      if [[ "$qhash" != "$qbase" ]]; then
+        echo "WARN: quotes — $sec has drifted since the fingerprint baseline; reconcile first, then re-run --quotes"
+        skipped=$((skipped + 1)); continue
+      fi
+      qtext="$(gd_section_quote "$html" "$sec" "${GD_QUOTE_CHARS:-600}")"
+      if [[ -z "$qtext" ]]; then
+        echo "WARN: quotes — $sec produced an empty quote; skipping"
+        skipped=$((skipped + 1)); continue
+      fi
+      qobj="$(printf '%s' "$qobj" | jq --arg s "$sec" --arg q "$qtext" --arg d "$today" \
+                '.sections[$s].quote = $q | .sections[$s].quote_verified_on = $d')"
+      written=$((written + 1))
+    done <<< "$covered"
+    printf '%s\n' "$qobj" | jq . > "$fingerprints"
+    echo "quotes: ${written} section(s) pinned, ${skipped} skipped -> ${fingerprints}"
+    [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
+  fi
 
   if [[ "$reconcile" == 1 ]]; then
     # Surface section-number drift first — --reconcile should never silently paper

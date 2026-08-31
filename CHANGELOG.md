@@ -3,6 +3,82 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.18.0] - 2026-08-31
+
+Two gaps closed, both about **not overstating what the tool knows**. Prior art credit: the
+validator-vs-reviewer confidence split and the never-quote-from-memory rule are adapted from
+[dabodamjan/app-store-rejection-checker](https://github.com/dabodamjan/app-store-rejection-checker)
+(MIT), which applies them to an LLM auditor; this is the deterministic-scanner form of both.
+
+### Added
+- **Evidence strength and confidence on every finding**
+  ([`scripts/evidence.sh`](skills/appstore-precheck/scripts/evidence.sh)). Severity says how bad a
+  finding is; it never said how firmly it was *established*. Apple's upload validators run against
+  the built product while this scanner reads a repository, so a missing purpose string found by
+  grepping `.swift` and a missing key in a checked-in `Info.plist` were reported identically even
+  though the first can be dead code, `#if DEBUG`, or a file excluded from the shipping target. Each
+  of the 53 rules now carries an **evidence class** (`metadata` / `manifest` / `resource` /
+  `build-setting` / `source`, the weakest artifact its conclusion depends on) and a **confidence
+  level** (`validator-blocking` / `review-risk` / `judgment-call`, who actually acts on it).
+- **`needs_build_verification`, derived not stored**: true exactly when a `validator-blocking` claim
+  rests on `source` or `build-setting` evidence. It cannot drift out of sync with the catalogues
+  because it is computed from them. Phase 5 surfaces the count as a "what this run could not
+  establish" note; it never changes the GREEN/YELLOW/RED verdict.
+- **`set_evidence` / `set_confidence` per-branch refinement** so a degraded read cannot inherit the
+  rule's label. §2's empty-purpose-string FAIL is `manifest` rather than the rule's `source` floor;
+  §2's "Info.plist not found", §1's "declared but no code usage grepped" and "could not auto-detect
+  iOS source dir", §42's "could not read PNG dimensions", §10's "no paywall view found" and §53's
+  "no metadata dir" drop to `judgment-call` instead of claiming Apple's validator blocks them.
+- **Offline pinned guideline citations**
+  ([`scripts/guideline-cite.sh`](skills/appstore-precheck/scripts/guideline-cite.sh)). Pierre now
+  quotes Apple's actual wording instead of his recollection of it. Quotes are pinned in
+  `guidelines-fingerprints.json` next to the hashes that already detect when a section changes, so
+  an out-of-date quote is a **detectable condition** rather than a silent lie — offline,
+  deterministic, reviewable in git, and staleness-aware (`STALE` past
+  `GUIDELINE_CITE_STALE_DAYS`, default 120). All 57 covered sections are pinned.
+  Exit `3` / `NO PINNED CITATION` is the load-bearing case: Phase 3 now forbids reconstructing
+  guideline text from memory and requires saying the wording could not be verified this run.
+- **`guideline_url` on every finding** (text via the citation tool, plus JSON and SARIF), so a human
+  can always open the section the finding cites. Parenthetical sub-items (`5.1.1(v)`, `3.1.1(a)`)
+  resolve to their anchor.
+- **`scripts/guideline-drift.sh --quotes`**: maintainer step that fills in the citable quotes only.
+  It never touches a fingerprint or `reconciled_on`, and refuses to re-quote a section that has
+  drifted since its baseline — quoting a drifted section would take the new wording while the
+  fingerprint still claimed the old, papering over the very change drift detection exists to catch.
+- **`gd_section_quote`** in `scripts/lib/guideline-text.sh`: original-case, sentence-bounded
+  excerpts. The extraction was split into a shared `_gd_section_raw`, verified byte-identical
+  against the live page for all 57 sections so no fingerprint moved.
+- **`tests/test-evidence.sh`** (57 assertions) and **`tests/test-guideline-cite.sh`**. The evidence
+  test enforces a completeness invariant: every rule `scan.sh` sets must carry both labels from the
+  closed vocabularies, so a new check cannot ship unlabelled.
+
+### Changed
+- Text output gains one indented `evidence: …` line under each `FAIL:`/`WARN:` (never under `PASS:`).
+  `^FAIL:`/`^WARN:` anchoring, verdict arithmetic, and the token are untouched; set
+  `APPSTORE_PRECHECK_NO_EVIDENCE=1` to suppress it.
+- `--format json` findings gain `evidence`, `confidence`, `needs_build_verification` and
+  `guideline_url`; the summary gains `by_confidence` and `needs_build_verification`. `--format
+  sarif` carries the same labels in each result's `properties` bag, omitted entirely for an
+  unclassified rule rather than guessed.
+- Phase 3 of `SKILL.md` now requires a citation lookup per finding and requires Pierre to reflect
+  the evidence label — especially to say, in plain words, when a finding rests on a grep rather than
+  on the shipping build.
+- `docs`: methodology.md gains "Evidence strength and confidence" (with the generated per-rule
+  table) and "Guideline citations" (including why pinned snapshots beat a live fetch here);
+  README gains both sections under "How it works".
+
+### Fixed
+- `tests/test-format-json.sh` counted `set_rule` call sites as a proxy for "53 sections tagged",
+  which broke on a legitimate re-declaration. It now counts distinct slugs.
+
+### Notes
+- **No rule reads a lockfile.** Building the evidence table surfaced that every SDK signal
+  (tracking, analytics, payment, AI, push) is a source grep rather than a `Podfile.lock` /
+  `Package.resolved` read — which is why so many signal-gated checks sit at the weakest evidence
+  class. This is now stated plainly in the README and methodology as the most honest available
+  account of where the real-panel false positives come from. Reading lockfiles is a candidate for a
+  follow-up; this release labels the weakness rather than hiding it.
+
 ## [1.17.0] - 2026-08-28
 
 ### Added
