@@ -8,8 +8,11 @@ set -u
 
 GD_URL="https://developer.apple.com/app-store/review/guidelines/"
 
-here_lib="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$here_lib/lib/guideline-text.sh"
+# The shared parser lives inside the skill (skills/appstore-precheck/scripts/lib/)
+# rather than beside this maintainer script, because it also has to ship to installed
+# users: guideline-cite.sh --verify-live needs it, and only the skill dir is packaged.
+here_lib="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$here_lib/skills/appstore-precheck/scripts/lib/guideline-text.sh"
 
 # gd_number_drift <live-ids-file> <baseline-json> -> ADDED/REMOVED lines.
 gd_number_drift() {
@@ -141,7 +144,24 @@ gd_main() {
       fi
       hash="$(printf '%s' "$norm" | gd_hash)"
       snap="$(printf '%s' "$norm" | cut -c1-160)"
-      obj="$(printf '%s' "$obj" | jq --arg s "$sec" --arg h "$hash" --arg n "$snap" '.sections[$s] = {fingerprint:$h, snapshot:$n}')"
+      # Carry an existing pinned quote forward ONLY when the text is unchanged.
+      # Rebuilding the entry from scratch would silently drop every citation (and a
+      # later --quotes run would re-date them all as if freshly verified). When the
+      # section HAS drifted, the old quote is now wrong, so it is deliberately
+      # dropped: guideline-cite.sh then reports NO PINNED CITATION, which is the
+      # honest state until someone re-runs --quotes.
+      local prev_hash prev_q prev_d entry
+      prev_hash="$(jq -r --arg s "$sec" '.sections[$s].fingerprint // ""' "$fingerprints" 2>/dev/null)"
+      prev_q="$(jq -r --arg s "$sec" '.sections[$s].quote // ""' "$fingerprints" 2>/dev/null)"
+      prev_d="$(jq -r --arg s "$sec" '.sections[$s].quote_verified_on // ""' "$fingerprints" 2>/dev/null)"
+      entry="$(jq -nc --arg h "$hash" --arg n "$snap" '{fingerprint:$h, snapshot:$n}')"
+      if [[ "$prev_hash" == "$hash" && -n "$prev_q" ]]; then
+        entry="$(printf '%s' "$entry" | jq --arg q "$prev_q" --arg d "$prev_d" \
+                  '. + {quote:$q, quote_verified_on:(if $d=="" then null else $d end)}')"
+      elif [[ -n "$prev_q" ]]; then
+        echo "WARN: reconcile — $sec text changed; its pinned quote was dropped (re-run --quotes)"
+      fi
+      obj="$(printf '%s' "$obj" | jq --arg s "$sec" --argjson e "$entry" '.sections[$s] = $e')"
       written=$((written + 1))
     done <<< "$covered"
     printf '%s' "$obj" | jq --arg d "$(date +%F)" '. + {reconciled_on: $d}' > "$fingerprints"

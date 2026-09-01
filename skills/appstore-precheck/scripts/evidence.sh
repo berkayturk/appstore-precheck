@@ -56,7 +56,7 @@ rule_evidence() {
     competitor-mentions|metadata-char-limits|locale-metadata-parity) echo metadata ;;
     subscription-eula-metadata|support-privacy-url|placeholder-metadata) echo metadata ;;
     misleading-marketing|kids-wording|kids-ads-analytics|realmoney-gambling) echo metadata ;;
-    metadata-pricing-language) echo metadata ;;
+    metadata-pricing-language|saturated-category) echo metadata ;;
 
     # --- manifest: Info.plist / entitlements / PrivacyInfo, shipped as authored ---
     screentime-justification|export-compliance|ats-arbitrary-loads) echo manifest ;;
@@ -119,6 +119,7 @@ rule_confidence() {
     mdm|permission-priming-cta|paywall-trial-emphasis|metadata-pricing-language) echo judgment-call ;;
     generic-purpose-string|ai-provider-consent|paywall-urgency) echo judgment-call ;;
     rating-sentiment-gate|forced-login|push-marketing-optout) echo judgment-call ;;
+    saturated-category) echo judgment-call ;;
 
     *) echo "" ;;
   esac
@@ -149,6 +150,23 @@ evidence_label() {
   local out="evidence: $ev · $cf"
   [[ "$(needs_build_verification "$ev" "$cf")" == "true" ]] && out+=" · needs build verification"
   echo "$out"
+}
+
+# rules_with_evidence <class> -> the catalogued rule ids in that evidence class, one
+# per line. Derived by asking rule_evidence about every slug in the findings.sh
+# catalogue, so it can never disagree with the classification it reports on. Used to
+# tell the user how many checks a missing artifact actually cost them, rather than
+# hardcoding a number that rots the next time a rule is added.
+rules_with_evidence() {
+  local want="${1:-}" n slug
+  [[ -n "$want" ]] || return 0
+  command -v rule_slug >/dev/null 2>&1 || return 0
+  for n in $(seq 1 54); do
+    slug="$(rule_slug "$n")"
+    [[ -n "$slug" ]] || continue
+    [[ "$(rule_evidence "$slug")" == "$want" ]] && echo "$slug"
+  done
+  return 0
 }
 
 # guideline_url <guideline-number> -> deep link to that section, or "" if the

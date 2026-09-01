@@ -32,7 +32,7 @@ rule_slug() {
     47) echo ai-provider-consent ;;         48) echo paywall-urgency ;;
     49) echo rating-sentiment-gate ;;       50) echo forced-login ;;
     51) echo push-marketing-optout ;;       52) echo xcode-sdk-requirement ;;
-    53) echo subscription-eula-metadata ;;
+    53) echo subscription-eula-metadata ;;  54) echo saturated-category ;;
     *) echo "" ;;
   esac
 }
@@ -72,7 +72,9 @@ _confidence_of() {
 # a PASS — they still say how the rule reached its conclusion — but the qualifier
 # does not.
 _needs_build_of() {
-  [[ "${1:-}" == "PASS" ]] && { printf 'false'; return; }
+  # PASS asserts no violation; SKIP asserts nothing at all. Neither can need a build
+  # to confirm a claim it never made.
+  case "${1:-}" in PASS|SKIP) printf 'false'; return ;; esac
   command -v needs_build_verification >/dev/null 2>&1 \
     && needs_build_verification "$(_evidence_of)" "$(_confidence_of)" || printf 'false'
 }
@@ -137,7 +139,7 @@ render_json() {
      --arg v "$PRECHECK_VERSION" '{tool:"appstore-precheck",version:$v,verdict:"GREEN",
        summary:{fail:0,warn:0,pass:0,suppressed:0,
                 by_confidence:{"validator-blocking":0,"review-risk":0,"judgment-call":0,unclassified:0},
-                needs_build_verification:0},
+                needs_build_verification:0, not_audited:0},
        findings:[]}'; return 0; }
   jq -s --arg v "$PRECHECK_VERSION" \
      --argjson fmin "$RED_FAIL_MIN" --argjson wmin "$YELLOW_WARN_MIN" '
@@ -145,6 +147,7 @@ render_json() {
     | ($live|map(select(.severity=="FAIL"))|length) as $f
     | ($live|map(select(.severity=="WARN"))|length) as $w
     | ($live|map(select(.severity=="PASS"))|length) as $p
+    | ($live|map(select(.severity=="SKIP"))|length) as $na
     | (map(select(.suppressed==true))|length) as $s
     | (if $f>=$fmin then "RED" elif $w>=$wmin then "YELLOW" else "GREEN" end) as $verdict
     # by_confidence counts live ISSUES (FAIL + WARN) only. A PASS carries the same
@@ -158,6 +161,6 @@ render_json() {
                   "review-risk":($issues|map(select(.confidence=="review-risk"))|length),
                   "judgment-call":($issues|map(select(.confidence=="judgment-call"))|length),
                   unclassified:($issues|map(select(.confidence==null))|length)},
-                needs_build_verification:$nb},
+                needs_build_verification:$nb, not_audited:$na},
        findings: .}' "$buf"
 }

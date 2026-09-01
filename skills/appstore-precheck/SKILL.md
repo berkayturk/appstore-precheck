@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 53 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 6 heuristic checks (Tier B v1) — 29 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 54 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 7 heuristic checks (Tier B v1) — 30 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -13,7 +13,7 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 A one-command gate to run before every iOS App Store submission. It minimizes the risk of
 rejection by statically scanning the most common rejection vectors, running Apple's own
 metadata linter, watching for guideline drift, having Pierre explain every FAIL and WARN, and
-running 29 semantic deep-review checks (23 Tier A + 6 Tier B v1 heuristic). The deep-review checklist lives in
+running 30 semantic deep-review checks (23 Tier A + 7 Tier B v1 heuristic). The deep-review checklist lives in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md).
 
 **This skill is read-only.** It never edits code, metadata, or assets. It only reports and
@@ -49,10 +49,15 @@ The skill reaches one of three terminal states:
 | **YELLOW** | No FAIL but 5+ WARN | Not written | Guard blocks; ask for explicit confirmation |
 | **RED** | At least 1 FAIL | Removed | Guard blocks; show the FAIL list |
 
+`SKIP:` lines sit outside this table on purpose: they record checks that could not run, are counted
+separately (`skip=` / `summary.not_audited`), and never move the verdict. They must still be
+reported — see Phase 5 step 6.
+
 When you present the verdict to the user, open with Pierre's **trilingual verdict block** (see format
 below and Phase 5), then Pierre's **finding commentary** (Phase 3 — 2–3 sentences per FAIL/WARN),
 then Pierre's **deep-review commentary** (Phase 4 — every `REVIEW-FINDING`), then the
-machine-faithful `FAIL:`/`WARN:`/`PASS:` lines and `file:line` fixes from `scan.sh`.
+machine-faithful `FAIL:`/`WARN:`/`PASS:`/`SKIP:` lines and `file:line` fixes from `scan.sh`, and
+finally the mandatory **Not audited** section (Phase 5 step 6).
 **Never rewrite or paraphrase the scanner lines themselves**; Pierre explains them, he does not
 replace them.
 
@@ -104,6 +109,23 @@ two-pass technique; the exact prompts and the reconciliation procedure are in
 [`references/methodology.md`](references/methodology.md#phase-0-guideline-drift-check). The
 baseline is **never auto-updated**. Reconciliation is a deliberate human step.
 
+**Also scan Apple's announcements.** Section numbers and section text are not the only way a
+rejection surface moves: Apple announces policy changes on
+[developer.apple.com/news](https://developer.apple.com/news/) — deadlines, new required
+declarations, entitlement changes — often before the guideline text catches up. Fetch that page and
+report any review-relevant item **newer than the baseline's `reconciled_on` date**
+(`guidelines-baseline.json`). Pay particular attention to payments, privacy, age ratings, and AI:
+those moved repeatedly through 2024–2026.
+
+- Nothing newer, or nothing review-relevant → `PASS: guideline-news none since <reconciled_on>`
+- Something relevant → `WARN: guideline-news — <headline> (<date>). Assess whether it applies to
+  this app; the scan does not cover it yet.` Fetch the announcement and judge applicability like any
+  other check. Headlines that plainly do not apply get one line, nothing more.
+- Fetch failed → `WARN: guideline-news check degraded — verify manually.`
+
+Like the drift check this is a gap in **our** coverage, never a fault of the build: always
+non-blocking, WARN at most.
+
 The deterministic, full-page drift detector is `scripts/guideline-drift.sh` (maintainer/CI;
 curl-based, so it also covers the 5.5–5.6.x tail that `WebFetch` truncates). It reports
 section-number drift AND text (semantic) drift of covered sections, naming the affected
@@ -122,7 +144,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` lines covering 53 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 54 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -147,7 +169,7 @@ strings (5.1.1(ii)), a third-party AI endpoint without a provider-naming consent
 urgency/scarcity dark patterns on the paywall (3.1.2), sentiment-gated rating prompts (5.6.1),
 forced login without a guest path (5.1.1(v)), a marketing-push SDK without an opt-out signal
 (4.5.4), and a pre-26 Xcode `LastUpgradeCheck` against the April 2026 iOS 26 SDK upload minimum
-(2.1). The IAP checks (8–10 and 53) are skipped automatically
+(2.1), and exposure to a category Apple names as saturated in 4.3(b) (4.3). The IAP checks (8–10 and 53) are skipped automatically
 when no in-app-purchase signals are present, and the signal-gated advisory checks (16–52) stay
 silent unless their triggering signal is found. The
 full check table is in
@@ -155,6 +177,29 @@ full check table is in
 
 The scanner is portable Bash, so you can also run it directly, outside any agent, for a quick CI
 or pre-commit check.
+
+A fourth line class, `SKIP:`, marks a check that **could not run** — a missing artifact, not a
+clean result. It is counted separately (`skip=` in `verdict.sh`, `summary.not_audited` in JSON) and
+**never changes the verdict**: a gap in coverage is not a defect in the build. It must never be
+presented as a pass.
+
+**When the scan emits `SKIP: metadata`, ask the user for the listing.** The App Store Connect
+listing is a real rejection surface — roughly a fifth of the checks read it — and a repo without a
+`fastlane/metadata` directory silently skips all of them. Ask for:
+
+> app name, subtitle, description, keywords, promotional text, age rating, and the App Review
+> Information fields (review notes and the demo account)
+
+Then audit what they paste against the same rules the skipped checks apply — character limits
+(2.3.1), placeholder copy (2.1), other-platform mentions (2.3.10), pricing/promo language in the
+name or subtitle (2.3.1), "For Kids" wording (2.3.8), misleading marketing claims (2.3.1), and demo
+credentials (2.1) — and report the results as ordinary findings, saying they came from pasted
+metadata rather than from the repo. Findings from pasted metadata **do** count toward the verdict;
+they are real. If the user declines, or there is no user to ask (a CI or non-interactive run), leave
+them as `SKIP` and list them under "Not audited" in Phase 5. **Never invent metadata to audit.**
+
+The same applies to `SKIP: 2.3.3 Screenshots` — ask what the App Store Connect screenshot set
+contains, or leave it unaudited.
 
 Every `FAIL:` / `WARN:` is followed by an indented **evidence line**:
 
@@ -216,7 +261,7 @@ already did the detection. Pierre **explains every FAIL and WARN** the pipeline 
 
 **Input to explain (all of it, no sampling):**
 
-1. Every `WARN:` from Phase 0 (guideline drift), if any.
+1. Every `WARN:` from Phase 0 (guideline drift and guideline news), if any.
 2. Every `FAIL:` and `WARN:` from Phase 1 (`scan.sh`), verbatim.
 3. Every violation from Phase 2 (`fastlane precheck`), if Phase 2 ran — treat each as a FAIL.
 
@@ -241,6 +286,23 @@ already did the detection. Pierre **explains every FAIL and WARN** the pipeline 
     paraphrase presented as Apple's words is worse than no quote.
   - **`STALE`** → still quote it, but say the pinned wording is older than the staleness window and
     should be re-checked against the live page.
+
+  **When the machine has network, add `--verify-live`:**
+
+  ```bash
+  bash skills/appstore-precheck/scripts/guideline-cite.sh --verify-live 5.1.1
+  ```
+
+  This re-hashes the live section and compares it with the pinned fingerprint, turning staleness
+  from a question about the pin's *age* into a question about whether Apple's text actually
+  *changed*. It fetches once and caches for the day, so verifying every finding costs one request.
+  - **Exit 4 / `CHANGED`** → the pinned wording is out of date. Do not quote it as current: say
+    Apple's text for that section has changed, link the section, and describe the requirement in
+    your own words marked as such.
+  - Confirmed unchanged → the quote is current regardless of how old the pin is, and the `STALE`
+    marker is correctly withdrawn.
+  - Any failure (offline, fetch error, section not found) degrades to the offline behaviour above
+    and **never** reports a verification that did not happen.
 - **Carry the evidence label.** Every FAIL/WARN in the scan output is followed by an indented
   `evidence: <class> · <confidence>` line (also in `--format json` / `sarif`). Reflect it:
   - `validator-blocking` → Apple's own validation stops this; say so with certainty.
@@ -283,10 +345,10 @@ Use this prompt verbatim after Phases 0–2 complete, pasting in the collected f
 > WARNs, say so briefly in 2–3 sentences. Read-only — never modify files. Write the explanations in
 > `<USER_LANGUAGE>`.
 
-### Phase 4: Pierre deep review (29 semantic checks)
+### Phase 4: Pierre deep review (30 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 29 read-only, evidence-based checks the
-static scanner cannot fully judge (**23 Tier A** + **6 Tier B v1** heuristic — marked † below).
+After Phase 3, Pierre runs the **Review Simulator**: 30 read-only, evidence-based checks the
+static scanner cannot fully judge (**23 Tier A** + **7 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
 Phase 4. When screenshots are present, also run the structured screenshot vision review in
@@ -299,13 +361,13 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 
 **Rules (summary):**
 
-- Run **all 29 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
+- Run **all 30 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
 - `REVIEW-FINDING:` is always **WARN** (advisory). It does **not** change FAIL/WARN counts or the verdict.
-- † **Tier B v1** checks (4, 5, 7, 10, 15, 29) are heuristic — use cautious language; prefer not applicable when no signal.
+- † **Tier B v1** checks (4, 5, 7, 10, 15, 29, 30) are heuristic — use cautious language; prefer not applicable when no signal.
 - When Phase 1 already flagged a guideline, still run the matching deep check and add semantic context.
 - Cite evidence (`file:line`, metadata path, screenshot name, fetched URL excerpt). Read-only — never edit files.
 
-**The 29 checks (guideline order):**
+**The 30 checks (guideline order):**
 
 | # | Guideline | Deep question |
 |---|-----------|---------------|
@@ -338,15 +400,16 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 | 27 | **5.3.1–5.3.3** | Contest/sweepstakes copy includes official rules? |
 | 28 | **5.6.2–5.6.3** | Developer identity consistent (support URL, domains, app name)? |
 | 29 † | **5.6.1 / 5.6.3** | Rating manipulation dark patterns beyond scan §25? |
+| 30 † | **4.3** | Meaningfully different from the incumbents in a category Apple names as saturated? |
 
 Use this prompt after Phase 3:
 
-> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 29 checks in
+> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 30 checks in
 > [`references/pierre-deep-review.md`](references/pierre-deep-review.md), in table order. For each
 > check emit `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`. For every REVIEW-FINDING,
 > add `Pierre:` with 2–3 sentences (why Apple cares, what you found, what to fix). Read-only.
 > Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Tier B checks
-> (4, 5, 7, 10, 15, 29): prefer not applicable when no signal; use cautious language when flagging.
+> (4, 5, 7, 10, 15, 29, 30): prefer not applicable when no signal; use cautious language when flagging.
 
 ### Phase 5: Consolidation + token
 
@@ -366,17 +429,36 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    from Phase 1 + Phase 0/2 only — Pierre's prose and REVIEW-FINDING lines do not add FAIL/WARN).
 2. Open with Pierre's **trilingual verdict block** using the required format in [Output contract](#trilingual-verdict-block-required-format) — bold language label + blockquote per language, separated by `---`; never one compressed line.
 3. Present **Phase 3 commentary** — Pierre's 2–3 sentence explanation for every FAIL and WARN.
-4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 29), then
+4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 30), then
    every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 29 passed.
    The 5 screenshot-vision checks (S1–S5) emit the same `REVIEW-*` prefixes but count as a
-   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 29" denominator.
+   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 30" denominator.
 5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, with its
    `evidence:` line, then for each FAIL a `file:line` reference and a suggested fix (one line each,
    surgical, not paraphrased).
-6. Add a short **"what this run could not establish"** note whenever any finding carries
-   `needs build verification` (`summary.needs_build_verification` in `--format json` counts them).
-   Name the count and say those claims rest on source or build settings, not on the shipping
-   archive. This never changes the verdict — it tells the user which findings a build would settle.
+6. Print a **"Not audited"** section. This is **mandatory on every run**, including a GREEN one —
+   a verdict is only meaningful next to the list of what it did not cover. Two parts:
+
+   **(a) Checks that did not run this time** — every `SKIP:` line, verbatim, with what would close
+   the gap (paste the App Store Connect listing, set `.screenshotsDir`, …). If there are none, say
+   "every check ran".
+
+   **(b) What this tool cannot see at all**, regardless of input — a fixed list, never omitted and
+   never implied to have been verified:
+   - runtime crashes, hangs, and performance
+   - whether links (support, privacy, marketing, EULA) actually resolve
+   - whether Restore Purchases, sign-in, and the purchase flow really work end to end
+   - OAuth / third-party login round trips
+   - server-driven content, remote config, and anything that changes after review
+   - the built archive itself: what actually shipped, and which SDK it was built with
+
+   Then add the **"what this run could not establish"** note whenever any finding carries
+   `needs build verification` (`summary.needs_build_verification` in `--format json` counts them):
+   name the count and say those claims rest on source or build settings, not on the shipping
+   archive. None of this changes the verdict — it tells the user where the verdict is silent.
+
+   When the verdict is GREEN and anything is unaudited, say so in the same breath: a GREEN that
+   never saw the store listing is a GREEN with a hole in it, and Pierre says which hole.
 7. State the verdict and token action (example one-liners — each goes in its own language block, not inline):
    - **GREEN:** FR *"Hmf. Je ne trouve rien. Acceptable. Ne me faites pas regretter."* · EN *"Hmf. I find nothing. Acceptable. Do not make me regret this."* · + user-language line → write `.precheck-pass` (valid 60 min).
    - **YELLOW:** FR *"Quelques petites laideurs. Je ne rejette pas, mais j'ai remarqué."* · EN *"A few small uglinesses. I would not reject, but I noticed."* · + user-language line → ask "confirm and submit anyway?"; token only on confirmation.
@@ -426,10 +508,12 @@ Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-r
   React Native (JavaScript) or Flutter (Dart) they under-detect rather than false-fire.
 - iOS only.
 - Phase 0 detects only **structural** drift (added/removed section numbers); see the reference for why.
-- Guideline citations are **pinned snapshots**, not a live fetch: they are offline and reproducible,
-  but only as current as the last reconciliation. `guideline-cite.sh` prints the verification date
-  and marks a citation `STALE` past the staleness window; the scheduled drift job is what catches a
-  section whose text moved underneath a pinned quote.
+- Guideline citations are **pinned snapshots**, not a live fetch: offline and reproducible, but only
+  as current as the last reconciliation. `guideline-cite.sh` prints the verification date and marks a
+  citation `STALE` past the staleness window; `--verify-live` upgrades that to a real change check
+  against the live page when the network is available, and the scheduled drift job catches it
+  otherwise. Without either, an age-fresh pin on a section Apple edited yesterday will still read as
+  current.
 - Evidence and confidence labels are **per rule**, refined per branch where a branch is clearly
   stronger or weaker than its rule. They describe the artifact the finding was read from and who
   enforces the guideline — not a probability that Apple will reject this particular submission.

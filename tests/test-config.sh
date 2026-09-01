@@ -40,11 +40,16 @@ assert_absent "$with_cfg" "FAIL:" "well-formed config-app has zero FAILs"
 # .screenshotsDir override, so it hits the screenshots-per-locale else-branch.
 # That branch must be a silent advisory PASS, not a WARN — real apps manage
 # screenshots in App Store Connect/CI, not git.
-section "no in-repo screenshots dir is an advisory PASS, not a WARN"
+section "no in-repo screenshots dir is SKIP (not audited), not a WARN and not a PASS"
+# It used to be an advisory PASS ("assumed managed in App Store Connect"), which read
+# as "checked and fine" for a surface nothing had examined. It is now SKIP: still not
+# a defect, still no effect on the verdict, but honest about not having run.
 assert_absent  "$with_cfg" "WARN: 2.3.3 Screenshots — screenshots dir not found" \
   "config-app: absent in-repo screenshots dir is not a WARN (managed in ASC)"
-assert_contains "$with_cfg" "PASS: 2.3.3 Screenshots — no in-repo screenshots dir" \
-  "config-app: absent in-repo screenshots dir is a non-firing advisory PASS"
+assert_absent  "$with_cfg" "PASS: 2.3.3 Screenshots — no in-repo screenshots dir" \
+  "config-app: an unexamined screenshot set is no longer reported as a PASS"
+assert_contains "$with_cfg" "SKIP: 2.3.3 Screenshots — no in-repo screenshots dir" \
+  "config-app: absent in-repo screenshots dir is reported as not audited"
 
 # Contrast: WITHOUT the config, the scan resolves a DIFFERENT layout — proving the
 # overrides are doing real work, not coinciding with what auto-detection would find.

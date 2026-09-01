@@ -4,344 +4,350 @@
       "fingerprint": "ce18f5618681eafe5b4010d3162e0cdfe026aed127295d1762a1fe0c23f68026",
       "snapshot": "1.2 user-generated content apps with user-generated content present particular challenges, ranging from intellectual property infringement to anonymous bullying",
       "quote": "1.2 User-Generated Content Apps with user-generated content present particular challenges, ranging from intellectual property infringement to anonymous bullying. To prevent abuse, apps with user-generated content or social networking services must include: A method for filtering objectionable material from being posted to the app A mechanism to report offensive content and timely responses to concerns The ability to block abusive users from the service Published contact information so users can easily reach you Apps with user-generated content or services that end up being used primarily for…",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "1.2.1": {
       "fingerprint": "ffadee3ecbf75b6cf5b293fa2d9f59b2d68c1ba61e6e4c0cb33852324081e84b",
-      "snapshot": "1.2.1 creator content apps which feature content from a specific community of users called “creators” are a great opportunity if properly moderated. these apps ",
+      "snapshot": "1.2.1 creator content apps which feature content from a specific community of users called “creators” are a great opportunity if properly moderated. these a",
       "quote": "1.2.1 Creator Content Apps which feature content from a specific community of users called “creators” are a great opportunity if properly moderated. These apps present a singular, unified experience for customers to interact with various kinds of creator content. They offer tools and programs to help this community of non-developer creators to author, share, and monetize user-generated experiences. These experiences must not change the core features and functionality of the native app—rather, they add content to those structured experiences.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "1.4.1": {
       "fingerprint": "30045ffe09e8c2fe50923eb5f718ddec394b048bef67c6b7959abadb178c8406",
       "snapshot": "1.4.1 medical apps that could provide inaccurate data or information, or that could be used for diagnosing or treating patients may be reviewed with greater scr",
       "quote": "1.4.1 Medical apps that could provide inaccurate data or information, or that could be used for diagnosing or treating patients may be reviewed with greater scrutiny. Apps must clearly disclose data and methodology to support accuracy claims relating to health measurements, and if the level of accuracy or methodology cannot be validated, we will reject your app. For example, apps that claim to take x-rays, measure blood pressure, body temperature, blood glucose levels, or blood oxygen levels using only the sensors on the device are not permitted.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "1.5": {
       "fingerprint": "5553347bd97263487f23eae8b7577d036a875ba0934bbde44ac4216218fe85fa",
       "snapshot": "1.5 developer information people need to know how to reach you with questions and support issues. make sure your app and its support url include an easy way to ",
       "quote": "1.5 Developer Information People need to know how to reach you with questions and support issues. Make sure your app and its Support URL include an easy way to contact you; this is particularly important for apps that may be used in the classroom. Failure to include accurate and up-to-date contact information not only frustrates customers, but may violate the law in some countries or regions. Also ensure that Wallet passes include valid contact information from the issuer and are signed with a dedicated certificate assigned to the brand or trademark owner of the pass.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "1.6": {
       "fingerprint": "0620b0807840c795dfcdf546b4a9e648564a192b48a995e3b507f60f26ee690f",
       "snapshot": "1.6 data security apps should implement appropriate security measures to ensure proper handling of user information collected pursuant to the apple developer pr",
       "quote": "1.6 Data Security Apps should implement appropriate security measures to ensure proper handling of user information collected pursuant to the Apple Developer Program License Agreement and these Guidelines (see Guideline 5.1 for more information) and prevent its unauthorized use, disclosure, or access by third parties.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.1": {
       "fingerprint": "f5cd98793df128268b4fe5b3b31b006776b0678f6d79d0b88d0d9b3986ea5fd4",
       "snapshot": "2.1 app completeness (a) submissions to app review, including apps you make available for pre-order, should be final versions with all necessary metadata and fu",
       "quote": "2.1 App Completeness (a) Submissions to App Review, including apps you make available for pre-order, should be final versions with all necessary metadata and fully functional URLs included; placeholder text, empty websites, and other temporary content should be scrubbed before submission. Make sure your app has been tested on-device for bugs and stability before you submit it, and include demo account info (and turn on your back-end service!) if your app includes a login.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.2": {
       "fingerprint": "5df8bc50bf6ef5ce31be95dc03f8bc4ece4cd107055a5124add9336b49471a0d",
-      "snapshot": "2.2 beta testing demos, betas, and trial versions of your app don’t belong on the app store – use testflight instead. any app submitted for beta distribution vi",
+      "snapshot": "2.2 beta testing demos, betas, and trial versions of your app don’t belong on the app store – use testflight instead. any app submitted for beta distributio",
       "quote": "2.2 Beta Testing Demos, betas, and trial versions of your app don’t belong on the App Store – use TestFlight instead. Any app submitted for beta distribution via TestFlight should be intended for public distribution and should comply with the App Review Guidelines. Note, however, that apps using TestFlight cannot be distributed to testers in exchange for compensation of any kind, including as a reward for crowd-sourced funding. Significant updates to your beta build should be submitted to TestFlight App Review before being distributed to your testers.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3": {
       "fingerprint": "f7b9c31377de7f721ecb9f203a2f107d3600c464ce0633e0d79dd5318250d4df",
-      "snapshot": "2.3 accurate metadata customers should know what they’re getting when they download or buy your app, so make sure all your app metadata, including privacy infor",
+      "snapshot": "2.3 accurate metadata customers should know what they’re getting when they download or buy your app, so make sure all your app metadata, including privacy inf",
       "quote": "2.3 Accurate Metadata Customers should know what they’re getting when they download or buy your app, so make sure all your app metadata, including privacy information, your app description, screenshots, and previews accurately reflect the app’s core experience and remember to keep them up-to-date with new versions.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.1": {
       "fingerprint": "4745cb96a6e7665103163daa8a6f07dfc08008288116132a1f3c668d621c61b3",
-      "snapshot": "2.3.1 (a) don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and app review. all new",
+      "snapshot": "2.3.1 (a) don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and app review. all",
       "quote": "2.3.1 (a) Don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and App Review. All new features, functionality, and product changes must be described with specificity in the Notes for Review section of App Store Connect (generic descriptions will be rejected) and accessible for review. Similarly, marketing your app in a misleading way, such as by promoting content or services that it does not actually offer (e.g.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.10": {
       "fingerprint": "a770ee4d270784e3bfa0784aab62563acccae50f02e4d85c4bb65bda14a4133d",
-      "snapshot": "2.3.10 make sure your app is focused on the experience of the apple platforms it supports, and don’t include names, icons, or imagery of other mobile platforms ",
+      "snapshot": "2.3.10 make sure your app is focused on the experience of the apple platforms it supports, and don’t include names, icons, or imagery of other mobile platform",
       "quote": "2.3.10 Make sure your app is focused on the experience of the Apple platforms it supports, and don’t include names, icons, or imagery of other mobile platforms or alternative app marketplaces in your app or metadata, unless there is specific, approved interactive functionality. Make sure your app metadata is focused on the app itself and its experience. Don’t include irrelevant information.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.11": {
       "fingerprint": "393e4075d4b403ff201771e040768963299b7df6f01693317ea87c208276b63a",
       "snapshot": "2.3.11 apps you submit for pre-order on the app store must be complete and deliverable as submitted. ensure that the app you ultimately release is not materiall",
       "quote": "2.3.11 Apps you submit for pre-order on the App Store must be complete and deliverable as submitted. Ensure that the app you ultimately release is not materially different from what you advertise while the app is in a pre-order state. If you make material changes to the app (e.g. change business models), you should restart your pre-order sales.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.12": {
       "fingerprint": "c4fe778434d20e2157b2093ceab8e780d6a98f85c05c57823507992f58de54a3",
-      "snapshot": "2.3.12 apps must clearly describe new features and product changes in their “what’s new” text. simple bug fixes, security updates, and performance improvements ",
+      "snapshot": "2.3.12 apps must clearly describe new features and product changes in their “what’s new” text. simple bug fixes, security updates, and performance improve",
       "quote": "2.3.12 Apps must clearly describe new features and product changes in their “What’s New” text. Simple bug fixes, security updates, and performance improvements may rely on a generic description, but more significant changes must be listed in the notes.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.13": {
       "fingerprint": "40d66f89efc57625525782e40afc24aabd8a4cbe2a745eca725a7a2d6324f742",
       "snapshot": "2.3.13 in-app events are timely events that happen within your app. to feature your event on the app store, it must fall within an event type provided in app st",
       "quote": "2.3.13 In-app events are timely events that happen within your app. To feature your event on the App Store, it must fall within an event type provided in App Store Connect. All event metadata must be accurate and pertain to the event itself, rather than the app more generally. Events must happen at the times and dates you select in App Store Connect, including across multiple storefronts. You may monetize your event so long as you follow the rules set forth in Section 3 on Business. And your event deep link must direct users to the proper destination within your app.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.2": {
       "fingerprint": "e070f3780bbbbf41f191f71ef396904f9d42d531ab782f6f35b4e0c9b95dbf0a",
       "snapshot": "2.3.2 if your app includes in-app purchases, make sure your app description, screenshots, and previews clearly indicate whether any featured items, levels, subs",
       "quote": "2.3.2 If your app includes in-app purchases, make sure your app description, screenshots, and previews clearly indicate whether any featured items, levels, subscriptions, etc. require additional purchases.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.3": {
       "fingerprint": "599fcbd06e68d93bab64101dc412f5c6ffb13eb76e8490c7e93d95d95e4dafae",
       "snapshot": "2.3.3 screenshots should show the app in use, and not merely the title art, login page, or splash screen. they may also include text and image overlays (e.g. to",
       "quote": "2.3.3 Screenshots should show the app in use, and not merely the title art, login page, or splash screen. They may also include text and image overlays (e.g. to demonstrate input mechanisms, such as an animated touch point or Apple Pencil) and show extended functionality on device, such as Touch Bar.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.4": {
       "fingerprint": "581fe91e7677d96de480c0edca7761023e5606f5d6cd39ae42a06d29081ab393",
-      "snapshot": "2.3.4 previews are a great way for customers to see what your app looks like and what it does. to ensure people understand what they’ll be getting with your app",
+      "snapshot": "2.3.4 previews are a great way for customers to see what your app looks like and what it does. to ensure people understand what they’ll be getting with your a",
       "quote": "2.3.4 Previews are a great way for customers to see what your app looks like and what it does. To ensure people understand what they’ll be getting with your app, previews may only use video screen captures of the app itself. Stickers and iMessage extensions may show the user experience in the Messages app. You can add narration and video or textual overlays to help explain anything that isn’t clear from the video alone.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.5": {
       "fingerprint": "b4fb364fef12344219399d477daa73bca645261f6feee1a67dc88916a417c5c5",
-      "snapshot": "2.3.5 select the most appropriate category for your app, and check out the app store category definitions if you need help. if you’re way off base, we may chang",
+      "snapshot": "2.3.5 select the most appropriate category for your app, and check out the app store category definitions if you need help. if you’re way off base, we may cha",
       "quote": "2.3.5 Select the most appropriate category for your app, and check out the App Store Category Definitions if you need help. If you’re way off base, we may change the category for you.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.6": {
       "fingerprint": "a6804ee336bd78da1ddc44613ea6fe131b5dcf4cbe482b8cb696ef3720435c3d",
       "snapshot": "2.3.6 answer the age rating questions in app store connect honestly so that your app aligns properly with parental controls. if your app is mis-rated, customers",
       "quote": "2.3.6 Answer the age rating questions in App Store Connect honestly so that your app aligns properly with parental controls. If your app is mis-rated, customers might be surprised by what they get, or it could trigger an inquiry from government regulators. If your app includes media that requires the display of content ratings or warnings (e.g. films, music, games, etc.), you are responsible for complying with local requirements in each territory where your app is available.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.7": {
       "fingerprint": "3493119147fdb0b4735ce6760d2a0186a4941531ff209e4198879f0a1c201a2c",
-      "snapshot": "2.3.7 choose a unique app name, assign keywords that accurately describe your app, and don’t try to pack any of your metadata with trademarked terms, popular ap",
+      "snapshot": "2.3.7 choose a unique app name, assign keywords that accurately describe your app, and don’t try to pack any of your metadata with trademarked terms, popular ",
       "quote": "2.3.7 Choose a unique app name, assign keywords that accurately describe your app, and don’t try to pack any of your metadata with trademarked terms, popular app names, pricing information, or other irrelevant phrases just to game the system. App names must be limited to 30 characters. Metadata such as app names, subtitles, screenshots, and previews should not include prices, terms, or descriptions that are not specific to the metadata type.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.8": {
       "fingerprint": "9c1bc1fbee57f292a14e4b6cfa465021ad0f7acb79691337b2a0f5c2e41392bb",
       "snapshot": "2.3.8 metadata should be appropriate for all audiences, so make sure your app and in-app purchase icons, screenshots, and previews adhere to a 4+ age rating eve",
       "quote": "2.3.8 Metadata should be appropriate for all audiences, so make sure your app and in-app purchase icons, screenshots, and previews adhere to a 4+ age rating even if your app is rated higher. For example, if your app is a game that includes violence, select images that don’t depict a gruesome death or a gun pointed at a specific character. Use of terms like “For Kids” and “For Children” in app metadata is reserved in the App Store for the Kids Category.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.3.9": {
       "fingerprint": "5161fcd6aaa9dfd7b3cfff5f32912448dc937083d095fe9049cef0f80a09fa32",
       "snapshot": "2.3.9 you are responsible for securing the rights to use all materials in your app icons, screenshots, and previews, and you should display fictional account in",
       "quote": "2.3.9 You are responsible for securing the rights to use all materials in your app icons, screenshots, and previews, and you should display fictional account information instead of data from a real person.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.5.1": {
       "fingerprint": "7b055c4d2438faeaee3b1b77f5ce9b9cec38e713466ea0c85d31117d6484ba8b",
       "snapshot": "2.5.1 apps may only use public apis and must run on the currently shipping os. learn more about public apis . keep your apps up-to-date and make sure you phase ",
       "quote": "2.5.1 Apps may only use public APIs and must run on the currently shipping OS. Learn more about public APIs . Keep your apps up-to-date and make sure you phase out any deprecated features, frameworks or technologies that will no longer be supported in future versions of an OS. Apps should use APIs and frameworks for their intended purposes and indicate that integration in their app description. For example, the HomeKit framework should provide home automation services; and HealthKit should be used for health and fitness purposes and integrate with the Health app.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.5.2": {
       "fingerprint": "353ebb9358966707a33b8b1b29575e44c1a2db44e8a42c013bcd48ca296fec44",
       "snapshot": "2.5.2 apps should be self-contained in their bundles, and may not read or write data outside the designated container area, nor may they download, install, or e",
       "quote": "2.5.2 Apps should be self-contained in their bundles, and may not read or write data outside the designated container area, nor may they download, install, or execute code which introduces or changes features or functionality of the app, including other apps. Educational apps designed to teach, develop, or allow students to test executable code may, in limited circumstances, download code provided that such code is not used for other purposes. Such apps must make the source code provided by the app completely viewable and editable by the user.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "2.5.4": {
       "fingerprint": "9695ae52e1472dc7f5d977a88287c590b468401dd6a1fb30ddbe252029c59c81",
       "snapshot": "2.5.4 multitasking apps may only use background services for their intended purposes: voip, audio playback, location, task completion, local notifications, etc.",
       "quote": "2.5.4 Multitasking apps may only use background services for their intended purposes: VoIP, audio playback, location, task completion, local notifications, etc.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "3.1.1": {
       "fingerprint": "16d14be80e2243e9456be40bbc6c8dfb2cb6e90c6e98e5c36ba6e7f7147a61e8",
       "snapshot": "3.1.1 in-app purchase: if you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, acce",
       "quote": "3.1.1 In-App Purchase: If you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, access to premium content, or unlocking a full version), you must use in-app purchase. Apps may not use their own mechanisms to unlock content or functionality, such as license keys, augmented reality markers, QR codes, cryptocurrencies and cryptocurrency wallets, etc. Apps may use in-app purchase currencies to enable customers to “tip” the developer or digital content providers in the app.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "3.1.2": {
       "fingerprint": "015f5baa628e085d550f8bc6d47f0cc33508915a5dced6d8b238e6a52616690a",
       "snapshot": "3.1.2 subscriptions: apps may offer auto-renewable in-app purchase subscriptions, regardless of category on the app store. when incorporating auto-renewable sub",
       "quote": "3.1.2 Subscriptions: Apps may offer auto-renewable in-app purchase subscriptions, regardless of category on the App Store. When incorporating auto-renewable subscriptions into your app, be sure to follow the guidelines below. 3.1.2(a) Permissible uses: If you offer an auto-renewable subscription, you must provide ongoing value to the customer, and the subscription period must last at least seven days and be available across all of the user’s devices.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "3.1.5": {
       "fingerprint": "ff34b24b578bec14defe707f1333593160535ab927d03676f1e533b4d9ef03bb",
       "snapshot": "3.1.5 cryptocurrencies: (i) wallets: apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) min",
       "quote": "3.1.5 Cryptocurrencies: (i) Wallets: Apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) Mining: Apps may not mine for cryptocurrencies unless the processing is performed off device (e.g. cloud-based mining). (iii) Exchanges: Apps may facilitate transactions or transmissions of cryptocurrency on an approved exchange, provided they are offered only in countries or regions where the app has appropriate licensing and permissions to provide a cryptocurrency exchange.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.2": {
       "fingerprint": "381768384e5d58de6c2c75ccfae3524279669ea710b29bd12994561ba002e9d6",
       "snapshot": "4.2 minimum functionality your app should include features, content, and ui that elevate it beyond a repackaged website. if your app is not particularly useful,",
       "quote": "4.2 Minimum Functionality Your app should include features, content, and UI that elevate it beyond a repackaged website. If your app is not particularly useful, unique, or “app-like,” it doesn’t belong on the App Store. If your App doesn’t provide some sort of lasting entertainment value or adequate utility, it may not be accepted. Apps that are simply a song or movie should be submitted to the iTunes Store. Apps that are simply a book or game guide should be submitted to the Apple Books Store.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.2.1": {
       "fingerprint": "186350931d2f6ae6faf4fab30b4ad0000cb386890f59dfc1f0d55904e0d31ebc",
       "snapshot": "4.2.1 apps using arkit should provide rich and integrated augmented reality experiences; merely dropping a model into an ar view or replaying animation is not e",
       "quote": "4.2.1 Apps using ARKit should provide rich and integrated augmented reality experiences; merely dropping a model into an AR view or replaying animation is not enough.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.2.2": {
       "fingerprint": "504f8404893912593ded8f89748de71a847897cc0cf7f987e475323edef8650a",
       "snapshot": "4.2.2 other than catalogs, apps shouldn’t primarily be marketing materials, advertisements, web clippings, content aggregators, or a collection of links.",
       "quote": "4.2.2 Other than catalogs, apps shouldn’t primarily be marketing materials, advertisements, web clippings, content aggregators, or a collection of links.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.2.3": {
       "fingerprint": "60bde0e85a028024660dd1b6da7a487083fea5c8e346e1f9d4ef287e6bce7829",
       "snapshot": "4.2.3 (i) your app should work on its own without requiring installation of another app to function. (ii) if your app needs to download additional resources in ",
       "quote": "4.2.3 (i) Your app should work on its own without requiring installation of another app to function. (ii) If your app needs to download additional resources in order to function on initial launch, disclose the size of the download and prompt users before doing so.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.2.7": {
       "fingerprint": "debd395643a03b8dec28d32aed55ec883b91ce24df156ed8365846245a56d436",
       "snapshot": "4.2.7 remote desktop clients: if your remote desktop app acts as a mirror of specific software or services rather than a generic mirror of the host device, it m",
       "quote": "4.2.7 Remote Desktop Clients: If your remote desktop app acts as a mirror of specific software or services rather than a generic mirror of the host device, it must comply with the following: (a) The app must only connect to a user-owned host device that is a personal computer or dedicated game console owned by the user, and both the host device and client must be connected on a local and LAN-based network.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
+    },
+    "4.3": {
+      "fingerprint": "3c6da9c97ea4cee1cf758bd16e780c354fccd2a3d6ca5618e96f5f2609ff1923",
+      "snapshot": "4.3 spam (a) don’t create multiple bundle ids of the same app (for example, submitting a separate map app for every city in the world instead of a single worl",
+      "quote": "4.3 Spam (a) Don’t create multiple Bundle IDs of the same app (for example, submitting a separate map app for every city in the world instead of a single worldwide map that allows users to search any city). This practice results in unnecessary apps, which makes it hard for users to find the apps they want. If your app has different versions for specific locations, sports teams, universities, etc., consider submitting a single app and providing the variations using in-app purchase. (b) Don’t submit apps that are indistinguishable from what's already widely available.",
+      "quote_verified_on": "2026-09-01"
     },
     "4.4.1": {
       "fingerprint": "520a1ac7a5d13b54061b05bdc57a851e7d5f541a352144623b16c52ae578e5c6",
       "snapshot": "4.4.1 keyboard extensions have some additional rules. they must: provide keyboard input functionality (e.g. typed characters); follow sticker guidelines if the ",
       "quote": "4.4.1 Keyboard extensions have some additional rules. They must: Provide keyboard input functionality (e.g. typed characters); Follow Sticker guidelines if the keyboard includes images or emoji; Provide a method for progressing to the next keyboard; Remain functional without full network access and without requiring full access; Collect user activity only to enhance the functionality of the user’s keyboard extension on the iOS device. They must not: Launch other apps besides Settings; or Repurpose keyboard buttons for other behaviors (e.g.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.4.2": {
       "fingerprint": "6b7f6bde5787ba828a1f18833340140d858d1cc520430b0519f487a7d86dc54c",
       "snapshot": "4.4.2 safari extensions must run on the current version of safari on the relevant apple operating system. they may not interfere with system or safari ui elemen",
       "quote": "4.4.2 Safari extensions must run on the current version of Safari on the relevant Apple operating system. They may not interfere with System or Safari UI elements and must never include malicious or misleading content or code. Violating this rule will lead to removal from the Apple Developer Program. Safari extensions should not claim access to more websites than strictly necessary to function.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.5.1": {
       "fingerprint": "9a82e38f4117ddc59f65993ff1ba5c8fba392fb91f7aad3936725e289d348b38",
       "snapshot": "4.5.1 apps may use approved apple rss feeds such as the itunes store rss feed, but may not scrape any information from apple sites (e.g. apple.com, the itunes s",
       "quote": "4.5.1 Apps may use approved Apple RSS feeds such as the iTunes Store RSS feed, but may not scrape any information from Apple sites (e.g. apple.com, the iTunes Store, App Store, App Store Connect, developer portal, etc.) or create rankings using this information.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.5.2": {
       "fingerprint": "285371a2e18e84a6b20f61f4b9e4f342c2890debecfaf527c57051d4e15c48b4",
       "snapshot": "4.5.2 apple music (i) musickit on ios lets users play apple music and their local music library natively from your apps and games. when a user provides permissi",
       "quote": "4.5.2 Apple Music (i) MusicKit on iOS lets users play Apple Music and their local music library natively from your apps and games. When a user provides permission to their Apple Music account, your app can create playlists, add songs to their library, and play any of the millions of songs in the Apple Music catalog. Users must initiate the playback of an Apple Music stream and be able to navigate using standard media controls such as “play,” “pause,” and “skip.” Moreover, your app may not require payment or indirectly monetize access to the Apple Music service (e.g.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.5.3": {
       "fingerprint": "66dcdc8015b616f09d2dc81e96567f1e003d3c71d8549e89d911ff1a7a3a528e",
       "snapshot": "4.5.3 do not use apple services to spam, phish, or send unsolicited messages to customers, including game center, push notifications, live activities, etc. do n",
       "quote": "4.5.3 Do not use Apple Services to spam, phish, or send unsolicited messages to customers, including Game Center, Push Notifications, Live Activities, etc. Do not attempt to reverse lookup, trace, relate, associate, mine, harvest, or otherwise exploit Player IDs, aliases, or other information obtained through Game Center, or you will be removed from the Apple Developer Program.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.8": {
       "fingerprint": "4d97c6a408a925e9209c7f01ca4377b17c52eeb837a15023ac776b198f3f203e",
       "snapshot": "4.8 login services apps that use a third-party or social login service (such as facebook login, google sign-in, log in with x, sign in with linkedin, login with",
       "quote": "4.8 Login Services Apps that use a third-party or social login service (such as Facebook Login, Google Sign-In, Log in with X, Sign In with LinkedIn, Login with Amazon, or WeChat Login) to set up or authenticate the user’s primary account with the app must also offer as an equivalent option another login service with the following features: the login service limits data collection to the user’s name and email address; the login service allows users to keep their email address private as part of setting up their account; and the login service does not collect interactions with your app for…",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "4.9": {
       "fingerprint": "6ac6eb5bc1047758fde6986c12411e5ccd0901ae38c71facf71076dab9a8f671",
       "snapshot": "4.9 apple pay apps using apple pay must provide all material purchase information to the user prior to sale of any good or service and must use apple pay brandi",
       "quote": "4.9 Apple Pay Apps using Apple Pay must provide all material purchase information to the user prior to sale of any good or service and must use Apple Pay branding and user interface elements correctly, as described in the Apple Pay Marketing Guidelines and Human Interface Guidelines. Apps using Apple Pay to offer recurring payments must, at a minimum, disclose the following information: The length of the renewal term and the fact that it will continue until canceled What will be provided during each period The actual charges that will be billed to the customer How to cancel",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.1.1": {
       "fingerprint": "fed9edf9021681ed9f27139e162f963bf4823e95775d6efad1156c59e9bd7baf",
       "snapshot": "5.1.1 data collection and storage (i) privacy policies: all apps must include a link to their privacy policy in the app store connect metadata field and within ",
       "quote": "5.1.1 Data Collection and Storage (i) Privacy Policies: All apps must include a link to their privacy policy in the App Store Connect metadata field and within the app in an easily accessible manner. The privacy policy must clearly and explicitly: Identify what data, if any, the app/service collects, how it collects that data, and all uses of that data.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.1.2": {
       "fingerprint": "9817b825aa227ee7959bdecde672a78dffa147ce2ded3e3bcc0c0a4b3010f80c",
-      "snapshot": "5.1.2 data use and sharing (i) unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their perm",
+      "snapshot": "5.1.2 data use and sharing (i) unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their pe",
       "quote": "5.1.2 Data Use and Sharing (i) Unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their permission. You must provide access to information about how and where the data will be used. You must clearly disclose where personal data will be shared with third parties, including with third-party AI, and obtain explicit permission before doing so. Data collected from apps may only be shared with third parties to improve the app or serve advertising (in compliance with the Apple Developer Program License Agreement ).",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.1.3": {
       "fingerprint": "12a61190ea01b69c11d8d029b473777b5e9590739fd3043afa25f4f0f05c114a",
       "snapshot": "5.1.3 health and health research health, fitness, and medical data are especially sensitive and apps in this space have some additional rules to make sure custo",
       "quote": "5.1.3 Health and Health Research Health, fitness, and medical data are especially sensitive and apps in this space have some additional rules to make sure customer privacy is protected: (i) Apps may not use or disclose to third parties data gathered in the health, fitness, and medical research context—including from the Clinical Health Records API, HealthKit API, Motion and Fitness, MovementDisorder APIs, or health-related human subject research—for advertising, marketing, or other use-based data mining purposes other than improving health management, or for the purpose of health…",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.1.4": {
       "fingerprint": "43671205363120d06dd34eb1971c4751e8582fb8f7dfe69abbcadf2cd36195ea",
       "snapshot": "5.1.4 kids (a) for many reasons, it is critical to use care when dealing with personal data from kids, and we encourage you to carefully review all the requirem",
       "quote": "5.1.4 Kids (a) For many reasons, it is critical to use care when dealing with personal data from kids, and we encourage you to carefully review all the requirements for complying with laws like the Children’s Online Privacy Protection Act (“COPPA”), the European Union’s General Data Protection Regulation (“GDPR”), and any other applicable regulations or laws. Apps may ask for birthdate and parental contact information only for the purpose of complying with these statutes, but must include some useful functionality or entertainment value regardless of a person’s age.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.1.5": {
       "fingerprint": "07911be837521693da654a46f08e84c9ca2ec3cf9ad87c65f54ae9624d157b3e",
       "snapshot": "5.1.5 location services use location services in your app only when it is directly relevant to the features and services provided by the app. location-based api",
       "quote": "5.1.5 Location Services Use Location Services in your app only when it is directly relevant to the features and services provided by the app. Location-based APIs shouldn’t be used to provide emergency services or autonomous control over vehicles, aircraft, and other devices, except for small devices such as lightweight drones and toys, or remote control car alarm systems, etc. Ensure that you notify and obtain consent before collecting, transmitting, or using location data.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.2.1": {
       "fingerprint": "358d2d81a7b375d308077bbb71b07989235f5667d2cda7fffb14ac1b006c7ae8",
-      "snapshot": "5.2.1 generally: don’t use protected third-party material such as trademarks, copyrighted works, or patented ideas in your app without permission, and don’t inc",
+      "snapshot": "5.2.1 generally: don’t use protected third-party material such as trademarks, copyrighted works, or patented ideas in your app without permission, and don’t",
       "quote": "5.2.1 Generally: Don’t use protected third-party material such as trademarks, copyrighted works, or patented ideas in your app without permission, and don’t include misleading, false, or copycat representations, names, or metadata in your app bundle or developer name. Apps should be submitted by the person or legal entity that owns or has licensed the intellectual property and other relevant rights.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.2.2": {
       "fingerprint": "b7e091540eb347bfa61de6c24a960913e95e67bfe4b40197a464d56b21c45424",
       "snapshot": "5.2.2 third-party sites/services: if your app uses, accesses, monetizes access to, or displays content from a third-party service, ensure that you are specifica",
       "quote": "5.2.2 Third-Party Sites/Services: If your app uses, accesses, monetizes access to, or displays content from a third-party service, ensure that you are specifically permitted to do so under the service’s terms of use. Authorization must be provided upon request.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.2.3": {
       "fingerprint": "af448918a1af7645066c9cce2be68952a841908a49efe143123b5641e8cf2215",
       "snapshot": "5.2.3 audio/video downloading: apps should not facilitate illegal file sharing or include the ability to save, convert, or download media from third-party sourc",
       "quote": "5.2.3 Audio/Video Downloading: Apps should not facilitate illegal file sharing or include the ability to save, convert, or download media from third-party sources (e.g. Apple Music, YouTube, SoundCloud, Vimeo, etc.) without explicit authorization from those sources. Streaming of audio/video content may also violate Terms of Use, so be sure to check before your app accesses those services. Authorization must be provided upon request.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.3.1": {
       "fingerprint": "b1b9f19d97e0303c2b658f1b7d9d0db70dc417bdff7ce826c1e5b93b4a35ca55",
       "snapshot": "5.3.1 sweepstakes and contests must be sponsored by the developer of the app.",
       "quote": "5.3.1 Sweepstakes and contests must be sponsored by the developer of the app.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.3.2": {
       "fingerprint": "49577a0affde1ea6a425b47803c251eaede1565ee4a92676587bda910b5f0632",
       "snapshot": "5.3.2 official rules for sweepstakes, contests, and raffles must be presented in the app and make clear that apple is not a sponsor or involved in the activity ",
       "quote": "5.3.2 Official rules for sweepstakes, contests, and raffles must be presented in the app and make clear that Apple is not a sponsor or involved in the activity in any manner.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.3.3": {
       "fingerprint": "7770603fbb406eeaa5d1320ca6baa5f57a72ee680200d82373bbc9dd6e41b8fe",
       "snapshot": "5.3.3 apps may not use in-app purchase to purchase credit or currency for use in conjunction with real money gaming of any kind.",
       "quote": "5.3.3 Apps may not use in-app purchase to purchase credit or currency for use in conjunction with real money gaming of any kind.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.3.4": {
       "fingerprint": "aaca06600d77f4c3d63ffd9c6c3f5eef979135c2ce3f1263bb5349420d036387",
       "snapshot": "5.3.4 apps that offer real money gaming (e.g. sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions in t",
       "quote": "5.3.4 Apps that offer real money gaming (e.g. sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions in the locations where the app is used, must be geo-restricted to those locations, and must be free on the App Store. Illegal gambling aids, including card counters, are not permitted on the App Store. Lottery apps must have consideration, chance, and a prize.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.4": {
       "fingerprint": "3d639b21b98c7d15167fdfbd71559a91a5de51a7b5c22f300203e5f341af8616",
       "snapshot": "5.4 vpn apps apps offering vpn services must utilize the nevpnmanager api and may only be offered by developers enrolled as an organization. you must make a cle",
       "quote": "5.4 VPN Apps Apps offering VPN services must utilize the NEVPNManager API and may only be offered by developers enrolled as an organization. You must make a clear declaration of what user data will be collected and how it will be used on an app screen prior to any user action to purchase or otherwise use the service. Apps offering VPN services may not sell, use, or disclose to third parties any data for any purpose, and must commit to this in their privacy policy.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.5": {
       "fingerprint": "f8c3db6e7237d7c5a5002a507e20296153e906118b7ce05c537d1873e2adeab0",
       "snapshot": "5.5 mobile device management mobile device management apps that offer mobile device management (mdm) services must request this capability from apple. such apps",
       "quote": "5.5 Mobile Device Management Mobile Device Management Apps that offer Mobile Device Management (MDM) services must request this capability from Apple. Such apps may only be offered by commercial enterprises, educational institutions, or government agencies, and in limited cases, companies using MDM for parental control services or device security. You must make a clear declaration of what user data will be collected and how it will be used on an app screen prior to any user action to purchase or otherwise use the service. MDM apps must not violate any applicable laws.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.6.1": {
       "fingerprint": "17224df537dcc818fd69678e5f067156127cc8513cb0188ad6e3431641673172",
       "snapshot": "5.6.1 app store reviews app store customer reviews can be an integral part of the app experience, so you should treat customers with respect when responding to ",
       "quote": "5.6.1 App Store Reviews App Store customer reviews can be an integral part of the app experience, so you should treat customers with respect when responding to their comments. Keep your responses targeted to the user’s comments and do not include personal information, spam, or marketing in your response. Use the provided API to prompt users to review your app; this functionality allows customers to provide an App Store rating and review without the inconvenience of leaving your app, and we will disallow custom review prompts.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.6.2": {
       "fingerprint": "960f0c0dab8442a42b03926ae1123ffabbc676ecd4dc1890d31fd58c3ba9cf36",
       "snapshot": "5.6.2 developer identity providing verifiable information to apple and customers is critical to customer trust. your representation of yourself, your business, ",
       "quote": "5.6.2 Developer Identity Providing verifiable information to Apple and customers is critical to customer trust. Your representation of yourself, your business, and your offerings on the App Store or alternative distribution must be accurate. The information you provide must be truthful, relevant, and up-to-date so that Apple and customers understand who they are engaging with and can contact you regarding any issues.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.6.3": {
       "fingerprint": "1d9e3acfb31ec0ba65a77d09e230f5a3c408bc4438343437aa8dc3bd17d5967b",
       "snapshot": "5.6.3 discovery fraud participating in the app store requires integrity and a commitment to building and maintaining customer trust. manipulating any element of",
       "quote": "5.6.3 Discovery Fraud Participating in the App Store requires integrity and a commitment to building and maintaining customer trust. Manipulating any element of the App Store customer experience such as charts, search, reviews, or referrals to your app erodes customer trust and is not permitted.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     },
     "5.6.4": {
       "fingerprint": "e132ce3662d95ac10186c2a0a9b7ee4f3ba60814ac05ad635abbd1cae30c11da",
       "snapshot": "5.6.4 app quality customers expect the highest quality from the app store, and maintaining high quality content, services, and experiences promotes customer tru",
       "quote": "5.6.4 App Quality Customers expect the highest quality from the App Store, and maintaining high quality content, services, and experiences promotes customer trust. Indications that this expectation is not being met include excessive customer reports about concerns with your app, such as negative customer reviews, and excessive refund requests. Inability to maintain high quality may be a factor in deciding whether a developer is abiding by the Developer Code of Conduct.",
-      "quote_verified_on": "2026-08-31"
+      "quote_verified_on": "2026-09-01"
     }
   },
-  "reconciled_on": "2026-07-23"
+  "reconciled_on": "2026-09-01"
 }

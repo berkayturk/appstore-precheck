@@ -13,6 +13,7 @@ whole file to run the skill.
 - [Verdict thresholds](#verdict-thresholds)
 - [Evidence strength and confidence](#evidence-strength-and-confidence)
 - [Guideline citations](#guideline-citations)
+- [The SKIP line class](#the-fourth-line-class-skip-not-audited)
 - [SARIF output](#sarif-output---format-sarif)
 - [Real App Store outcomes](#real-app-store-outcomes-corpusoutcomes)
 - [Optional local dynamic simulator tier](#optional-local-dynamic-simulator-tier)
@@ -314,6 +315,25 @@ A rule-level label is the honest default for the rule as a whole, but individual
 Without this, a check that could not run would inherit "Apple's validator blocks this", which is
 exactly the overstatement the layer exists to stop.
 
+### The fourth line class: `SKIP` (not audited)
+
+`FAIL` / `WARN` / `PASS` all assert something about the build. A check that could not run asserts
+nothing, and reporting it as a `PASS` — as the screenshots check used to, with *"assumed managed in
+App Store Connect"* — turns an unexamined surface into a clean bill of health.
+
+`SKIP:` records that state. It is counted separately (`skip=` from `verdict.sh`,
+`summary.not_audited` in JSON), excluded from SARIF, and **never moves the verdict**: a missing
+artifact is a gap in coverage, not a defect in the build. Phase 5 must list every SKIP under
+"Not audited", so a GREEN is always read next to what it did not cover.
+
+Two are emitted today:
+
+- **`SKIP: metadata`** when no `fastlane/metadata` directory is found. The message names how many
+  store-listing checks did not run, counted from `rules_with_evidence metadata` so the number cannot
+  rot as rules are added. SKILL.md Phase 1 then asks the user to paste their App Store Connect
+  listing and audits it directly; findings from pasted metadata are real and do count.
+- **`SKIP: 2.3.3 Screenshots`** when there is no in-repo screenshots directory.
+
 ### The full table
 
 | § | Rule | Evidence | Confidence | Needs build verification |
@@ -371,6 +391,7 @@ exactly the overstatement the layer exists to stop.
 | 51 | `push-marketing-optout` | source | judgment-call | — |
 | 52 | `xcode-sdk-requirement` | build-setting | validator-blocking | yes |
 | 53 | `subscription-eula-metadata` | metadata | review-risk | — |
+| 54 | `saturated-category` | metadata | judgment-call | — |
 
 *Generated from `scripts/evidence.sh`; `tests/test-evidence.sh` keeps it honest.*
 
@@ -409,10 +430,30 @@ this run — never reconstruct guideline text from memory. Phase 3 states this a
 `guideline_url` on every finding (JSON and SARIF) links the section so a human can always read the
 source.
 
-**Staleness.** Each quote carries `quote_verified_on`. Past `GUIDELINE_CITE_STALE_DAYS` (default
-120) the citation is printed with a `STALE` marker and Pierre says so rather than presenting an
-ageing quote as current. An unchanged section stays correct indefinitely, so staleness is a prompt
-to re-verify, not an error.
+**Staleness, two ways.** Each quote carries `quote_verified_on`. Past `GUIDELINE_CITE_STALE_DAYS`
+(default 120) the citation prints a `STALE` marker. But age is only a proxy, and a poor one in both
+directions: an untouched section stays correct for years, while a section Apple edited yesterday is
+wrong and still looks fresh.
+
+`--verify-live` resolves it properly. It fetches the live page (cached per day, so a whole run costs
+one request), re-hashes the section, and compares it with the pinned fingerprint — the same
+comparison the scheduled drift job makes, available at explain time:
+
+- **unchanged** → the quote is current however old the pin is, and `STALE` is withdrawn
+- **changed** → exit `4` and `CHANGED`; Phase 3 then requires Pierre to say Apple's text has moved
+  rather than quoting the pinned wording as current
+- **any failure** (offline, fetch error, section absent) → degrades to the offline behaviour and
+  never reports a verification that did not happen
+
+This is why the shared HTML parser lives at
+[`scripts/lib/guideline-text.sh`](../scripts/lib/guideline-text.sh) *inside the skill* rather than
+beside the maintainer scripts: only the skill directory is packaged, and installed users need it.
+
+**Beyond the guidelines page.** Apple also announces policy changes on
+[developer.apple.com/news](https://developer.apple.com/news/) — deadlines, new required
+declarations, entitlement changes — often before the guideline text catches up. Phase 0 scans it for
+items newer than the baseline `reconciled_on` and WARNs on anything review-relevant. Non-blocking,
+like every Phase 0 signal: it is a gap in our coverage, not a fault of the build.
 
 **Populating the quotes** is a maintainer step, deliberately separate from reconciliation:
 

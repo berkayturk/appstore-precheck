@@ -22,8 +22,8 @@
 
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most
 common rejection vectors, runs Apple's own metadata linter, watches the App Store Review Guidelines
-for drift, has Pierre explain every FAIL and WARN, then runs **29 semantic deep-review checks**
-(23 high-confidence Tier A + 6 heuristic Tier B v1 — beta language, review notes quality, app preview,
+for drift, has Pierre explain every FAIL and WARN, then runs **30 semantic deep-review checks**
+(23 high-confidence Tier A + 7 heuristic Tier B v1 — beta language, review notes quality, app preview,
 incentivized review, push/HomeKit abuse, rating manipulation).
 It hands you a single **GREEN / YELLOW / RED** verdict. It never edits your code.
 
@@ -37,7 +37,7 @@ also run it by hand or wire it into CI.
 
 Your verdict is delivered by **Pierre**, a French critic who has seen ten thousand rejections and is
 impressed by none of them. He reviews your build harder than Apple would, in private — first with a
-fast static scan, then with **29 deep semantic checks** (23 confident + 6 heuristic). A GREEN from
+fast static scan, then with **30 deep semantic checks** (23 confident + 7 heuristic). A GREEN from
 Pierre means Apple will wave you through.
 
 - 🔴 **RED**: *"Non. Restore Purchases, absent. Guideline 3.1.2. Suivant."*
@@ -50,7 +50,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-53 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+54 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -85,6 +85,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **4.4.2** | Safari content-blocker / web extension |
 | **4.5.4** | Marketing-push SDK registered for notifications without an in-app opt-out signal |
 | **4.8** | Sign in with Apple offered when a third-party social login is used |
+| **4.3** | Exposure to a category Apple names as saturated in 4.3(b) (dating, flashlight, sound effects, wallpaper, simple timers, fortune telling, …) |
 | **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
 | **5.1.1** | A non-empty purpose string for every sensitive framework |
 | **5.1.1** | Analytics SDK present ↔ `PrivacyInfo.xcprivacy` declares collected data / tracking domains |
@@ -109,7 +110,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
 signal-gated advisory checks stay silent unless their triggering signal is found.
 
-### Pierre deep review (29 semantic checks)
+### Pierre deep review (30 semantic checks)
 
 After the static scan, Pierre reads your project end-to-end and runs **29 evidence-based checks**
 the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (they do **not**
@@ -165,7 +166,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 53 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | **Full.** All 54 vectors apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The native-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -353,10 +354,10 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 53 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
+| **1** | **Static scan**: `scan.sh` over the 54 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
-| **4** | **Pierre deep review**: 29 semantic checks (23 Tier A + 6 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
+| **4** | **Pierre deep review**: 30 semantic checks (23 Tier A + 7 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
 | **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/permission smoke checks on a local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict. |
 
@@ -406,6 +407,30 @@ One thing the table makes plain: **no rule reads a lockfile.** Every SDK signal 
 which is why so many signal-gated checks sit at the weakest class — and the most honest available
 account of where the real-panel false positives come from.
 
+### Not audited (`SKIP`)
+
+`FAIL` / `WARN` / `PASS` all assert something about the build. A check that **could not run** asserts
+nothing — and reporting it as a pass turns an unexamined surface into a clean bill of health. The
+screenshots check used to do exactly that (*"assumed managed in App Store Connect"*). It is now:
+
+```
+SKIP: metadata — no fastlane metadata directory detected; 12 store-listing checks (2.1, 2.3.x,
+      5.1.4, 5.3.4) did not run. Paste your App Store Connect listing — name, subtitle, description,
+      keywords, promotional text, age rating, and the App Review notes and demo account — to have
+      them audited, or they stay unaudited.
+```
+
+`SKIP` is counted separately (`skip=` in `verdict.sh`, `summary.not_audited` in JSON) and **never
+changes the verdict** — a gap in coverage is not a defect in the build. In agent mode Pierre then
+**asks you for the listing** and audits what you paste; those findings are real and do count. If you
+decline, they stay unaudited and are listed as such.
+
+Every run ends with a mandatory **Not audited** section: the checks that did not run this time, plus
+the fixed list of what a static tool can never see — runtime crashes, whether links resolve, whether
+Restore Purchases actually works, OAuth round trips, server-driven content, and the built archive
+itself. A GREEN that never saw your store listing is a GREEN with a hole in it, and Pierre says
+which hole.
+
 ### Guideline citations
 
 A guideline explanation is only worth reading if the wording is Apple's. `guideline-cite.sh` returns
@@ -430,9 +455,26 @@ pinned quote the tool exits `3` with `NO PINNED CITATION`, and Phase 3 requires 
 wording could not be verified this run — **never** to reconstruct guideline text from memory. Every
 finding also carries a `guideline_url` deep link so a human can read the source directly.
 
+**Staleness, done properly.** Age is a weak proxy — an untouched section stays correct for years,
+while a section Apple edited yesterday is wrong and still looks fresh. With network available:
+
+```bash
+bash skills/appstore-precheck/scripts/guideline-cite.sh --verify-live 5.1.1
+```
+
+re-hashes the live section and compares it with the pinned fingerprint (one cached fetch per day, so
+verifying a whole run costs one request). Unchanged → the quote is current however old the pin is.
+Changed → exit `4` and `CHANGED`, and Pierre must say Apple's text has moved instead of quoting the
+old wording. Any failure degrades to offline behaviour and never claims a verification it did not do.
+
+Phase 0 also scans [developer.apple.com/news](https://developer.apple.com/news/) for review-relevant
+announcements newer than the baseline — policy changes often land there before the guideline text
+catches up. Non-blocking, like every Phase 0 signal.
+
 Maintainers refresh the quotes with `bash scripts/guideline-drift.sh --quotes`, which writes only
 the quotes and refuses to re-quote a section that has drifted since its fingerprint baseline —
-reconcile first, then re-quote.
+reconcile first, then re-quote. `--reconcile` carries unchanged quotes forward and deliberately
+drops the quote of a section whose text moved, since that wording is now wrong.
 
 ## Demo
 
@@ -528,7 +570,7 @@ measures the false-positive rate on real, unrelated open-source code. See
 ## Eval (LLM deep-review scorecard)
 
 The static scanner above is measured by `docs/scorecard.md`; Pierre's **LLM deep-review layer**
-(29 semantic checks, incl. the 6 heuristic Tier B checks) has its own harness under [`eval/`](eval/)
+(30 semantic checks, incl. the 7 heuristic Tier B checks) has its own harness under [`eval/`](eval/)
 and its own scorecard, [`docs/llm-scorecard.md`](docs/llm-scorecard.md).
 
 - **Dataset** — `eval/dataset/`: one labelled case per file (target check, expected

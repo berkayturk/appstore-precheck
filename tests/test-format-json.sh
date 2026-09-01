@@ -35,8 +35,8 @@ done
 # Count DISTINCT catalog slugs, not set_rule call sites: a rule may legitimately be
 # re-declared (e.g. to clear a per-branch evidence override) without being a new
 # section. The IAP-gate's `set_rule ""` reset is excluded — it is not a section tag.
-assert_eq "53" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | sort -u | wc -l | tr -d ' ')" \
-  "all 53 catalog sections tagged"
+assert_eq "54" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | sort -u | wc -l | tr -d ' ')" \
+  "all 54 catalog sections tagged"
 
 # Version provenance: the JSON envelope must report the TOOL's own version (read
 # from skills/appstore-precheck/SKILL.md), never the scanned repo's package.json,

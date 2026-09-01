@@ -45,7 +45,7 @@ validator-vs-reviewer confidence split and the never-quote-from-memory rule are 
   It never touches a fingerprint or `reconciled_on`, and refuses to re-quote a section that has
   drifted since its baseline — quoting a drifted section would take the new wording while the
   fingerprint still claimed the old, papering over the very change drift detection exists to catch.
-- **`gd_section_quote`** in `scripts/lib/guideline-text.sh`: original-case, sentence-bounded
+- **`gd_section_quote`** in `skills/appstore-precheck/scripts/lib/guideline-text.sh`: original-case, sentence-bounded
   excerpts. The extraction was split into a shared `_gd_section_raw`, verified byte-identical
   against the live page for all 57 sections so no fingerprint moved.
 - **`tests/test-evidence.sh`** (57 assertions) and **`tests/test-guideline-cite.sh`**. The evidence
@@ -67,11 +67,69 @@ validator-vs-reviewer confidence split and the never-quote-from-memory rule are 
   table) and "Guideline citations" (including why pinned snapshots beat a live fetch here);
   README gains both sections under "How it works".
 
+### Added — second pass: the remaining gaps
+- **`SKIP:` — a fourth line class for checks that could not run.** `FAIL`/`WARN`/`PASS` all assert
+  something about the build; a check that never ran asserts nothing, and reporting it as a `PASS`
+  turns an unexamined surface into a clean bill of health. The screenshots check did exactly that
+  (*"assumed managed in App Store Connect"*). `SKIP` is counted separately (`skip=` from
+  `verdict.sh`, `summary.not_audited` in JSON), excluded from SARIF, and **never moves the
+  verdict** — a gap in coverage is not a defect in the build.
+- **The store listing is no longer skipped in silence.** With no `fastlane/metadata` directory, a dozen
+  store-listing checks used to vanish without a word. `SKIP: metadata` now names how many did not
+  run, counted from the evidence catalogue via the new `rules_with_evidence` so the number cannot
+  rot. SKILL.md Phase 1 then **asks the user to paste their App Store Connect listing** — name,
+  subtitle, description, keywords, promotional text, age rating, review notes, demo account — and
+  audits it directly; those findings count. If the user declines, or there is no user (CI), they
+  stay `SKIP`. Metadata is never invented.
+- **A mandatory "Not audited" section on every run, GREEN included**: the checks that did not run,
+  plus the fixed list of what a static tool can never see (runtime crashes, whether links resolve,
+  whether Restore Purchases works, OAuth round trips, server-driven content, the built archive).
+  A GREEN that never saw the store listing is a GREEN with a hole in it, and it now says so.
+- **§54 `saturated-category` (4.3(b))** — the guideline was not covered at all. Apple *names* the
+  saturated categories ("dating, flashlight, sound effects, wallpaper, simple timers, and fortune
+  telling ... we will not accept new submissions unless they offer a meaningfully different or
+  improved experience", plus drinking games, kama sutra, fart and burp apps), so the rule matches
+  Apple's own list rather than a guess. Matched against **name / subtitle / keywords only** — those
+  say what the app *is*; the description says what it *does*, where "flashlight" or "timer" is an
+  ordinary feature of an unrelated app. Word-boundary anchored, so `fart` does not match `farther`.
+  WARN + `judgment-call`: being in a named category is exposure, not a violation.
+- **Deep-review check 30 (Tier B, 4.3)** — the differentiation judgment the scanner cannot make:
+  what does this app do that the incumbents do not, including 4.3(a) variant-bundle-ID patterns.
+  Deep review is now **30 checks (23 Tier A + 7 Tier B)**; the scanner covers **54 vectors**.
+- **`guideline-cite.sh --verify-live`** — change-based staleness. Age was only a proxy, bad in both
+  directions: an untouched section stays correct for years, a section edited yesterday is wrong and
+  still looks fresh. This re-hashes the live section against the pinned fingerprint (one fetch,
+  cached per day, so a whole run costs one request). Unchanged → the quote is current however old
+  the pin is, and `STALE` is withdrawn. Changed → exit `4` and `CHANGED`, and Phase 3 requires
+  saying Apple's text has moved instead of quoting the old wording. Any failure degrades to the
+  offline path and never reports a verification that did not happen.
+- **Phase 0 scans Apple's announcements.** `developer.apple.com/news` carries policy changes —
+  deadlines, new required declarations, entitlement changes — often before the guideline text
+  catches up. Items newer than the baseline `reconciled_on` produce a non-blocking WARN.
+
+### Changed — second pass
+- The shared HTML parser moved from `scripts/lib/` to
+  **`skills/appstore-precheck/scripts/lib/guideline-text.sh`**. Only the skill directory is
+  packaged, and `--verify-live` needs the parser at the user's machine. `guideline-drift.sh` and
+  `eval/rag/ingest.sh` source it from the new location; there is still exactly one implementation.
+- `guidelines-fingerprints.json` reconciled against the live page on 2026-09-01: all 57 previously
+  pinned fingerprints verified **unchanged**, 4.3 added, 58 sections now carry quotes.
+
 ### Fixed
 - `tests/test-format-json.sh` counted `set_rule` call sites as a proxy for "53 sections tagged",
   which broke on a legitimate re-declaration. It now counts distinct slugs.
+- **`--reconcile` silently destroyed every pinned quote.** It rebuilt each entry from scratch, so a
+  later `--quotes` run would re-date all citations as if freshly verified. It now carries a quote
+  (and its original verification date) forward when the section is unchanged, and deliberately drops
+  it — announcing the drop — when the text moved, because that wording is now wrong. Regression test
+  in `tests/test-guideline-drift.sh`.
 
 ### Notes
+- Origin of this release: a comparison against
+  [dabodamjan/app-store-rejection-checker](https://github.com/dabodamjan/app-store-rejection-checker).
+  Four things it did better are now closed — the confidence taxonomy, quoting live guideline text,
+  asking for App Store Connect metadata instead of skipping it silently, and a mandatory not-checked
+  list — plus guideline 4.3, which this project did not cover at all.
 - **No rule reads a lockfile.** Building the evidence table surfaced that every SDK signal
   (tracking, analytics, payment, AI, push) is a source grep rather than a `Podfile.lock` /
   `Package.resolved` read — which is why so many signal-gated checks sit at the weakest evidence

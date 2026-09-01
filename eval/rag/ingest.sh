@@ -8,8 +8,8 @@ set -u
 GD_URL="https://developer.apple.com/app-store/review/guidelines/"
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-# shellcheck source=scripts/lib/guideline-text.sh
-source "$here/scripts/lib/guideline-text.sh"
+# shellcheck source=skills/appstore-precheck/scripts/lib/guideline-text.sh
+source "$here/skills/appstore-precheck/scripts/lib/guideline-text.sh"
 
 ri_main() {
   local html="" baseline="$here/skills/appstore-precheck/guidelines-baseline.json"

@@ -90,6 +90,11 @@ fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppr
 warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
 pass() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
 
+# skip <message> — a check that could NOT run (a missing artifact, not a clean
+# result). Never carries an evidence tag: there is no evidence, that is the point.
+# It is counted separately by verdict.sh and never moves the verdict.
+skip() { echo "SKIP: $1"; _record SKIP "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; }
+
 # detail <text> — indented evidence under the previous finding; skipped when it was suppressed.
 detail() { [[ "${_LAST_SUPPRESSED:-0}" == 1 ]] || printf '%s\n' "$1" | sed 's/^/      /'; }
 
@@ -239,6 +244,15 @@ CHECK_FAMILY="$(cfg_bool '.optionalChecks.familyControls')"
 if [[ "$FORMAT" != text ]]; then exec 4>&1 1>/dev/null; fi
 
 echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='${XCSTRINGS:-?}' locales=${#LOCALES[@]}"
+
+# The store listing is a real rejection surface. Without a fastlane metadata dir the
+# listing checks simply never run, and reporting only the ones that DID run would let
+# a repo look clean on ground nobody examined. Name the cost, derived from the
+# evidence catalogue so the number cannot rot as rules are added.
+if [[ -z "$META_DIR" || ! -d "$META_DIR" ]]; then
+  _meta_rules="$(rules_with_evidence metadata | wc -l | tr -d ' ')"
+  skip "metadata — no fastlane metadata directory detected; ${_meta_rules} store-listing checks (2.1, 2.3.x, 5.1.4, 5.3.4) did not run. Paste your App Store Connect listing — name, subtitle, description, keywords, promotional text, age rating, and the App Review notes and demo account — to have them audited, or they stay unaudited."
+fi
 
 # ===================================================================
 # §1 — 5.1.1 Privacy Manifest / Required Reason API parity
@@ -443,7 +457,10 @@ if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
   done
   pass "2.3.3 Screenshots — checked ${#LOCALES[@]} locales under $SCREEN_DIR"
 else
-  pass "2.3.3 Screenshots — no in-repo screenshots dir; assumed managed in App Store Connect (set .screenshotsDir to check in-repo)"
+  # Was a PASS ("assumed managed in App Store Connect") — but nothing was examined,
+  # so it is a gap in coverage, not a clean result. SKIP says so without changing
+  # the verdict.
+  skip "2.3.3 Screenshots — no in-repo screenshots dir; the screenshot checks (count per locale, format, dimensions) did not run. Set .screenshotsDir, or paste your App Store Connect screenshot set to have them audited."
 fi
 
 # ===================================================================
@@ -1472,6 +1489,42 @@ last_upgrade=$(find . "${PRUNE[@]}" -name 'project.pbxproj' -type f 2>/dev/null 
   | xargs grep -h 'LastUpgradeCheck' 2>/dev/null | grep -oE '[0-9]+' | sort -n | tail -1)
 if [[ -n "$last_upgrade" ]] && (( last_upgrade < 2600 )); then
   warn "2.1 Xcode/SDK minimum — LastUpgradeCheck=$last_upgrade suggests the project was last upgraded with a pre-26 Xcode; since April 2026 App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. Verify the actual build toolchain (heuristic: this field tracks the upgrade-check, not the build)"
+fi
+
+# ===================================================================
+# §54 — 4.3(b) Saturated category exposure (catalog vector 54)
+# ===================================================================
+# Apple NAMES the saturated categories in 4.3(b) — "dating, flashlight, sound
+# effects, wallpaper, simple timers, and fortune telling ... we will not accept new
+# submissions unless they offer a meaningfully different or improved experience" —
+# plus "drinking games, kama sutra, fart, and burp apps". So this is not a guess
+# about what Apple considers crowded; it is Apple's own list.
+#
+# Matched against name / subtitle / keywords ONLY. Those fields say what the app IS.
+# The description says what it DOES, where "flashlight" or "timer" is an ordinary
+# feature of an unrelated app — matching there would fire on half the store. WARN and
+# judgment-call by design: being in a named category is EXPOSURE, not a violation.
+# The differentiation question itself is a human call, handled by deep-review check 30.
+set_rule "saturated-category"
+if [[ -d "$META_DIR" ]]; then
+  # Word-boundary anchored so 'fart' does not match 'farther', nor 'dating' 'updating'.
+  sat_re='(^|[^a-z])(dating|flashlight|sound effects?|wallpapers?|fortune telling|fortune teller|drinking games?|kama sutra|fart|burp)([^a-z]|$)'
+  sat_hits=""
+  for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
+    for mf in name.txt subtitle.txt keywords.txt; do
+      f="$META_DIR/$loc/$mf"; [[ -f "$f" ]] || continue
+      h=$(grep -HinE "$sat_re" "$f" 2>/dev/null | head -2)
+      [[ -n "$h" ]] && sat_hits+="$h"$'\n'
+    done
+  done
+  sat_hits="$(printf '%s' "$sat_hits" | grep -v '^$' | head -6)"
+  if [[ -n "$sat_hits" ]]; then
+    sat_first="$(printf '%s\n' "$sat_hits" | head -1)"
+    warn "4.3 Saturated category — the app name/subtitle/keywords place this in a category Apple names in 4.3(b) (dating, flashlight, sound effects, wallpaper, simple timers, fortune telling, drinking games, kama sutra, fart, burp). Apple will not accept new submissions in these unless they offer a \"meaningfully different or improved experience\", and may remove existing ones. Be ready to say in the review notes what this app does that the incumbents do not:" "${sat_first%%:*}"
+    detail "$sat_hits"
+  else
+    pass "4.3 Saturated category — no 4.3(b) category term in the app name/subtitle/keywords"
+  fi
 fi
 
 echo "---END-OF-SCAN---"
