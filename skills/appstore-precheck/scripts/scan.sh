@@ -93,7 +93,12 @@ pass() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppr
 # skip <message> — a check that could NOT run (a missing artifact, not a clean
 # result). Never carries an evidence tag: there is no evidence, that is the point.
 # It is counted separately by verdict.sh and never moves the verdict.
-skip() { echo "SKIP: $1"; _record SKIP "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; }
+# Honors .precheck-ignore like every other emitter, so a team whose screenshots really
+# do live only in App Store Connect can acknowledge the gap by rule id and have it
+# counted as suppressed rather than see it every run. The store-listing SKIP is
+# emitted outside any rule and so cannot be suppressed — set .metadataDir instead;
+# an unaudited listing is a fact, not a preference.
+skip() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed SKIP "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "SKIP: $1"; _record SKIP "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
 
 # detail <text> — indented evidence under the previous finding; skipped when it was suppressed.
 detail() { [[ "${_LAST_SUPPRESSED:-0}" == 1 ]] || printf '%s\n' "$1" | sed 's/^/      /'; }
@@ -250,8 +255,12 @@ echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='
 # a repo look clean on ground nobody examined. Name the cost, derived from the
 # evidence catalogue so the number cannot rot as rules are added.
 if [[ -z "$META_DIR" || ! -d "$META_DIR" ]]; then
-  _meta_rules="$(rules_with_evidence metadata | wc -l | tr -d ' ')"
-  skip "metadata — no fastlane metadata directory detected; ${_meta_rules} store-listing checks (2.1, 2.3.x, 5.1.4, 5.3.4) did not run. Paste your App Store Connect listing — name, subtitle, description, keywords, promotional text, age rating, and the App Review notes and demo account — to have them audited, or they stay unaudited."
+  _meta_list="$(rules_with_evidence metadata)"
+  _meta_rules="$(printf '%s\n' "$_meta_list" | grep -c .)"
+  skip "metadata — no fastlane metadata directory detected; ${_meta_rules} store-listing checks did not run. Paste your App Store Connect listing — name, subtitle, description, keywords, promotional text — to have them audited (the skill re-runs the scanner over what you paste), or they stay unaudited."
+  # The skipped rule ids, derived from the same catalogue as the count, so the list can
+  # never disagree with it — unlike the guideline enumeration this used to hardcode.
+  detail "$(printf '%s\n' "$_meta_list" | tr '\n' ' ' | sed 's/ $//')"
 fi
 
 # ===================================================================

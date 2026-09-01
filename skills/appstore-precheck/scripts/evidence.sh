@@ -21,6 +21,9 @@
 # a completeness test, not decided per run.
 
 # --- Closed vocabularies -------------------------------------------------------
+# Consumed by tests (vocabulary and completeness checks) and by rules_with_evidence,
+# across a `source` boundary the linter cannot follow — hence the disable below.
+# shellcheck disable=SC2034
 # Evidence classes, ordered strongest -> weakest. "Strength" is how faithfully the
 # artifact represents what actually ships:
 #   metadata      fastlane/metadata/** — uploaded to App Store Connect verbatim.
@@ -158,13 +161,26 @@ evidence_label() {
 # tell the user how many checks a missing artifact actually cost them, rather than
 # hardcoding a number that rots the next time a rule is added.
 rules_with_evidence() {
-  local want="${1:-}" n slug
+  local want="${1:-}" slug
   [[ -n "$want" ]] || return 0
   command -v rule_slug >/dev/null 2>&1 || return 0
-  for n in $(seq 1 54); do
-    slug="$(rule_slug "$n")"
-    [[ -n "$slug" ]] || continue
+  while IFS= read -r slug; do
     [[ "$(rule_evidence "$slug")" == "$want" ]] && echo "$slug"
+  done < <(catalogue_slugs)
+  return 0
+}
+
+# catalogue_slugs -> every catalogued rule id in section order, one per line. Walks
+# rule_slug until it returns empty, so nothing here (or in the tests) has to be
+# edited when a section is added — the hardcoded 53 this replaced was already wrong
+# the day §54 landed.
+catalogue_slugs() {
+  local n=1 slug
+  command -v rule_slug >/dev/null 2>&1 || return 0
+  while :; do
+    slug="$(rule_slug "$n")"
+    [[ -n "$slug" ]] || break
+    echo "$slug"; n=$((n + 1))
   done
   return 0
 }

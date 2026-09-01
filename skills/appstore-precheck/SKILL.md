@@ -190,13 +190,28 @@ listing is a real rejection surface — roughly a fifth of the checks read it �
 > app name, subtitle, description, keywords, promotional text, age rating, and the App Review
 > Information fields (review notes and the demo account)
 
-Then audit what they paste against the same rules the skipped checks apply — character limits
-(2.3.1), placeholder copy (2.1), other-platform mentions (2.3.10), pricing/promo language in the
-name or subtitle (2.3.1), "For Kids" wording (2.3.8), misleading marketing claims (2.3.1), and demo
-credentials (2.1) — and report the results as ordinary findings, saying they came from pasted
-metadata rather than from the repo. Findings from pasted metadata **do** count toward the verdict;
-they are real. If the user declines, or there is no user to ask (a CI or non-interactive run), leave
-them as `SKIP` and list them under "Not audited" in Phase 5. **Never invent metadata to audit.**
+Then **re-run the scanner over what they paste — do not judge it by eye.** The verdict is
+deterministic and comes only from scanner lines (Phase 5), so a finding Pierre "notices" in pasted
+text cannot count; a finding the scanner emits can. Write the pasted fields into a temporary
+fastlane-shaped tree outside the repo and point the scanner at it:
+
+```bash
+T="$(mktemp -d)"; mkdir -p "$T/fastlane/metadata/en-US"     # one dir per locale they pasted
+# write name.txt, subtitle.txt, description.txt, keywords.txt, promotional_text.txt from the paste
+printf '{"metadataDir":"%s"}' "$T/fastlane/metadata" > "$T/precheck.json"
+APPSTORE_PRECHECK_CONFIG="$T/precheck.json" bash <skill-dir>/scripts/scan.sh
+```
+
+The scanner accepts an absolute `metadataDir`, so the repo is untouched (read-only holds) and the
+`SKIP: metadata` line disappears because the listing checks actually ran. The resulting `FAIL:` /
+`WARN:` lines are ordinary scanner output: they **count toward the verdict**, and Pierre explains
+them like any other, saying they came from the pasted listing rather than the repo. Use the second
+run's output as the Phase 1 result.
+
+Age rating, review notes and the demo account have no scanner rule; judge those in Phase 4 (deep
+review check 4) as advisory `REVIEW-FINDING` lines. If the user declines, or there is no user to ask
+(a CI or non-interactive run), leave the listing as `SKIP` and list it under "Not audited" in
+Phase 5. **Never invent metadata to audit.**
 
 The same applies to `SKIP: 2.3.3 Screenshots` — ask what the App Store Connect screenshot set
 contains, or leave it unaudited.

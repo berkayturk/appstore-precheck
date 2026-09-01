@@ -414,15 +414,18 @@ nothing — and reporting it as a pass turns an unexamined surface into a clean 
 screenshots check used to do exactly that (*"assumed managed in App Store Connect"*). It is now:
 
 ```
-SKIP: metadata — no fastlane metadata directory detected; 12 store-listing checks (2.1, 2.3.x,
-      5.1.4, 5.3.4) did not run. Paste your App Store Connect listing — name, subtitle, description,
-      keywords, promotional text, age rating, and the App Review notes and demo account — to have
-      them audited, or they stay unaudited.
+SKIP: metadata — no fastlane metadata directory detected; 12 store-listing checks did not run.
+      Paste your App Store Connect listing — name, subtitle, description, keywords, promotional
+      text — to have them audited (the skill re-runs the scanner over what you paste), or they
+      stay unaudited.
+      competitor-mentions metadata-char-limits locale-metadata-parity support-privacy-url …
 ```
 
 `SKIP` is counted separately (`skip=` in `verdict.sh`, `summary.not_audited` in JSON) and **never
 changes the verdict** — a gap in coverage is not a defect in the build. In agent mode Pierre then
-**asks you for the listing** and audits what you paste; those findings are real and do count. If you
+**asks you for the listing**, writes it into a temporary fastlane-shaped tree outside your repo, and
+**re-runs the scanner over it** — so those findings are real scanner lines and do count, rather
+than Pierre's impression of your text. If you
 decline, they stay unaudited and are listed as such.
 
 Every run ends with a mandatory **Not audited** section: the checks that did not run this time, plus

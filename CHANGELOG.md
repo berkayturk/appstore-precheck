@@ -115,7 +115,40 @@ validator-vs-reviewer confidence split and the never-quote-from-memory rule are 
 - `guidelines-fingerprints.json` reconciled against the live page on 2026-09-01: all 57 previously
   pinned fingerprints verified **unchanged**, 4.3 added, 58 sections now carry quotes.
 
-### Fixed
+### Fixed — adversarial review pass
+Found by reviewing the two commits above as a hostile second reader, verifying each suspect by
+running it rather than reading it.
+- **`--verify-live` cached the live page at a predictable path in shared `/tmp`** and `rm -f`'d
+  that path on failure. Any local user could pre-place a crafted page and have the tool "verify" a
+  citation against it; and the very first test pointed the cache at `/dev/null`, which — run as
+  root — would have deleted `/dev/null`. The cache now lives under the user's own
+  `${XDG_CACHE_HOME:-~/.cache}/appstore-precheck` (mode 0700), a non-regular file or symlink at the
+  path is refused rather than read or removed, and only a file this run created is ever deleted.
+  `GUIDELINE_CITE_URL` was added so the test fails the fetch **offline and instantly**
+  (`file:///nonexistent`) — it had been making a real HTTP request to Apple on every run.
+- **SKILL.md contradicted itself on pasted metadata.** Phase 1 said findings from a pasted App Store
+  Connect listing "count toward the verdict"; Phase 5 says the verdict is derived *only* from
+  scanner lines. Both cannot be true, and the first would have had Pierre judge character limits
+  by eye. Resolved the honest way: the skill now writes the pasted fields into a temporary
+  fastlane-shaped tree outside the repo and **re-runs the scanner** with an absolute `metadataDir`
+  (verified to work; test added). The findings are then real scanner lines that count, and the
+  repo stays untouched. Review notes, demo account and age rating — which have no scanner rule —
+  are judged in deep review as advisory.
+- **A `SKIP` under a rule inherited that rule's labels.** The screenshots SKIP carried
+  `confidence: validator-blocking` in JSON — a line that established nothing claiming Apple's
+  validator enforces it. SKIP now records no evidence class and no confidence; test added.
+- **The store-listing SKIP hardcoded a guideline enumeration** ("2.1, 2.3.x, 5.1.4, 5.3.4") that
+  was already stale the moment §54 (4.3) landed — precisely the rot the *derived* count was meant
+  to avoid, one line below it. The enumeration is gone; the skipped rule ids are now printed in
+  the detail block, derived from the same catalogue as the count, so the two cannot disagree.
+- **The evidence completeness test hardcoded `seq 1 53`**, so §54 was outside the invariant that
+  exists to catch exactly an unclassified new rule (the secondary scan.sh-grep check happened to
+  cover it). Both the test and `rules_with_evidence` now walk the catalogue until `rule_slug`
+  returns empty (`catalogue_slugs`), and the test asserts the walk reached §54.
+- **`skip()` bypassed `.precheck-ignore`.** A team whose screenshots genuinely live only in App
+  Store Connect had no way to acknowledge the gap; the rule-scoped SKIP now honours suppression
+  like every other emitter and is counted as suppressed. The store-listing SKIP is deliberately
+  unsuppressible — it has no rule — because an unaudited listing is a fact, not a preference.
 - `tests/test-format-json.sh` counted `set_rule` call sites as a proxy for "53 sections tagged",
   which broke on a legitimate re-declaration. It now counts distinct slugs.
 - **`--reconcile` silently destroyed every pinned quote.** It rebuilt each entry from scratch, so a

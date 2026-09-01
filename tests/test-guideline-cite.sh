@@ -111,12 +111,27 @@ section "--verify-live degrades safely when the page cannot be fetched"
 vfp2="$(mktemp)"
 jq -n '{sections:{"2.3.3":{fingerprint:"x", snapshot:"s", quote:"A pinned quote about screenshots.",
   quote_verified_on:"2026-09-01"}}}' > "$vfp2"
-# An unreadable cache path + a curl that cannot reach anything must not crash or
-# silently claim verification. Point the cache at a directory to force failure.
-out="$(GUIDELINE_CITE_CACHE=/dev/null bash "$CITE" --fingerprints "$vfp2" --verify-live 2.3.3 2>&1)"; st=$?
+# A fetch that fails must not crash, must not claim verification, and must not touch
+# the network in this test: the URL is overridden to a file that does not exist, so
+# curl fails instantly and offline. The cache is a fresh temp path, never /dev/null —
+# an earlier version of this test pointed there, which would have had the script
+# `rm -f /dev/null` if run as root.
+vcache="$(mktemp -d)/cache.html"
+out="$(GUIDELINE_CITE_URL="file:///nonexistent/guidelines.html" GUIDELINE_CITE_CACHE="$vcache" \
+       bash "$CITE" --fingerprints "$vfp2" --verify-live 2.3.3 2>&1)"; st=$?
 assert_eq "$st" "0" "a failed live check still returns the pinned quote"
 assert_absent "$out" "verified against the live page" "and never claims a verification it did not do"
-rm -f "$vfp2"
+assert_contains "$out" "A pinned quote about screenshots" "the pinned quote is still delivered"
+[[ -e "$vcache" ]] && r=1 || r=0
+assert_eq "$r" "0" "no empty cache file is left behind"
+# A non-regular file at the cache path is refused, never read from or deleted.
+out="$(GUIDELINE_CITE_URL="file:///nonexistent" GUIDELINE_CITE_CACHE="$(dirname "$vcache")" \
+       bash "$CITE" --fingerprints "$vfp2" --verify-live 2.3.3 2>&1)"; st=$?
+assert_eq "$st" "0" "a directory at the cache path degrades safely"
+assert_contains "$out" "not a regular file" "and says why"
+[[ -d "$(dirname "$vcache")" ]] && r=1 || r=0
+assert_eq "$r" "1" "the directory was not deleted"
+rm -rf "$(dirname "$vcache")" "$vfp2"
 
 section "the shipped fingerprint store is wired up and non-empty"
 # Guards the real file, not just the fixture: a release must ship pinned quotes.

@@ -42,6 +42,43 @@ out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
 assert_absent "$out" "SKIP: metadata" "metadata present -> no metadata SKIP"
 rm -rf "$d"
 
+section "a pasted listing can be audited by re-running the scanner (absolute metadataDir)"
+# This is what SKILL.md tells the agent to do instead of judging pasted text by eye:
+# write it to a temp fastlane tree OUTSIDE the repo and point the scanner at it. The
+# repo stays untouched, the SKIP disappears because the checks ran, and the findings
+# are ordinary scanner lines that count.
+app="$(mktemp -d)"; cp -R "$HERE/fixtures/ai-chat-app/." "$app/"
+paste="$(mktemp -d)"; mkdir -p "$paste/fastlane/metadata/en-US"
+printf 'Flashlight FREE'    > "$paste/fastlane/metadata/en-US/name.txt"
+printf 'lorem ipsum dolor'  > "$paste/fastlane/metadata/en-US/subtitle.txt"
+printf 'A light.'           > "$paste/fastlane/metadata/en-US/description.txt"
+printf 'light'              > "$paste/fastlane/metadata/en-US/keywords.txt"
+printf '{"metadataDir":"%s"}' "$paste/fastlane/metadata" > "$paste/precheck.json"
+before="$(find "$app" -type f | sort | md5)"
+out="$(cd "$app" && APPSTORE_PRECHECK_CONFIG="$paste/precheck.json" bash "$SCAN" 2>&1)"
+after="$(find "$app" -type f | sort | md5)"
+assert_absent   "$out" "SKIP: metadata" "the listing checks ran, so no metadata SKIP"
+assert_contains "$out" "WARN: 2.1 Metadata content" "placeholder copy in the pasted listing is found"
+assert_contains "$out" "WARN: 2.3.1 Pricing language" "pricing language in the pasted name is found"
+assert_contains "$out" "WARN: 4.3 Saturated category" "the pasted category exposure is found"
+assert_eq "$before" "$after" "the repo itself was not touched"
+rm -rf "$app" "$paste"
+
+section "the SKIP names the skipped rules, derived from the catalogue"
+d="$(mktemp -d)"; cp -R "$HERE/fixtures/ai-chat-app/." "$d/"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+assert_contains "$out" "saturated-category" "the newest metadata rule is in the skipped list (nothing hardcoded)"
+assert_absent   "$out" "(2.1, 2.3.x" "the stale hardcoded guideline enumeration is gone"
+rm -rf "$d"
+
+section "a rule-scoped SKIP can be acknowledged via .precheck-ignore"
+d="$(mktemp -d)"; cp -R "$HERE/fixtures/ai-chat-app/." "$d/"
+printf 'screenshots-per-locale\n' > "$d/.precheck-ignore"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+assert_absent   "$out" "SKIP: 2.3.3 Screenshots" "acknowledged screenshot gap is not re-reported"
+assert_contains "$out" "SKIP: metadata" "the store-listing SKIP has no rule and cannot be silenced"
+rm -rf "$d"
+
 section "SKIP is a first-class finding in --format json"
 d="$(mktemp -d)"; cp -R "$HERE/fixtures/ai-chat-app/." "$d/"
 j="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
@@ -50,7 +87,10 @@ assert_gt "$(jq -r '.summary.not_audited' <<<"$j")" "0" "summary.not_audited cou
 # The FAIL tally must equal the FAIL findings alone — SKIP must not leak into it.
 assert_eq "$(jq -r '.summary.fail' <<<"$j")" "$(jq '[.findings[]|select(.severity=="FAIL")]|length' <<<"$j")" \
   "SKIP does not inflate the FAIL count"
-# A SKIP establishes nothing, so it must never claim to need build verification.
+# A SKIP establishes nothing: no evidence class, no confidence, no build qualifier —
+# even when it sits under a rule that has all three.
+assert_eq "0" "$(jq '[.findings[]|select(.severity=="SKIP" and (.evidence != null or .confidence != null))]|length' <<<"$j")" \
+  "no SKIP carries an evidence class or confidence"
 assert_eq "0" "$(jq '[.findings[]|select(.severity=="SKIP" and .needs_build_verification==true)]|length' <<<"$j")" \
   "no SKIP claims to need build verification"
 # And it must not be counted as an issue in the confidence roll-up.

@@ -330,8 +330,11 @@ Two are emitted today:
 
 - **`SKIP: metadata`** when no `fastlane/metadata` directory is found. The message names how many
   store-listing checks did not run, counted from `rules_with_evidence metadata` so the number cannot
-  rot as rules are added. SKILL.md Phase 1 then asks the user to paste their App Store Connect
-  listing and audits it directly; findings from pasted metadata are real and do count.
+  rot as rules are added. Both the count and the rule
+  list under it are derived from `rules_with_evidence metadata`, so neither can rot. SKILL.md
+  Phase 1 then asks the user to paste their App Store Connect listing, writes it into a temporary
+  fastlane-shaped tree, and **re-runs the scanner** with an absolute `metadataDir` — so the findings
+  are deterministic scanner lines that count toward the verdict, not a model's reading of the text.
 - **`SKIP: 2.3.3 Screenshots`** when there is no in-repo screenshots directory.
 
 ### The full table

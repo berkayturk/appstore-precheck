@@ -62,16 +62,18 @@ assert_eq "evidence: metadata · review-risk" \
 assert_eq "" "$(evidence_label '' '')" "no label without a classification"
 
 section "completeness invariant: every catalogued rule is classified"
-missing_ev=0 missing_cf=0 bad_vocab=0
-for n in $(seq 1 53); do
-  slug="$(rule_slug "$n")"
-  [[ -z "$slug" ]] && { echo "  FAIL: rule_slug $n is empty"; fails=$((fails + 1)); continue; }
+missing_ev=0 missing_cf=0 bad_vocab=0 walked=0
+# The bound is walked, not hardcoded: a hardcoded 53 silently stopped covering §54.
+while IFS= read -r slug; do
+  [[ -z "$slug" ]] && continue
+  walked=$((walked + 1))
   ev="$(rule_evidence "$slug")"; cf="$(rule_confidence "$slug")"
-  [[ -z "$ev" ]] && { echo "  FAIL: §$n $slug has no evidence class"; missing_ev=$((missing_ev + 1)); }
-  [[ -z "$cf" ]] && { echo "  FAIL: §$n $slug has no confidence level"; missing_cf=$((missing_cf + 1)); }
-  [[ -n "$ev" ]] && ! grep -qw -- "$ev" <<<"$EVIDENCE_CLASSES"  && { echo "  FAIL: §$n $slug evidence '$ev' not in vocabulary"; bad_vocab=$((bad_vocab + 1)); }
-  [[ -n "$cf" ]] && ! grep -qw -- "$cf" <<<"$CONFIDENCE_LEVELS" && { echo "  FAIL: §$n $slug confidence '$cf' not in vocabulary"; bad_vocab=$((bad_vocab + 1)); }
-done
+  [[ -z "$ev" ]] && { echo "  FAIL: $slug has no evidence class"; missing_ev=$((missing_ev + 1)); }
+  [[ -z "$cf" ]] && { echo "  FAIL: $slug has no confidence level"; missing_cf=$((missing_cf + 1)); }
+  [[ -n "$ev" ]] && ! grep -qw -- "$ev" <<<"$EVIDENCE_CLASSES"  && { echo "  FAIL: $slug evidence '$ev' not in vocabulary"; bad_vocab=$((bad_vocab + 1)); }
+  [[ -n "$cf" ]] && ! grep -qw -- "$cf" <<<"$CONFIDENCE_LEVELS" && { echo "  FAIL: $slug confidence '$cf' not in vocabulary"; bad_vocab=$((bad_vocab + 1)); }
+done < <(catalogue_slugs)
+assert_gt "$walked" "53" "the catalogue walk reached §54 (bound is derived, not hardcoded)"
 assert_eq "$missing_ev" "0" "every rule has an evidence class"
 assert_eq "$missing_cf" "0" "every rule has a confidence level"
 assert_eq "$bad_vocab"  "0" "every label is in the closed vocabulary"

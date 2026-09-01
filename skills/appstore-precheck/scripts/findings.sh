@@ -58,11 +58,17 @@ set_confidence() { _CONFIDENCE_OVERRIDE="$1"; }
 
 # Resolvers degrade to empty when evidence.sh is not sourced (findings.sh is used
 # standalone in tests), so an unclassified finding is reported as such, never guessed.
+# A SKIP reached no conclusion, so it has no evidence class and no confidence: the
+# rule it sits under (e.g. screenshots-per-locale) would otherwise leak
+# "validator-blocking" onto a line that established nothing. Both resolvers take the
+# severity so they can blank themselves for SKIP.
 _evidence_of() {
+  [[ "${1:-}" == "SKIP" ]] && { printf ''; return; }
   [[ -n "$_EVIDENCE_OVERRIDE" ]] && { printf '%s' "$_EVIDENCE_OVERRIDE"; return; }
   command -v rule_evidence >/dev/null 2>&1 && rule_evidence "$_CURRENT_RULE" || printf ''
 }
 _confidence_of() {
+  [[ "${1:-}" == "SKIP" ]] && { printf ''; return; }
   [[ -n "$_CONFIDENCE_OVERRIDE" ]] && { printf '%s' "$_CONFIDENCE_OVERRIDE"; return; }
   command -v rule_confidence >/dev/null 2>&1 && rule_confidence "$_CURRENT_RULE" || printf ''
 }
@@ -91,7 +97,7 @@ _record() {
   guideline="$(printf '%s' "$msg" | awk '{print $1}')"
   jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
         --arg m "$msg" --arg f "$file" --arg l "$line" \
-        --arg ev "$(_evidence_of)" --arg cf "$(_confidence_of)" \
+        --arg ev "$(_evidence_of "$sev")" --arg cf "$(_confidence_of "$sev")" \
         --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
     '{rule_id:$r, severity:$s, guideline:$g, message:$m,
       file:(if $f=="" then null else $f end),
@@ -113,7 +119,7 @@ _record_suppressed() {
   guideline="$(printf '%s' "$msg" | awk '{print $1}')"
   jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
         --arg m "$msg" --arg f "$file" --arg l "$line" \
-        --arg ev "$(_evidence_of)" --arg cf "$(_confidence_of)" \
+        --arg ev "$(_evidence_of "$sev")" --arg cf "$(_confidence_of "$sev")" \
         --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
     '{rule_id:$r, severity:$s, guideline:$g, message:$m,
       file:(if $f=="" then null else $f end),

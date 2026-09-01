@@ -34,10 +34,14 @@ GC_BASE_URL="https://developer.apple.com/app-store/review/guidelines/"
 # A pinned quote older than this is reported STALE. Not a hard error: an unchanged
 # section stays correct indefinitely, but the reader deserves to know its age.
 GC_STALE_DAYS="${GUIDELINE_CITE_STALE_DAYS:-120}"
-GC_URL="https://developer.apple.com/app-store/review/guidelines/"
+GC_URL="${GUIDELINE_CITE_URL:-https://developer.apple.com/app-store/review/guidelines/}"
 # --verify-live caches the fetched page for the day, so checking every finding in a
-# run costs one request, not one per finding.
-GC_CACHE="${GUIDELINE_CITE_CACHE:-${TMPDIR:-/tmp}/appstore-precheck-guidelines-$(date +%Y%m%d).html}"
+# run costs one request, not one per finding. The cache lives under the USER'S cache
+# dir, never a shared /tmp: a predictable path in a world-writable directory would let
+# any local user pre-place a crafted page and have this tool "verify" a citation
+# against it. Override with GUIDELINE_CITE_CACHE (tests point it at a fixture).
+GC_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/appstore-precheck"
+GC_CACHE="${GUIDELINE_CITE_CACHE:-$GC_CACHE_DIR/guidelines-$(date +%Y%m%d).html}"
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FINGERPRINTS="$HERE/../guidelines-fingerprints.json"
@@ -118,10 +122,25 @@ if [[ "$VERIFY_LIVE" == 1 ]]; then
   else
     # shellcheck source=lib/guideline-text.sh
     . "$LIB"
-    [[ -s "$GC_CACHE" ]] || curl -sL --max-time 30 "$GC_URL" -o "$GC_CACHE" 2>/dev/null
-    if [[ ! -s "$GC_CACHE" ]]; then
+    _fetched=0
+    if [[ -e "$GC_CACHE" && ! -f "$GC_CACHE" ]]; then
+      # A directory, device, or socket at the cache path is never something to read
+      # from or delete (`rm -f /dev/null` as root would be catastrophic).
+      LIVE_NOTE="live check unavailable (cache path is not a regular file)"
+    elif [[ -L "$GC_CACHE" ]]; then
+      LIVE_NOTE="live check unavailable (cache path is a symlink)"
+    else
+      if [[ ! -s "$GC_CACHE" ]]; then
+        [[ "$GC_CACHE" == "$GC_CACHE_DIR"/* ]] && { mkdir -p "$GC_CACHE_DIR" 2>/dev/null; chmod 700 "$GC_CACHE_DIR" 2>/dev/null; }
+        curl -sL --max-time 30 "$GC_URL" -o "$GC_CACHE" 2>/dev/null && _fetched=1
+      fi
+    fi
+    if [[ -n "$LIVE_NOTE" ]]; then
+      :
+    elif [[ ! -s "$GC_CACHE" ]]; then
       LIVE_NOTE="live check failed (could not fetch the guidelines page)"
-      rm -f "$GC_CACHE"
+      # Only remove what THIS run created, so a user-supplied path is never deleted.
+      [[ "$_fetched" == 1 ]] && rm -f "$GC_CACHE"
     else
       _pinned="$(jq -r --arg s "$SECTION" '.sections[$s].fingerprint // ""' "$FINGERPRINTS")"
       _livetxt="$(gd_section_text "$GC_CACHE" "$SECTION")"
