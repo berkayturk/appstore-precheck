@@ -49,17 +49,28 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # disagree with it.
 dyn_catalogue() {
   printf '%s\n' dyn-install dyn-launch dyn-first-screen dyn-paywall-visible \
-    dyn-restore-tap dyn-permission-prompt dyn-demo-login dyn-screenshot-parity
+    dyn-restore-tap dyn-permission-prompt dyn-demo-login dyn-screenshot-parity \
+    dyn-dark-mode dyn-dynamic-type dyn-ipad-layout \
+    dyn-shipped-bundle dyn-shipped-sdk dyn-shipped-links dyn-hosts-contacted
 }
 dyn_is_setup() { [[ "${1:-}" == "dyn-install" ]]; }
 
 # dyn_rule_confidence <base-id> -> who acts on it. A person: every D-check is about
 # what a reviewer sees in front of them, none is an upload validator. D0 is setup,
 # so its PASS is at most a hint that the bundle was installable.
+# Phase 2 additions: the geometry heuristics (dark mode, Dynamic Type, iPad) are
+# judgment calls — a clipped frame is a hint, not a rejection; hosts contacted vs
+# NSPrivacyTrackingDomains is a reviewer call; the shipped-bundle family reads the
+# INSTALLED product (plist keys, DTXcode, otool -L), which is exactly what the upload
+# validator reads, so those are validator-blocking — and, being runtime evidence, still
+# subject to the build_config guard (a Debug DerivedData bundle establishes nothing).
 dyn_rule_confidence() {
   case "$1" in
     dyn-launch|dyn-first-screen|dyn-paywall-visible|dyn-restore-tap) echo review-risk ;;
     dyn-permission-prompt|dyn-demo-login|dyn-screenshot-parity) echo review-risk ;;
+    dyn-hosts-contacted) echo review-risk ;;
+    dyn-dark-mode|dyn-dynamic-type|dyn-ipad-layout) echo judgment-call ;;
+    dyn-shipped-bundle|dyn-shipped-sdk|dyn-shipped-links) echo validator-blocking ;;
     dyn-install) echo judgment-call ;;
     *) echo "" ;;
   esac
@@ -80,12 +91,33 @@ dyn_rule_confidence() {
 #   subscription-links-restore ↔ dyn-restore-tap: partial. The static rule wants
 #     Restore + terms + privacy visible on the paywall; a non-inert Restore tap
 #     tests one of three links. Never resolves; FAIL→WARN with the observation.
+#   Phase 2 — the shipped-bundle family reads the INSTALLED product, executing nothing:
+#   usage-description-crosscheck ↔ dyn-shipped-bundle:<KEY>: complete per key,
+#     require_key. The installed Info.plist either declares the key or it does not —
+#     that is the whole proposition the static grep approximated. A keyless
+#     dyn-shipped-bundle line is the drift summary and aims at nothing (require_key):
+#     unlike D4, "one permission tried" has no partial reading here.
+#   att-usage ↔ dyn-shipped-bundle:NSUserTrackingUsageDescription: the same, for the
+#     one key ATT needs (ITMS-90683 reads the installed plist).
+#   xcode-sdk-requirement ↔ dyn-shipped-sdk: complete. LastUpgradeCheck was a proxy;
+#     DTXcode / DTSDKName in the installed plist are what ITMS-90725 reads. Still
+#     runtime evidence: on a Debug/unknown build it only downgrades (simulator build ≠
+#     the archive's toolchain), on a release build it resolves.
+#   private-api ↔ dyn-shipped-links: partial. otool -L shows linked frameworks (a
+#     /System/Library/PrivateFrameworks link is decisive), but the static rule also
+#     greps private selectors and deprecated classes, which linkage cannot see.
+# A dyn id may map to SEVERAL static rules (dyn-shipped-bundle above); every mapping is
+# applied, and consumption is tracked per record id so nothing is double-counted.
 reconcile_map() {
   cat <<'JSON'
 [
-  {"dyn":"dyn-demo-login",        "static":"demo-account",                 "complete":true,  "keyed":false},
-  {"dyn":"dyn-permission-prompt", "static":"usage-description-crosscheck", "complete":true,  "keyed":true},
-  {"dyn":"dyn-restore-tap",       "static":"subscription-links-restore",   "complete":false, "keyed":false}
+  {"dyn":"dyn-demo-login",        "static":"demo-account",                 "complete":true,  "keyed":false, "require_key":false},
+  {"dyn":"dyn-permission-prompt", "static":"usage-description-crosscheck", "complete":true,  "keyed":true,  "require_key":false},
+  {"dyn":"dyn-restore-tap",       "static":"subscription-links-restore",   "complete":false, "keyed":false, "require_key":false},
+  {"dyn":"dyn-shipped-bundle",    "static":"usage-description-crosscheck", "complete":true,  "keyed":true,  "require_key":true},
+  {"dyn":"dyn-shipped-bundle",    "static":"att-usage",                    "complete":true,  "keyed":true,  "require_key":true},
+  {"dyn":"dyn-shipped-sdk",       "static":"xcode-sdk-requirement",        "complete":true,  "keyed":false, "require_key":false},
+  {"dyn":"dyn-shipped-links",     "static":"private-api",                  "complete":false, "keyed":false, "require_key":false}
 ]
 JSON
 }
@@ -250,8 +282,11 @@ jq -n -c \
   ($dyn | map(. + {_base:(.rule_id|split(":")[0]),
                    _key:(.rule_id|split(":") | if length==2 then .[1] elif length>2 then "" else null end)})) as $dyn
   # Observations that may touch a static record: mapped, non-SKIP, well-formed key.
-  | ($dyn | map(select(.severity!="SKIP") | select(key_ok(._key))
-               | . as $d | [$map[] | select(.dyn==$d._base)] | select(length>0) | $d + {_m:.[0]})) as $mapped
+  # One entry per (observation, mapping) pair: a dyn id mapped to several static
+  # rules aims at each of them. A mapping with require_key ignores keyless lines.
+  | ([$dyn[] | select(.severity!="SKIP") | select(key_ok(._key))
+       | . as $d | $map[] | select(.dyn==$d._base) | select((.require_key|not) or $d._key!=null)
+       | $d + {_m:.}]) as $mapped
   | ($static | map(reconcile_one(.; $mapped))) as $r
   # Consumption is tracked per RECORD (its id), so two lines with one rule id are
   # never conflated: each is either folded into a static record or kept standalone.

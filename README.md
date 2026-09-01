@@ -363,7 +363,7 @@ nothing is auto-fixed.
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
 | **4** | **Pierre deep review**: 31 semantic checks (23 Tier A + 8 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
-| **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/Restore-tap/permission/demo-login smoke checks on a throwaway local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict; a check it cannot drive is a `DYNAMIC-SKIP`, never a pass. `scripts/dynamic.sh` turns the transcript into `evidence: runtime` records and reconciles them with the static findings; a Debug build never clears `needs build verification`. Not read-only: it executes your app. |
+| **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: finds a simulator `.app` you already built (`scripts/app-discover.sh`, never builds), then `scripts/dynamic-run.sh` runs it on a throwaway simulator it creates and deletes — launch health three times on an erased device (a crash finding needs 3/3), first screen, dark-mode / Dynamic Type / iPad layout heuristics, the *installed* bundle's purpose strings / `DTXcode` / linked frameworks, hosts contacted vs `NSPrivacyTrackingDomains` — while the agent drives paywall / Restore-tap / permission / demo-login / screenshot-parity via Maestro. Advisory; never changes the verdict; a check it cannot drive is a `DYNAMIC-SKIP`, never a pass. `scripts/dynamic.sh` turns the transcript into `evidence: runtime` records and reconciles them with the static findings; a Debug build never clears `needs build verification`. Not read-only: it executes your app. |
 
 ### Evidence strength
 
@@ -435,6 +435,13 @@ close it. In agent mode Pierre then
 **re-runs the scanner over it** — so those findings are real scanner lines and do count, rather
 than Pierre's impression of your text. If you
 decline, they stay unaudited and are listed as such.
+
+Two more gap records exist. **`framework-not-audited`** (`SKIP: framework — N code-level checks
+under-detect on rn|flutter|kmp …`): the code-level checks grep Swift/ObjC, so on React Native,
+Flutter or Kotlin Multiplatform they under-detect rather than false-fire; the scan now names how
+many and which (derived from the evidence catalogue) instead of looking clean on ground it never
+read. **`runtime-not-audited`**: the Phase 6 dynamic tier did not run (no built simulator app was
+supplied), so every runtime check is unobserved.
 
 Every run ends with a mandatory **Not audited** section: the checks that did not run this time, plus
 the fixed list of what a static tool can never see — runtime crashes, whether links resolve, whether

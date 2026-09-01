@@ -1,0 +1,10 @@
+# Phase 2 — dyn-shipped-* observations read from the INSTALLED bundle (simctl get_app_container),
+# nothing executed. Release directory, so a complete contradiction may resolve.
+DYNAMIC-PASS: setup [dyn-install] — installed com.example.app from Release-iphonesimulator/App.app on precheck-20260902-1 (created by this run)
+DYNAMIC-PASS: 5.1.1 [dyn-shipped-bundle:NSCameraUsageDescription] — installed Info.plist declares NSCameraUsageDescription ("We scan receipts with the camera")
+DYNAMIC-PASS: 5.1.2 [dyn-shipped-bundle:NSUserTrackingUsageDescription] — installed Info.plist declares NSUserTrackingUsageDescription
+DYNAMIC-PASS: 5.1.1 [dyn-shipped-bundle] — installed Info.plist has 21 keys; 0 keys differ from the repo Info.plist; PrivacyInfo.xcprivacy present in the bundle
+DYNAMIC-PASS: 2.1 [dyn-shipped-sdk] — installed Info.plist: DTXcode=2660 DTXcodeBuild=17F113 DTSDKName=iphonesimulator26.5 (built with the iOS 26 SDK)
+DYNAMIC-PASS: 2.5.1 [dyn-shipped-links] — otool -L App: 14 linked libraries, none under /System/Library/PrivateFrameworks
+DYNAMIC-SKIP: 5.1.2 [dyn-hosts-contacted] — no CFNetwork diagnostics lines in the log window (Flutter HttpClient bypasses CFNetwork; use --pktap)
+Pierre: The bundle that was installed says what the repository could only promise.

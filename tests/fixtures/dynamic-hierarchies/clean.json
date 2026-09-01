@@ -1,0 +1,10 @@
+{"attributes":{"text":"","bounds":"[0,0][393,852]"},"children":[
+ {"attributes":{"text":"","bounds":"[0,59][393,103]"},"children":[
+   {"attributes":{"text":"Receipts","accessibilityText":"Receipts","bounds":"[16,64][160,96]"},"children":[]},
+   {"attributes":{"text":"","accessibilityText":"Add","bounds":"[340,64][377,96]"},"children":[]}]},
+ {"attributes":{"text":"","bounds":"[0,103][393,760]"},"children":[
+   {"attributes":{"text":"Coffee — 4,50 €","bounds":"[16,120][377,168]"},"children":[]},
+   {"attributes":{"text":"Groceries — 32,10 €","bounds":"[16,176][377,224]"},"children":[]},
+   {"attributes":{"text":"Train — 12,00 €","bounds":"[16,232][377,280]"},"children":[]}]},
+ {"attributes":{"text":"Restore Purchases","accessibilityText":"Restore Purchases","bounds":"[97,790][296,834]"},"children":[]}
+]}

@@ -5,12 +5,91 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
-Phases 0 and 1 of the dynamic-tier plan. Phase 0: four static corrections that are right
+Phases 0, 1 and 2 of the dynamic-tier plan. Phase 0: four static corrections that are right
 regardless of whether a runtime tier ever ships. Phase 1: the Phase 6 tier changes what it
 **records**, not what it observes — its output becomes machine-readable and is reconciled with the
 static findings under the same honesty model (evidence class, derived build-verification
-qualifier, SKIP). Nothing in Phase 1 runs a simulator; the whole suite runs on `ubuntu-latest`. No
-version bump yet; the dynamic tier lands in 1.19.0.
+qualifier, SKIP). Phase 2: the tier learns to **find** a build without making one, to know which
+toolkit it is looking at, to repeat before it accuses, and to read what the installed bundle
+actually shipped. Still advisory, still local-only; the CI suite runs the runner against a shimmed
+`xcrun`, the real simulator path lives under `tests/local/`. No version bump yet; the dynamic tier
+lands in 1.19.0.
+
+### Added (Phase 2 — discovery, framework awareness, determinism; still advisory)
+- **`scripts/app-discover.sh`** lists the simulator `.app` bundles the user already built
+  (`~/Library/Developer/Xcode/DerivedData/*/Build/Products/*-iphonesimulator/*.app`,
+  `<repo>/build/ios/iphonesimulator/*.app`, `<repo>/ios/build/…`) with build time, bundle id and
+  the **configuration read from the directory name** (`Debug-iphonesimulator` → `debug`,
+  `Release-iphonesimulator` → `release`, else `unknown`, never inferred from the plist), recommends
+  the newest and stops: the agent must obtain an explicit confirmation before anything is installed
+  or launched. No candidate → exit 3, the `runtime-not-audited` gap, and a per-framework build hint
+  (`xcodebuild -sdk iphonesimulator … -derivedDataPath`, `flutter build ios --simulator`, `npx expo
+  prebuild` + Metro note, the KMP `iosApp` project) that this tool **will not run**. A shim-PATH
+  test proves no build or launch tool is ever invoked; the repo is not written to.
+- **`scripts/framework-detect.sh`** (file presence only, sourceable): `rn` (a `react-native`
+  *dependency* in `package.json`, not the word), `flutter` (`pubspec.yaml` + `ios/Runner.xcodeproj`),
+  `kmp` (a Gradle build or `.kt` sources + `iosApp/`), else `native`. **The static scan now emits a
+  `framework-not-audited` gap record** on rn / flutter / kmp: `SKIP: framework — N code-level checks
+  under-detect on <framework> (source greps read Swift/ObjC only)`, N and the rule list derived from
+  `rules_with_evidence source`, acknowledgeable in `.precheck-ignore`, never a FAIL. Fixtures
+  `rn-app`, `flutter-app`, `kmp-app`. The dynamic tier uses the same word to require **Metro on port
+  8081** for a React Native Debug build without an embedded `main.jsbundle` (otherwise D1/D2 are SKIP,
+  not a false crash) and to **pre-SKIP the selector-based checks on Flutter / KMP** (`dyn-restore-tap`,
+  `dyn-demo-login`, the trigger half of `dyn-permission-prompt`: no accessibility semantics exposed
+  to Maestro), while the observation-based checks still run.
+- **`scripts/dynamic-run.sh`** + `scripts/lib/dyn-{device,signals,quorum,geometry,hosts,bundle}.sh`
+  + `lib/png-uniform.py`: the observation-based half of Phase 6 as code. Device lifecycle: `simctl
+  create` (unique name) → `boot` → `bootstatus -b` → `status_bar override --time 9:41 --batteryLevel
+  100 --wifiBars 3 --cellularBars 4` → `privacy reset all` → `install` → log stream observer
+  (`SIMCTL_CHILD_CFNETWORK_DIAGNOSTICS=3`) → `launch --terminate-running-process` → one `maestro
+  hierarchy` per call → `shutdown` → `delete` (only the device this run created; a `--udid` device is
+  launched on and never erased, reset or deleted). **N=3 repeats, a fresh erase before each; a crash
+  FINDING needs 3/3**, a mixed result is a FINDING carrying its ratio (`quorum 1/3 … not unanimous;
+  advisory, never blocking`), all-timeout is SKIP. Launch health is the four-signal conjunction
+  (process via `kill -0`, screenshot flatness via a stdlib-only PNG decoder, crash lines /
+  `.ips` reports, accessibility node count with the Flutter/Compose degenerate-tree caveat), and an
+  unreadable signal is named in the line. New observations, each with a rule id and reconciled by
+  `dynamic.sh`: **`dyn-dark-mode`** and **`dyn-dynamic-type`** (4.0; `simctl ui appearance dark`,
+  `content_size accessibility-extra-extra-extra-large`; clipped / zero-size / overlapping labelled
+  frames over the Maestro hierarchy, judgment-call), **`dyn-ipad-layout`** (2.4.1, `--ipad`, an iPad
+  simulator this run creates; iPhone-only apps are `not applicable`), **`dyn-shipped-bundle[:KEY]`**
+  (the *installed* `Info.plist` via `simctl get_app_container`: one complete per-key line per purpose
+  string, a FINDING for an empty one or for a key the repo plist has and the bundle lacks, a keyless
+  drift summary that aims at no static rule), **`dyn-shipped-sdk`** (`DTXcode` / `DTSDKName`, what
+  ITMS-90725 reads; complete for `xcode-sdk-requirement`), **`dyn-shipped-links`** (`otool -L`;
+  a `PrivateFrameworks` link is decisive, its absence partial for `private-api`), and
+  **`dyn-hosts-contacted`** (5.1.2; hosts from CFNetwork diagnostics vs `NSPrivacyTrackingDomains`
+  against a vendor→domain catalogue mirroring §16; opt-in `--pktap` adds `sudo tcpdump` DNS for
+  every process because Flutter's Dart `HttpClient` bypasses CFNetwork — documented as a blind spot).
+  The build configuration is taken from the `.app`'s parent directory, never from the plist, so a
+  Debug DerivedData bundle can confirm or downgrade but never resolve a build-dependent claim.
+  `--dry-run` prints the full plan and touches nothing; `run.json` carries the `build_config` for
+  `dynamic.sh`.
+- **`dynamic.sh`**: the catalogue grows to 15 ids (so `runtime-not-audited` counts 14 unobserved
+  checks); the reconciliation table gains `dyn-shipped-bundle:<KEY>` ↔ `usage-description-crosscheck`
+  and ↔ `att-usage` (complete per key, **`require_key`**: a keyless line aims at nothing),
+  `dyn-shipped-sdk` ↔ `xcode-sdk-requirement` (complete) and `dyn-shipped-links` ↔ `private-api`
+  (partial); one dynamic id may now map to several static rules, consumption still tracked per record.
+- Tests: `test-framework-detect.sh`, `test-app-discover.sh`, `test-dynamic-libs.sh` (decision rules,
+  PNG decoder, geometry over recorded hierarchies, hosts parity, installed-bundle readers),
+  `test-dynamic-run.sh` (the runner end to end against a shimmed `xcrun` / `maestro` / `otool`:
+  lifecycle order, erase between repeats, delete-only-created, quorum outcomes, Metro guard, Flutter
+  pre-SKIPs, `--udid` ownership, dry-run plan) and new cases in `test-dynamic-reconcile.sh` /
+  `test-phase6-doc.sh` (the reference must name every catalogue id). Suite: 39 files, none boots a
+  device. **`tests/local/run-dynamic.sh`** (macOS only, not in `tests/all.sh`) chains discovery →
+  confirmation → runner → `dynamic.sh` on a real simulator; MAINTENANCE.md lists it under "Before
+  each release".
+- Docs: `simulator-dynamic-review.md` rewritten around the two kinds of checks (observation-based,
+  scripted; selector-based, agent-driven), the determinism policy, the framework table and D7–D11;
+  SKILL.md Phase 1 (`SKIP: framework`) and Phase 6 (discovery, runner, one flow per Maestro call);
+  README Phase 6 row and gap records; SECURITY.md (discovery reads only; `--pktap` needs sudo).
+
+### Deliberately not done (Phase 2)
+- No blocking channel: every dynamic FINDING is still a WARN record; `verdict.sh` / `thresholds.sh`
+  untouched (Phase 3, opt-in `--dynamic-blocking` for `dyn-launch` 3/3 and `dyn-demo-login` only).
+- No `corpus/dynamic/` fixture apps, no dynamic scorecard, no macOS CI job (Phase 3).
+- The selector-based checks (D3, D3b, D4, D5, D6) are not scripted: they stay with the agent and
+  the Maestro MCP tools, because their selectors are per-app.
 
 ### Added (Phase 1 — machine-readable dynamic tier, no simulator)
 - **`runtime` evidence class** in `evidence.sh`, listed first: the running app's behaviour itself,

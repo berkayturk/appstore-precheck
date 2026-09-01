@@ -334,6 +334,70 @@ assert_eq "64" "$st" "an unknown target is rejected"
 bash "$DYN" --transcript /nonexistent >/dev/null 2>&1; st=$?
 assert_eq "66" "$st" "a missing transcript is exit 66"
 
+# ---------------------------------------------------------------------------------
+# Phase 2: the shipped-bundle family reads the INSTALLED product (nothing executed).
+make_static_c() { # purpose strings, ATT, SDK floor, private API — all build-dependent
+  FINDINGS_TMP="$1"; : > "$FINDINGS_TMP"
+  set_rule "usage-description-crosscheck"
+  _record FAIL "5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription'" "App/Cam.swift" "12"
+  _record FAIL "5.1.1 microphone capture API used but Info.plist is missing 'NSMicrophoneUsageDescription'" "App/Mic.swift" "40"
+  set_rule "att-usage"
+  _record FAIL "5.1.2 ATT framework imported but NSUserTrackingUsageDescription missing in Info.plist (App/Ads.swift)" "App/Info.plist"
+  set_rule "xcode-sdk-requirement"
+  _record WARN "2.1 Xcode/SDK minimum — LastUpgradeCheck=1540 suggests the project was last upgraded with a pre-26 Xcode" "App.xcodeproj/project.pbxproj" "9"
+  set_rule "private-api"
+  _record FAIL "2.5.1 Private/Deprecated API:" "App/Legacy.m" "3"
+  FINDINGS_TMP=""
+}
+
+section "shipped bundle (release): a per-key plist observation resolves the matching static FAIL"
+sc="$(mktemp)"; make_static_c "$sc"
+nb_c="$(jq -s '[.[]|select(.severity=="FAIL" or .severity=="WARN")|select(.needs_build_verification==true)]|length' "$sc")"
+assert_eq "5" "$nb_c" "(precondition) five build-dependent claims"
+out="$(bash "$DYN" --transcript "$TX/shipped-bundle.txt" --findings "$sc" --target simulator --build-config release)"
+cam="$(jq -c '[.findings[]|select(.message|test("NSCameraUsageDescription"))][0]' <<<"$out")"
+assert_eq "RESOLVED" "$(jq -r .severity <<<"$cam")" "installed plist declares the key -> the static FAIL is RESOLVED"
+assert_eq "runtime"  "$(jq -r .resolved_by <<<"$cam")" "resolved_by runtime"
+assert_eq "usage-description-crosscheck" "$(jq -r .rule_id <<<"$cam")" "under the static rule id"
+mic="$(jq -c '[.findings[]|select(.message|test("NSMicrophoneUsageDescription"))][0]' <<<"$out")"
+assert_eq "FAIL" "$(jq -r .severity <<<"$mic")" "a key the bundle did NOT declare stays a FAIL"
+assert_eq "true" "$(jq -r .needs_build_verification <<<"$mic")" "…and still needs build verification"
+assert_absent "$(jq -r .message <<<"$mic")" "runtime:" "the keyless summary line did not touch it (require_key)"
+
+section "shipped bundle: one dyn id may aim at several static rules"
+att="$(one "$out" att-usage)"
+assert_eq "RESOLVED" "$(jq -r .severity <<<"$att")" "NSUserTrackingUsageDescription in the installed plist resolves att-usage"
+assert_eq "3" "$(jq -r .summary.runtime.resolved <<<"$out")" "camera + ATT + SDK resolved"
+
+section "shipped bundle: DTXcode is the complete test of the SDK floor; otool -L is partial"
+sdk="$(one "$out" xcode-sdk-requirement)"
+assert_eq "RESOLVED" "$(jq -r .severity <<<"$sdk")" "installed DTXcode=2660 resolves the LastUpgradeCheck proxy (release build)"
+assert_contains "$(jq -r .message <<<"$sdk")" "DTXcode=2660" "the observation is folded into the record"
+pa="$(one "$out" private-api)"
+assert_eq "WARN" "$(jq -r .severity <<<"$pa")" "no private-framework link only downgrades private-api (selectors are not linkage)"
+assert_eq "null" "$(jq -r .resolved_by <<<"$pa")" "not resolved"
+assert_eq "0" "$(jq '[.findings[]|select(.rule_id=="dyn-shipped-sdk" or .rule_id=="dyn-shipped-links")]|length' <<<"$out")" "both observations absorbed"
+assert_eq "1" "$(jq '[.findings[]|select(.rule_id=="dyn-shipped-bundle")]|length' <<<"$out")" "the keyless drift summary stays a standalone PASS record"
+assert_eq "SKIP" "$(jq -r .severity <<<"$(one "$out" dyn-hosts-contacted)")" "an unobservable hosts check is a SKIP"
+
+section "shipped bundle (debug): the same transcript establishes nothing"
+outd="$(bash "$DYN" --transcript "$TX/shipped-bundle.txt" --findings "$sc" --target simulator --build-config debug)"
+assert_eq "$nb_c" "$(jq -r .summary.needs_build_verification <<<"$outd")" "needs_build_verification unchanged by a Debug bundle"
+assert_eq "0" "$(jq -r .summary.runtime.resolved <<<"$outd")" "nothing resolved: every claim here depended on the build"
+assert_eq "WARN" "$(jq -r '[.findings[]|select(.message|test("NSCameraUsageDescription"))][0].severity' <<<"$outd")" "camera FAIL only downgraded"
+assert_eq "WARN" "$(jq -r .severity <<<"$(one "$outd" xcode-sdk-requirement)")" "SDK WARN stays WARN"
+assert_contains "$(jq -r '.message' <<<"$(one "$outd" xcode-sdk-requirement)")" "debug build" "and says why"
+assert_eq "RED" "$(jq -r .verdict <<<"$outd")" "the untouched microphone FAIL keeps the verdict RED (a Debug bundle moves nothing it did not observe)"
+# A --build-config release claim over this transcript is honoured: D0 says Release-iphonesimulator.
+assert_eq "release" "$(jq -r '.build_config' <<<"$(one "$out" dyn-shipped-bundle)")" "release claim corroborated by the D0 line"
+rm -f "$sc"
+
+section "runtime-not-audited counts the Phase 2 observations too"
+sa="$(mktemp)"; make_static_a "$sa"
+n="$(bash "$DYN" --not-run --findings "$sa" | jq -r '[.findings[]|select(.rule_id=="runtime-not-audited")][0].message' | grep -oE '[0-9]+ dynamic check' | grep -oE '[0-9]+')"
+assert_gt "${n:-0}" "12" "the gap record counts every non-setup id in the catalogue"
+rm -f "$sa"
+
 section "no simulator command is ever run by this test or by dynamic.sh"
 assert_eq "0" "$(grep -cE 'simctl|xcodebuild|maestro' "$DYN" | grep -vE '^#' | awk '{print $1}')" "dynamic.sh is a pure text transform"
 

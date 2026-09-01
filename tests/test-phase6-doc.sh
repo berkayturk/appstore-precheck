@@ -72,4 +72,42 @@ assert_contains "$DOC" "dynamic.sh" "the transcript is fed to dynamic.sh"
 sec="$(cat "$ROOT/SECURITY.md")"
 assert_contains "$sec" "executes" "SECURITY.md says Phase 6 executes application code"
 
+# --- Phase 2 additions (discovery, framework awareness, determinism) -------------------
+section "Phase 2: every new observation has a rule id in the reference"
+for id in dyn-dark-mode dyn-dynamic-type dyn-ipad-layout dyn-shipped-bundle dyn-shipped-sdk \
+          dyn-shipped-links dyn-hosts-contacted; do
+  assert_contains "$DOC" "$id" "rule id $id documented"
+done
+# The reference and dynamic.sh must agree on the catalogue: every id dynamic.sh knows is in the doc.
+while IFS= read -r id; do
+  assert_contains "$DOC" "$id" "catalogue id $id appears in the reference"
+done < <(sed -n '/^dyn_catalogue() {/,/^}/p' "$ROOT/skills/appstore-precheck/scripts/dynamic.sh" | grep -oE 'dyn-[a-z-]+' | sort -u)
+
+section "Phase 2: determinism policy is written down"
+assert_contains "$DOC" "N=3" "three repeats"
+assert_contains "$DOC" "3/3" "a crash finding needs every repeat"
+assert_contains "$DOC" "not unanimous" "a mixed result carries its ratio"
+assert_contains "$DOC" "erase" "erase between repeats"
+assert_contains "$DOC" "status_bar" "deterministic status bar"
+assert_contains "$DOC" "9:41" "…Apple's clock"
+assert_contains "$DOC" "privacy" "privacy reset"
+assert_contains "$DOC" "--terminate-running-process" "launch terminates a running instance"
+assert_contains "$DOC" "One flow per Maestro invocation" "one flow per call (iOS 26 driver)"
+assert_contains "$DOC" "accessibilityText" "labels are read from accessibilityText"
+assert_contains "$DOC" "driver timeout" "a driver timeout is a SKIP"
+
+section "Phase 2: discovery, never a build"
+assert_contains "$DOC" "app-discover.sh" "discovery script named"
+assert_contains "$DOC" "explicit confirmation" "the user confirms a candidate"
+assert_contains "$DOC" "never builds" "the tier never builds"
+assert_contains "$DOC" "directory name" "build config comes from the directory name"
+
+section "Phase 2: framework awareness"
+assert_contains "$DOC" "framework-detect.sh" "detector named"
+assert_contains "$DOC" "Metro" "RN needs Metro for a Debug build"
+assert_contains "$DOC" "8081" "…on port 8081"
+assert_contains "$DOC" "framework-not-audited" "the static gap record is cross-referenced"
+assert_contains "$DOC" "no accessibility semantics" "Flutter/KMP pre-SKIP reason"
+assert_contains "$DOC" "pktap" "the Flutter host blind spot has an opt-in remedy"
+
 exit "$fails"

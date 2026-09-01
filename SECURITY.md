@@ -15,7 +15,11 @@ it is configured for, it receives the review demo credentials you supplied for D
 screenshots may show data the app renders. The tier states this before the first launch; see
 [`simulator-dynamic-review.md`](skills/appstore-precheck/references/simulator-dynamic-review.md).
 `scripts/dynamic.sh`, which turns the transcript into findings, is a pure text transform and
-launches nothing.
+launches nothing. `scripts/app-discover.sh` only *reads* `~/Library/Developer/Xcode/DerivedData`
+and the repo's build output to list simulator apps you already built; it never builds (no
+`xcodebuild`, `flutter`, `gradle`) and never launches. `scripts/dynamic-run.sh` is the runner:
+it creates and deletes its own simulator, and its optional `--pktap` host capture needs `sudo
+tcpdump` (off by default; you are asked by sudo, never by the script).
 
 ## Reporting a vulnerability
 

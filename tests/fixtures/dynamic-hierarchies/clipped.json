@@ -1,0 +1,8 @@
+{"attributes":{"text":"","bounds":"[0,0][393,852]"},"children":[
+ {"attributes":{"text":"Receipts","bounds":"[16,64][160,96]"},"children":[]},
+ {"attributes":{"text":"Coffee — 4,50 € — a very long merchant name that overflows","bounds":"[16,120][612,168]"},"children":[]},
+ {"attributes":{"text":"Groceries — 32,10 €","bounds":"[16,176][377,224]"},"children":[]},
+ {"attributes":{"text":"Continue","bounds":"[97,840][296,900]"},"children":[]},
+ {"attributes":{"text":"Hidden label","bounds":"[16,300][16,300]"},"children":[]},
+ {"attributes":{"text":"","bounds":"[0,700][393,760]"},"children":[]}
+]}
