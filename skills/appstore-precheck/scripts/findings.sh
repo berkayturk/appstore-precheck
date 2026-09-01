@@ -77,16 +77,81 @@ _confidence_of() {
 # violation ("this blocks the upload if it ships as-is"), so it is meaningless on a
 # PASS: nothing is being claimed against the build. Evidence and confidence stay on
 # a PASS — they still say how the rule reached its conclusion — but the qualifier
-# does not.
+# does not. For runtime evidence the run's build_config decides (evidence.sh).
 _needs_build_of() {
-  # PASS asserts no violation; SKIP asserts nothing at all. Neither can need a build
-  # to confirm a claim it never made.
-  case "${1:-}" in PASS|SKIP) printf 'false'; return ;; esac
+  # PASS asserts no violation; SKIP asserts nothing at all; RESOLVED has been
+  # withdrawn. None can need a build to confirm a claim it no longer makes.
+  case "${1:-}" in PASS|SKIP|RESOLVED) printf 'false'; return ;; esac
   command -v needs_build_verification >/dev/null 2>&1 \
-    && needs_build_verification "$(_evidence_of)" "$(_confidence_of)" || printf 'false'
+    && needs_build_verification "$(_evidence_of)" "$(_confidence_of)" "${_BUILD_CONFIG:-unknown}" || printf 'false'
 }
 _guideline_url_of() {
   command -v guideline_url >/dev/null 2>&1 && guideline_url "$1" || printf ''
+}
+
+# --- Runtime provenance (Phase 6 dynamic tier, via dynamic.sh) -------------------
+# Run-wide, not per rule, so set_rule does not clear them. Empty means "no runtime
+# observation touched this record" and renders as null. A SKIP observed nothing, so
+# it never carries a target or a build config (see _runtime_field_of).
+: "${_RUNTIME_TARGET:=}"
+: "${_BUILD_CONFIG:=}"
+: "${_RESOLVED_BY:=}"
+# set_runtime <target|""> <build_config|""> — declare where the observations come from.
+set_runtime() { _RUNTIME_TARGET="${1:-}"; _BUILD_CONFIG="${2:-}"; }
+_runtime_field_of() { # <severity> <value>
+  [[ "${1:-}" == "SKIP" ]] && { printf ''; return; }
+  printf '%s' "${2:-}"
+}
+
+# _finding_id <rule> <file> <line> <message> — a stable identity for one finding:
+# the first 16 hex digits of sha256 over the four fields. Lets a later run (or the
+# dynamic tier's reconciliation) refer to "this finding" without re-matching text.
+# The message is part of it on purpose: a rewritten message is a different claim.
+# The one deliberate exception: dynamic.sh reconciliation APPENDS a runtime
+# observation to a static record's message and keeps the original id, so the id
+# stays a handle for the same finding across the static and reconciled outputs.
+# The hasher is resolved once at source time (this runs for every record).
+if command -v shasum >/dev/null 2>&1; then _HASH_CMD="shasum -a 256"
+elif command -v sha256sum >/dev/null 2>&1; then _HASH_CMD="sha256sum"
+else _HASH_CMD=""; fi
+_finding_id() {
+  [[ -n "$_HASH_CMD" ]] || { printf ''; return; }
+  local key="${1:-}|${2:-}|${3:-}|${4:-}" out
+  out="$(printf '%s' "$key" | $_HASH_CMD)"
+  printf '%s' "${out:0:16}"
+}
+
+# _emit <severity> <message> <file> <line> <suppressed:true|false>
+# The single writer of the JSONL shape; _record and _record_suppressed wrap it.
+# Severity is one of FAIL / WARN / PASS / SKIP / RESOLVED. RESOLVED (set only by
+# dynamic.sh reconciliation) is structurally inert: render_json, sarif.sh and
+# verdict.sh select by string equality on the other four, so a RESOLVED record is
+# kept for the reader and counted by nothing. It is NOT suppressed:true — that
+# field means a human signed for the finding in .precheck-ignore.
+_emit() {
+  local sev="$1" msg="$2" file="${3:-}" line="${4:-}" sup="${5:-false}" guideline
+  guideline="$(printf '%s' "$msg" | awk '{print $1}')"
+  jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
+        --arg m "$msg" --arg f "$file" --arg l "$line" \
+        --arg id "$(_finding_id "$_CURRENT_RULE" "$file" "$line" "$msg")" \
+        --arg ev "$(_evidence_of "$sev")" --arg cf "$(_confidence_of "$sev")" \
+        --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
+        --arg rb "$(_runtime_field_of "$sev" "$_RESOLVED_BY")" \
+        --arg rt "$(_runtime_field_of "$sev" "$_RUNTIME_TARGET")" \
+        --arg bc "$(_runtime_field_of "$sev" "$_BUILD_CONFIG")" \
+        --argjson sup "$sup" \
+    '{id:(if $id=="" then null else $id end),
+      rule_id:$r, severity:$s, guideline:$g, message:$m,
+      file:(if $f=="" then null else $f end),
+      line:(if $l=="" then null else ($l|tonumber) end),
+      evidence:(if $ev=="" then null else $ev end),
+      confidence:(if $cf=="" then null else $cf end),
+      needs_build_verification:($nb=="true"),
+      guideline_url:(if $gu=="" then null else $gu end),
+      resolved_by:(if $rb=="" then null else $rb end),
+      runtime_target:(if $rt=="" then null else $rt end),
+      build_config:(if $bc=="" then null else $bc end),
+      suppressed:$sup}' >> "$FINDINGS_TMP"
 }
 
 : "${FINDINGS_TMP:=}"
@@ -94,20 +159,7 @@ _guideline_url_of() {
 # _record <severity> <message> [<file>] [<line>]
 _record() {
   [[ -z "$FINDINGS_TMP" ]] && return 0
-  local sev="$1" msg="$2" file="${3:-}" line="${4:-}" guideline
-  guideline="$(printf '%s' "$msg" | awk '{print $1}')"
-  jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
-        --arg m "$msg" --arg f "$file" --arg l "$line" \
-        --arg ev "$(_evidence_of "$sev")" --arg cf "$(_confidence_of "$sev")" \
-        --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
-    '{rule_id:$r, severity:$s, guideline:$g, message:$m,
-      file:(if $f=="" then null else $f end),
-      line:(if $l=="" then null else ($l|tonumber) end),
-      evidence:(if $ev=="" then null else $ev end),
-      confidence:(if $cf=="" then null else $cf end),
-      needs_build_verification:($nb=="true"),
-      guideline_url:(if $gu=="" then null else $gu end),
-      suppressed:false}' >> "$FINDINGS_TMP"
+  _emit "$1" "$2" "${3:-}" "${4:-}" false
 }
 
 : "${_SUPPRESSED_COUNT:=0}"
@@ -116,20 +168,7 @@ _record() {
 # Same JSONL record as _record but suppressed:true, and bumps the counter.
 _record_suppressed() {
   [[ -z "$FINDINGS_TMP" ]] && { _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1)); return 0; }
-  local sev="$1" msg="$2" file="${3:-}" line="${4:-}" guideline
-  guideline="$(printf '%s' "$msg" | awk '{print $1}')"
-  jq -nc --arg r "$_CURRENT_RULE" --arg s "$sev" --arg g "$guideline" \
-        --arg m "$msg" --arg f "$file" --arg l "$line" \
-        --arg ev "$(_evidence_of "$sev")" --arg cf "$(_confidence_of "$sev")" \
-        --arg nb "$(_needs_build_of "$sev")" --arg gu "$(_guideline_url_of "$guideline")" \
-    '{rule_id:$r, severity:$s, guideline:$g, message:$m,
-      file:(if $f=="" then null else $f end),
-      line:(if $l=="" then null else ($l|tonumber) end),
-      evidence:(if $ev=="" then null else $ev end),
-      confidence:(if $cf=="" then null else $cf end),
-      needs_build_verification:($nb=="true"),
-      guideline_url:(if $gu=="" then null else $gu end),
-      suppressed:true}' >> "$FINDINGS_TMP"
+  _emit "$1" "$2" "${3:-}" "${4:-}" true
   _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1))
 }
 
@@ -154,6 +193,8 @@ render_json() {
     | ($live|map(select(.severity=="FAIL"))|length) as $f
     | ($live|map(select(.severity=="WARN"))|length) as $w
     | ($live|map(select(.severity=="PASS"))|length) as $p
+    # RESOLVED (dynamic.sh) matches none of the four selectors below and so is
+    # counted by nothing — that inertness is asserted by tests, not assumed.
     # not_audited counts EVERY SKIP, suppressed ones included: acknowledging a gap
     # in .precheck-ignore signs it, it does not close it. (suppressed counts it too —
     # two different questions: "was it examined?" and "who took responsibility?")

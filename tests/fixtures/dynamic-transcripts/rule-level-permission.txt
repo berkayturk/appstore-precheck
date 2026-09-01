@@ -1,0 +1,3 @@
+DYNAMIC-PASS: setup [dyn-install] — installed com.example.demo (d0.png)
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt] — the one permission we could trigger prompted correctly (d4.png)
+DYNAMIC-PASS: 2.5.1 [not-a-known-check] — an id the catalogue does not know

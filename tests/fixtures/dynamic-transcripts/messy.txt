@@ -1,0 +1,4 @@
+DYNAMIC-PASS: setup [dyn-install] — installed com.example.demo from Debug-iphonesimulator/Demo.app (d0.png)
+DYNAMIC-PASS:  2.1 [dyn-first-screen] — double space after the colon   
+DYNAMIC-SKIP: 4.0
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:NSMicrophoneUsageDescription] — prompt shown (mic.png)

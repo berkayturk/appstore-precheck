@@ -1,0 +1,8 @@
+DYNAMIC-PASS: setup [dyn-install] — installed com.example.demo (d0.png)
+DYNAMIC-FINDING: 2.1 [dyn-launch] — process exited 2s after launch, log stream shows SIGABRT (crash.png)
+DYNAMIC-SKIP: 2.1 [dyn-first-screen] — app did not stay alive (see dyn-launch)
+DYNAMIC-SKIP: 5.1.1 [dyn-permission-prompt] — app did not stay alive (see dyn-launch)
+DYNAMIC-SKIP: 2.1 [dyn-demo-login] — app did not stay alive (see dyn-launch)
+DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — app did not stay alive (see dyn-launch)
+DYNAMIC-SKIP: 3.1.2 [dyn-paywall-visible] — app did not stay alive (see dyn-launch)
+DYNAMIC-SKIP: 2.3.5 [dyn-screenshot-parity] — app did not stay alive (see dyn-launch)

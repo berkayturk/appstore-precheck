@@ -24,8 +24,21 @@
 # Consumed by tests (vocabulary and completeness checks) and by rules_with_evidence,
 # across a `source` boundary the linter cannot follow — hence the disable below.
 # shellcheck disable=SC2034
-# Evidence classes, ordered strongest -> weakest. "Strength" is how faithfully the
-# artifact represents what actually ships:
+# Evidence classes. "Strength" is how faithfully the artifact represents what
+# actually ships:
+#   runtime       an observation of the RUNNING app (Phase 6 dynamic tier). Not a
+#                 proxy for shipping behaviour but the behaviour itself — for the
+#                 binary that was run. Two caveats, both load-bearing:
+#                 (a) the list below is NOT a single axis of strength. `metadata`
+#                     is about the store listing, `runtime` is about the binary;
+#                     neither can establish the other's claims. Within the
+#                     repo-read classes the order is strongest -> weakest.
+#                 (b) simulator != archive. A simulator build differs in
+#                     architecture, in StoreKit (no products under a plain
+#                     launch), in `#if targetEnvironment(simulator)` branches and
+#                     usually in configuration (Debug from DerivedData). So a
+#                     runtime observation only clears needs_build_verification
+#                     when it came from a release build_config; see below.
 #   metadata      fastlane/metadata/** — uploaded to App Store Connect verbatim.
 #   manifest      Info.plist, *.entitlements, PrivacyInfo.xcprivacy — ship as authored.
 #   resource      String Catalogs, screenshot assets — shipped/uploaded files.
@@ -33,7 +46,7 @@
 #                 so a repo-level read is a proxy for what the archive was built with.
 #   source        .swift/.m/.mm/.h greps — the weakest: presence in a file is not
 #                 proof of presence in the shipping binary.
-EVIDENCE_CLASSES="metadata manifest resource build-setting source"
+EVIDENCE_CLASSES="runtime metadata manifest resource build-setting source"
 
 # Confidence levels — who acts on the finding, and how deterministically:
 #   validator-blocking  Apple's automated validation (upload or App Store Connect)
@@ -136,7 +149,7 @@ rule_confidence() {
   esac
 }
 
-# needs_build_verification <evidence> <confidence> -> "true" | "false"
+# needs_build_verification <evidence> <confidence> [<build_config>] -> "true" | "false"
 #
 # DERIVED, never stored — so it cannot drift out of sync with the two catalogues.
 # A validator-blocking claim is only established when the evidence reflects what
@@ -144,22 +157,31 @@ rule_confidence() {
 # same finding means "this WILL block the upload if it ships as-is" — true and
 # actionable, but not yet confirmed. Non-validator findings never carry the
 # qualifier: a human reviewer looks at the running app either way.
+#
+# build_config (release|debug|unknown, default unknown) matters ONLY for `runtime`:
+# a runtime observation of a Release build establishes the claim; one of a Debug
+# or unknown build does not (see the class comment: simulator != archive). This is
+# the guard the whole dynamic tier rests on — a Debug DerivedData .app observed on
+# a simulator must never clear the qualifier. All pre-existing two-argument calls
+# keep their behaviour: the third argument is ignored for the static classes.
 needs_build_verification() {
-  local ev="${1:-}" cf="${2:-}"
+  local ev="${1:-}" cf="${2:-}" cfg="${3:-unknown}"
   [[ "$cf" == "validator-blocking" ]] || { echo false; return; }
   case "$ev" in
     source|build-setting) echo true ;;
+    runtime) [[ "$cfg" == "release" ]] && echo false || echo true ;;
     *) echo false ;;
   esac
 }
 
-# evidence_label <evidence> <confidence> -> the one-line human-readable tag, or ""
-# when the rule is unclassified (an unlabelled finding is honest; a guessed one is not).
+# evidence_label <evidence> <confidence> [<build_config>] -> the one-line
+# human-readable tag, or "" when the rule is unclassified (an unlabelled finding is
+# honest; a guessed one is not).
 evidence_label() {
-  local ev="${1:-}" cf="${2:-}"
+  local ev="${1:-}" cf="${2:-}" cfg="${3:-unknown}"
   [[ -n "$ev" && -n "$cf" ]] || { echo ""; return; }
   local out="evidence: $ev · $cf"
-  [[ "$(needs_build_verification "$ev" "$cf")" == "true" ]] && out+=" · needs build verification"
+  [[ "$(needs_build_verification "$ev" "$cf" "$cfg")" == "true" ]] && out+=" · needs build verification"
   echo "$out"
 }
 
@@ -168,7 +190,8 @@ evidence_label() {
 # .precheck-ignore (a signed acknowledgment, counted as suppressed, never erased from
 # not_audited). It establishes nothing, so it carries no evidence class or confidence
 # and sits outside the catalogue and its completeness test. Convention: the id ends
-# in "-not-audited". Today: store-listing-not-audited.
+# in "-not-audited". Today: store-listing-not-audited (scan.sh) and
+# runtime-not-audited (dynamic.sh, when the Phase 6 tier was not run).
 is_gap_record() { [[ "${1:-}" == *-not-audited ]]; }
 
 # rules_with_evidence <class> -> the catalogued rule ids in that evidence class, one

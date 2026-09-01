@@ -1,0 +1,14 @@
+# A Phase 6 transcript as the agent prints it. Prose, "Pierre:" lines and indented
+# text are ignored by dynamic.sh; only column-0 DYNAMIC-* lines are observations.
+D0 created device precheck-1756760000 (iPhone 17, iOS 26.5)
+DYNAMIC-PASS: setup [dyn-install] — installed com.example.demo from Release-iphonesimulator/Demo.app, screenshot d0.png
+DYNAMIC-PASS: 2.1 [dyn-launch] — process alive after 10s, screenshot not uniform, no crash in log stream, a11y tree 41 nodes (launch.png)
+DYNAMIC-PASS: 2.1 [dyn-first-screen] — home tab rendered with content (first-screen.png)
+DYNAMIC-FINDING: 5.1.1 [dyn-permission-prompt:NSCameraUsageDescription] — camera button tapped, no OS prompt appeared within 5s (d4-camera.png)
+Pierre: Apple's reviewer taps the camera button and expects the system prompt with your purpose string. Nothing appeared.
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:NSMicrophoneUsageDescription] — OS prompt shown with the declared string (d4-mic.png)
+DYNAMIC-PASS: 2.1 [dyn-demo-login] — declared review credentials logged in, home reached (d5.png)
+DYNAMIC-PASS: 3.1.2 [dyn-restore-tap] — Restore Purchases tapped, alert appeared within 2s (d3b.png)
+DYNAMIC-SKIP: 3.1.2 [dyn-paywall-visible] — StoreKit products are not loaded under simctl launch; paywall prices cannot be observed on a local simulator
+DYNAMIC-SKIP: 2.3.5 [dyn-screenshot-parity] — not applicable: no marketing screenshots in the repo
+    DYNAMIC-FINDING: 9.9 [dyn-launch] — indented, must be ignored

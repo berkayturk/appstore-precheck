@@ -1,0 +1,3 @@
+DYNAMIC-PASS: setup [dyn-install] — installed com.example.demo (d0.png)
+DYNAMIC-FINDING: 2.1 [dyn-demo-login] — declared review credentials rejected with "invalid password" (d5.png)
+Pierre: The credentials in review_information do not work against the backend this build talks to.

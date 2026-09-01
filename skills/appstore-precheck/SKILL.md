@@ -232,10 +232,13 @@ product, which no repository read can see. Set `APPSTORE_PRECHECK_NO_EVIDENCE=1`
 line if you parse the text output strictly. Full rationale and the per-rule table:
 [`references/methodology.md`](references/methodology.md#evidence-strength-and-confidence).
 
-`scan.sh --format json` emits a structured findings envelope (`rule_id`, `severity`, `guideline`,
-`guideline_url`, `message`, optional `file`/`line`, plus `evidence`, `confidence` and the derived
-`needs_build_verification` per finding, and a verdict summary with a `by_confidence` roll-up)
-instead of the default text lines, for tooling and measurement to consume. `--format sarif` carries
+`scan.sh --format json` emits a structured findings envelope (`id`, `rule_id`, `severity`,
+`guideline`, `guideline_url`, `message`, optional `file`/`line`, plus `evidence`, `confidence` and
+the derived `needs_build_verification` per finding; `resolved_by`, `runtime_target` and
+`build_config` are `null` until the Phase 6 tier's `dynamic.sh` reconciles a run; and a verdict
+summary with a `by_confidence` roll-up) instead of the default text lines, for tooling and
+measurement to consume. The `runtime` evidence class and the `RESOLVED` severity appear only in
+`dynamic.sh` output; `RESOLVED` is counted by nothing. `--format sarif` carries
 the same labels in each result's `properties` bag. It's read-only and additive; the default text
 output gains only the evidence line above.
 
@@ -459,7 +462,11 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    the gap (paste the App Store Connect listing, set `.screenshotsDir`, …). A SKIP acknowledged in
    `.precheck-ignore` is not printed by the scanner but is still in `summary.not_audited` with
    `suppressed: true`; list it here as *acknowledged* — signing for a gap does not close it. If
-   there are none, say "every check ran".
+   there are none, say "every check ran". This list always includes the runtime gap: when Phase 6
+   was not run, one line `SKIP: runtime — the Phase 6 dynamic tier did not run …` under the stable
+   id **`runtime-not-audited`** (produce it with `bash scripts/dynamic.sh --not-run --findings
+   <scan json>`, which derives the count of unobserved dynamic checks); when it was run, every
+   `DYNAMIC-SKIP` line instead.
 
    **(b) What this tool cannot see at all**, regardless of input — a fixed list, never omitted and
    never implied to have been verified:
@@ -492,21 +499,31 @@ bundle id). It uses `xcrun simctl` + Maestro MCP tools (`mcp__maestro__*`) to la
 disposable simulator and observe real behavior — the free/local alternative to a paid cloud device
 farm.
 
-It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines and **never changes
-the GREEN/YELLOW/RED verdict** (the verdict stays derived only from Phases 0–2). A check that could
-not be driven is a `DYNAMIC-SKIP`, never a PASS and never an invented FINDING. It is read-only w.r.t.
-the user's project — it creates its own throwaway simulator device and never touches an existing
-one or the repo. It requires macOS +
-Xcode + a simulator runtime and is permanently local-only (it cannot run in CI). It is a pre-submit
-local smoke signal, not a TestFlight / crash-reporter / QA replacement.
+It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines, each tagged with a
+rule id (`[dyn-launch]`, `[dyn-permission-prompt:NSCameraUsageDescription]`, …), and **never
+changes the GREEN/YELLOW/RED verdict** (the verdict stays derived only from Phases 0–2). A check
+that could not be driven is a `DYNAMIC-SKIP`, never a PASS and never an invented FINDING. It is
+**no-write, but it executes your application code**: it creates its own throwaway simulator
+device and never touches an existing one or the repo, but the launched app reaches its backends
+and receives the demo credentials you supplied — tell the user so before the first launch. It
+requires macOS + Xcode + a simulator runtime and is permanently local-only (it cannot run in CI).
+It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA replacement.
 
 Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-review.md) for the
-setup step (D0) plus the 6-check dynamic checklist and output format.
+setup step (D0), the 7-check dynamic checklist (D1–D6 + D3b Restore tap) and the output format.
+Afterwards feed the transcript to [`scripts/dynamic.sh`](scripts/dynamic.sh) with the static
+`--format json` output: it records every observation as `evidence: runtime` with the run's
+`runtime_target` and `build_config`, and reconciles them with the static findings (a runtime
+confirmation upgrades the evidence; a complete runtime contradiction marks the static finding
+`RESOLVED`, which counts toward nothing; a partial one only downgrades FAIL to WARN). A **Debug or
+unknown build never clears `needs build verification`**; say which configuration the `.app` came
+from, and leave it `unknown` if you do not know.
 
 ## Rules
 
 - **READ-ONLY:** never change code or assets. Only report and write the token. (The optional Phase 6
-  simulator tier touches disposable simulator state only — never the user's project.)
+  simulator tier touches disposable simulator state only — never the user's project — but it does
+  execute the user's app; see Phase 6.)
 - **Speed > exhaustiveness:** `scan.sh` uses parallel grep/jq and finishes in seconds.
 - **No error swallowing:** if any scan command fails, that line is reported as FAIL and the scan continues.
 - **Token location:** `.precheck-pass` at the repo root; the guard tests it with an `mmin -60` filter.
