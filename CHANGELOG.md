@@ -43,7 +43,14 @@ version bump yet; the dynamic tier lands in 1.19.0.
   `usage-description-crosscheck ↔ dyn-permission-prompt:<KEY>` complete per key, partial when
   keyless; `subscription-links-restore ↔ dyn-restore-tap` partial. Output adds
   `summary.runtime: {observed, resolved, confirmed}`. A dynamic FINDING is a WARN: the tier is
-  advisory in Phase 1; opt-in blocking is Phase 3.
+  advisory in Phase 1; opt-in blocking is Phase 3. Hardened in review: a per-key id must be a
+  plist-key-shaped token matched as a whole word (an empty, one-character, substring or
+  double-colon key aims at nothing, so one malformed line can never withdraw a FAIL); every
+  observation aimed at a static record is folded into its message (none is dropped, screenshot
+  references included); consumption is tracked per record, so several lines for one rule are all
+  kept; a confirmation never *raises* the qualifier on already-established evidence; a
+  `--build-config release` claim contradicted by the D0 line (`Debug-iphonesimulator`) is degraded
+  to `unknown` on stderr; CRLF and stray blanks are tolerated.
 - **`runtime-not-audited` gap record** (`dynamic.sh --not-run`): when no `.app` / UDID was
   supplied, a SKIP with the count of unobserved dynamic checks derived from the catalogue.
   `is_gap_record` already recognised the suffix; SKILL.md Phase 5 "Not audited" lists it.

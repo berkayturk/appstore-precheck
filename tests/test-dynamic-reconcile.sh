@@ -228,6 +228,70 @@ assert_eq "0" "$(jq '[.findings[]|select(.rule_id=="usage-description-crosscheck
 assert_eq "2" "$(jq '[.findings[]|select(.rule_id=="usage-description-crosscheck" and .severity=="WARN")]|length' <<<"$out")" "both are downgraded to WARN only"
 rm -f "$sa"
 
+section "reconciliation: a confirming observation is folded into the merged record, never lost"
+sa="$(mktemp)"; make_static_a "$sa"
+out="$(bash "$DYN" --transcript "$TX/full-run.txt" --findings "$sa" --target simulator --build-config release)"
+cam="$(jq -c '[.findings[]|select(.message|test("NSCameraUsageDescription"))][0]' <<<"$out")"
+assert_contains "$(jq -r .message <<<"$cam")" "runtime:" "the merged record carries the observation"
+assert_contains "$(jq -r .message <<<"$cam")" "no OS prompt appeared" "…verbatim, with its screenshot reference"
+assert_contains "$(jq -r .message <<<"$cam")" "d4-camera.png" "screenshot filename survives"
+assert_eq "$(jq -r .id <<<"$(jq -c '[.findings[]|select(.message|test("NSCameraUsageDescription"))][0]' <<<"$out")")" \
+  "$(jq -r 'select(.message|test("NSCameraUsageDescription")).id' "$sa")" "the merged record keeps the static id (a stable handle across reconciliation)"
+# A confirmation never WEAKENS an already-established claim: static nb false stays false on Debug.
+se="$(mktemp)"; FINDINGS_TMP="$se"; : > "$se"; set_rule "usage-description-crosscheck"; set_evidence manifest
+_record FAIL "5.1.1 Purpose String — empty NSCameraUsageDescription" "App/Info.plist" "3"; FINDINGS_TMP=""
+o="$(bash "$DYN" --transcript "$TX/full-run.txt" --findings "$se" --build-config debug)"
+assert_eq "false" "$(jq -r '.findings[0].needs_build_verification' <<<"$o")" "a Debug confirmation does not raise the qualifier on manifest-established evidence"
+rm -f "$se"
+
+section "reconciliation: several lines for one rule are all kept"
+out="$(bash "$DYN" --transcript "$TX/duplicate-lines.txt" --findings "$sa" --target simulator --build-config release)"
+res="$(one "$out" subscription-links-restore)"
+assert_eq "FAIL" "$(jq -r .severity <<<"$res")" "a FINDING among the observations confirms (conservative)"
+assert_eq "1" "$(jq -r .summary.runtime.confirmed <<<"$out")" "counted once"
+assert_contains "$(jq -r .message <<<"$res")" "first attempt" "the PASS observation is folded in"
+assert_contains "$(jq -r .message <<<"$res")" "second attempt" "and the FINDING observation too"
+assert_eq "0" "$(jq '[.findings[]|select(.rule_id=="dyn-restore-tap")]|length' <<<"$out")" "nothing left dangling as standalone"
+assert_eq "2" "$(jq '[.findings[]|select(.rule_id=="dyn-launch")]|length' <<<"$out")" "unmapped duplicates are both standalone records"
+assert_eq "4" "$(jq -r .summary.runtime.observed <<<"$out")" "all four observations counted"
+
+section "reconciliation: a malformed per-key id can never resolve or downgrade anything"
+# The key is free text an agent typed. An empty key, a bare substring, a one-character
+# key or a second colon must not be allowed to match a static message.
+out="$(bash "$DYN" --transcript "$TX/malformed-keys.txt" --findings "$sa" --build-config release)"
+assert_eq "2" "$(jq '[.findings[]|select(.rule_id=="usage-description-crosscheck" and .severity=="FAIL")]|length' <<<"$out")" "both static FAILs untouched"
+assert_eq "0" "$(jq -r .summary.runtime.resolved <<<"$out")" "nothing resolved"
+assert_eq "0" "$(jq '[.findings[]|select(.severity=="RESOLVED")]|length' <<<"$out")" "no RESOLVED record"
+assert_eq "4" "$(jq '[.findings[]|select(.rule_id|startswith("dyn-permission-prompt"))]|length' <<<"$out")" "the malformed lines are kept as standalone records"
+assert_eq "RED" "$(jq -r .verdict <<<"$out")" "verdict unchanged"
+rm -f "$sa"
+
+section "parser: CRLF, trailing blanks, double spaces, a line with no message"
+out="$(bash "$DYN" --transcript "$TX/messy.txt" --build-config release --format jsonl)"
+assert_eq "4" "$(wc -l <<<"$out" | tr -d ' ')" "four records"
+fs="$(jq -c 'select(.rule_id=="dyn-first-screen")' <<<"$out")"
+assert_not_empty "$fs" "a double space after the colon still yields the rule id"
+assert_eq "2.1" "$(jq -r .guideline <<<"$fs")" "guideline intact"
+assert_absent "$(jq -r .message <<<"$fs")" $'\r' "no carriage return in the message"
+assert_eq "2.1 double space after the colon" "$(jq -r .message <<<"$fs")" "trailing blanks trimmed"
+nm="$(jq -c 'select(.guideline=="4.0")' <<<"$out")"
+assert_eq "SKIP" "$(jq -r .severity <<<"$nm")" "a line with no message is still a record"
+assert_eq "4.0" "$(jq -r .message <<<"$nm")" "and the guideline is not duplicated into the message"
+assert_eq "" "$(jq -r '.rule_id' <<<"$nm")" "no id -> empty rule id"
+
+section "build config is corroborated against the D0 line"
+# The D0 line records the .app's parent directory. A caller asserting --build-config
+# release over a transcript whose D0 says Debug-iphonesimulator is degraded to unknown.
+sa="$(mktemp)"; make_static_a "$sa"
+out="$(bash "$DYN" --transcript "$TX/messy.txt" --findings "$sa" --build-config release 2>/dev/null)"
+assert_eq "unknown" "$(jq -r '.build_config' <<<"$(one "$out" dyn-first-screen)")" "release claim contradicted by D0 -> unknown"
+assert_eq "$static_nb" "$(jq -r .summary.needs_build_verification <<<"$out")" "and nothing is established on the caller's word"
+mic="$(jq -c '[.findings[]|select(.message|test("NSMicrophoneUsageDescription"))][0]' <<<"$out")"
+assert_eq "WARN" "$(jq -r .severity <<<"$mic")" "the per-key PASS only downgrades under the degraded config"
+err="$(bash "$DYN" --transcript "$TX/messy.txt" --findings "$sa" --build-config release 2>&1 >/dev/null)"
+assert_contains "$err" "Debug-iphonesimulator" "the degradation is reported on stderr"
+rm -f "$sa"
+
 section "reconciliation: a crash leaves the static findings alone and adds the observation"
 sa="$(mktemp)"; make_static_a "$sa"
 out="$(bash "$DYN" --transcript "$TX/crash.txt" --findings "$sa" --target simulator --build-config release)"

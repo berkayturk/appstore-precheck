@@ -1,0 +1,4 @@
+DYNAMIC-PASS: 3.1.2 [dyn-restore-tap] — first attempt: Restore tapped, alert appeared (a.png)
+DYNAMIC-FINDING: 3.1.2 [dyn-restore-tap] — second attempt: Restore button inert, nothing happened within 3s (b.png)
+DYNAMIC-PASS: 2.1 [dyn-launch] — run 1 alive (l1.png)
+DYNAMIC-PASS: 2.1 [dyn-launch] — run 2 alive (l2.png)

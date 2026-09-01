@@ -232,10 +232,13 @@ product, which no repository read can see. Set `APPSTORE_PRECHECK_NO_EVIDENCE=1`
 line if you parse the text output strictly. Full rationale and the per-rule table:
 [`references/methodology.md`](references/methodology.md#evidence-strength-and-confidence).
 
-`scan.sh --format json` emits a structured findings envelope (`rule_id`, `severity`, `guideline`,
-`guideline_url`, `message`, optional `file`/`line`, plus `evidence`, `confidence` and the derived
-`needs_build_verification` per finding, and a verdict summary with a `by_confidence` roll-up)
-instead of the default text lines, for tooling and measurement to consume. `--format sarif` carries
+`scan.sh --format json` emits a structured findings envelope (`id`, `rule_id`, `severity`,
+`guideline`, `guideline_url`, `message`, optional `file`/`line`, plus `evidence`, `confidence` and
+the derived `needs_build_verification` per finding; `resolved_by`, `runtime_target` and
+`build_config` are `null` until the Phase 6 tier's `dynamic.sh` reconciles a run; and a verdict
+summary with a `by_confidence` roll-up) instead of the default text lines, for tooling and
+measurement to consume. The `runtime` evidence class and the `RESOLVED` severity appear only in
+`dynamic.sh` output; `RESOLVED` is counted by nothing. `--format sarif` carries
 the same labels in each result's `properties` bag. It's read-only and additive; the default text
 output gains only the evidence line above.
 

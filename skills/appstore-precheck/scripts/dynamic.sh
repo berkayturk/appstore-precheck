@@ -126,25 +126,39 @@ fi
 FINDINGS_TMP="$DYN_JSONL"
 set_runtime "$TARGET" "$CONFIG"
 
+# _trim <string> — strip a trailing CR and surrounding blanks (transcripts get pasted
+# from editors and terminals that disagree about line endings).
+_trim() {
+  local v="${1:-}"
+  v="${v%$'\r'}"
+  while [[ "$v" == *' ' || "$v" == *$'\t' ]]; do v="${v%?}"; done
+  while [[ "$v" == ' '* || "$v" == $'\t'* ]]; do v="${v#?}"; done
+  printf '%s' "$v"
+}
+
 # parse_line <line> — one column-0 DYNAMIC-* line -> one record. Everything else is
-# silently not a record.
+# silently not a record. Fields: <guideline> [<id>] — <message>; each optional past
+# the guideline, any run of blanks between them.
 parse_line() {
-  local line="$1" kind rest guideline id="" msg sev
+  local line kind rest guideline id="" msg sev
+  # Column 0 is decided on the raw line: an indented DYNAMIC-* is commentary.
+  line="${1%$'\r'}"
   case "$line" in
-    DYNAMIC-PASS:\ *)    kind=PASS ;;
-    DYNAMIC-FINDING:\ *) kind=FINDING ;;
-    DYNAMIC-SKIP:\ *)    kind=SKIP ;;
+    DYNAMIC-PASS:*)    kind=PASS ;;
+    DYNAMIC-FINDING:*) kind=FINDING ;;
+    DYNAMIC-SKIP:*)    kind=SKIP ;;
     *) return 0 ;;
   esac
-  rest="${line#DYNAMIC-*: }"
-  guideline="${rest%% *}"; rest="${rest#* }"
-  if [[ "$rest" == \[*\]* ]]; then id="${rest%%]*}"; id="${id#[}"; rest="${rest#*]}"; rest="${rest# }"; fi
-  msg="${rest#— }"; msg="${msg#- }"
+  rest="$(_trim "${line#DYNAMIC-*:}")"
+  if [[ "$rest" == *' '* ]]; then guideline="${rest%% *}"; rest="$(_trim "${rest#* }")"
+  else guideline="$rest"; rest=""; fi
+  if [[ "$rest" == \[*\]* ]]; then id="${rest%%]*}"; id="${id#[}"; rest="$(_trim "${rest#*]}")"; fi
+  msg="${rest#— }"; msg="${msg#- }"; msg="$(_trim "$msg")"
   case "$kind" in PASS) sev=PASS ;; FINDING) sev=WARN ;; SKIP) sev=SKIP ;; esac
   set_rule "$id"
   set_evidence "runtime"
   set_confidence "$(dyn_rule_confidence "${id%%:*}")"
-  _record "$sev" "$guideline $msg"
+  if [[ -n "$msg" ]]; then _record "$sev" "$guideline $msg"; else _record "$sev" "$guideline"; fi
 }
 
 if [[ "$NOT_RUN" == "true" ]]; then
@@ -153,12 +167,27 @@ if [[ "$NOT_RUN" == "true" ]]; then
   set_rule "runtime-not-audited"
   _record SKIP "runtime — the Phase 6 dynamic tier did not run (no built simulator .app or booted UDID + bundle id was supplied): $n dynamic checks were not observed. Supply a simulator .app path (or a booted UDID + bundle id) and ask for the dynamic check to close this gap"
 else
-  if [[ "$TRANSCRIPT" == "-" ]]; then src="/dev/stdin"; else src="$TRANSCRIPT"; fi
+  if [[ "$TRANSCRIPT" == "-" ]]; then
+    [[ -t 0 ]] && usage_err "no --transcript given and stdin is a terminal (pass --transcript FILE, pipe the transcript in, or use --not-run)"
+    src="/dev/stdin"
+  else src="$TRANSCRIPT"; fi
   while IFS= read -r line || [[ -n "$line" ]]; do parse_line "$line"; done < "$src"
 fi
 # Detach the buffer: findings.sh reads FINDINGS_TMP, which the linter cannot see.
 # shellcheck disable=SC2034
 FINDINGS_TMP=""
+
+# --- Corroborate the caller's build_config against D0 ----------------------------
+# --build-config is a caller assertion; the guard it feeds must not rest on a typo.
+# D0 records the .app's parent directory in its own line. A "release" claim over a
+# transcript whose D0 says Debug-iphonesimulator is degraded to unknown, loudly.
+if [[ "$CONFIG" == "release" ]] \
+   && jq -e 'select(.rule_id=="dyn-install") | select(.message|test("Debug-iphonesimulator"))' "$DYN_JSONL" >/dev/null 2>&1; then
+  echo "dynamic.sh: --build-config release contradicted by the D0 line (Debug-iphonesimulator); treating the run as unknown" >&2
+  CONFIG="unknown"
+  tmp="$WORK/dyn.cfg.jsonl"
+  jq -c 'if .build_config != null then .build_config = "unknown" else . end' "$DYN_JSONL" > "$tmp" && mv "$tmp" "$DYN_JSONL"
+fi
 
 # --- Reconcile -----------------------------------------------------------------
 # The derivation for a runtime observation stays in evidence.sh: this is the only
@@ -171,49 +200,63 @@ jq -n -c \
   --arg target "$TARGET" --arg config "$CONFIG" '
   def tgt: ($target | if .=="" then null else . end);
   def runtime_fields: {runtime_target:tgt, build_config:$config};
-  def obs_text($d): ($d.message | sub("^[^ ]+ "; ""));
-  # confirm: same severity, evidence runtime, qualifier re-derived for THIS build.
-  def confirm($c): $c + runtime_fields
+  def obs_text($d): ($d.message | sub("^[^ ]+ ?"; ""));
+  # Every aimed observation is folded into the message — the winner decides the
+  # branch, but no observation (or screenshot reference) is ever dropped.
+  def fold($a): " · runtime: " + ([$a[] | obs_text(.)] | join("; "));
+  # confirm: same severity, evidence runtime. The qualifier can only be CLEARED by
+  # a release run, never raised: an already-established claim (manifest evidence)
+  # stays established.
+  def confirm($c; $a): $c + runtime_fields
       + {evidence:"runtime",
-         needs_build_verification:($c.confidence=="validator-blocking" and $rt_nb)};
+         needs_build_verification:($c.needs_build_verification and $rt_nb),
+         message:($c.message + fold($a))};
   # resolve: withdrawn by a complete runtime test; inert downstream.
-  def resolve($c; $d): $c + runtime_fields
+  def resolve($c; $a): $c + runtime_fields
       + {severity:"RESOLVED", resolved_by:"runtime", evidence:"runtime",
-         needs_build_verification:false,
-         message:($c.message + " · runtime: " + obs_text($d))};
+         needs_build_verification:false, message:($c.message + fold($a))};
   # downgrade: FAIL→WARN only, evidence and qualifier untouched, observation appended.
-  def downgrade($c; $d; $why): $c + runtime_fields
+  def downgrade($c; $a; $why): $c + runtime_fields
       + {severity:(if $c.severity=="FAIL" then "WARN" else $c.severity end),
-         message:($c.message + " · runtime: " + obs_text($d) + $why)};
+         message:($c.message + fold($a) + $why)};
+  # A per-key id is free text an agent typed. Only a well-formed key may aim at a
+  # static record: at most one colon, and a plist-key-shaped token (letters, digits,
+  # underscore, at least 5 characters). Anything else aims at nothing.
+  def key_ok($k): ($k == null) or ($k | test("^[A-Za-z][A-Za-z0-9_]{4,}$"));
   def complete($d): ($d._m.complete and (($d._m.keyed|not) or $d._key!=null));
-  # For one static record, the observations aimed at it.
+  # For one static record, the observations aimed at it. A key must match as a whole
+  # token of the message, never as a bare substring.
   def aimed($c; $mapped): [$mapped[] | select(._m.static==$c.rule_id)
-                                     | . as $d | select($d._key==null or ($c.message|contains($d._key)))];
+      | . as $d | select($d._key==null
+                         or ($c.message|test("(^|[^A-Za-z0-9_])" + $d._key + "([^A-Za-z0-9_]|$)")))];
   def reconcile_one($c; $mapped):
       aimed($c; $mapped) as $a
       | if ($a|length)==0 then {rec:$c, confirmed:0, resolved:0, used:[]}
         elif ($c.severity!="FAIL" and $c.severity!="WARN") or $c.suppressed then
           {rec:$c, confirmed:0, resolved:0, used:[]}
         elif ([$a[]|select(.severity=="WARN")]|length)>0 then
-          {rec:confirm($c), confirmed:1, resolved:0, used:[$a[].rule_id]}
+          {rec:confirm($c; $a), confirmed:1, resolved:0, used:[$a[].id]}
         else ([$a[]|select(.severity=="PASS")][0]) as $d
           | if complete($d) and (($c.needs_build_verification|not) or $config=="release") then
-              {rec:resolve($c; $d), confirmed:0, resolved:1, used:[$a[].rule_id]}
+              {rec:resolve($c; $a), confirmed:0, resolved:1, used:[$a[].id]}
             elif complete($d) then
-              {rec:downgrade($c; $d; " (observed on a " + $config + " build; does not establish the shipping archive, so not resolved)"),
-               confirmed:0, resolved:0, used:[$a[].rule_id]}
+              {rec:downgrade($c; $a; " (observed on a " + $config + " build; does not establish the shipping archive, so not resolved)"),
+               confirmed:0, resolved:0, used:[$a[].id]}
             else
-              {rec:downgrade($c; $d; " (partial check; the static claim is wider than what was observed)"),
-               confirmed:0, resolved:0, used:[$a[].rule_id]}
+              {rec:downgrade($c; $a; " (partial check; the static claim is wider than what was observed)"),
+               confirmed:0, resolved:0, used:[$a[].id]}
             end
         end;
-  ($dyn | map(. + {_base:(.rule_id|split(":")[0]), _key:(.rule_id|split(":")[1] // null)})) as $dyn
-  # Observations that may touch a static record: mapped, non-SKIP.
-  | ($dyn | map(select(.severity!="SKIP")
+  ($dyn | map(. + {_base:(.rule_id|split(":")[0]),
+                   _key:(.rule_id|split(":") | if length==2 then .[1] elif length>2 then "" else null end)})) as $dyn
+  # Observations that may touch a static record: mapped, non-SKIP, well-formed key.
+  | ($dyn | map(select(.severity!="SKIP") | select(key_ok(._key))
                | . as $d | [$map[] | select(.dyn==$d._base)] | select(length>0) | $d + {_m:.[0]})) as $mapped
   | ($static | map(reconcile_one(.; $mapped))) as $r
+  # Consumption is tracked per RECORD (its id), so two lines with one rule id are
+  # never conflated: each is either folded into a static record or kept standalone.
   | ([$r[].used[]] | unique) as $used
-  | ($dyn | map(select((.rule_id as $id | $used | index($id)) | not)) | map(del(._base,._key))) as $standalone
+  | ($dyn | map(select((.id as $id | $used | index($id)) | not)) | map(del(._base,._key))) as $standalone
   | {records:([$r[].rec] + $standalone),
      stats:{observed:([$dyn[]|select(.severity!="SKIP")]|length),
             resolved:([$r[].resolved]|add // 0),

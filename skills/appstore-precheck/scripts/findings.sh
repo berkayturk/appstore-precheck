@@ -107,15 +107,18 @@ _runtime_field_of() { # <severity> <value>
 # the first 16 hex digits of sha256 over the four fields. Lets a later run (or the
 # dynamic tier's reconciliation) refer to "this finding" without re-matching text.
 # The message is part of it on purpose: a rewritten message is a different claim.
+# The one deliberate exception: dynamic.sh reconciliation APPENDS a runtime
+# observation to a static record's message and keeps the original id, so the id
+# stays a handle for the same finding across the static and reconciled outputs.
+# The hasher is resolved once at source time (this runs for every record).
+if command -v shasum >/dev/null 2>&1; then _HASH_CMD="shasum -a 256"
+elif command -v sha256sum >/dev/null 2>&1; then _HASH_CMD="sha256sum"
+else _HASH_CMD=""; fi
 _finding_id() {
-  local key="${1:-}|${2:-}|${3:-}|${4:-}"
-  if command -v shasum >/dev/null 2>&1; then
-    printf '%s' "$key" | shasum -a 256 | cut -c1-16
-  elif command -v sha256sum >/dev/null 2>&1; then
-    printf '%s' "$key" | sha256sum | cut -c1-16
-  else
-    printf ''
-  fi
+  [[ -n "$_HASH_CMD" ]] || { printf ''; return; }
+  local key="${1:-}|${2:-}|${3:-}|${4:-}" out
+  out="$(printf '%s' "$key" | $_HASH_CMD)"
+  printf '%s' "${out:0:16}"
 }
 
 # _emit <severity> <message> <file> <line> <suppressed:true|false>

@@ -1,0 +1,4 @@
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:] — trailing colon, empty key
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:Usage] — a bare substring of every static message
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:.] — a one-character key
+DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:NSCameraUsageDescription:extra] — two colons
