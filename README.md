@@ -363,7 +363,7 @@ nothing is auto-fixed.
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
 | **4** | **Pierre deep review**: 31 semantic checks (23 Tier A + 8 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
-| **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/permission smoke checks on a local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict; a check it cannot drive is a `DYNAMIC-SKIP`, never a pass. |
+| **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: launch/paywall/Restore-tap/permission/demo-login smoke checks on a throwaway local simulator via Maestro + `xcrun simctl`. Advisory; never changes the verdict; a check it cannot drive is a `DYNAMIC-SKIP`, never a pass. `scripts/dynamic.sh` turns the transcript into `evidence: runtime` records and reconciles them with the static findings; a Debug build never clears `needs build verification`. Not read-only: it executes your app. |
 
 ### Evidence strength
 

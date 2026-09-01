@@ -5,10 +5,63 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
-Phase 0 of the dynamic-tier plan: four static corrections that are right regardless of whether a
-runtime tier ever ships. No version bump yet; the dynamic tier lands in 1.19.0.
+Phases 0 and 1 of the dynamic-tier plan. Phase 0: four static corrections that are right
+regardless of whether a runtime tier ever ships. Phase 1: the Phase 6 tier changes what it
+**records**, not what it observes — its output becomes machine-readable and is reconciled with the
+static findings under the same honesty model (evidence class, derived build-verification
+qualifier, SKIP). Nothing in Phase 1 runs a simulator; the whole suite runs on `ubuntu-latest`. No
+version bump yet; the dynamic tier lands in 1.19.0.
 
-### Added
+### Added (Phase 1 — machine-readable dynamic tier, no simulator)
+- **`runtime` evidence class** in `evidence.sh`, listed first: the running app's behaviour itself,
+  not a proxy for it. Two caveats are written into the class comment because they are
+  load-bearing: the class list is not one axis of strength (metadata is about the listing,
+  runtime about the binary), and simulator ≠ archive (architecture, StoreKit, `#if
+  targetEnvironment(simulator)`, Debug configuration). `needs_build_verification` takes an
+  optional third argument `build_config` (`release|debug|unknown`, default `unknown`):
+  `runtime + release` is established, `runtime + debug/unknown` still needs build verification.
+  **A Debug runtime observation never clears the qualifier** — the guard the tier rests on,
+  pinned by explicit tests. Existing two-argument calls are unchanged.
+- **`findings.sh` records** carry four new fields: `id` (first 16 hex of sha256 over
+  rule + file + line + message, a stable handle for one finding), `resolved_by` (`null` |
+  `"runtime"`), `runtime_target` (`null` | `simulator` | `device`) and `build_config` (`null` |
+  `debug` | `release` | `unknown`). New severity **`RESOLVED`**, structurally inert: `render_json`,
+  `sarif.sh` and `verdict.sh` select by string equality on FAIL/WARN/PASS/SKIP, so a RESOLVED
+  record is kept for the reader and counted by nothing; the verdict cannot move. It is deliberately
+  not `suppressed: true` — that field means a human signed in `.precheck-ignore`.
+- **`scripts/dynamic.sh`** (pure text, bash 3.2): reads `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` /
+  `DYNAMIC-SKIP:` lines (column 0 only; `Pierre:` and indented text ignored), each tagged
+  `[dyn-<check>]`, into the same JSONL shape (severity PASS / WARN / SKIP, `evidence: runtime`,
+  rule id, target, build config) and reconciles them with the static scan (`--findings` takes the
+  `--format json` envelope or raw JSONL). The table, per static rule: runtime **confirms** → one
+  record, evidence `runtime`, severity unchanged, qualifier re-derived for this build; runtime
+  **contradicts** and the dynamic check is the **complete** test → `RESOLVED`; contradicts but
+  **partial** (or the build is Debug/unknown and the claim depended on the build) → FAIL→WARN
+  only, observation appended, never PASS; static PASS + runtime FINDING → a new WARN record, the
+  PASS stays; undriveable → SKIP with no labels. Complete/partial mappings are a fixed, reasoned
+  table in the script: `demo-account ↔ dyn-demo-login` complete;
+  `usage-description-crosscheck ↔ dyn-permission-prompt:<KEY>` complete per key, partial when
+  keyless; `subscription-links-restore ↔ dyn-restore-tap` partial. Output adds
+  `summary.runtime: {observed, resolved, confirmed}`. A dynamic FINDING is a WARN: the tier is
+  advisory in Phase 1; opt-in blocking is Phase 3.
+- **`runtime-not-audited` gap record** (`dynamic.sh --not-run`): when no `.app` / UDID was
+  supplied, a SKIP with the count of unobserved dynamic checks derived from the catalogue.
+  `is_gap_record` already recognised the suffix; SKILL.md Phase 5 "Not audited" lists it.
+- **Phase 6 reference:** every D-check has a rule id (`dyn-install`, `dyn-launch`,
+  `dyn-first-screen`, `dyn-paywall-visible`, `dyn-permission-prompt[:KEY]`, `dyn-demo-login`,
+  `dyn-screenshot-parity`); new **D3b `dyn-restore-tap`** (find Restore Purchases by
+  `accessibilityText`, tap, expect a non-inert response within 3 s; no button → SKIP, no response
+  → FINDING); **launch health (D1/D2) is a conjunction of four signals** (process alive,
+  screenshot not uniform, no crash in the log stream, accessibility tree ≥ N nodes) — a signal
+  that could not be read is written into the line, and a degenerate tree (Flutter / Compose) is
+  never a FINDING on its own. The promise is reworded from "read-only" to **"no-write, but it
+  executes your application code"**, with network, credential and screenshot exposure spelled
+  out; `SECURITY.md` says the same.
+- `tests/test-dynamic-reconcile.sh` with recorded transcripts under
+  `tests/fixtures/dynamic-transcripts/`; `tests/test-phase6-doc.sh` extended (suite: 35 files).
+  No test boots a device.
+
+### Added (Phase 0)
 - **Guideline 4.0 (Design) is now covered.** `guidelines-baseline.json` started its `all_sections`
   at 4.1, so Apple's **single most-cited removal reason** (42,252 removals in the 2024 App Store
   Transparency Report) was invisible to drift detection. Cause: the live page anchors each
@@ -29,7 +82,7 @@ runtime tier ever ships. No version bump yet; the dynamic tier lands in 1.19.0.
 - `tests/test-ipv4-literal.sh`, `tests/test-design-40.sh`, `tests/test-phase6-doc.sh`
   (suite: 34 files). Fixtures `ipv4-literal-app` and `ipv4-clean-app`.
 
-### Fixed
+### Fixed (Phase 0)
 - **Phase 6 D3 (paywall) could emit a false `DYNAMIC-FINDING`.** A StoreKit configuration file is
   a scheme Run-action setting; `xcrun simctl launch` does not apply it, so `Product.products`
   is empty and a price-less paywall is the *expected* default on a simctl-launched app. D3 now

@@ -13,7 +13,9 @@ source "$ROOT/skills/appstore-precheck/scripts/findings.sh"
 source "$ROOT/skills/appstore-precheck/scripts/evidence.sh"
 
 section "vocabularies are closed sets"
-assert_eq "$EVIDENCE_CLASSES"  "metadata manifest resource build-setting source" "evidence vocabulary"
+# "runtime" leads: it is the shipping behaviour itself, not a proxy for it. But the list
+# is not one axis of strength (metadata is about the listing, runtime about the binary).
+assert_eq "$EVIDENCE_CLASSES"  "runtime metadata manifest resource build-setting source" "evidence vocabulary"
 assert_eq "$CONFIDENCE_LEVELS" "validator-blocking review-risk judgment-call"    "confidence vocabulary"
 
 section "per-rule classification (spot checks)"
@@ -64,6 +66,19 @@ assert_eq "true"  "$(needs_build_verification build-setting validator-blocking)"
 assert_eq "false" "$(needs_build_verification manifest validator-blocking)"      "manifest + validator -> established"
 assert_eq "false" "$(needs_build_verification metadata validator-blocking)"      "metadata + validator -> established"
 assert_eq "false" "$(needs_build_verification resource validator-blocking)"      "resource + validator -> established"
+# runtime evidence: an observation of the RUNNING app. A simulator run of a Debug
+# build says nothing about the archive (arch, #if DEBUG, targetEnvironment(simulator),
+# StoreKit config), so only a release build_config clears the qualifier. The third
+# argument defaults to "unknown", which is treated like debug. THIS IS THE GUARD THE
+# WHOLE DYNAMIC TIER RESTS ON: a Debug runtime observation never clears it.
+assert_eq "false" "$(needs_build_verification runtime validator-blocking release)" "runtime + release -> established"
+assert_eq "true"  "$(needs_build_verification runtime validator-blocking debug)"   "runtime + DEBUG -> still needs build verification"
+assert_eq "true"  "$(needs_build_verification runtime validator-blocking unknown)" "runtime + unknown config -> still needs build verification"
+assert_eq "true"  "$(needs_build_verification runtime validator-blocking)"         "runtime + omitted config -> defaults to unknown, still needs it"
+assert_eq "false" "$(needs_build_verification runtime review-risk debug)"          "runtime + review-risk -> no qualifier (never had one)"
+# The third argument must not disturb the static classes.
+assert_eq "true"  "$(needs_build_verification source validator-blocking release)"  "source stays 'needs build' even with a release config"
+assert_eq "false" "$(needs_build_verification manifest validator-blocking debug)"  "manifest stays established regardless of config"
 # The qualifier only ever applies to a validator-blocking claim.
 assert_eq "false" "$(needs_build_verification source review-risk)"   "source + review-risk -> no qualifier"
 assert_eq "false" "$(needs_build_verification source judgment-call)" "source + judgment -> no qualifier"
@@ -74,6 +89,10 @@ assert_eq "evidence: source · validator-blocking · needs build verification" \
 assert_eq "evidence: metadata · review-risk" \
   "$(evidence_label metadata review-risk)" "label omits the qualifier when established"
 assert_eq "" "$(evidence_label '' '')" "no label without a classification"
+assert_eq "evidence: runtime · validator-blocking · needs build verification" \
+  "$(evidence_label runtime validator-blocking debug)" "a Debug runtime label keeps the qualifier"
+assert_eq "evidence: runtime · validator-blocking" \
+  "$(evidence_label runtime validator-blocking release)" "a release runtime label drops it"
 
 section "completeness invariant: every catalogued rule is classified"
 missing_ev=0 missing_cf=0 bad_vocab=0 walked=0
