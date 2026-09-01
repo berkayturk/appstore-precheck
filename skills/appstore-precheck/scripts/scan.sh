@@ -293,9 +293,7 @@ check_required_reason_api() {
 }
 if [[ -z "$IOS_DIR" ]]; then
   # The check could not run at all; it establishes nothing about the build.
-  set_confidence "judgment-call"
-  warn "layout — could not auto-detect iOS source dir; set .iosSourceDir in $CONFIG"
-  set_confidence ""
+  skip "layout — could not auto-detect the iOS source dir, so the Required Reason API parity check did not run; set .iosSourceDir in $CONFIG"
 elif [[ -z "$PRIVACY_FILE" ]]; then
   fail "5.1.1 Required Reason API — PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)" "$INFO_PLIST"
 else
@@ -313,9 +311,9 @@ fi
 # ===================================================================
 set_rule "usage-description-crosscheck"
 if [[ ! -f "$INFO_PLIST" ]]; then
-  # Degraded read, not a violation: no plist to cross-check against.
-  set_evidence "manifest"; set_confidence "judgment-call"
-  [[ -n "$IOS_DIR" ]] && warn "5.1.1 Info.plist not found at $INFO_PLIST (modern Xcode may auto-generate it; verify purpose strings in build settings)" "$INFO_PLIST"
+  # No plist to cross-check against: the check did not run. A SKIP, not a WARN —
+  # it used to count toward YELLOW, inflating the verdict with a coverage gap.
+  [[ -n "$IOS_DIR" ]] && skip "5.1.1 Info.plist not found at $INFO_PLIST — the purpose-string cross-check did not run (modern Xcode may generate the plist from build settings; set .infoPlistPath, or verify purpose strings by hand)" "$INFO_PLIST"
 else
   awk '/NS[A-Za-z]+UsageDescription/{key=$0; getline; if($0 ~ /<string>[[:space:]]*<\/string>/) print "EMPTY:"key}' "$INFO_PLIST" | while read -r line; do
     # Read directly from the shipped plist, so it does not inherit the source floor.
@@ -448,7 +446,19 @@ if (( ${#LOCALES[@]} > 0 )); then
       continue
     fi
     for f in "${expected_files[@]}"; do
-      [[ -s "$d/$f" ]] || fail "2.3.7 Metadata missing — $d/$f is empty or absent"
+      [[ -s "$d/$f" ]] && continue
+      case "$f" in
+        name.txt|description.txt)
+          # App Store Connect will not accept a localization without these.
+          fail "2.3.7 Metadata missing — $d/$f is empty or absent" ;;
+        *)
+          # Subtitle and keywords are OPTIONAL in App Store Connect (verified
+          # 2026-09-01). An empty one is a discovery/parity gap, not a blocker —
+          # reporting it as a validator FAIL was an overstatement.
+          set_confidence "judgment-call"
+          warn "2.3.7 Metadata gap — $d/$f is empty or absent (optional in App Store Connect, but every other locale should not be the only place it exists)"
+          set_confidence "" ;;
+      esac
     done
   done
   pass "2.3.7 Localized metadata — checked ${#LOCALES[@]} locales"
@@ -461,12 +471,17 @@ set_rule "screenshots-per-locale"
 if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
     d="$SCREEN_DIR/$loc"
-    if [[ ! -d "$d" ]]; then warn "2.3.3 Screenshots — no folder for $loc"; continue; fi
+    # App Store Connect falls back to the primary locale's screenshots, so a
+    # missing per-locale set does not block anything — advisory only.
+    if [[ ! -d "$d" ]]; then set_confidence "judgment-call"; warn "2.3.3 Screenshots — no folder for $loc"; set_confidence ""; continue; fi
     cnt=$(find "$d" -maxdepth 2 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) 2>/dev/null | wc -l | tr -d ' ')
     if (( cnt == 0 )); then
       fail "2.3.3 Screenshots — $loc folder is empty (at least one iPhone screenshot required)"
     elif (( cnt < 3 )); then
+      # A recommendation, not a requirement: one screenshot satisfies the validator.
+      set_confidence "judgment-call"
       warn "2.3.3 Screenshots — $loc has only $cnt image(s) (3-10 recommended)"
+      set_confidence ""
     fi
   done
   pass "2.3.3 Screenshots — checked ${#LOCALES[@]} locales under $SCREEN_DIR"
@@ -592,10 +607,8 @@ else
     paywall_req "Terms of Use (EULA) link" 'terms[ _]?of[ _]?(use|service)|termsURL|subscription_terms|EULA|/terms|/tos\b|/eula'
     paywall_req "Privacy Policy link" 'privacy[ _]?policy|privacyURL|subscription_privacy|/privacy|datenschutz|gizlilik'
   else
-    # The required-link checks did not run; this is a configuration hint.
-    set_confidence "judgment-call"
-    warn "3.1.2 IAP detected but no paywall/subscription view found — set .paywallGlobs so required-link checks can run"
-    set_confidence ""
+    # The required-link checks did not run; a configuration hint, not a finding.
+    skip "3.1.2 IAP detected but no paywall/subscription view found — the Restore/Terms/Privacy link checks did not run; set .paywallGlobs so they can"
   fi
 
   # ---- §53 3.1.2 Terms of Use (EULA) link in the App Store description ----------
@@ -619,10 +632,10 @@ else
       pass "3.1.2 Terms of Use (EULA) link present in every locale's App Store description"
     fi
   else
-    # Skipped for lack of input, so it establishes nothing about the listing.
-    set_confidence "judgment-call"
-    warn "3.1.2 EULA-in-metadata check skipped — no fastlane metadata dir detected; verify the App Store description contains a functional Terms of Use (EULA) link"
-    set_confidence ""
+    # Nothing to say here: with no metadata dir the store-listing SKIP at the top of
+    # the scan already names subscription-eula-metadata among the checks that did
+    # not run. A second line would double-count the same gap.
+    :
   fi
 fi
 

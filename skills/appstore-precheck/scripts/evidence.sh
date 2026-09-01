@@ -104,7 +104,7 @@ rule_confidence() {
     # will not accept the submission. The SDK minimum is an upload floor.
     usage-description-crosscheck|privacy-manifest-parity|att-usage|private-api) echo validator-blocking ;;
     metadata-char-limits|locale-metadata-parity|screenshots-per-locale) echo validator-blocking ;;
-    screenshot-dimensions|support-privacy-url|export-compliance) echo validator-blocking ;;
+    screenshot-dimensions|support-privacy-url) echo validator-blocking ;;
     xcode-sdk-requirement) echo validator-blocking ;;
 
     # --- review-risk: a person rejects this often ---
@@ -121,6 +121,11 @@ rule_confidence() {
     min-functionality-nav|crypto-wallet-mining|webview-wrapper|remote-desktop) echo judgment-call ;;
     mdm|permission-priming-cta|paywall-trial-emphasis|metadata-pricing-language) echo judgment-call ;;
     generic-purpose-string|ai-provider-consent|paywall-urgency) echo judgment-call ;;
+    # export-compliance: App Store Connect holds the build at "Missing Compliance"
+    # until the encryption question is answered — one click in the UI. That is
+    # submission friction, not a rejection risk, so it was overstated as
+    # validator-blocking. (Verified 2026-09-01: the key only pre-answers the prompt.)
+    export-compliance) echo judgment-call ;;
     rating-sentiment-gate|forced-login|push-marketing-optout) echo judgment-call ;;
     saturated-category) echo judgment-call ;;
 

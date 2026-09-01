@@ -532,7 +532,8 @@ Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-r
   otherwise. Without either, an age-fresh pin on a section Apple edited yesterday will still read as
   current.
 - Evidence and confidence labels are **per rule**, refined per branch where a branch is clearly
-  stronger or weaker than its rule. They describe the artifact the finding was read from and who
+  stronger or weaker than its rule; a branch that could not run at all is a `SKIP`, not a labelled
+  WARN. They describe the artifact the finding was read from and who
   enforces the guideline — not a probability that Apple will reject this particular submission.
 
 ## Optional: upload guard hook

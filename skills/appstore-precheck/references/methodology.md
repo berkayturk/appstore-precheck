@@ -307,13 +307,43 @@ A rule-level label is the honest default for the rule as a whole, but individual
 
 - §2's empty-purpose-string FAIL reads `Info.plist` directly, so it is `manifest`, not the rule's
   `source` floor.
-- §2's "Info.plist not found", §1's "declared but no code usage grepped" and "could not auto-detect
-  iOS source dir", §42's "could not read PNG dimensions", §10's "no paywall view found", and §53's
-  "no metadata dir" are degraded reads or configuration hints — they establish nothing about the
-  build, so they drop to `judgment-call` instead of inheriting `validator-blocking`.
+- §1's "declared but no code usage grepped" and §42's "could not read PNG dimensions" are real but
+  soft findings (an over-declaration; a corrupt asset) — `judgment-call`, not the rule's
+  `validator-blocking`.
+- §6: only **name and description** are required by App Store Connect. An empty subtitle or
+  keywords file is a `judgment-call` WARN, not the validator FAIL it used to be.
+- §7: a missing per-locale screenshot folder (App Store Connect falls back to the primary locale)
+  and "only N images (3–10 recommended)" are advice — `judgment-call`. Only an *empty* folder is
+  the validator block.
+
+**A check that could not run is a `SKIP`, not a labelled WARN.** §2's "Info.plist not found", §1's
+"could not auto-detect iOS source dir" and §10's "no paywall view found" were first downgraded to
+`judgment-call`; on reflection that was half a fix — they were still WARNs counting toward YELLOW,
+inflating the verdict with a coverage gap. They are now `SKIP` under their rule (no labels, listed
+under "Not audited"). §53's "no metadata dir" line was removed outright: the store-listing SKIP at
+the top of the scan already names it.
 
 Without this, a check that could not run would inherit "Apple's validator blocks this", which is
 exactly the overstatement the layer exists to stop.
+
+**Research notes behind the confidence column** (verified 2026-09-01): `ITMS-90683` fires for any
+missing purpose string when the framework is *linked*, ATT included — so `att-usage` is genuinely
+mechanical; `ITMS-91053` rejects a missing required-reason declaration; `ITMS-90725` enforces the
+iOS 26 SDK floor at upload; App Store Connect requires a privacy-policy URL and a support URL to
+submit. `export-compliance` was **downgraded** to `judgment-call`: the build is held at "Missing
+Compliance" until the question is answered, which is one click — friction, not a rejection.
+
+### §54 and the false-positive appetite
+
+`saturated-category` WARNs on every app whose name, subtitle or keywords place it in a category
+Apple names in 4.3(b) — including a genuinely good wallpaper or dating app. That is deliberate.
+Apple's own text says new submissions in those categories are not accepted *unless* they offer a
+meaningfully different or improved experience, so the exposure is real for every app there; the
+WARN tells the team to state the differentiator in the review notes, and deep-review check 30
+makes the actual judgment. A team that has done that can acknowledge the rule in `.precheck-ignore`
+(`saturated-category`) — suppression is a signed acknowledgment, so the gate stays honest. Gating
+the rule on "thin app" signals was considered and rejected: a substantial dating app carries the
+same 4.3 exposure as a thin one.
 
 ### The fourth line class: `SKIP` (not audited)
 
@@ -365,7 +395,7 @@ completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
 | 14 | `siwa-parity` | source | review-risk | — |
 | 15 | `external-purchase-link` | source | review-risk | — |
 | 16 | `tracking-sdk-no-att` | source | review-risk | — |
-| 17 | `export-compliance` | manifest | validator-blocking | — |
+| 17 | `export-compliance` | manifest | judgment-call | — |
 | 18 | `support-privacy-url` | metadata | validator-blocking | — |
 | 19 | `analytics-privacyinfo-mismatch` | source | review-risk | — |
 | 20 | `placeholder-metadata` | metadata | review-risk | — |

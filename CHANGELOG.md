@@ -161,6 +161,24 @@ running it rather than reading it.
   it — announcing the drop — when the text moved, because that wording is now wrong. Regression test
   in `tests/test-guideline-drift.sh`.
 
+### Changed — the three review questions, researched and decided
+- **Confidence column verified against Apple's own validators** (2026-09-01). `ITMS-90683` (any
+  missing purpose string when the framework is linked, ATT included), `ITMS-91053` (required-reason
+  declaration), `ITMS-90725` (iOS 26 SDK floor at upload) and App Store Connect's required
+  privacy/support URLs confirm the `validator-blocking` rows. Two overstatements corrected:
+  **`export-compliance` → `judgment-call`** (the build is held at "Missing Compliance" until the
+  question is answered — one click, friction not rejection), and **§6 no longer FAILs on an empty
+  subtitle or keywords file** — those are optional in App Store Connect; only name and description
+  are required. §7's missing-per-locale-folder and "only N images" branches are `judgment-call`
+  (App Store Connect falls back to the primary locale; 3–10 is advice).
+- **Degraded reads are `SKIP`, not `judgment-call` WARNs.** §2 "Info.plist not found", §1 "could not
+  auto-detect iOS source dir" and §10 "no paywall view found" had been downgraded to
+  `judgment-call` — half a fix, since they still counted toward YELLOW. They are now `SKIP` under
+  their rule. §53's "no metadata dir" line was removed: the store-listing SKIP already names it.
+- **§54 kept as is**, deliberately: Apple's 4.3(b) exposure applies to every app in a named
+  category, thin or substantial. Teams that have stated their differentiator can acknowledge the
+  rule in `.precheck-ignore`. Rationale recorded in methodology.md.
+
 ### Notes
 - Origin of this release: a comparison against
   [dabodamjan/app-store-rejection-checker](https://github.com/dabodamjan/app-store-rejection-checker).

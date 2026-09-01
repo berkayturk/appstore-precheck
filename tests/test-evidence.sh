@@ -36,6 +36,16 @@ assert_eq "judgment-call" "$(rule_confidence min-functionality-nav)" "nav heuris
 assert_eq "judgment-call" "$(rule_confidence webview-wrapper)"       "webview fingerprint is a judgment call"
 assert_eq "judgment-call" "$(rule_confidence paywall-urgency)"       "urgency copy is a judgment call"
 
+section "research-backed corrections (2026-09-01)"
+# App Store Connect holds a build at "Missing Compliance" until the encryption
+# question is answered — one click. Friction, not a rejection: not validator-blocking.
+assert_eq "judgment-call" "$(rule_confidence export-compliance)" "export compliance is friction, not a block"
+# ATT: ITMS-90683 fires for NSUserTrackingUsageDescription whenever the framework is
+# linked, reachable or not — so this one really is mechanical.
+assert_eq "validator-blocking" "$(rule_confidence att-usage)" "ATT purpose string is upload-validated (ITMS-90683)"
+# SDK floor: ITMS-90725 at upload since 2026-04-28.
+assert_eq "validator-blocking" "$(rule_confidence xcode-sdk-requirement)" "SDK minimum is upload-validated (ITMS-90725)"
+
 section "unknown rules stay empty (never guessed)"
 assert_eq "" "$(rule_evidence not-a-rule)"   "unknown rule has no evidence class"
 assert_eq "" "$(rule_confidence not-a-rule)" "unknown rule has no confidence"

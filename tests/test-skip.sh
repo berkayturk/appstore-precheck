@@ -92,6 +92,58 @@ assert_eq "2" "$(jq -r '.summary.not_audited' <<<"$j")" "acknowledging a gap doe
 assert_gt "$(jq -r '.summary.suppressed' <<<"$j")" "1" "both acknowledgments are counted as suppressed"
 rm -rf "$d"
 
+section "a check that could not run is SKIP, not WARN (no verdict inflation)"
+# Before: these were WARNs carrying the rule's label and counting toward YELLOW —
+# a coverage gap dressed as a finding. Each is now a SKIP under its rule.
+# (1) A lone .swift file with no project: the iOS source dir itself cannot be found.
+d="$(mktemp -d)"; mkdir -p "$d/ios/App"
+printf 'import AVFoundation\nlet s = AVCaptureSession()\n' > "$d/ios/App/Cam.swift"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+assert_contains "$out" "SKIP: layout — could not auto-detect the iOS source dir" "no source dir -> parity check did not run (SKIP)"
+assert_absent   "$out" "WARN: layout — could not auto-detect" "…and is no longer a WARN"
+rm -rf "$d"
+# (2) A project whose plist is generated from build settings: source dir found, no plist file.
+d="$(mktemp -d)"; cp -R "$HERE/fixtures/pbxproj-generate-app/." "$d/"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+assert_contains "$out" "SKIP: 5.1.1 Info.plist not found" "missing plist -> the cross-check did not run"
+assert_absent   "$out" "WARN: 5.1.1 Info.plist not found" "…and is no longer a WARN"
+j="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
+assert_eq "usage-description-crosscheck" \
+  "$(jq -r '[.findings[]|select(.severity=="SKIP" and (.message|test("Info.plist not found")))][0].rule_id' <<<"$j")" \
+  "the SKIP is filed under its rule"
+assert_eq "null" "$(jq -r '[.findings[]|select(.severity=="SKIP" and (.message|test("Info.plist not found")))][0].confidence' <<<"$j")" \
+  "and carries no confidence"
+rm -rf "$d"
+
+d="$(mktemp -d)"; mkdir -p "$d/ios/App"
+printf 'import StoreKit\nlet p = Product.products\n' > "$d/ios/App/Store.swift"        # IAP signal, no paywall view
+printf '<plist version="1.0"><dict></dict></plist>' > "$d/ios/App/Info.plist"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+if grep -q "paywall/subscription view found" <<<"$out"; then
+  assert_contains "$out" "SKIP: 3.1.2 IAP detected but no paywall" "no paywall view -> link checks did not run (SKIP)"
+  assert_absent   "$out" "WARN: 3.1.2 IAP detected but no paywall" "…and is no longer a WARN"
+else
+  echo "  (info: fixture did not trigger the IAP gate; branch covered by inspection)"
+fi
+rm -rf "$d"
+
+section "App Store Connect-optional metadata is a WARN, never a FAIL"
+# Subtitle and keywords are optional in App Store Connect; only name and description
+# are required. An empty subtitle used to be a validator-blocking FAIL.
+d="$(mktemp -d)"; mkdir -p "$d/fastlane/metadata/en-US"
+printf 'Budget Tracker' > "$d/fastlane/metadata/en-US/name.txt"
+printf 'Track spending.' > "$d/fastlane/metadata/en-US/description.txt"
+: > "$d/fastlane/metadata/en-US/subtitle.txt"
+: > "$d/fastlane/metadata/en-US/keywords.txt"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+assert_absent   "$out" "FAIL: 2.3.7 Metadata missing" "empty optional fields are not a FAIL"
+assert_contains "$out" "WARN: 2.3.7 Metadata gap — ./fastlane/metadata/en-US/subtitle.txt" "…but are still surfaced as a WARN"
+assert_contains "$out" "evidence: metadata · judgment-call" "with an honest label"
+: > "$d/fastlane/metadata/en-US/description.txt"
+out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
+assert_contains "$out" "FAIL: 2.3.7 Metadata missing — ./fastlane/metadata/en-US/description.txt" "an empty REQUIRED field is still a FAIL"
+rm -rf "$d"
+
 section "SKIP is a first-class finding in --format json"
 d="$(mktemp -d)"; cp -R "$HERE/fixtures/ai-chat-app/." "$d/"
 j="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
