@@ -20,8 +20,8 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 
 ### Quarterly: vector and pattern review
 
-Walk the 42 vectors in the methodology table and confirm each still matches how Apple reviews
-today. Also spot-check the 28 Pierre deep-review checks in
+Walk the 55 vectors in the methodology table and confirm each still matches how Apple reviews
+today. Also spot-check the 31 Pierre deep-review checks in
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
 
@@ -39,6 +39,9 @@ after major guideline updates. Pay special attention to the signal lists that go
 - The banned / deprecated API list in §11.
 - The account-deletion rule in §38 (5.1.1(v)) and the 4.2.3 web-wrapper heuristic threshold in
   §35; both are policy-sensitive and worth re-checking after a guidelines update.
+- The IPv4 exclusion heuristics in §55 (`ipv4-literal`): loopback / `0.0.0.0` / `255.x` / CIDR /
+  version-looking values / comments. A false WARN here is cheap to add an exclusion for; a missed
+  literal is what the reviewer's NAT64 network finds.
 
 A pattern that is missing a popular new SDK is a silent false negative, so this review matters
 more than it looks.
@@ -80,6 +83,8 @@ reconciliation as required, not optional:
   when the tap drifts from npm latest.
 - **Vector count:** the count appears in the README intro and table, `SKILL.md`,
   the methodology table, and the changelog. When you add or remove a check, update all of them.
+  The deep-review count (31) lives in the same places plus `pierre-deep-review.md`; the Tier B
+  item list (4, 5, 7, 10, 15, 29, 30, 31) is repeated in SKILL.md, the reference and the README.
 - **Output format:** tests assert on the exact `FAIL:` / `WARN:` / `PASS: <topic> — <detail>`
   shape. The em-dash in those output lines is machine format and stays. Prose everywhere else
   stays human, with no em-dashes.

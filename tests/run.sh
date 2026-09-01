@@ -137,6 +137,7 @@ assert_has "PASS: 3.1.2 Restore Purchases — present"                      "res
 assert_has "PASS: 3.1.2 Terms of Use (EULA) link — present"               "terms link detected"
 assert_has "PASS: 3.1.2 Privacy Policy link — present"                    "privacy link detected"
 assert_has "PASS: 3.1.2 Terms of Use (EULA) link present in every locale"   "EULA link in store description (§53)"
+assert_has "PASS: 2.5.5 IPv6-only"                                       "no IPv4-only signal in a clean app (§55)"
 assert_absent "FAIL:"                                                     "no FAIL lines at all"
 assert_absent "4.8 Sign in with Apple"                                    "no 4.8 flag without third-party login"
 assert_absent "3.1.1(a) External purchase"                                "no 3.1.1(a) flag without external purchase"

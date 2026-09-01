@@ -17,6 +17,10 @@ assert_eq "$EVIDENCE_CLASSES"  "metadata manifest resource build-setting source"
 assert_eq "$CONFIDENCE_LEVELS" "validator-blocking review-risk judgment-call"    "confidence vocabulary"
 
 section "per-rule classification (spot checks)"
+# §55 concludes from a source grep; Apple tests on NAT64 and a human rejects the failure.
+assert_eq "source"      "$(rule_evidence ipv4-literal)"   "ipv4-literal concludes from source"
+assert_eq "review-risk" "$(rule_confidence ipv4-literal)" "ipv4-literal is a reviewer call, not an upload gate"
+assert_eq "ipv4-literal" "$(rule_slug 55)" "§55 is catalogued"
 # Reads only fastlane metadata, and App Store Connect enforces the limit mechanically.
 assert_eq "metadata"          "$(rule_evidence metadata-char-limits)"   "char-limits reads metadata"
 assert_eq "validator-blocking" "$(rule_confidence metadata-char-limits)" "char-limits is mechanically enforced"
@@ -83,7 +87,7 @@ while IFS= read -r slug; do
   [[ -n "$ev" ]] && ! grep -qw -- "$ev" <<<"$EVIDENCE_CLASSES"  && { echo "  FAIL: $slug evidence '$ev' not in vocabulary"; bad_vocab=$((bad_vocab + 1)); }
   [[ -n "$cf" ]] && ! grep -qw -- "$cf" <<<"$CONFIDENCE_LEVELS" && { echo "  FAIL: $slug confidence '$cf' not in vocabulary"; bad_vocab=$((bad_vocab + 1)); }
 done < <(catalogue_slugs)
-assert_gt "$walked" "53" "the catalogue walk reached §54 (bound is derived, not hardcoded)"
+assert_gt "$walked" "54" "the catalogue walk reached §55 (bound is derived, not hardcoded)"
 assert_eq "$missing_ev" "0" "every rule has an evidence class"
 assert_eq "$missing_cf" "0" "every rule has a confidence level"
 assert_eq "$bad_vocab"  "0" "every label is in the closed vocabulary"
@@ -193,6 +197,7 @@ assert_eq "https://developer.apple.com/app-store/review/guidelines/#5.1.1" "$(gu
 assert_eq "https://developer.apple.com/app-store/review/guidelines/#3.1.1" "$(guideline_url '3.1.1(a)')" "letter suffix trimmed to its anchor"
 assert_eq "" "$(guideline_url 'export-compliance')" "non-guideline token yields no link"
 assert_eq "" "$(guideline_url '5')" "bare category is not a section anchor"
+assert_eq "https://developer.apple.com/app-store/review/guidelines/#4" "$(guideline_url 4.0)" "N.0 (category intro) links to the bare category anchor"
 assert_eq "" "$(guideline_url '')" "empty yields no link"
 
 exit "$fails"

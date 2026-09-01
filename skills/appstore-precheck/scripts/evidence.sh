@@ -84,7 +84,7 @@ rule_evidence() {
     executable-code-download|crypto-wallet-mining|webview-wrapper|remote-desktop) echo source ;;
     account-no-delete|mdm|permission-priming-cta|paywall-trial-emphasis) echo source ;;
     ai-provider-consent|paywall-urgency|rating-sentiment-gate|forced-login) echo source ;;
-    push-marketing-optout) echo source ;;
+    push-marketing-optout|ipv4-literal) echo source ;;
 
     *) echo "" ;;
   esac
@@ -116,6 +116,9 @@ rule_confidence() {
     health-icloud-sync|vpn-networkextension|demo-account|executable-code-download) echo review-risk ;;
     background-modes-unused|safari-extension|account-no-delete) echo review-risk ;;
     kids-ads-analytics|realmoney-gambling|trial-disclosure|autorenew-disclosure) echo review-risk ;;
+    # 2.5.5: App Review runs on an IPv6-only NAT64 network. Nothing at upload checks
+    # for IPv4 literals; the app simply fails to connect in front of a reviewer.
+    ipv4-literal) echo review-risk ;;
 
     # --- judgment-call: heuristic signal, false positives expected ---
     min-functionality-nav|crypto-wallet-mining|webview-wrapper|remote-desktop) echo judgment-call ;;
@@ -201,10 +204,13 @@ catalogue_slugs() {
 # guideline_url <guideline-number> -> deep link to that section, or "" if the
 # token is not a guideline number. Apple anchors each section by its bare number
 # (id="5.1.1"), so the link is derivable; parenthetical suffixes like 5.1.1(v)
-# and 3.1.1(a) are not anchors and are trimmed to their numeric stem.
+# and 3.1.1(a) are not anchors and are trimmed to their numeric stem. A category
+# intro ("4.0", Apple's own name for the Design intro prose) is anchored as the bare
+# category id="4" — the page has no id="4.0" — so it maps to "#4".
 guideline_url() {
   local g="${1:-}" stem
   stem="$(printf '%s' "$g" | sed -E 's/\(.*$//')"
   [[ "$stem" =~ ^[1-5](\.[0-9]+)+$ ]] || { echo ""; return; }
+  case "$stem" in [1-5].0) stem="${stem%.0}" ;; esac
   echo "${GUIDELINES_BASE_URL}#${stem}"
 }

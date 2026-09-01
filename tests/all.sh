@@ -25,6 +25,9 @@ SUITE=(
   "test-guideline-cite.sh" # guideline-cite.sh offline pinned-quote citation lookup
   "test-skip.sh"      # SKIP (not-audited) line class: emission, counting, json/sarif
   "test-saturated.sh" # §54 saturated-category (4.3(b)) field scoping + word boundaries
+  "test-ipv4-literal.sh" # §55 ipv4-literal (2.5.5): IPv4-only socket APIs + literals, exclusions, labels
+  "test-design-40.sh" # guideline 4.0: baseline N.0 sections, pinned quote, deep-review check 31
+  "test-phase6-doc.sh" # Phase 6 reference contract: D0 install step, D3 StoreKit SKIP, device lifecycle
   "test-rag-ingest.sh" # eval/rag/ingest.sh full-corpus extraction (RAG eval, no network)
   "test-rag-embed.sh" # eval/rag/embed.py SQL generation (RAG eval, no network)
   "test-rag-gemini-client.sh" # eval/rag/gemini_client.py retry-delay parsing + 429 backoff (RAG eval, no network)

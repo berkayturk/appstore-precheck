@@ -15,6 +15,12 @@
     "3.1.1": {
       "fingerprint": "cccc",
       "snapshot": "3.1.1 in-app purchase"
+    },
+    "4.0": {
+      "fingerprint": "dddd",
+      "snapshot": "4. design apple customers place a high value",
+      "quote": "Apple customers place a high value on products that are simple, refined, innovative, and easy to use.",
+      "quote_verified_on": "2026-08-31"
     }
   },
   "reconciled_on": "2026-08-31"

@@ -33,6 +33,7 @@ rule_slug() {
     49) echo rating-sentiment-gate ;;       50) echo forced-login ;;
     51) echo push-marketing-optout ;;       52) echo xcode-sdk-requirement ;;
     53) echo subscription-eula-metadata ;;  54) echo saturated-category ;;
+    55) echo ipv4-literal ;;
     *) echo "" ;;
   esac
 }
