@@ -71,13 +71,16 @@ EOF
 _dyn_host_matches() { [[ "$1" == "$2" || "$1" == *".$2" ]]; }
 
 # dyn_declared_tracking_domains <PrivacyInfo.xcprivacy|""> -> declared domains, one per line.
+# Uses lib/dyn-bundle.sh's plist reader when it is loaded (dynamic-run.sh sources both);
+# standalone, a minimal tag-per-line XML fallback of the same shape.
 dyn_declared_tracking_domains() {
   local f="${1:-}"
   [[ -n "$f" && -f "$f" ]] || return 0
-  if command -v plutil >/dev/null 2>&1 && plutil -extract NSPrivacyTrackingDomains json -o - "$f" >/dev/null 2>&1; then
-    plutil -extract NSPrivacyTrackingDomains json -o - "$f" 2>/dev/null | jq -r '.[]?' 2>/dev/null
+  if command -v dyn_plist_array_strings >/dev/null 2>&1; then
+    dyn_plist_array_strings "$f" NSPrivacyTrackingDomains
   else
-    awk '/<key>NSPrivacyTrackingDomains<\/key>/ {on=1; next} on && /<\/array>/ {exit} on && /<string>/ { sub(/.*<string>/,""); sub(/<\/string>.*/,""); print }' "$f"
+    sed 's/>/>\
+/g' "$f" | sed -E 's/^[[:space:]]+//' | grep -v '^$' | awk 'on && /<\/array>/ { exit } on && /<\/string>/ { sub(/<\/string>.*/, ""); print; next } $0 == "NSPrivacyTrackingDomains</key>" { on = 1 }'
   fi | tr 'A-Z' 'a-z'
 }
 

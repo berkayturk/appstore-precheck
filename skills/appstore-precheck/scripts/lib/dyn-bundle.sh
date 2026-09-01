@@ -14,32 +14,77 @@
 # directory name (app-discover.sh), because a plist cannot tell Debug from Release.
 # Sourced by dynamic-run.sh. Bash 3.2. plutil on macOS; XML fallback for CI fixtures.
 
+# --- plist readers ------------------------------------------------------------------
+# plutil on macOS (a real .app carries BINARY plists); an XML fallback for CI fixtures
+# and for a Mac without Xcode tools. DYN_NO_PLUTIL=1 forces the fallback (tests use it
+# to run the ubuntu path on macOS). The fallback first puts every tag on its own line
+# (`sed 's/>/>\n/g'`), so one-line `<key>K</key><string>v</string>` pairs and
+# pretty-printed plists parse identically.
+_dyn_have_plutil() { [[ -z "${DYN_NO_PLUTIL:-}" ]] && command -v plutil >/dev/null 2>&1; }
+_dyn_plist_tokens() { sed 's/>/>\
+/g' "$1" 2>/dev/null | sed -E 's/^[[:space:]]+//' | grep -v '^$'; }
+
 # dyn_plist_keys <plist> -> top-level keys, one per line, sorted.
 dyn_plist_keys() {
   local f="$1"
   [[ -f "$f" ]] || return 0
-  if command -v plutil >/dev/null 2>&1 && plutil -convert json -o - "$f" >/dev/null 2>&1; then
+  if _dyn_have_plutil && plutil -convert json -o - "$f" >/dev/null 2>&1; then
     plutil -convert json -o - "$f" 2>/dev/null | jq -r 'keys[]' 2>/dev/null | sort
   else
-    # XML: top-level keys are the <key> elements at nesting depth 1 of the root dict.
-    awk '
-      /<dict>/  { depth++ }
-      /<\/dict>/ { depth-- }
-      /<array>/ { arr++ }
-      /<\/array>/ { arr-- }
-      depth == 1 && arr == 0 && /<key>/ { sub(/.*<key>/,""); sub(/<\/key>.*/,""); print }
-    ' "$f" | sort
+    _dyn_plist_tokens "$f" | awk '
+      /<dict>/   { depth++; next }
+      /<\/dict>/ { depth--; next }
+      /<array>/  { arr++; next }
+      /<\/array>/ { arr--; next }
+      depth == 1 && arr == 0 && /<\/key>/ { sub(/<\/key>.*/, ""); print }
+    ' | sort
   fi
 }
 
-# dyn_plist_string <plist> <key> -> string value or "" (same as app-discover's helper).
+# dyn_plist_string <plist> <key> -> string value or "" (empty for a non-string or a missing key).
 dyn_plist_string() {
   local f="$1" k="$2" v=""
-  if command -v plutil >/dev/null 2>&1; then v="$(plutil -extract "$k" raw -o - "$f" 2>/dev/null)" || v=""; fi
+  [[ -f "$f" ]] || { printf ''; return; }
+  if _dyn_have_plutil; then v="$(plutil -extract "$k" raw -o - "$f" 2>/dev/null)" || v=""; fi
   if [[ -z "$v" ]]; then
-    v="$(awk -v K="<key>$k</key>" 'found && /<string>/ { sub(/.*<string>/,""); sub(/<\/string>.*/,""); print; exit } found && /<\/?(true|false|integer|array|dict)/ { exit } index($0,K) { found=1 }' "$f" 2>/dev/null)"
+    v="$(_dyn_plist_tokens "$f" | awk -v K="$k</key>" '
+      state == 2 { sub(/<\/string>.*/, ""); print; exit }
+      state == 1 { if ($0 ~ /^<string>/) state = 2; else exit; next }
+      $0 == K { state = 1 }
+    ')"
   fi
   printf '%s' "$v"
+}
+
+# dyn_plist_array_strings <plist> <key> -> the string members of an array value, one per line.
+dyn_plist_array_strings() {
+  local f="$1" k="$2"
+  [[ -f "$f" ]] || return 0
+  if _dyn_have_plutil && plutil -extract "$k" json -o - "$f" >/dev/null 2>&1; then
+    plutil -extract "$k" json -o - "$f" 2>/dev/null | jq -r '.[]? | strings' 2>/dev/null
+  else
+    _dyn_plist_tokens "$f" | awk -v K="$k</key>" '
+      on && /<\/array>/ { exit }
+      on && /<\/string>/ { sub(/<\/string>.*/, ""); print; next }
+      $0 == K { on = 1 }
+    '
+  fi
+}
+
+# dyn_plist_array_has_int <plist> <key> <int> -> 0 when the array value contains the integer.
+dyn_plist_array_has_int() {
+  local f="$1" k="$2" want="$3"
+  [[ -f "$f" ]] || return 1
+  if _dyn_have_plutil && plutil -extract "$k" json -o - "$f" >/dev/null 2>&1; then
+    plutil -extract "$k" json -o - "$f" 2>/dev/null | jq -e --argjson w "$want" 'index($w) != null' >/dev/null 2>&1
+  else
+    _dyn_plist_tokens "$f" | awk -v K="$k</key>" -v W="$want</integer>" '
+      on && /<\/array>/ { exit }
+      on && $0 == W { found = 1; exit }
+      $0 == K { on = 1 }
+      END { exit found ? 0 : 1 }
+    '
+  fi
 }
 
 # dyn_bundle_plist_lines <installed-plist> <repo-plist|""> -> transcript lines.
@@ -137,11 +182,4 @@ dyn_config_from_dir() {
 }
 
 # dyn_plist_supports_ipad <plist> -> 0 when UIDeviceFamily contains 2.
-dyn_plist_supports_ipad() {
-  local f="$1"
-  if command -v plutil >/dev/null 2>&1 && plutil -extract UIDeviceFamily json -o - "$f" >/dev/null 2>&1; then
-    plutil -extract UIDeviceFamily json -o - "$f" 2>/dev/null | jq -e 'index(2) != null' >/dev/null 2>&1
-  else
-    awk '/<key>UIDeviceFamily<\/key>/ {on=1; next} on && /<\/array>/ {exit} on && /<integer>2<\/integer>/ {found=1} END {exit found?0:1}' "$f" 2>/dev/null
-  fi
-}
+dyn_plist_supports_ipad() { dyn_plist_array_has_int "$1" UIDeviceFamily 2; }

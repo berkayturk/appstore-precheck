@@ -164,8 +164,27 @@ assert_gt "$(dyn_tracking_domain_catalogue | grep -c .)" "15" "the vendor catalo
 assert_eq "0" "$(dyn_tracking_domain_catalogue | awk -F'\t' 'NF!=2' | grep -c .)" "every catalogue row is vendor<TAB>domain"
 
 # ---------------------------------------------------------------------------------
-section "installed bundle: plist keys, per-key purpose strings, drift"
+section "plist readers: the XML fallback (ubuntu CI) agrees with plutil (macOS)"
 B="$FX/dynamic-bundle"
+if command -v plutil >/dev/null 2>&1; then
+  for k in CFBundleIdentifier CFBundleExecutable DTXcode NSMicrophoneUsageDescription NSCameraUsageDescription NotAKey; do
+    assert_eq "$(dyn_plist_string "$B/Installed.app/Info.plist" "$k")" "$(DYN_NO_PLUTIL=1 dyn_plist_string "$B/Installed.app/Info.plist" "$k")" "string $k: fallback == plutil"
+  done
+  assert_eq "$(dyn_plist_keys "$B/Installed.app/Info.plist" | tr '\n' ' ')" "$(DYN_NO_PLUTIL=1 dyn_plist_keys "$B/Installed.app/Info.plist" | tr '\n' ' ')" "keys: fallback == plutil"
+  assert_eq "$(dyn_plist_array_strings "$B/Installed.app/PrivacyInfo.xcprivacy" NSPrivacyTrackingDomains)" "$(DYN_NO_PLUTIL=1 dyn_plist_array_strings "$B/Installed.app/PrivacyInfo.xcprivacy" NSPrivacyTrackingDomains)" "array strings: fallback == plutil"
+  assert_eq "$(dyn_plist_supports_ipad "$B/Installed.app/Info.plist" && echo y || echo n)" "$(DYN_NO_PLUTIL=1 dyn_plist_supports_ipad "$B/Installed.app/Info.plist" && echo y || echo n)" "UIDeviceFamily: fallback == plutil"
+else
+  echo "  ok: no plutil here; the fallback is what runs below"
+fi
+# One-line and pretty-printed plists read the same through the fallback.
+printf '<plist version="1.0">\n<dict>\n  <key>CFBundleIdentifier</key>\n  <string>com.pretty.app</string>\n  <key>UIDeviceFamily</key>\n  <array>\n    <integer>1</integer>\n  </array>\n  <key>Empty</key>\n  <string></string>\n</dict>\n</plist>\n' > "$T/pretty.plist"
+assert_eq "com.pretty.app" "$(DYN_NO_PLUTIL=1 dyn_plist_string "$T/pretty.plist" CFBundleIdentifier)" "pretty-printed string"
+assert_eq "" "$(DYN_NO_PLUTIL=1 dyn_plist_string "$T/pretty.plist" Empty)" "empty string is empty"
+assert_eq "" "$(DYN_NO_PLUTIL=1 dyn_plist_string "$T/pretty.plist" UIDeviceFamily)" "a non-string value is not a string"
+assert_eq "n" "$(DYN_NO_PLUTIL=1 dyn_plist_supports_ipad "$T/pretty.plist" && echo y || echo n)" "iPhone-only family"
+assert_eq "y" "$(DYN_NO_PLUTIL=1 dyn_plist_supports_ipad "$B/Installed.app/Info.plist" && echo y || echo n)" "universal family (one-line array)"
+
+section "installed bundle: plist keys, per-key purpose strings, drift"
 keys="$(dyn_plist_keys "$B/Installed.app/Info.plist")"
 assert_contains "$keys" "DTXcode" "top-level keys read"
 assert_absent "$keys" "integer" "array members are not keys"

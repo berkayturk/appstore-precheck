@@ -31,6 +31,8 @@ set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=framework-detect.sh
 . "$HERE/framework-detect.sh"
+# shellcheck source=lib/dyn-bundle.sh
+. "$HERE/lib/dyn-bundle.sh"
 
 REPO="." DD="${HOME}/Library/Developer/Xcode/DerivedData" FRAMEWORK="" JSON=0
 usage_err() { echo "app-discover.sh: $1" >&2; exit 64; }
@@ -51,18 +53,9 @@ case "$FRAMEWORK" in ""|rn|flutter|kmp|native) ;; *) usage_err "--framework must
 mtime_epoch() { stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || echo 0; }
 epoch_iso()   { date -u -r "$1" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || echo ""; }
 
-# plist_string <plist> <key> -> the string value, or "". plutil on macOS (binary
-# plists in a real .app); an XML fallback everywhere else.
-plist_string() {
-  local f="$1" k="$2" v=""
-  if command -v plutil >/dev/null 2>&1; then
-    v="$(plutil -extract "$k" raw -o - "$f" 2>/dev/null)" || v=""
-  fi
-  if [[ -z "$v" ]]; then
-    v="$(awk -v K="<key>$k</key>" 'found && /<string>/ { sub(/.*<string>/,""); sub(/<\/string>.*/,""); print; exit } index($0,K) { found=1 }' "$f" 2>/dev/null)"
-  fi
-  printf '%s' "$v"
-}
+# plist_string <plist> <key> -> the string value, or "" (lib/dyn-bundle.sh: plutil on
+# macOS for the binary plists of a real .app, a tag-per-line XML fallback elsewhere).
+plist_string() { dyn_plist_string "$1" "$2"; }
 
 # config_from_dir <app-path> -> debug | release | unknown, from the parent directory name only.
 config_from_dir() {
