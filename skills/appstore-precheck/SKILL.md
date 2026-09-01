@@ -455,8 +455,10 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    a verdict is only meaningful next to the list of what it did not cover. Two parts:
 
    **(a) Checks that did not run this time** — every `SKIP:` line, verbatim, with what would close
-   the gap (paste the App Store Connect listing, set `.screenshotsDir`, …). If there are none, say
-   "every check ran".
+   the gap (paste the App Store Connect listing, set `.screenshotsDir`, …). A SKIP acknowledged in
+   `.precheck-ignore` is not printed by the scanner but is still in `summary.not_audited` with
+   `suppressed: true`; list it here as *acknowledged* — signing for a gap does not close it. If
+   there are none, say "every check ran".
 
    **(b) What this tool cannot see at all**, regardless of input — a fixed list, never omitted and
    never implied to have been verified:

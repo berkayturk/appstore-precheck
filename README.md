@@ -422,7 +422,11 @@ SKIP: metadata — no fastlane metadata directory detected; 12 store-listing che
 ```
 
 `SKIP` is counted separately (`skip=` in `verdict.sh`, `summary.not_audited` in JSON) and **never
-changes the verdict** — a gap in coverage is not a defect in the build. In agent mode Pierre then
+changes the verdict** — a gap in coverage is not a defect in the build. A team whose listing or
+screenshots genuinely live only in App Store Connect can acknowledge the gap by id in
+`.precheck-ignore` (`store-listing-not-audited`, `screenshots-per-locale`): the line goes quiet, the
+record stays as suppressed, and it **still counts as not audited** — signing for a gap does not
+close it. In agent mode Pierre then
 **asks you for the listing**, writes it into a temporary fastlane-shaped tree outside your repo, and
 **re-runs the scanner over it** — so those findings are real scanner lines and do count, rather
 than Pierre's impression of your text. If you

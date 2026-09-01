@@ -155,6 +155,14 @@ evidence_label() {
   echo "$out"
 }
 
+# is_gap_record <rule-id> -> 0 when the id names a GAP RECORD rather than a check.
+# A gap record is a SKIP given a stable id so a team can acknowledge it by name in
+# .precheck-ignore (a signed acknowledgment, counted as suppressed, never erased from
+# not_audited). It establishes nothing, so it carries no evidence class or confidence
+# and sits outside the catalogue and its completeness test. Convention: the id ends
+# in "-not-audited". Today: store-listing-not-audited.
+is_gap_record() { [[ "${1:-}" == *-not-audited ]]; }
+
 # rules_with_evidence <class> -> the catalogued rule ids in that evidence class, one
 # per line. Derived by asking rule_evidence about every slug in the findings.sh
 # catalogue, so it can never disagree with the classification it reports on. Used to

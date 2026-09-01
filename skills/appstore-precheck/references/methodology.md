@@ -337,6 +337,14 @@ Two are emitted today:
   are deterministic scanner lines that count toward the verdict, not a model's reading of the text.
 - **`SKIP: 2.3.3 Screenshots`** when there is no in-repo screenshots directory.
 
+**Acknowledging a gap.** Both can be silenced by id in `.precheck-ignore`
+(`screenshots-per-locale`, `store-listing-not-audited`). Suppression here is a signed
+acknowledgment, not a hiding place: the line leaves the text output, the record stays with
+`suppressed: true`, the `suppressed` counter rises — and the gap **still counts in `not_audited`**,
+because signing for a gap does not close it. `store-listing-not-audited` is a *gap record*, not a
+check: it establishes nothing, carries no labels, and sits outside the catalogue and its
+completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
+
 ### The full table
 
 | § | Rule | Evidence | Confidence | Needs build verification |

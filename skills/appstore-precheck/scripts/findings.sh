@@ -153,7 +153,10 @@ render_json() {
     | ($live|map(select(.severity=="FAIL"))|length) as $f
     | ($live|map(select(.severity=="WARN"))|length) as $w
     | ($live|map(select(.severity=="PASS"))|length) as $p
-    | ($live|map(select(.severity=="SKIP"))|length) as $na
+    # not_audited counts EVERY SKIP, suppressed ones included: acknowledging a gap
+    # in .precheck-ignore signs it, it does not close it. (suppressed counts it too —
+    # two different questions: "was it examined?" and "who took responsibility?")
+    | (map(select(.severity=="SKIP"))|length) as $na
     | (map(select(.suppressed==true))|length) as $s
     | (if $f>=$fmin then "RED" elif $w>=$wmin then "YELLOW" else "GREEN" end) as $verdict
     # by_confidence counts live ISSUES (FAIL + WARN) only. A PASS carries the same

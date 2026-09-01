@@ -71,12 +71,25 @@ assert_contains "$out" "saturated-category" "the newest metadata rule is in the 
 assert_absent   "$out" "(2.1, 2.3.x" "the stale hardcoded guideline enumeration is gone"
 rm -rf "$d"
 
-section "a rule-scoped SKIP can be acknowledged via .precheck-ignore"
+section "a SKIP can be acknowledged via .precheck-ignore — but never erased"
+# Suppression in this project is a signed acknowledgment, not a hiding place: the
+# line leaves the text output, the record stays with suppressed:true, and the gap
+# STILL counts as not audited. The store-listing SKIP gets a stable id for exactly
+# this purpose; it is a gap record, not a check, so it lives outside the catalogue.
 d="$(mktemp -d)"; cp -R "$HERE/fixtures/ai-chat-app/." "$d/"
-printf 'screenshots-per-locale\n' > "$d/.precheck-ignore"
+printf 'screenshots-per-locale\nstore-listing-not-audited\n' > "$d/.precheck-ignore"
 out="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" 2>&1)"
 assert_absent   "$out" "SKIP: 2.3.3 Screenshots" "acknowledged screenshot gap is not re-reported"
-assert_contains "$out" "SKIP: metadata" "the store-listing SKIP has no rule and cannot be silenced"
+assert_absent   "$out" "SKIP: metadata"          "acknowledged store-listing gap is not re-reported"
+assert_contains "$out" "suppressed via .precheck-ignore" "the footer still says something was suppressed"
+j="$(cd "$d" && APPSTORE_PRECHECK_CONFIG=/nonexistent bash "$SCAN" --format json 2>/dev/null)"
+assert_eq "store-listing-not-audited" \
+  "$(jq -r '[.findings[]|select(.severity=="SKIP" and (.message|startswith("metadata")))][0].rule_id' <<<"$j")" \
+  "the store-listing SKIP carries its stable id"
+assert_eq "true" "$(jq -r '[.findings[]|select(.rule_id=="store-listing-not-audited")][0].suppressed' <<<"$j")" \
+  "and is recorded as suppressed, not dropped"
+assert_eq "2" "$(jq -r '.summary.not_audited' <<<"$j")" "acknowledging a gap does not remove it from not_audited"
+assert_gt "$(jq -r '.summary.suppressed' <<<"$j")" "1" "both acknowledgments are counted as suppressed"
 rm -rf "$d"
 
 section "SKIP is a first-class finding in --format json"

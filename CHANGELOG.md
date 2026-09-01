@@ -147,8 +147,12 @@ running it rather than reading it.
   returns empty (`catalogue_slugs`), and the test asserts the walk reached §54.
 - **`skip()` bypassed `.precheck-ignore`.** A team whose screenshots genuinely live only in App
   Store Connect had no way to acknowledge the gap; the rule-scoped SKIP now honours suppression
-  like every other emitter and is counted as suppressed. The store-listing SKIP is deliberately
-  unsuppressible — it has no rule — because an unaudited listing is a fact, not a preference.
+  like every other emitter and is counted as suppressed. The store-listing SKIP was first left
+  unsuppressible ("a fact, not a preference"); on reflection that was inconsistent with the
+  screenshots SKIP and with what suppression means here — a signed acknowledgment, not a hiding
+  place. It now carries the stable id `store-listing-not-audited` (a *gap record*, outside the
+  catalogue; `is_gap_record`), can be acknowledged in `.precheck-ignore`, and **still counts in
+  `not_audited`** when acknowledged: signing for a gap does not close it.
 - `tests/test-format-json.sh` counted `set_rule` call sites as a proxy for "53 sections tagged",
   which broke on a legitimate re-declaration. It now counts distinct slugs.
 - **`--reconcile` silently destroyed every pinned quote.** It rebuilt each entry from scratch, so a

@@ -255,12 +255,17 @@ echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='
 # a repo look clean on ground nobody examined. Name the cost, derived from the
 # evidence catalogue so the number cannot rot as rules are added.
 if [[ -z "$META_DIR" || ! -d "$META_DIR" ]]; then
+  # A gap record, not a check (see evidence.sh is_gap_record): the id exists so the
+  # gap can be acknowledged by name in .precheck-ignore. Acknowledging it removes the
+  # line from the text output and counts it as suppressed; it stays in not_audited.
+  set_rule "store-listing-not-audited"
   _meta_list="$(rules_with_evidence metadata)"
   _meta_rules="$(printf '%s\n' "$_meta_list" | grep -c .)"
   skip "metadata — no fastlane metadata directory detected; ${_meta_rules} store-listing checks did not run. Paste your App Store Connect listing — name, subtitle, description, keywords, promotional text — to have them audited (the skill re-runs the scanner over what you paste), or they stay unaudited."
   # The skipped rule ids, derived from the same catalogue as the count, so the list can
   # never disagree with it — unlike the guideline enumeration this used to hardcode.
   detail "$(printf '%s\n' "$_meta_list" | tr '\n' ' ' | sed 's/ $//')"
+  set_rule ""
 fi
 
 # ===================================================================
