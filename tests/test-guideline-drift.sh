@@ -116,5 +116,32 @@ assert_eq "$orphan" "" "no fingerprint for a non-covered section"
 bad="$(jq -r '.sections | to_entries[] | select(.value.fingerprint | test("^[0-9a-f]{64}$") | not) | .key' "$FP")"
 assert_eq "$bad" "" "all fingerprints are 64-hex sha256"
 
+# --- --reconcile must not silently destroy pinned citations ---------------------
+# Rebuilding each entry from scratch used to drop every `quote`, and a later
+# --quotes run would then re-date them all as if freshly verified. An unchanged
+# section keeps its quote and its original verification date; a CHANGED section
+# loses it on purpose, because the old wording is now wrong.
+section "reconcile preserves quotes for unchanged sections, drops them for changed ones"
+rec_tmp="$(mktemp -d)"
+rec_fp="$rec_tmp/fp.json"
+# 2.3.3 will be unchanged; 1.2 gets a deliberately wrong fingerprint (= "drifted").
+unchanged_hash="$(printf '%s' "$(gd_section_text "$FIX/sample.html" "2.3.3")" | gd_hash)"
+jq -n --arg h "$unchanged_hash" '{
+  sections: {
+    "2.3.3": {fingerprint:$h, snapshot:"s", quote:"Screenshots should show the app in use.", quote_verified_on:"2026-01-01"},
+    "1.2":   {fingerprint:"stale-hash", snapshot:"s", quote:"An outdated quote.", quote_verified_on:"2026-01-01"}
+  }, reconciled_on:"2026-01-01"}' > "$rec_fp"
+jq -n '{all_sections:["1.2","2.3.3"], covered_by_scan:["1.2","2.3.3"], covered_by_pierre_deep_review:[]}' > "$rec_tmp/base.json"
+rec_out="$(gd_main --html "$FIX/sample.html" --baseline "$rec_tmp/base.json" \
+             --fingerprints "$rec_fp" --scan "$ROOT/skills/appstore-precheck/scripts/scan.sh" --reconcile 2>&1)"
+assert_eq "Screenshots should show the app in use." "$(jq -r '.sections["2.3.3"].quote' "$rec_fp")" \
+  "unchanged section keeps its pinned quote"
+assert_eq "2026-01-01" "$(jq -r '.sections["2.3.3"].quote_verified_on' "$rec_fp")" \
+  "and keeps its original verification date (not re-dated as freshly verified)"
+assert_eq "null" "$(jq -r '.sections["1.2"].quote' "$rec_fp")" \
+  "changed section loses its now-wrong quote"
+assert_contains "$rec_out" "pinned quote was dropped" "and the drop is announced, not silent"
+rm -rf "$rec_tmp"
+
 echo "test-guideline-drift: OK"
 exit "$fails"

@@ -1,8 +1,8 @@
-# Phase 4: Pierre deep review (29 semantic checks)
+# Phase 4: Pierre deep review (30 semantic checks)
 
 After Phase 3 (explaining every scan FAIL/WARN), Pierre runs a **read-only, project-wide
-semantic review** of 29 guideline areas the static scanner cannot fully judge. The **23 Tier A**
-checks (all 29 except the Tier B items below) are high-confidence; the **6 Tier B v1** checks
+semantic review** of 30 guideline areas the static scanner cannot fully judge. The **23 Tier A**
+checks (all 30 except the Tier B items below) are high-confidence; the **7 Tier B v1** checks
 **4, 5, 7, 10, 15, and 29** are heuristic advisory (higher false-positive risk, still useful
 pre-submit signals).
 
@@ -19,7 +19,7 @@ that Pierre explains in Phase 5 presentation.
 - **Read-only:** never modify project files.
 - **Evidence-based:** cite `file:line`, metadata path, screenshot filename, or fetched URL text.
   If you cannot read something (private URL, missing file), say so — do not invent findings.
-- **All 29 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
+- **All 30 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
 - **REVIEW-FINDING severity:** always `WARN` (advisory). Never emit `REVIEW-FINDING: … FAIL`.
   A deep-review issue informs the human; it does not block the token by itself.
 - **Tier B checks (4, 5, 7, 10, 15, 29):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
@@ -35,7 +35,7 @@ that Pierre explains in Phase 5 presentation.
 
 ## Output format
 
-For each of the 29 checks (in table order):
+For each of the 30 checks (in table order):
 
 ```
 REVIEW-PASS: <guideline> — <one-line why it looks OK, with evidence pointer>
@@ -62,7 +62,7 @@ language, a review prompt present but using the system API — report a plain
 
 ---
 
-## The 29 checks (guideline order)
+## The 30 checks (guideline order)
 
 | # | Guideline | Deep question | Primary sources |
 |---|-----------|---------------|-----------------|
@@ -285,6 +285,30 @@ language, a review prompt present but using the system API — report a plain
 2. Compare to system `requestReview` / `SKStoreReviewController` usage (scan §25).
 3. Flag dark patterns that manipulate ratings or bypass Apple's review prompt API.
 
+### 30 — 4.3 Differentiation in a saturated category *(Tier B v1)*
+
+Scan §54 flags *exposure* — the app name/subtitle/keywords put this in a category Apple names in
+4.3(b). It cannot judge the thing that actually decides the rejection: whether this app offers, in
+Apple's words, a "meaningfully different or improved experience". That is this check.
+
+Run it when **either** §54 fired **or** the app is a thin single-purpose utility, whatever its
+category. Skip it (report not applicable) for apps with a substantial, differentiated feature set.
+
+1. Read what the app actually does: entry point, main views, the feature set implied by the source —
+   not the description's claims about it.
+2. Compare against what the category's incumbents already do. Name the specific capability, data,
+   integration, or workflow that this app has and a generic member of the category does not.
+3. Check 4.3(a) too: multiple app targets or bundle identifiers that are variants of one app
+   (per-city, per-team, per-school builds) instead of one app with in-app selection. Look at
+   `project.pbxproj` targets and `PRODUCT_BUNDLE_IDENTIFIER` values.
+4. If the honest answer is "nothing meaningful", **say so plainly**. This is a judgment call and must
+   be labelled as one — but a vague reassurance here is worse than no check, because 4.3 rejections
+   arrive after the build has already passed everything mechanical.
+5. Recommend stating the differentiator explicitly in the App Review notes when the category is one
+   Apple names.
+
+Quote Apple's 4.3 wording via `guideline-cite.sh 4.3` rather than paraphrasing the bar.
+
 ---
 
 ## Phase 5 presentation
@@ -293,6 +317,6 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 29 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 29 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 29" count.
+3. Phase 4 summary table: 30 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 29, 30 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 30" count.
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.

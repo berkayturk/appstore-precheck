@@ -128,4 +128,18 @@ assert_eq "$a" "$b" "text output stable and footer-free with no ignore file"
 assert_eq "$(printf '%s' "$a" | grep -c 'suppressed via')" "0" "no footer when nothing suppressed"
 
 echo "test-suppress: OK"
+section "gap-record ids are accepted by the loader"
+# shellcheck source=skills/appstore-precheck/scripts/evidence.sh
+source "$ROOT/skills/appstore-precheck/scripts/findings.sh" 2>/dev/null || true
+source "$ROOT/skills/appstore-precheck/scripts/evidence.sh"
+gr="$(mktemp -d)"; printf 'store-listing-not-audited\n' > "$gr/.precheck-ignore"
+# Load in THIS shell (a $(...) would run it in a subshell and drop _SUPP_RULES).
+load_precheck_ignore "$gr" 2> "$gr/stderr.txt"
+assert_absent "$(cat "$gr/stderr.txt")" "unknown rule-id" "store-listing-not-audited is not rejected as unknown"
+is_suppressed store-listing-not-audited; r=$?
+assert_eq "$r" "0" "and suppresses the gap record"
+is_suppressed made-up-not-a-rule; r=$?
+assert_eq "$r" "1" "an unrelated id is still not suppressed"
+rm -rf "$gr"
+
 exit "$fails"

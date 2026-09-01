@@ -16,7 +16,7 @@
 #
 # Output (stdout), stable and grep-friendly:
 #   VERDICT: GREEN|YELLOW|RED
-#   COUNTS: fail=<n> warn=<n> pass=<n>
+#   COUNTS: fail=<n> warn=<n> pass=<n> skip=<n>
 #   TOKEN: write|hold|remove
 # Exit code: 0 GREEN, 1 RED, 2 YELLOW (so callers can branch without parsing).
 
@@ -46,6 +46,10 @@ count() { printf '%s\n' "$input" | grep -cE "$1"; }
 fails=$(count '^FAIL:')
 warns=$(count '^WARN:')
 passes=$(count '^PASS:')
+# SKIP = a check that could not run. Counted and reported so a GREEN can be shown
+# to rest on unaudited ground, but deliberately OUTSIDE the threshold arithmetic:
+# a missing artifact is a gap in coverage, not a defect in the build.
+skips=$(count '^SKIP:')
 
 # Thresholds live in thresholds.sh (shared with findings.sh's JSON renderer).
 # shellcheck source=thresholds.sh
@@ -60,7 +64,7 @@ else
 fi
 
 echo "VERDICT: $verdict"
-echo "COUNTS: fail=$fails warn=$warns pass=$passes"
+echo "COUNTS: fail=$fails warn=$warns pass=$passes skip=$skips"
 echo "TOKEN: $token"
 
 # Side effects only with --apply. The token lives at the repo root; the guard hook

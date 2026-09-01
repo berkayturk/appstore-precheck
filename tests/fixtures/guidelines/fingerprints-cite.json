@@ -1,0 +1,21 @@
+{
+  "sections": {
+    "2.3.3": {
+      "fingerprint": "aaaa",
+      "snapshot": "2.3.3 screenshots should show the app in use",
+      "quote": "Screenshots should show the app in use, and not merely the title art, login page, or splash screen.",
+      "quote_verified_on": "2026-08-31"
+    },
+    "5.1.1": {
+      "fingerprint": "bbbb",
+      "snapshot": "5.1.1 data collection and storage",
+      "quote": "Apps that collect user or usage data must secure user consent for the collection.",
+      "quote_verified_on": "2020-01-01"
+    },
+    "3.1.1": {
+      "fingerprint": "cccc",
+      "snapshot": "3.1.1 in-app purchase"
+    }
+  },
+  "reconciled_on": "2026-08-31"
+}

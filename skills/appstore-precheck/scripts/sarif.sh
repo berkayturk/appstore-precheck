@@ -28,6 +28,15 @@ render_sarif() {
         ( (if (.rule_id // "") == "" then {} else {ruleId:.rule_id} end)
           + {level:(if .severity=="FAIL" then "error" else "warning" end),
              message:{text:.message}}
+          # Evidence strength travels with the result so a code-scanning UI can
+          # separate an established validator block from one inferred off a source
+          # grep. Omitted entirely when the rule is unclassified — never guessed.
+          + (if .confidence != null
+               then {properties:({confidence:.confidence,
+                                  needsBuildVerification:.needs_build_verification}
+                                 + (if .evidence != null then {evidence:.evidence} else {} end)
+                                 + (if .guideline_url != null then {guidelineUrl:.guideline_url} else {} end))}
+               else {} end)
           + (if .file != null
                then {locations:[{physicalLocation:(
                        {artifactLocation:{uri:.file}}

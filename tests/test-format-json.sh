@@ -32,9 +32,12 @@ for fx in risky-app risky-app-2 tracking-app; do
   rm -rf "$d"
 done
 
-# Count only catalog-tagging set_rule calls (non-empty slug); the IAP-gate's
-# `set_rule ""` reset (Fix C) is intentionally excluded — it is not a section tag.
-assert_eq "53" "$(grep 'set_rule "' "$SCAN" | grep -vc 'set_rule ""')" "all 53 catalog sections tagged"
+# Count DISTINCT catalog slugs, not set_rule call sites: a rule may legitimately be
+# re-declared (e.g. to clear a per-branch evidence override) without being a new
+# section. The IAP-gate's `set_rule ""` reset is excluded — it is not a section tag.
+# "-not-audited" ids are gap records, not sections (see evidence.sh is_gap_record).
+assert_eq "54" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | grep -v -- '-not-audited"' | sort -u | wc -l | tr -d ' ')" \
+  "all 54 catalog sections tagged"
 
 # Version provenance: the JSON envelope must report the TOOL's own version (read
 # from skills/appstore-precheck/SKILL.md), never the scanned repo's package.json,

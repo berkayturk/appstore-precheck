@@ -40,6 +40,7 @@ fi
 cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit 0; }
 
 source "$SCRIPT_DIR/findings.sh"
+source "$SCRIPT_DIR/evidence.sh"
 source "$SCRIPT_DIR/suppress.sh"
 source "$SCRIPT_DIR/project-model.sh"
 source "$SCRIPT_DIR/image-dims.sh"
@@ -73,9 +74,31 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
 }
 
 _LAST_SUPPRESSED=0
-fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
-warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
+
+# _tag — print the evidence/confidence line under the finding just emitted, at the
+# same indent as detail(). Skipped for PASS (noise) and for an unclassified rule
+# (evidence_label returns empty rather than guessing). Opt out with
+# APPSTORE_PRECHECK_NO_EVIDENCE=1 if you parse the text output strictly; the
+# machine-readable channels (--format json|sarif) always carry the fields.
+_tag() {
+  [[ "${APPSTORE_PRECHECK_NO_EVIDENCE:-}" == 1 ]] && return 0
+  local lbl; lbl="$(evidence_label "$(_evidence_of)" "$(_confidence_of)")"
+  [[ -n "$lbl" ]] && printf '      %s\n' "$lbl"
+  return 0
+}
+fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
+warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
 pass() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
+
+# skip <message> — a check that could NOT run (a missing artifact, not a clean
+# result). Never carries an evidence tag: there is no evidence, that is the point.
+# It is counted separately by verdict.sh and never moves the verdict.
+# Honors .precheck-ignore like every other emitter, so a team whose screenshots really
+# do live only in App Store Connect can acknowledge the gap by rule id and have it
+# counted as suppressed rather than see it every run. The store-listing SKIP is
+# emitted outside any rule and so cannot be suppressed — set .metadataDir instead;
+# an unaudited listing is a fact, not a preference.
+skip() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed SKIP "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "SKIP: $1"; _record SKIP "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
 
 # detail <text> — indented evidence under the previous finding; skipped when it was suppressed.
 detail() { [[ "${_LAST_SUPPRESSED:-0}" == 1 ]] || printf '%s\n' "$1" | sed 's/^/      /'; }
@@ -227,6 +250,24 @@ if [[ "$FORMAT" != text ]]; then exec 4>&1 1>/dev/null; fi
 
 echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='${XCSTRINGS:-?}' locales=${#LOCALES[@]}"
 
+# The store listing is a real rejection surface. Without a fastlane metadata dir the
+# listing checks simply never run, and reporting only the ones that DID run would let
+# a repo look clean on ground nobody examined. Name the cost, derived from the
+# evidence catalogue so the number cannot rot as rules are added.
+if [[ -z "$META_DIR" || ! -d "$META_DIR" ]]; then
+  # A gap record, not a check (see evidence.sh is_gap_record): the id exists so the
+  # gap can be acknowledged by name in .precheck-ignore. Acknowledging it removes the
+  # line from the text output and counts it as suppressed; it stays in not_audited.
+  set_rule "store-listing-not-audited"
+  _meta_list="$(rules_with_evidence metadata)"
+  _meta_rules="$(printf '%s\n' "$_meta_list" | grep -c .)"
+  skip "metadata — no fastlane metadata directory detected; ${_meta_rules} store-listing checks did not run. Paste your App Store Connect listing — name, subtitle, description, keywords, promotional text — to have them audited (the skill re-runs the scanner over what you paste), or they stay unaudited."
+  # The skipped rule ids, derived from the same catalogue as the count, so the list can
+  # never disagree with it — unlike the guideline enumeration this used to hardcode.
+  detail "$(printf '%s\n' "$_meta_list" | tr '\n' ' ' | sed 's/ $//')"
+  set_rule ""
+fi
+
 # ===================================================================
 # §1 — 5.1.1 Privacy Manifest / Required Reason API parity
 # Apple documents the Required Reason API rules under 5.1.1 (Data Collection and
@@ -242,13 +283,17 @@ check_required_reason_api() {
   if [[ -n "$hits" && "${declared:-0}" -eq 0 ]]; then
     fail "5.1.1 Required Reason API — '$cat' used in code (e.g. $(echo "$hits" | head -1)) but not declared in PrivacyInfo.xcprivacy" "$PRIVACY_FILE"
   elif [[ -z "$hits" && "${declared:-0}" -gt 0 ]]; then
+    # An over-declaration is not an upload blocker, and the message says so itself.
+    set_confidence "judgment-call"
     warn "5.1.1 PrivacyInfo — '$cat' declared but no code usage grepped (may be a false positive, verify manually)" "$PRIVACY_FILE"
+    set_confidence ""
   elif [[ -n "$hits" && "${declared:-0}" -gt 0 ]]; then
     pass "5.1.1 Required Reason API — '$cat' parity OK"
   fi
 }
 if [[ -z "$IOS_DIR" ]]; then
-  warn "layout — could not auto-detect iOS source dir; set .iosSourceDir in $CONFIG"
+  # The check could not run at all; it establishes nothing about the build.
+  skip "layout — could not auto-detect the iOS source dir, so the Required Reason API parity check did not run; set .iosSourceDir in $CONFIG"
 elif [[ -z "$PRIVACY_FILE" ]]; then
   fail "5.1.1 Required Reason API — PrivacyInfo.xcprivacy not found (required since May 2024 for apps using Required Reason APIs)" "$INFO_PLIST"
 else
@@ -266,9 +311,13 @@ fi
 # ===================================================================
 set_rule "usage-description-crosscheck"
 if [[ ! -f "$INFO_PLIST" ]]; then
-  [[ -n "$IOS_DIR" ]] && warn "5.1.1 Info.plist not found at $INFO_PLIST (modern Xcode may auto-generate it; verify purpose strings in build settings)" "$INFO_PLIST"
+  # No plist to cross-check against: the check did not run. A SKIP, not a WARN —
+  # it used to count toward YELLOW, inflating the verdict with a coverage gap.
+  [[ -n "$IOS_DIR" ]] && skip "5.1.1 Info.plist not found at $INFO_PLIST — the purpose-string cross-check did not run (modern Xcode may generate the plist from build settings; set .infoPlistPath, or verify purpose strings by hand)" "$INFO_PLIST"
 else
   awk '/NS[A-Za-z]+UsageDescription/{key=$0; getline; if($0 ~ /<string>[[:space:]]*<\/string>/) print "EMPTY:"key}' "$INFO_PLIST" | while read -r line; do
+    # Read directly from the shipped plist, so it does not inherit the source floor.
+    set_evidence "manifest"
     [[ -n "$line" ]] && fail "5.1.1 Purpose String — $line (empty usage description is rejected by App Review)" "$INFO_PLIST"
   done
   for fw in \
@@ -397,7 +446,19 @@ if (( ${#LOCALES[@]} > 0 )); then
       continue
     fi
     for f in "${expected_files[@]}"; do
-      [[ -s "$d/$f" ]] || fail "2.3.7 Metadata missing — $d/$f is empty or absent"
+      [[ -s "$d/$f" ]] && continue
+      case "$f" in
+        name.txt|description.txt)
+          # App Store Connect will not accept a localization without these.
+          fail "2.3.7 Metadata missing — $d/$f is empty or absent" ;;
+        *)
+          # Subtitle and keywords are OPTIONAL in App Store Connect (verified
+          # 2026-09-01). An empty one is a discovery/parity gap, not a blocker —
+          # reporting it as a validator FAIL was an overstatement.
+          set_confidence "judgment-call"
+          warn "2.3.7 Metadata gap — $d/$f is empty or absent (optional in App Store Connect, but every other locale should not be the only place it exists)"
+          set_confidence "" ;;
+      esac
     done
   done
   pass "2.3.7 Localized metadata — checked ${#LOCALES[@]} locales"
@@ -410,17 +471,25 @@ set_rule "screenshots-per-locale"
 if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
     d="$SCREEN_DIR/$loc"
-    if [[ ! -d "$d" ]]; then warn "2.3.3 Screenshots — no folder for $loc"; continue; fi
+    # App Store Connect falls back to the primary locale's screenshots, so a
+    # missing per-locale set does not block anything — advisory only.
+    if [[ ! -d "$d" ]]; then set_confidence "judgment-call"; warn "2.3.3 Screenshots — no folder for $loc"; set_confidence ""; continue; fi
     cnt=$(find "$d" -maxdepth 2 -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) 2>/dev/null | wc -l | tr -d ' ')
     if (( cnt == 0 )); then
       fail "2.3.3 Screenshots — $loc folder is empty (at least one iPhone screenshot required)"
     elif (( cnt < 3 )); then
+      # A recommendation, not a requirement: one screenshot satisfies the validator.
+      set_confidence "judgment-call"
       warn "2.3.3 Screenshots — $loc has only $cnt image(s) (3-10 recommended)"
+      set_confidence ""
     fi
   done
   pass "2.3.3 Screenshots — checked ${#LOCALES[@]} locales under $SCREEN_DIR"
 else
-  pass "2.3.3 Screenshots — no in-repo screenshots dir; assumed managed in App Store Connect (set .screenshotsDir to check in-repo)"
+  # Was a PASS ("assumed managed in App Store Connect") — but nothing was examined,
+  # so it is a gap in coverage, not a clean result. SKIP says so without changing
+  # the verdict.
+  skip "2.3.3 Screenshots — no in-repo screenshots dir; the screenshot checks (count per locale, format, dimensions) did not run. Set .screenshotsDir, or paste your App Store Connect screenshot set to have them audited."
 fi
 
 # ===================================================================
@@ -441,7 +510,10 @@ if [[ -n "$SCREEN_DIR" && -d "$SCREEN_DIR" ]]; then
         fi
         dims="$(png_dims "$img")"
         if [[ -z "$dims" ]]; then
+          # A degraded read, not a dimension violation.
+          set_confidence "judgment-call"
           warn "2.3.3 Screenshot $img — could not read PNG dimensions (possibly truncated)" "$img"
+          set_confidence ""
         else
           w="${dims% *}"; h="${dims#* }"
           if ! dims_match_accepted "$w" "$h"; then
@@ -535,7 +607,8 @@ else
     paywall_req "Terms of Use (EULA) link" 'terms[ _]?of[ _]?(use|service)|termsURL|subscription_terms|EULA|/terms|/tos\b|/eula'
     paywall_req "Privacy Policy link" 'privacy[ _]?policy|privacyURL|subscription_privacy|/privacy|datenschutz|gizlilik'
   else
-    warn "3.1.2 IAP detected but no paywall/subscription view found — set .paywallGlobs so required-link checks can run"
+    # The required-link checks did not run; a configuration hint, not a finding.
+    skip "3.1.2 IAP detected but no paywall/subscription view found — the Restore/Terms/Privacy link checks did not run; set .paywallGlobs so they can"
   fi
 
   # ---- §53 3.1.2 Terms of Use (EULA) link in the App Store description ----------
@@ -559,7 +632,10 @@ else
       pass "3.1.2 Terms of Use (EULA) link present in every locale's App Store description"
     fi
   else
-    warn "3.1.2 EULA-in-metadata check skipped — no fastlane metadata dir detected; verify the App Store description contains a functional Terms of Use (EULA) link"
+    # Nothing to say here: with no metadata dir the store-listing SKIP at the top of
+    # the scan already names subscription-eula-metadata among the checks that did
+    # not run. A second line would double-count the same gap.
+    :
   fi
 fi
 
@@ -1440,6 +1516,42 @@ last_upgrade=$(find . "${PRUNE[@]}" -name 'project.pbxproj' -type f 2>/dev/null 
   | xargs grep -h 'LastUpgradeCheck' 2>/dev/null | grep -oE '[0-9]+' | sort -n | tail -1)
 if [[ -n "$last_upgrade" ]] && (( last_upgrade < 2600 )); then
   warn "2.1 Xcode/SDK minimum — LastUpgradeCheck=$last_upgrade suggests the project was last upgraded with a pre-26 Xcode; since April 2026 App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. Verify the actual build toolchain (heuristic: this field tracks the upgrade-check, not the build)"
+fi
+
+# ===================================================================
+# §54 — 4.3(b) Saturated category exposure (catalog vector 54)
+# ===================================================================
+# Apple NAMES the saturated categories in 4.3(b) — "dating, flashlight, sound
+# effects, wallpaper, simple timers, and fortune telling ... we will not accept new
+# submissions unless they offer a meaningfully different or improved experience" —
+# plus "drinking games, kama sutra, fart, and burp apps". So this is not a guess
+# about what Apple considers crowded; it is Apple's own list.
+#
+# Matched against name / subtitle / keywords ONLY. Those fields say what the app IS.
+# The description says what it DOES, where "flashlight" or "timer" is an ordinary
+# feature of an unrelated app — matching there would fire on half the store. WARN and
+# judgment-call by design: being in a named category is EXPOSURE, not a violation.
+# The differentiation question itself is a human call, handled by deep-review check 30.
+set_rule "saturated-category"
+if [[ -d "$META_DIR" ]]; then
+  # Word-boundary anchored so 'fart' does not match 'farther', nor 'dating' 'updating'.
+  sat_re='(^|[^a-z])(dating|flashlight|sound effects?|wallpapers?|fortune telling|fortune teller|drinking games?|kama sutra|fart|burp)([^a-z]|$)'
+  sat_hits=""
+  for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
+    for mf in name.txt subtitle.txt keywords.txt; do
+      f="$META_DIR/$loc/$mf"; [[ -f "$f" ]] || continue
+      h=$(grep -HinE "$sat_re" "$f" 2>/dev/null | head -2)
+      [[ -n "$h" ]] && sat_hits+="$h"$'\n'
+    done
+  done
+  sat_hits="$(printf '%s' "$sat_hits" | grep -v '^$' | head -6)"
+  if [[ -n "$sat_hits" ]]; then
+    sat_first="$(printf '%s\n' "$sat_hits" | head -1)"
+    warn "4.3 Saturated category — the app name/subtitle/keywords place this in a category Apple names in 4.3(b) (dating, flashlight, sound effects, wallpaper, simple timers, fortune telling, drinking games, kama sutra, fart, burp). Apple will not accept new submissions in these unless they offer a \"meaningfully different or improved experience\", and may remove existing ones. Be ready to say in the review notes what this app does that the incumbents do not:" "${sat_first%%:*}"
+    detail "$sat_hits"
+  else
+    pass "4.3 Saturated category — no 4.3(b) category term in the app name/subtitle/keywords"
+  fi
 fi
 
 echo "---END-OF-SCAN---"

@@ -3,6 +3,195 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [1.18.0] - 2026-08-31
+
+Two gaps closed, both about **not overstating what the tool knows**. Prior art credit: the
+validator-vs-reviewer confidence split and the never-quote-from-memory rule are adapted from
+[dabodamjan/app-store-rejection-checker](https://github.com/dabodamjan/app-store-rejection-checker)
+(MIT), which applies them to an LLM auditor; this is the deterministic-scanner form of both.
+
+### Added
+- **Evidence strength and confidence on every finding**
+  ([`scripts/evidence.sh`](skills/appstore-precheck/scripts/evidence.sh)). Severity says how bad a
+  finding is; it never said how firmly it was *established*. Apple's upload validators run against
+  the built product while this scanner reads a repository, so a missing purpose string found by
+  grepping `.swift` and a missing key in a checked-in `Info.plist` were reported identically even
+  though the first can be dead code, `#if DEBUG`, or a file excluded from the shipping target. Each
+  of the 53 rules now carries an **evidence class** (`metadata` / `manifest` / `resource` /
+  `build-setting` / `source`, the weakest artifact its conclusion depends on) and a **confidence
+  level** (`validator-blocking` / `review-risk` / `judgment-call`, who actually acts on it).
+- **`needs_build_verification`, derived not stored**: true exactly when a `validator-blocking` claim
+  rests on `source` or `build-setting` evidence. It cannot drift out of sync with the catalogues
+  because it is computed from them. Phase 5 surfaces the count as a "what this run could not
+  establish" note; it never changes the GREEN/YELLOW/RED verdict.
+- **`set_evidence` / `set_confidence` per-branch refinement** so a degraded read cannot inherit the
+  rule's label. §2's empty-purpose-string FAIL is `manifest` rather than the rule's `source` floor;
+  §2's "Info.plist not found", §1's "declared but no code usage grepped" and "could not auto-detect
+  iOS source dir", §42's "could not read PNG dimensions", §10's "no paywall view found" and §53's
+  "no metadata dir" drop to `judgment-call` instead of claiming Apple's validator blocks them.
+- **Offline pinned guideline citations**
+  ([`scripts/guideline-cite.sh`](skills/appstore-precheck/scripts/guideline-cite.sh)). Pierre now
+  quotes Apple's actual wording instead of his recollection of it. Quotes are pinned in
+  `guidelines-fingerprints.json` next to the hashes that already detect when a section changes, so
+  an out-of-date quote is a **detectable condition** rather than a silent lie — offline,
+  deterministic, reviewable in git, and staleness-aware (`STALE` past
+  `GUIDELINE_CITE_STALE_DAYS`, default 120). All 57 covered sections are pinned.
+  Exit `3` / `NO PINNED CITATION` is the load-bearing case: Phase 3 now forbids reconstructing
+  guideline text from memory and requires saying the wording could not be verified this run.
+- **`guideline_url` on every finding** (text via the citation tool, plus JSON and SARIF), so a human
+  can always open the section the finding cites. Parenthetical sub-items (`5.1.1(v)`, `3.1.1(a)`)
+  resolve to their anchor.
+- **`scripts/guideline-drift.sh --quotes`**: maintainer step that fills in the citable quotes only.
+  It never touches a fingerprint or `reconciled_on`, and refuses to re-quote a section that has
+  drifted since its baseline — quoting a drifted section would take the new wording while the
+  fingerprint still claimed the old, papering over the very change drift detection exists to catch.
+- **`gd_section_quote`** in `skills/appstore-precheck/scripts/lib/guideline-text.sh`: original-case, sentence-bounded
+  excerpts. The extraction was split into a shared `_gd_section_raw`, verified byte-identical
+  against the live page for all 57 sections so no fingerprint moved.
+- **`tests/test-evidence.sh`** (57 assertions) and **`tests/test-guideline-cite.sh`**. The evidence
+  test enforces a completeness invariant: every rule `scan.sh` sets must carry both labels from the
+  closed vocabularies, so a new check cannot ship unlabelled.
+
+### Changed
+- Text output gains one indented `evidence: …` line under each `FAIL:`/`WARN:` (never under `PASS:`).
+  `^FAIL:`/`^WARN:` anchoring, verdict arithmetic, and the token are untouched; set
+  `APPSTORE_PRECHECK_NO_EVIDENCE=1` to suppress it.
+- `--format json` findings gain `evidence`, `confidence`, `needs_build_verification` and
+  `guideline_url`; the summary gains `by_confidence` and `needs_build_verification`. `--format
+  sarif` carries the same labels in each result's `properties` bag, omitted entirely for an
+  unclassified rule rather than guessed.
+- Phase 3 of `SKILL.md` now requires a citation lookup per finding and requires Pierre to reflect
+  the evidence label — especially to say, in plain words, when a finding rests on a grep rather than
+  on the shipping build.
+- `docs`: methodology.md gains "Evidence strength and confidence" (with the generated per-rule
+  table) and "Guideline citations" (including why pinned snapshots beat a live fetch here);
+  README gains both sections under "How it works".
+
+### Added — second pass: the remaining gaps
+- **`SKIP:` — a fourth line class for checks that could not run.** `FAIL`/`WARN`/`PASS` all assert
+  something about the build; a check that never ran asserts nothing, and reporting it as a `PASS`
+  turns an unexamined surface into a clean bill of health. The screenshots check did exactly that
+  (*"assumed managed in App Store Connect"*). `SKIP` is counted separately (`skip=` from
+  `verdict.sh`, `summary.not_audited` in JSON), excluded from SARIF, and **never moves the
+  verdict** — a gap in coverage is not a defect in the build.
+- **The store listing is no longer skipped in silence.** With no `fastlane/metadata` directory, a dozen
+  store-listing checks used to vanish without a word. `SKIP: metadata` now names how many did not
+  run, counted from the evidence catalogue via the new `rules_with_evidence` so the number cannot
+  rot. SKILL.md Phase 1 then **asks the user to paste their App Store Connect listing** — name,
+  subtitle, description, keywords, promotional text, age rating, review notes, demo account — and
+  audits it directly; those findings count. If the user declines, or there is no user (CI), they
+  stay `SKIP`. Metadata is never invented.
+- **A mandatory "Not audited" section on every run, GREEN included**: the checks that did not run,
+  plus the fixed list of what a static tool can never see (runtime crashes, whether links resolve,
+  whether Restore Purchases works, OAuth round trips, server-driven content, the built archive).
+  A GREEN that never saw the store listing is a GREEN with a hole in it, and it now says so.
+- **§54 `saturated-category` (4.3(b))** — the guideline was not covered at all. Apple *names* the
+  saturated categories ("dating, flashlight, sound effects, wallpaper, simple timers, and fortune
+  telling ... we will not accept new submissions unless they offer a meaningfully different or
+  improved experience", plus drinking games, kama sutra, fart and burp apps), so the rule matches
+  Apple's own list rather than a guess. Matched against **name / subtitle / keywords only** — those
+  say what the app *is*; the description says what it *does*, where "flashlight" or "timer" is an
+  ordinary feature of an unrelated app. Word-boundary anchored, so `fart` does not match `farther`.
+  WARN + `judgment-call`: being in a named category is exposure, not a violation.
+- **Deep-review check 30 (Tier B, 4.3)** — the differentiation judgment the scanner cannot make:
+  what does this app do that the incumbents do not, including 4.3(a) variant-bundle-ID patterns.
+  Deep review is now **30 checks (23 Tier A + 7 Tier B)**; the scanner covers **54 vectors**.
+- **`guideline-cite.sh --verify-live`** — change-based staleness. Age was only a proxy, bad in both
+  directions: an untouched section stays correct for years, a section edited yesterday is wrong and
+  still looks fresh. This re-hashes the live section against the pinned fingerprint (one fetch,
+  cached per day, so a whole run costs one request). Unchanged → the quote is current however old
+  the pin is, and `STALE` is withdrawn. Changed → exit `4` and `CHANGED`, and Phase 3 requires
+  saying Apple's text has moved instead of quoting the old wording. Any failure degrades to the
+  offline path and never reports a verification that did not happen.
+- **Phase 0 scans Apple's announcements.** `developer.apple.com/news` carries policy changes —
+  deadlines, new required declarations, entitlement changes — often before the guideline text
+  catches up. Items newer than the baseline `reconciled_on` produce a non-blocking WARN.
+
+### Changed — second pass
+- The shared HTML parser moved from `scripts/lib/` to
+  **`skills/appstore-precheck/scripts/lib/guideline-text.sh`**. Only the skill directory is
+  packaged, and `--verify-live` needs the parser at the user's machine. `guideline-drift.sh` and
+  `eval/rag/ingest.sh` source it from the new location; there is still exactly one implementation.
+- `guidelines-fingerprints.json` reconciled against the live page on 2026-09-01: all 57 previously
+  pinned fingerprints verified **unchanged**, 4.3 added, 58 sections now carry quotes.
+
+### Fixed — adversarial review pass
+Found by reviewing the two commits above as a hostile second reader, verifying each suspect by
+running it rather than reading it.
+- **`--verify-live` cached the live page at a predictable path in shared `/tmp`** and `rm -f`'d
+  that path on failure. Any local user could pre-place a crafted page and have the tool "verify" a
+  citation against it; and the very first test pointed the cache at `/dev/null`, which — run as
+  root — would have deleted `/dev/null`. The cache now lives under the user's own
+  `${XDG_CACHE_HOME:-~/.cache}/appstore-precheck` (mode 0700), a non-regular file or symlink at the
+  path is refused rather than read or removed, and only a file this run created is ever deleted.
+  `GUIDELINE_CITE_URL` was added so the test fails the fetch **offline and instantly**
+  (`file:///nonexistent`) — it had been making a real HTTP request to Apple on every run.
+- **SKILL.md contradicted itself on pasted metadata.** Phase 1 said findings from a pasted App Store
+  Connect listing "count toward the verdict"; Phase 5 says the verdict is derived *only* from
+  scanner lines. Both cannot be true, and the first would have had Pierre judge character limits
+  by eye. Resolved the honest way: the skill now writes the pasted fields into a temporary
+  fastlane-shaped tree outside the repo and **re-runs the scanner** with an absolute `metadataDir`
+  (verified to work; test added). The findings are then real scanner lines that count, and the
+  repo stays untouched. Review notes, demo account and age rating — which have no scanner rule —
+  are judged in deep review as advisory.
+- **A `SKIP` under a rule inherited that rule's labels.** The screenshots SKIP carried
+  `confidence: validator-blocking` in JSON — a line that established nothing claiming Apple's
+  validator enforces it. SKIP now records no evidence class and no confidence; test added.
+- **The store-listing SKIP hardcoded a guideline enumeration** ("2.1, 2.3.x, 5.1.4, 5.3.4") that
+  was already stale the moment §54 (4.3) landed — precisely the rot the *derived* count was meant
+  to avoid, one line below it. The enumeration is gone; the skipped rule ids are now printed in
+  the detail block, derived from the same catalogue as the count, so the two cannot disagree.
+- **The evidence completeness test hardcoded `seq 1 53`**, so §54 was outside the invariant that
+  exists to catch exactly an unclassified new rule (the secondary scan.sh-grep check happened to
+  cover it). Both the test and `rules_with_evidence` now walk the catalogue until `rule_slug`
+  returns empty (`catalogue_slugs`), and the test asserts the walk reached §54.
+- **`skip()` bypassed `.precheck-ignore`.** A team whose screenshots genuinely live only in App
+  Store Connect had no way to acknowledge the gap; the rule-scoped SKIP now honours suppression
+  like every other emitter and is counted as suppressed. The store-listing SKIP was first left
+  unsuppressible ("a fact, not a preference"); on reflection that was inconsistent with the
+  screenshots SKIP and with what suppression means here — a signed acknowledgment, not a hiding
+  place. It now carries the stable id `store-listing-not-audited` (a *gap record*, outside the
+  catalogue; `is_gap_record`), can be acknowledged in `.precheck-ignore`, and **still counts in
+  `not_audited`** when acknowledged: signing for a gap does not close it.
+- `tests/test-format-json.sh` counted `set_rule` call sites as a proxy for "53 sections tagged",
+  which broke on a legitimate re-declaration. It now counts distinct slugs.
+- **`--reconcile` silently destroyed every pinned quote.** It rebuilt each entry from scratch, so a
+  later `--quotes` run would re-date all citations as if freshly verified. It now carries a quote
+  (and its original verification date) forward when the section is unchanged, and deliberately drops
+  it — announcing the drop — when the text moved, because that wording is now wrong. Regression test
+  in `tests/test-guideline-drift.sh`.
+
+### Changed — the three review questions, researched and decided
+- **Confidence column verified against Apple's own validators** (2026-09-01). `ITMS-90683` (any
+  missing purpose string when the framework is linked, ATT included), `ITMS-91053` (required-reason
+  declaration), `ITMS-90725` (iOS 26 SDK floor at upload) and App Store Connect's required
+  privacy/support URLs confirm the `validator-blocking` rows. Two overstatements corrected:
+  **`export-compliance` → `judgment-call`** (the build is held at "Missing Compliance" until the
+  question is answered — one click, friction not rejection), and **§6 no longer FAILs on an empty
+  subtitle or keywords file** — those are optional in App Store Connect; only name and description
+  are required. §7's missing-per-locale-folder and "only N images" branches are `judgment-call`
+  (App Store Connect falls back to the primary locale; 3–10 is advice).
+- **Degraded reads are `SKIP`, not `judgment-call` WARNs.** §2 "Info.plist not found", §1 "could not
+  auto-detect iOS source dir" and §10 "no paywall view found" had been downgraded to
+  `judgment-call` — half a fix, since they still counted toward YELLOW. They are now `SKIP` under
+  their rule. §53's "no metadata dir" line was removed: the store-listing SKIP already names it.
+- **§54 kept as is**, deliberately: Apple's 4.3(b) exposure applies to every app in a named
+  category, thin or substantial. Teams that have stated their differentiator can acknowledge the
+  rule in `.precheck-ignore`. Rationale recorded in methodology.md.
+
+### Notes
+- Origin of this release: a comparison against
+  [dabodamjan/app-store-rejection-checker](https://github.com/dabodamjan/app-store-rejection-checker).
+  Four things it did better are now closed — the confidence taxonomy, quoting live guideline text,
+  asking for App Store Connect metadata instead of skipping it silently, and a mandatory not-checked
+  list — plus guideline 4.3, which this project did not cover at all.
+- **No rule reads a lockfile.** Building the evidence table surfaced that every SDK signal
+  (tracking, analytics, payment, AI, push) is a source grep rather than a `Podfile.lock` /
+  `Package.resolved` read — which is why so many signal-gated checks sit at the weakest evidence
+  class. This is now stated plainly in the README and methodology as the most honest available
+  account of where the real-panel false positives come from. Reading lockfiles is a candidate for a
+  follow-up; this release labels the weakness rather than hiding it.
+
 ## [1.17.0] - 2026-08-28
 
 ### Added

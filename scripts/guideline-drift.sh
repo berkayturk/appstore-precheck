@@ -8,8 +8,11 @@ set -u
 
 GD_URL="https://developer.apple.com/app-store/review/guidelines/"
 
-here_lib="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$here_lib/lib/guideline-text.sh"
+# The shared parser lives inside the skill (skills/appstore-precheck/scripts/lib/)
+# rather than beside this maintainer script, because it also has to ship to installed
+# users: guideline-cite.sh --verify-live needs it, and only the skill dir is packaged.
+here_lib="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$here_lib/skills/appstore-precheck/scripts/lib/guideline-text.sh"
 
 # gd_number_drift <live-ids-file> <baseline-json> -> ADDED/REMOVED lines.
 gd_number_drift() {
@@ -35,9 +38,9 @@ gd_checks_for_section() {
   ' "$1" | awk '!seen[$0]++'
 }
 
-# gd_main [--html f] [--baseline f] [--fingerprints f] [--scan f] [--reconcile]
+# gd_main [--html f] [--baseline f] [--fingerprints f] [--scan f] [--reconcile] [--quotes]
 gd_main() {
-  local html="" reconcile=0
+  local html="" reconcile=0 quotes=0
   local here; here="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
   local baseline="$here/skills/appstore-precheck/guidelines-baseline.json"
   local fingerprints="$here/skills/appstore-precheck/guidelines-fingerprints.json"
@@ -54,6 +57,10 @@ gd_main() {
         esac
         shift 2 ;;
       --reconcile) reconcile=1; shift ;;
+      --quotes) quotes=1; shift ;;
+      --quote-chars)
+        if [[ $# -lt 2 ]]; then echo "WARN: guideline-drift — missing value for --quote-chars; ignoring."; shift; continue; fi
+        GD_QUOTE_CHARS="$2"; shift 2 ;;
       *) echo "WARN: guideline-drift — unknown arg: $1; ignoring."; shift ;;
     esac
   done
@@ -70,6 +77,47 @@ gd_main() {
 
   # Covered sections = covered_by_scan ∪ covered_by_pierre_deep_review.
   local covered; covered="$(jq -r '(.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) | unique[]' "$baseline" 2>/dev/null)"
+
+  # --quotes: fill in the citable `quote` for each covered section WITHOUT touching
+  # fingerprints or reconciled_on. Kept separate from --reconcile on purpose: writing
+  # a quote must never double as accepting a drift.
+  #
+  # A section is only re-quoted when its LIVE fingerprint still matches the pinned
+  # one. Quoting a section that has drifted would take the new wording while the
+  # fingerprint still claims the old — papering over exactly the change the drift
+  # check exists to surface. Drifted sections are warned about and left alone, so a
+  # human reconciles the fingerprint first, then re-runs --quotes.
+  if [[ "$quotes" == 1 ]]; then
+    local qobj sec qnorm qhash qbase qtext written=0 skipped=0 today
+    today="$(date +%F)"
+    qobj="$(cat "$fingerprints")"
+    while IFS= read -r sec; do
+      [[ -z "$sec" ]] && continue
+      qbase="$(jq -r --arg s "$sec" '.sections[$s].fingerprint // ""' "$fingerprints")"
+      [[ -z "$qbase" ]] && continue          # not pinned at all; --reconcile owns that
+      qnorm="$(gd_section_text "$html" "$sec")"
+      if [[ -z "$qnorm" ]]; then
+        echo "WARN: quotes — $sec not found on live page; leaving its quote untouched"
+        skipped=$((skipped + 1)); continue
+      fi
+      qhash="$(printf '%s' "$qnorm" | gd_hash)"
+      if [[ "$qhash" != "$qbase" ]]; then
+        echo "WARN: quotes — $sec has drifted since the fingerprint baseline; reconcile first, then re-run --quotes"
+        skipped=$((skipped + 1)); continue
+      fi
+      qtext="$(gd_section_quote "$html" "$sec" "${GD_QUOTE_CHARS:-600}")"
+      if [[ -z "$qtext" ]]; then
+        echo "WARN: quotes — $sec produced an empty quote; skipping"
+        skipped=$((skipped + 1)); continue
+      fi
+      qobj="$(printf '%s' "$qobj" | jq --arg s "$sec" --arg q "$qtext" --arg d "$today" \
+                '.sections[$s].quote = $q | .sections[$s].quote_verified_on = $d')"
+      written=$((written + 1))
+    done <<< "$covered"
+    printf '%s\n' "$qobj" | jq . > "$fingerprints"
+    echo "quotes: ${written} section(s) pinned, ${skipped} skipped -> ${fingerprints}"
+    [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
+  fi
 
   if [[ "$reconcile" == 1 ]]; then
     # Surface section-number drift first — --reconcile should never silently paper
@@ -96,7 +144,24 @@ gd_main() {
       fi
       hash="$(printf '%s' "$norm" | gd_hash)"
       snap="$(printf '%s' "$norm" | cut -c1-160)"
-      obj="$(printf '%s' "$obj" | jq --arg s "$sec" --arg h "$hash" --arg n "$snap" '.sections[$s] = {fingerprint:$h, snapshot:$n}')"
+      # Carry an existing pinned quote forward ONLY when the text is unchanged.
+      # Rebuilding the entry from scratch would silently drop every citation (and a
+      # later --quotes run would re-date them all as if freshly verified). When the
+      # section HAS drifted, the old quote is now wrong, so it is deliberately
+      # dropped: guideline-cite.sh then reports NO PINNED CITATION, which is the
+      # honest state until someone re-runs --quotes.
+      local prev_hash prev_q prev_d entry
+      prev_hash="$(jq -r --arg s "$sec" '.sections[$s].fingerprint // ""' "$fingerprints" 2>/dev/null)"
+      prev_q="$(jq -r --arg s "$sec" '.sections[$s].quote // ""' "$fingerprints" 2>/dev/null)"
+      prev_d="$(jq -r --arg s "$sec" '.sections[$s].quote_verified_on // ""' "$fingerprints" 2>/dev/null)"
+      entry="$(jq -nc --arg h "$hash" --arg n "$snap" '{fingerprint:$h, snapshot:$n}')"
+      if [[ "$prev_hash" == "$hash" && -n "$prev_q" ]]; then
+        entry="$(printf '%s' "$entry" | jq --arg q "$prev_q" --arg d "$prev_d" \
+                  '. + {quote:$q, quote_verified_on:(if $d=="" then null else $d end)}')"
+      elif [[ -n "$prev_q" ]]; then
+        echo "WARN: reconcile — $sec text changed; its pinned quote was dropped (re-run --quotes)"
+      fi
+      obj="$(printf '%s' "$obj" | jq --arg s "$sec" --argjson e "$entry" '.sections[$s] = $e')"
       written=$((written + 1))
     done <<< "$covered"
     printf '%s' "$obj" | jq --arg d "$(date +%F)" '. + {reconciled_on: $d}' > "$fingerprints"

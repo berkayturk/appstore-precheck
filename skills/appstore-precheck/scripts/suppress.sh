@@ -12,6 +12,11 @@ _SUPP_REASON=""       # set by is_suppressed on a hit
 # last rule), so a newly added rule can never be silently unsuppressable again.
 _is_catalog_rule() {
   local n s
+  # Gap records (evidence.sh is_gap_record, ids ending in "-not-audited") are not
+  # catalogue rules but are valid .precheck-ignore ids: acknowledging a SKIP by name
+  # is the whole reason they have an id. Guarded so suppress.sh still works when
+  # sourced alone in tests.
+  if command -v is_gap_record >/dev/null 2>&1 && is_gap_record "$1"; then return 0; fi
   n=1
   while s="$(rule_slug "$n")" && [[ -n "$s" ]]; do
     [[ "$s" == "$1" ]] && return 0
