@@ -81,7 +81,10 @@ fi
 SECTION="${ARG%%(*}"
 [[ "$SECTION" =~ ^[1-5](\.[0-9]+)+$ ]] || {
   echo "guideline-cite.sh: '$ARG' is not a guideline number" >&2; exit 64; }
-URL="${GC_BASE_URL}#${SECTION}"
+# "N.0" names a category intro (Apple: "Guideline 4.0 - Design"); the page anchors
+# it as the bare "N". Mirrors gd_anchor_id in lib/guideline-text.sh without sourcing
+# it, so the offline path stays a single file with no network-tool dependency.
+case "$SECTION" in [1-5].0) URL="${GC_BASE_URL}#${SECTION%.0}" ;; *) URL="${GC_BASE_URL}#${SECTION}" ;; esac
 
 QUOTE="$(jq -r --arg s "$SECTION" '.sections[$s].quote // ""' "$FINGERPRINTS")"
 VERIFIED="$(jq -r --arg s "$SECTION" '.sections[$s].quote_verified_on // ""' "$FINGERPRINTS")"

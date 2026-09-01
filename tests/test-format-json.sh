@@ -36,8 +36,17 @@ done
 # re-declared (e.g. to clear a per-branch evidence override) without being a new
 # section. The IAP-gate's `set_rule ""` reset is excluded — it is not a section tag.
 # "-not-audited" ids are gap records, not sections (see evidence.sh is_gap_record).
-assert_eq "54" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | grep -v -- '-not-audited"' | sort -u | wc -l | tr -d ' ')" \
-  "all 54 catalog sections tagged"
+# The expected count is DERIVED from the findings.sh catalogue (catalogue_slugs walks
+# rule_slug until it returns empty), never hardcoded: a literal 54 went stale the day
+# §55 landed, exactly like the literal 53 before it.
+# shellcheck source=skills/appstore-precheck/scripts/findings.sh
+source "$HERE/../skills/appstore-precheck/scripts/findings.sh"
+# shellcheck source=skills/appstore-precheck/scripts/evidence.sh
+source "$HERE/../skills/appstore-precheck/scripts/evidence.sh"
+catalogued="$(catalogue_slugs | wc -l | tr -d ' ')"
+assert_gt "$catalogued" "54" "catalogue walk reaches §55"
+assert_eq "$catalogued" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | grep -v -- '-not-audited"' | sort -u | wc -l | tr -d ' ')" \
+  "every catalogued section ($catalogued) is tagged in scan.sh, and nothing untagged"
 
 # Version provenance: the JSON envelope must report the TOOL's own version (read
 # from skills/appstore-precheck/SKILL.md), never the scanned repo's package.json,

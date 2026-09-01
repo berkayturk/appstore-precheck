@@ -143,5 +143,28 @@ assert_eq "null" "$(jq -r '.sections["1.2"].quote' "$rec_fp")" \
 assert_contains "$rec_out" "pinned quote was dropped" "and the drop is announced, not silent"
 rm -rf "$rec_tmp"
 
+# --- bare category anchors surface as "N.0" (Apple's "Guideline 4.0 - Design") ---
+# Apple's rejection notices cite the category intro prose as N.0 (4.0 is the #1
+# removal guideline in Apple's 2024 transparency report), but the live page anchors
+# that prose only as <span id="4"> — there is no id="4.0". The parser therefore maps
+# a bare category id to "N.0" so the intro prose is trackable, and the text helpers
+# accept "N.0" and resolve it back to the bare anchor.
+cat_tmp="$(mktemp -d)"
+cat > "$cat_tmp/cat.html" <<'HTML'
+<span id="globalnav-4"></span>
+<h2><span id="4">4. Design</span></h2>
+<p>Apple customers place a high value on products that are simple.</p>
+<h3><span id="4.1">4.1 Copycats</span></h3><p>Come up with your own ideas.</p>
+<h2><span id="5">5. Legal</span></h2><p>Apps must comply with all legal requirements.</p>
+HTML
+cids="$(gd_section_ids "$cat_tmp/cat.html" | tr '\n' ' ')"
+assert_eq "$cids" "4.0 4.1 5.0 " "bare category anchors surface as N.0, in order; globalnav id ignored"
+c40="$(gd_section_text "$cat_tmp/cat.html" "4.0")"
+assert_contains "$c40" "apple customers place a high value" "4.0 resolves to the category intro prose"
+assert_absent   "$c40" "copycats" "4.0 stops at the first sub-section (4.1)"
+assert_eq "$(gd_section_text "$cat_tmp/cat.html" "4")" "$c40" "bare 4 and 4.0 extract the same prose"
+assert_contains "$(gd_section_quote "$cat_tmp/cat.html" "4.0")" "Apple customers place a high value" "4.0 is quotable in original case"
+rm -rf "$cat_tmp"
+
 echo "test-guideline-drift: OK"
 exit "$fails"

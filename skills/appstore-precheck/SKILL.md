@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 54 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 7 heuristic checks (Tier B v1) — 30 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 55 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 8 heuristic checks (Tier B v1) — 31 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -13,7 +13,7 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 A one-command gate to run before every iOS App Store submission. It minimizes the risk of
 rejection by statically scanning the most common rejection vectors, running Apple's own
 metadata linter, watching for guideline drift, having Pierre explain every FAIL and WARN, and
-running 30 semantic deep-review checks (23 Tier A + 7 Tier B v1 heuristic). The deep-review checklist lives in
+running 31 semantic deep-review checks (23 Tier A + 8 Tier B v1 heuristic). The deep-review checklist lives in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md).
 
 **This skill is read-only.** It never edits code, metadata, or assets. It only reports and
@@ -144,7 +144,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 54 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 55 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -360,10 +360,10 @@ Use this prompt verbatim after Phases 0–2 complete, pasting in the collected f
 > WARNs, say so briefly in 2–3 sentences. Read-only — never modify files. Write the explanations in
 > `<USER_LANGUAGE>`.
 
-### Phase 4: Pierre deep review (30 semantic checks)
+### Phase 4: Pierre deep review (31 semantic checks)
 
 After Phase 3, Pierre runs the **Review Simulator**: 30 read-only, evidence-based checks the
-static scanner cannot fully judge (**23 Tier A** + **7 Tier B v1** heuristic — marked † below).
+static scanner cannot fully judge (**23 Tier A** + **8 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
 Phase 4. When screenshots are present, also run the structured screenshot vision review in
@@ -376,13 +376,13 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 
 **Rules (summary):**
 
-- Run **all 30 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
+- Run **all 31 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
 - `REVIEW-FINDING:` is always **WARN** (advisory). It does **not** change FAIL/WARN counts or the verdict.
-- † **Tier B v1** checks (4, 5, 7, 10, 15, 29, 30) are heuristic — use cautious language; prefer not applicable when no signal.
+- † **Tier B v1** checks (4, 5, 7, 10, 15, 29, 30, 31) are heuristic — use cautious language; prefer not applicable when no signal.
 - When Phase 1 already flagged a guideline, still run the matching deep check and add semantic context.
 - Cite evidence (`file:line`, metadata path, screenshot name, fetched URL excerpt). Read-only — never edit files.
 
-**The 30 checks (guideline order):**
+**The 31 checks (guideline order):**
 
 | # | Guideline | Deep question |
 |---|-----------|---------------|
@@ -416,15 +416,16 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 | 28 | **5.6.2–5.6.3** | Developer identity consistent (support URL, domains, app name)? |
 | 29 † | **5.6.1 / 5.6.3** | Rating manipulation dark patterns beyond scan §25? |
 | 30 † | **4.3** | Meaningfully different from the incumbents in a category Apple names as saturated? |
+| 31 † | **4.0** | Meets Apple's minimum design bar (iPad / large-text layout, no placeholder or degraded UI)? |
 
 Use this prompt after Phase 3:
 
-> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 30 checks in
+> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 31 checks in
 > [`references/pierre-deep-review.md`](references/pierre-deep-review.md), in table order. For each
 > check emit `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`. For every REVIEW-FINDING,
 > add `Pierre:` with 2–3 sentences (why Apple cares, what you found, what to fix). Read-only.
 > Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Tier B checks
-> (4, 5, 7, 10, 15, 29, 30): prefer not applicable when no signal; use cautious language when flagging.
+> (4, 5, 7, 10, 15, 29, 30, 31): prefer not applicable when no signal; use cautious language when flagging.
 
 ### Phase 5: Consolidation + token
 
@@ -444,10 +445,10 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    from Phase 1 + Phase 0/2 only — Pierre's prose and REVIEW-FINDING lines do not add FAIL/WARN).
 2. Open with Pierre's **trilingual verdict block** using the required format in [Output contract](#trilingual-verdict-block-required-format) — bold language label + blockquote per language, separated by `---`; never one compressed line.
 3. Present **Phase 3 commentary** — Pierre's 2–3 sentence explanation for every FAIL and WARN.
-4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 30), then
-   every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 29 passed.
+4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 31), then
+   every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 31 passed.
    The 5 screenshot-vision checks (S1–S5) emit the same `REVIEW-*` prefixes but count as a
-   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 30" denominator.
+   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 31" denominator.
 5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, with its
    `evidence:` line, then for each FAIL a `file:line` reference and a suggested fix (one line each,
    surgical, not paraphrased).
@@ -491,14 +492,16 @@ bundle id). It uses `xcrun simctl` + Maestro MCP tools (`mcp__maestro__*`) to la
 disposable simulator and observe real behavior — the free/local alternative to a paid cloud device
 farm.
 
-It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` lines and **never changes the
-GREEN/YELLOW/RED verdict** (the verdict stays derived only from Phases 0–2). It is read-only w.r.t.
-the user's project — it touches only disposable simulator state, never the repo. It requires macOS +
+It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines and **never changes
+the GREEN/YELLOW/RED verdict** (the verdict stays derived only from Phases 0–2). A check that could
+not be driven is a `DYNAMIC-SKIP`, never a PASS and never an invented FINDING. It is read-only w.r.t.
+the user's project — it creates its own throwaway simulator device and never touches an existing
+one or the repo. It requires macOS +
 Xcode + a simulator runtime and is permanently local-only (it cannot run in CI). It is a pre-submit
 local smoke signal, not a TestFlight / crash-reporter / QA replacement.
 
 Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-review.md) for the
-6-check dynamic checklist and output format.
+setup step (D0) plus the 6-check dynamic checklist and output format.
 
 ## Rules
 

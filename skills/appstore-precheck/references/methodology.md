@@ -65,6 +65,12 @@ also covers text (semantic) drift of covered sections via `guidelines-fingerprin
 the affected check(s) when a section's fingerprint no longer matches. Reconcile the fingerprint
 baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
 
+**Category intros (`1.0`–`5.0`).** Apple cites the intro prose of each category by number
+("Guideline 4.0 - Design" is its single most-cited removal reason), but the live page anchors that
+prose only as the bare category id (`id="4"`; there is no `id="4.0"`, verified 2026-09-01). The
+parser surfaces bare category anchors as `N.0`, so the intros are baselined, fingerprinted and
+citable like any sub-section; every link and citation resolves `N.0` back to `#N`.
+
 ---
 
 ## Phase 1: Rejection vectors
@@ -126,9 +132,11 @@ baseline the same deliberate way, with `guideline-drift.sh --reconcile`.
 | 51 | **4.5.4 Marketing push opt-out** *(advisory)* | A marketing-push SDK (OneSignal, Braze, CleverTap, Iterable, Airship, MoEngage) registers for notifications but no notification-preferences / opt-out signal is found; promotional push requires explicit consent and a working opt-out (4.5.4) |
 | 52 | **2.1 Xcode/SDK minimum** *(advisory)* | The highest `LastUpgradeCheck` across checked-in pbxproj files is clearly pre-26 — since April 2026, App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. WARN-verify: the field tracks the upgrade-check, not the actual build toolchain |
 | 53 | **3.1.2 EULA link in metadata** *(IAP-gated)* | Every locale’s App Store `description.txt` contains a functional Terms of Use (EULA) URL — auto-renewable-subscription apps are rejected without one in the app metadata (a custom EULA set in App Store Connect also satisfies Apple, but the description link is the checkable signal) |
+| 54 | **4.3(b) Saturated category** *(advisory)* | The app name / subtitle / keywords place it in a category Apple names in 4.3(b) (dating, flashlight, sound effects, wallpaper, simple timers, fortune telling, drinking games, kama sutra, fart, burp) — exposure, not a violation; the differentiation question is deep-review check 30 |
+| 55 | **2.5.5 IPv6-only** *(advisory)* | A legacy IPv4-only BSD socket API (`inet_addr`, `inet_aton`, `gethostbyname`, `sockaddr_in`, `AF_INET`) or a hardcoded IPv4 literal in source or a plist. App Review runs on an IPv6-only NAT64 network: DNS64 synthesizes hostnames, but a literal has nothing to synthesize from and the IPv4 API cannot address that network. Excludes loopback, `0.0.0.0`, `255.x` masks, CIDR ranges, version-looking values and comment lines |
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
-or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–52 (plus the IAP-gated 53) are
+or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–52, 54 and 55 (plus the IAP-gated 53) are
 signal-gated advisory WARNs: each emits nothing unless its triggering signal is present.
 
 ### Screenshot format + dimensions (§7b, 2.3.3)
@@ -186,12 +194,12 @@ finds; Pierre explains.
 
 ---
 
-## Phase 4: Pierre deep review (29 semantic checks)
+## Phase 4: Pierre deep review (31 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 29 evidence-based checks the static scanner
-cannot fully judge — **23 Tier A** (high-confidence) plus **6 Tier B v1** heuristic checks (items
-**4, 5, 7, 10, 15, 29** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
-5.6.1/5.6.3). Full procedure, output format, and per-check steps are in
+After Phase 3, Pierre runs the **Review Simulator**: 31 evidence-based checks the static scanner
+cannot fully judge — **23 Tier A** (high-confidence) plus **8 Tier B v1** heuristic checks (items
+**4, 5, 7, 10, 15, 29, 30, 31** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
+5.6.1/5.6.3, 4.3 differentiation, 4.0 design minimum). Full procedure, output format, and per-check steps are in
 [`pierre-deep-review.md`](pierre-deep-review.md).
 
 **Verdict impact:** none. Phase 4 emits `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`.
@@ -202,7 +210,7 @@ These are advisory; FAIL/WARN counts and GREEN/YELLOW/RED come only from Phases 
 5.1.1(i) privacy policy fetch, 2.3.11–13 locale consistency, etc.). Guideline numbers touched
 are tracked in `guidelines-baseline.json` → `covered_by_pierre_deep_review`.
 
-**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 29 findings) and
+**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 31 findings) and
 every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation. Tier B v1 findings are heuristic.
 
 ---
@@ -433,6 +441,7 @@ completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
 | 52 | `xcode-sdk-requirement` | build-setting | validator-blocking | yes |
 | 53 | `subscription-eula-metadata` | metadata | review-risk | — |
 | 54 | `saturated-category` | metadata | judgment-call | — |
+| 55 | `ipv4-literal` | source | review-risk | — |
 
 *Generated from `scripts/evidence.sh`; `tests/test-evidence.sh` keeps it honest.*
 
@@ -564,4 +573,5 @@ Things the scanner cannot verify; confirm by hand before you submit:
 [ ] Updated age-rating questionnaire (13+/16+/18+ tiers) completed in App Store Connect
 [ ] EU DSA trader status declared (required for EU distribution)
 [ ] If user data goes to a third-party AI provider: consent screen names the provider
+[ ] IPv6-only run: Internet Sharing > "Create NAT64 Network" on a Mac, every network feature works (2.5.5 — GUI-only, not automatable; §55 only greps the IPv4-literal subset)
 ```

@@ -50,6 +50,15 @@ assert_eq "$st" "64" "exit 64 on a non-guideline argument"
 out="$(run)"; st=$?
 assert_eq "$st" "64" "exit 64 with no argument"
 
+section "category intro sections (N.0) link to the bare category anchor"
+# Apple cites the Design intro as "Guideline 4.0", but the page anchors it as id="4".
+out="$(run 4.0)"; st=$?
+assert_eq "$st" "0" "4.0 is citable"
+assert_contains "$out" "Apple customers place a high value" "4.0 quote printed"
+assert_contains "$out" "https://developer.apple.com/app-store/review/guidelines/#4" "link uses the bare category anchor"
+assert_absent   "$out" "#4.0" "no dangling #4.0 anchor (the page has none)"
+assert_eq "$(run --json 4.0 | jq -r .url)" "https://developer.apple.com/app-store/review/guidelines/#4" "json url uses the bare anchor"
+
 section "--json is machine-readable"
 j="$(run --json 2.3.3)"
 assert_eq "2.3.3"  "$(jq -r .guideline <<<"$j")" "json guideline"

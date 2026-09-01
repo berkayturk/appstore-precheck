@@ -1554,6 +1554,67 @@ if [[ -d "$META_DIR" ]]; then
   fi
 fi
 
+# ===================================================================
+# §55 — 2.5.5 IPv6-only networks: IPv4-only socket APIs + hardcoded IPv4 literals
+# ===================================================================
+# App Review runs on an IPv6-only NAT64 network (2.5.5: "Apps must be fully
+# functional on IPv6-only networks"). DNS64 synthesizes AAAA records for HOSTNAMES,
+# so URLSession/NWConnection code keeps working; an IPv4 LITERAL has no name to
+# synthesize from, and the legacy BSD IPv4 API (inet_addr, inet_aton, gethostbyname,
+# sockaddr_in, AF_INET) cannot address an IPv6 network at all. Both are greppable;
+# the NAT64 run itself is GUI-only (System Settings > Internet Sharing) and stays on
+# the manual checklist. WARN + review-risk: no upload validator looks at this — the
+# app simply fails to connect in front of a human reviewer. Heuristic exclusions
+# (loopback, 0.0.0.0, 255.x masks, CIDR ranges, version-looking values, comments)
+# are chosen to keep a false WARN rarer than a missed one.
+set_rule "ipv4-literal"
+if [[ -n "$IOS_DIR" ]]; then
+  # The trailing class also rejects the IPv6-capable siblings (sockaddr_in6, AF_INET6,
+  # gethostbyname2) because their next character is alphanumeric.
+  ipv4_api_re='(^|[^A-Za-z0-9_])(inet_addr|inet_aton|gethostbyname|sockaddr_in|AF_INET)([^A-Za-z0-9_]|$)'
+  ipv4_api_hits=$(grep -rnEI "$ipv4_api_re" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
+    | grep -vE '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' | head -5)
+  # Literals: dotted quads in source AND plists (ATS exception domains, endpoints).
+  # Pre-filter with grep, then let awk apply the exclusions per match. No brace
+  # intervals in the awk regexes: mawk (Ubuntu CI) does not support them.
+  ipv4_lit_hits=""
+  while IFS= read -r ipv4_f; do
+    [[ -n "$ipv4_f" ]] || continue
+    ipv4_h=$(awk -v F="$ipv4_f" '
+      {
+        line = $0; prev = prevline; prevline = $0
+        if (line ~ /^[[:space:]]*(\/\/|\*|\/\*|#)/) next          # comment lines
+        if (tolower(line) ~ /version/ || tolower(prev) ~ /version/) next   # CFBundleVersion-style values
+        s = line
+        while (match(s, /[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?/)) {
+          pre  = (RSTART > 1) ? substr(s, RSTART - 1, 1) : ""
+          lit  = substr(s, RSTART, RLENGTH)
+          post = substr(s, RSTART + RLENGTH)
+          s = post
+          if (pre  ~ /[0-9A-Za-z._]/) continue                     # v1.2.3.4, 10.1.2.3.4
+          if (post ~ /^[0-9A-Za-z._]/) continue                     # 1.2.3.4.5, 1.2.3.4a
+          if (post ~ /^\/[0-9][0-9]?([^0-9]|$)/) continue          # CIDR range, not a host
+          n = split(lit, o, ".")
+          if (o[1] > 255 || o[2] > 255 || o[3] > 255 || o[4] > 255) continue
+          if (o[1] == 0 || o[1] == 127 || o[1] == 255) continue    # bind-any, loopback, masks/broadcast
+          printf "%s:%d:%s\n", F, NR, lit; break
+        }
+      }' "$ipv4_f" 2>/dev/null | head -2)
+    [[ -n "$ipv4_h" ]] && ipv4_lit_hits+="$ipv4_h"$'\n'
+  done < <(grep -rlE '(^|[^0-9])[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}([^0-9]|$)' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" --include='*.plist' 2>/dev/null | head -50)
+  ipv4_lit_hits="$(printf '%s' "$ipv4_lit_hits" | grep -v '^$' | head -5)"
+  ipv4_hits="$(printf '%s\n%s\n' "$ipv4_api_hits" "$ipv4_lit_hits" | grep -v '^$')"
+  if [[ -n "$ipv4_hits" ]]; then
+    ipv4_n="$(printf '%s\n' "$ipv4_hits" | wc -l | tr -d ' ')"
+    ipv4_first="$(printf '%s\n' "$ipv4_hits" | head -1)"
+    ipv4_file="${ipv4_first%%:*}"; ipv4_rest="${ipv4_first#*:}"; ipv4_line="${ipv4_rest%%:*}"
+    warn "2.5.5 IPv6-only — $ipv4_n IPv4-only networking signal(s): a legacy BSD socket API (inet_addr / inet_aton / gethostbyname / sockaddr_in / AF_INET) and/or a hardcoded IPv4 literal. App Review tests on an IPv6-only NAT64 network: hostnames are synthesized by DNS64, but an IPv4 literal has nothing to synthesize from and the IPv4 socket API cannot address that network, so the app fails in front of the reviewer. Use hostnames via URLSession / NWConnection (or getaddrinfo with AF_UNSPEC) and verify on a NAT64 network before submitting" "$ipv4_file" "$ipv4_line"
+    detail "$ipv4_hits"
+  else
+    pass "2.5.5 IPv6-only — no IPv4-only socket API or hardcoded IPv4 literal found"
+  fi
+fi
+
 echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
   printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"

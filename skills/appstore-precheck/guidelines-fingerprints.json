@@ -144,6 +144,12 @@
       "quote": "2.5.4 Multitasking apps may only use background services for their intended purposes: VoIP, audio playback, location, task completion, local notifications, etc.",
       "quote_verified_on": "2026-09-01"
     },
+    "2.5.5": {
+      "fingerprint": "fdfa30ea86963be833085c909f19c4468a78e27eb9afd292939a2050553debd8",
+      "snapshot": "2.5.5 apps must be fully functional on ipv6-only networks.",
+      "quote": "2.5.5 Apps must be fully functional on IPv6-only networks.",
+      "quote_verified_on": "2026-09-01"
+    },
     "3.1.1": {
       "fingerprint": "16d14be80e2243e9456be40bbc6c8dfb2cb6e90c6e98e5c36ba6e7f7147a61e8",
       "snapshot": "3.1.1 in-app purchase: if you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, acce",
@@ -160,6 +166,12 @@
       "fingerprint": "ff34b24b578bec14defe707f1333593160535ab927d03676f1e533b4d9ef03bb",
       "snapshot": "3.1.5 cryptocurrencies: (i) wallets: apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) min",
       "quote": "3.1.5 Cryptocurrencies: (i) Wallets: Apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) Mining: Apps may not mine for cryptocurrencies unless the processing is performed off device (e.g. cloud-based mining). (iii) Exchanges: Apps may facilitate transactions or transmissions of cryptocurrency on an approved exchange, provided they are offered only in countries or regions where the app has appropriate licensing and permissions to provide a cryptocurrency exchange.",
+      "quote_verified_on": "2026-09-01"
+    },
+    "4.0": {
+      "fingerprint": "428486ae5ee88d20ce9d22900b8f502af2f318918679c3f60f00b6dffed2cdc7",
+      "snapshot": "4. design apple customers place a high value on products that are simple, refined, innovative, and easy to use, and that’s what we want to see on the app stor",
+      "quote": "4. Design Apple customers place a high value on products that are simple, refined, innovative, and easy to use, and that’s what we want to see on the App Store. Coming up with a great design is up to you, but the following are minimum standards for approval to the App Store. And remember that even after your app has been approved, you should update your app to ensure it remains functional and engaging to new and existing customers. Apps that stop working or offer a degraded experience may be removed from the App Store at any time.",
       "quote_verified_on": "2026-09-01"
     },
     "4.2": {

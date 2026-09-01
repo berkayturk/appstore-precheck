@@ -1,9 +1,9 @@
-# Phase 4: Pierre deep review (30 semantic checks)
+# Phase 4: Pierre deep review (31 semantic checks)
 
 After Phase 3 (explaining every scan FAIL/WARN), Pierre runs a **read-only, project-wide
-semantic review** of 30 guideline areas the static scanner cannot fully judge. The **23 Tier A**
-checks (all 30 except the Tier B items below) are high-confidence; the **7 Tier B v1** checks
-**4, 5, 7, 10, 15, and 29** are heuristic advisory (higher false-positive risk, still useful
+semantic review** of 31 guideline areas the static scanner cannot fully judge. The **23 Tier A**
+checks (all 31 except the Tier B items below) are high-confidence; the **8 Tier B v1** checks
+**4, 5, 7, 10, 15, 29, 30, and 31** are heuristic advisory (higher false-positive risk, still useful
 pre-submit signals).
 
 This is the **Review Simulator** layer: Pierre reads Swift, metadata, entitlements, screenshots,
@@ -19,10 +19,10 @@ that Pierre explains in Phase 5 presentation.
 - **Read-only:** never modify project files.
 - **Evidence-based:** cite `file:line`, metadata path, screenshot filename, or fetched URL text.
   If you cannot read something (private URL, missing file), say so — do not invent findings.
-- **All 30 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
+- **All 31 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
 - **REVIEW-FINDING severity:** always `WARN` (advisory). Never emit `REVIEW-FINDING: … FAIL`.
   A deep-review issue informs the human; it does not block the token by itself.
-- **Tier B checks (4, 5, 7, 10, 15, 29):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
+- **Tier B checks (4, 5, 7, 10, 15, 29, 30, 31):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
   when flagging, use cautious language ("may trigger review questions") — these are heuristics.
 - **Deepen scan hits:** when Phase 1 already flagged a guideline, Phase 4 still runs the matching
   deep check and adds semantic context (do not repeat the machine line verbatim — add what the
@@ -35,7 +35,7 @@ that Pierre explains in Phase 5 presentation.
 
 ## Output format
 
-For each of the 30 checks (in table order):
+For each of the 31 checks (in table order):
 
 ```
 REVIEW-PASS: <guideline> — <one-line why it looks OK, with evidence pointer>
@@ -62,7 +62,7 @@ language, a review prompt present but using the system API — report a plain
 
 ---
 
-## The 30 checks (guideline order)
+## The 31 checks (guideline order)
 
 | # | Guideline | Deep question | Primary sources |
 |---|-----------|---------------|-----------------|
@@ -95,6 +95,8 @@ language, a review prompt present but using the system API — report a plain
 | 27 | **5.3.1–5.3.3** | Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata? | description, keywords, in-app contest UI |
 | 28 | **5.6.2–5.6.3** | Developer identity consistent: app name, support URL content, bundle/marketing domain match? | fetch support URL, metadata, legal/footer copy |
 | 29 | **5.6.1 / 5.6.3** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
+| 30 | **4.3** | In a category Apple names as saturated (4.3(b)), is the app meaningfully different from the incumbents, and free of 4.3(a) per-variant bundle ids? | entry point, main views, `project.pbxproj` targets, §54 scan context |
+| 31 | **4.0** | Would the app pass Apple's minimum design bar: usable iPad / large-text layout, no clipped, overlapping or placeholder UI, no degraded or non-functional screens? | SwiftUI/UIKit layout code, `Info.plist` device family + orientations, screenshot assets |
 
 ---
 
@@ -309,6 +311,32 @@ category. Skip it (report not applicable) for apps with a substantial, different
 
 Quote Apple's 4.3 wording via `guideline-cite.sh 4.3` rather than paraphrasing the bar.
 
+### 31 — 4.0 Design minimum standards *(Tier B v1)*
+
+Guideline 4.0 is the intro prose of the Design section, and it is Apple's **single most-cited
+removal reason** (42,252 removals in the 2024 App Store Transparency Report, ahead of every
+numbered sub-section). It rejects apps that are not "simple, refined, innovative, and easy to use"
+or that "stop working or offer a degraded experience". No grep can judge that; this check reads
+the layout code with the reviewer's eyes. Heuristic by nature — prefer *not applicable* over a
+vague finding.
+
+1. **iPad and large-text layout.** If `UIDeviceFamily` includes iPad (or the app does not opt
+   out), look for iPad-hostile layouts: hardcoded frame widths, `UIScreen.main.bounds`
+   arithmetic, single-column phone layouts with no `NavigationSplitView` / size-class handling,
+   `.fixedSize()` on user text. Look for `Text` with `.lineLimit(1)` + `.minimumScaleFactor` on
+   copy that grows under Dynamic Type — a common source of clipped labels at accessibility sizes.
+2. **Placeholder and degraded UI.** Views that render "Coming soon", "TODO", lorem ipsum, empty
+   tabs, or buttons wired to no action (`Button {} label:`, `action: {}`); screens that only show
+   a spinner with no timeout or error state.
+3. **Consistency with screenshots.** Where check 8 found screenshots, the shipped UI should not
+   look obviously less finished than what is marketed (empty states, missing icons).
+4. Flag as `REVIEW-FINDING: 4.0 WARN — …` only with a concrete `file:line`; otherwise
+   `REVIEW-PASS: 4.0 — not applicable / no signal`. Quote Apple's own wording via
+   `guideline-cite.sh 4.0` (the page anchors it as `#4`, not `#4.0`).
+
+What this check cannot do: see the running app. iPad rotation, real Dynamic Type rendering and
+actual crashes belong to Phase 6 (the local simulator tier), not to a source read.
+
 ---
 
 ## Phase 5 presentation
@@ -317,6 +345,6 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 30 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 29, 30 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 30" count.
+3. Phase 4 summary table: 31 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 29, 30, 31 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 31" count.
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.

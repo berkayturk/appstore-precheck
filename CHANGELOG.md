@@ -3,6 +3,47 @@
 All notable changes to this project are documented here. Versioning follows
 [SemVer](https://semver.org/). Released as git tags.
 
+## [Unreleased]
+
+Phase 0 of the dynamic-tier plan: four static corrections that are right regardless of whether a
+runtime tier ever ships. No version bump yet; the dynamic tier lands in 1.19.0.
+
+### Added
+- **Guideline 4.0 (Design) is now covered.** `guidelines-baseline.json` started its `all_sections`
+  at 4.1, so Apple's **single most-cited removal reason** (42,252 removals in the 2024 App Store
+  Transparency Report) was invisible to drift detection. Cause: the live page anchors each
+  category intro only as the bare `id="4"` (there is no `id="4.0"`, verified 2026-09-01), and
+  `gd_section_ids` required a dotted component. The parser now surfaces bare category anchors as
+  `N.0`, so `1.0`–`5.0` are baselined, fingerprinted and citable; `gd_anchor_id`,
+  `guideline_url` and `guideline-cite.sh` resolve `N.0` back to `#N` so no dangling `#4.0` link is
+  ever produced. `4.0` has a pinned quote and a fingerprint. New **deep-review check 31 (4.0, Tier
+  B)**: iPad / large-text layout, placeholder or degraded UI, Apple's minimum design bar.
+  Deep review is now **31 checks (23 Tier A + 8 Tier B)**.
+- **§55 `ipv4-literal` (2.5.5 IPv6-only networks)**, the statically greppable subset of a
+  guideline the tool could not see: legacy IPv4-only BSD socket APIs (`inet_addr`, `inet_aton`,
+  `gethostbyname`, `sockaddr_in`, `AF_INET`) and hardcoded IPv4 literals in source or plists. App
+  Review runs on an IPv6-only NAT64 network; DNS64 rescues hostnames, not literals. `source` /
+  `review-risk` / WARN. Excludes loopback, `0.0.0.0`, `255.x` masks, CIDR ranges, version-looking
+  values and comment lines. `2.5.5` is pinned and drift-watched. The NAT64 run itself is GUI-only
+  and stays on the manual checklist. The scanner covers **55 vectors**.
+- `tests/test-ipv4-literal.sh`, `tests/test-design-40.sh`, `tests/test-phase6-doc.sh`
+  (suite: 34 files). Fixtures `ipv4-literal-app` and `ipv4-clean-app`.
+
+### Fixed
+- **Phase 6 D3 (paywall) could emit a false `DYNAMIC-FINDING`.** A StoreKit configuration file is
+  a scheme Run-action setting; `xcrun simctl launch` does not apply it, so `Product.products`
+  is empty and a price-less paywall is the *expected* default on a simctl-launched app. D3 now
+  emits `DYNAMIC-SKIP: 3.1.2 — …` when no price is visible and only runs its check when prices
+  are on screen (the app was launched from Xcode with a StoreKit configuration). `DYNAMIC-SKIP:`
+  is a documented output class: a check that could not be driven is never a PASS.
+- **Phase 6 had no install step.** The `.app`-path branch went straight to `launchApp`, so it
+  could not be driven as written. New **D0**: `xcrun simctl install`, bundle id read from the
+  `.app`'s `Info.plist` with `plutil`, and on failure every D-check is `DYNAMIC-SKIP`. The device
+  policy is hardened from "prefer a disposable simulator" to: the tier **creates its own device**
+  (`simctl create`), erases it before, deletes it after, and never touches an existing device.
+- `methodology.md` Phase 1 table was missing §54 and still said "29 semantic checks";
+  `MAINTENANCE.md` still said 42 vectors / 28 deep checks. All counts now agree (55 / 31).
+
 ## [1.18.0] - 2026-08-31
 
 Two gaps closed, both about **not overstating what the tool knows**. Prior art credit: the

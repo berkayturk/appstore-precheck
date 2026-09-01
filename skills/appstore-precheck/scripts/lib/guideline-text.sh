@@ -5,13 +5,30 @@
 # ingestion) so the extraction logic has exactly one implementation.
 
 # gd_section_ids <html> -> numeric guideline anchor ids, document order, deduped.
-# Requires at least one dotted component so bare top-level category anchors
-# (id="1".."5") aren't tracked as drift-able sections — those are just the
-# five category headers, not sub-sections with their own prose.
+# Sub-sections come out as anchored (id="2.3.3" -> 2.3.3). The five bare category
+# anchors (id="1".."5") come out as "N.0": Apple's own rejection notices cite the
+# category intro prose that way ("Guideline 4.0 - Design", the #1 removal reason in
+# Apple's 2024 transparency report), but the page has no id="4.0" — only the
+# category header's id="4", verified live 2026-09-01. Mapping it here is what lets
+# the intro prose be baselined, fingerprinted and cited like any other section.
+# Anything else with a bare digit id (nav chrome such as id="globalnav-4") has a
+# non-numeric prefix and is not matched.
 gd_section_ids() {
-  grep -oE 'id="[1-5](\.[0-9]+)+"' "$1" 2>/dev/null \
+  grep -oE 'id="[1-5](\.[0-9]+)*"' "$1" 2>/dev/null \
     | sed -E 's/^id="//; s/"$//' \
+    | sed -E 's/^([1-5])$/\1.0/' \
     | awk '!seen[$0]++'
+}
+
+# gd_anchor_id <section> -> the id attribute that section carries on the live page.
+# "N.0" is our name for a category intro; Apple anchors it as the bare "N". Every
+# other section is its own anchor. Shared by the text helpers and the URL builders
+# so a "#4.0" link (which resolves to nothing) can never be produced.
+gd_anchor_id() {
+  case "$1" in
+    [1-5].0) printf '%s' "${1%.0}" ;;
+    *) printf '%s' "$1" ;;
+  esac
 }
 
 # _gd_section_raw <html> <id> -> normalized prose for exactly that section, in the
@@ -20,7 +37,8 @@ gd_section_ids() {
 # Apple wrote it). Lowercasing moved to the caller: tr and the whitespace squeeze
 # commute, so gd_section_text is byte-identical to before this split.
 _gd_section_raw() {
-  local html="$1" want="$2"
+  local html="$1" want
+  want="$(gd_anchor_id "$2")"
   # Replace each opening guideline-anchor tag (e.g. <span id="2.3.3"> or <li id="2.3.3" ...>)
   # with a whole-tag sentinel @@SEC:<id>@@ on its own line, so no partial tag leaks.
   sed -E 's#<[a-zA-Z]+[^>]*id="([1-5](\.[0-9]+)*)"[^>]*>#\'$'\n''@@SEC:\1@@#g' "$html" \
