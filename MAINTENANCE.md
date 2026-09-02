@@ -42,6 +42,14 @@ after major guideline updates. Pay special attention to the signal lists that go
 - The IPv4 exclusion heuristics in §55 (`ipv4-literal`): loopback / `0.0.0.0` / `255.x` / CIDR /
   version-looking values / comments. A false WARN here is cheap to add an exclusion for; a missed
   literal is what the reviewer's NAT64 network finds.
+- The ad / attribution **vendor → domain** catalogue in
+  `skills/appstore-precheck/scripts/lib/dyn-hosts.sh` (`dyn_tracking_domain_catalogue`), which the
+  dynamic tier's `dyn-hosts-contacted` compares against `NSPrivacyTrackingDomains`. It mirrors the
+  §16 SDK list and goes stale the same way: when an SDK is added to §16, add its endpoint domains
+  here. `tests/test-dynamic-libs.sh` pins the row shape (`vendor<TAB>domain`).
+- The framework detection rules in `framework-detect.sh` (`package.json` react-native dependency,
+  `pubspec.yaml` + `ios/Runner.xcodeproj`, Gradle/`.kt` + `iosApp/`) and the Metro precondition
+  (port 8081, `main.jsbundle`) in `dynamic-run.sh`; toolchains move their layouts.
 
 A pattern that is missing a popular new SDK is a silent false negative, so this review matters
 more than it looks.
@@ -85,6 +93,9 @@ reconciliation as required, not optional:
   the methodology table, and the changelog. When you add or remove a check, update all of them.
   The deep-review count (31) lives in the same places plus `pierre-deep-review.md`; the Tier B
   item list (4, 5, 7, 10, 15, 29, 30, 31) is repeated in SKILL.md, the reference and the README.
+  The **dynamic-check catalogue** is `dyn_catalogue` in `scripts/dynamic.sh`; the reference
+  `simulator-dynamic-review.md` must name every id in it (`tests/test-phase6-doc.sh` enforces this),
+  and the `runtime-not-audited` count is derived from it, never typed.
 - **Output format:** tests assert on the exact `FAIL:` / `WARN:` / `PASS: <topic> — <detail>`
   shape. The em-dash in those output lines is machine format and stays. Prose everywhere else
   stays human, with no em-dashes.
@@ -101,6 +112,10 @@ exemption-prone checks are WARN, never FAIL.
 - `npm test`, `npm run lint`, and `shellcheck -x --severity=warning` on the changed scripts are
   green.
 - `claude plugin validate .` and `grok plugin validate .` pass.
+- `bash tests/local/run-dynamic.sh` (macOS only; boots a throwaway simulator and **executes** a
+  built app you confirm — never part of `tests/all.sh`). The shimmed CI counterpart is
+  `tests/test-dynamic-run.sh`; this one proves the real `simctl` / Maestro path still works on the
+  current Xcode.
 - The changelog has an entry and the version is bumped in lockstep.
 - The manual pre-submit checklist at the end of the methodology reference still reflects what the
   scanner cannot verify.

@@ -547,12 +547,20 @@ which rules fire. Contribute an outcome via the "App Store outcome" issue templa
 
 Beyond the static scan and the agent-mode deep reviews, an **opt-in** local dynamic tier
 (`references/simulator-dynamic-review.md`, SKILL.md Phase 6) can run the app on a simulator
-(`xcrun simctl` + Maestro MCP) and emit advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` observations —
-launch/crash, paywall render, permission prompt vs purpose string, demo-login path, live UI vs
-marketing screenshots. It is off by default, never changes the verdict, is read-only w.r.t. the
-user's project (touches disposable simulator state only), and is permanently local-only (it cannot
-run in CI). It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA
-replacement.
+(`xcrun simctl` + Maestro MCP, with `scripts/dynamic-run.sh` driving the observation-based part)
+and emit advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` observations — launch/crash
+(three repeats on an erased device; a finding needs all three), first screen, dark-mode / Dynamic
+Type / iPad layout heuristics, the installed bundle's `Info.plist` / `DTXcode` / linked frameworks,
+hosts contacted vs `NSPrivacyTrackingDomains`, and the agent-driven paywall, Restore tap, permission
+prompt, demo-login and screenshot-parity checks. It is off by default, never changes the verdict,
+never writes to the user's project (it creates and deletes its own simulator, and never builds: the
+`.app` must already exist — `scripts/app-discover.sh` finds one), and is permanently local-only (it
+cannot run in CI). It *does* execute the app. `scripts/dynamic.sh` records every observation as
+`evidence: runtime` and reconciles it with the static findings; a Debug build never clears `needs
+build verification`. It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA
+replacement. When it is not run, the report carries the `runtime-not-audited` gap record; on a React
+Native / Flutter / Kotlin Multiplatform repo the static scan additionally carries
+`framework-not-audited`, because its code-level greps read Swift / ObjC only.
 
 ---
 

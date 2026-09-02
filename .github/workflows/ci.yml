@@ -32,6 +32,20 @@ jobs:
                      skills/appstore-precheck/scripts/phase2-precheck.sh \
                      skills/appstore-precheck/scripts/findings.sh \
                      skills/appstore-precheck/scripts/suppress.sh \
+                     skills/appstore-precheck/scripts/framework-detect.sh \
+                     skills/appstore-precheck/scripts/app-discover.sh \
+                     skills/appstore-precheck/scripts/dynamic-run.sh \
+                     skills/appstore-precheck/scripts/lib/dyn-quorum.sh \
+                     skills/appstore-precheck/scripts/lib/dyn-device.sh \
+                     skills/appstore-precheck/scripts/lib/dyn-signals.sh \
+                     skills/appstore-precheck/scripts/lib/dyn-geometry.sh \
+                     skills/appstore-precheck/scripts/lib/dyn-hosts.sh \
+                     skills/appstore-precheck/scripts/lib/dyn-bundle.sh \
+                     tests/test-framework-detect.sh \
+                     tests/test-app-discover.sh \
+                     tests/test-dynamic-libs.sh \
+                     tests/test-dynamic-run.sh \
+                     tests/local/run-dynamic.sh \
                      hooks/fastlane-guard.sh \
                      install.sh \
                      tests/run.sh \

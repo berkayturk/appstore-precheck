@@ -45,6 +45,7 @@ source "$SCRIPT_DIR/suppress.sh"
 source "$SCRIPT_DIR/project-model.sh"
 source "$SCRIPT_DIR/image-dims.sh"
 source "$SCRIPT_DIR/sarif.sh"
+source "$SCRIPT_DIR/framework-detect.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
 trap 'rm -f "$FINDINGS_TMP"' EXIT
 # The envelope `version` is the appstore-precheck TOOL's own version (from this
@@ -265,6 +266,22 @@ if [[ -z "$META_DIR" || ! -d "$META_DIR" ]]; then
   # The skipped rule ids, derived from the same catalogue as the count, so the list can
   # never disagree with it — unlike the guideline enumeration this used to hardcode.
   detail "$(printf '%s\n' "$_meta_list" | tr '\n' ' ' | sed 's/ $//')"
+  set_rule ""
+fi
+
+# The code-level checks grep Swift / ObjC only (SRC_INC). On React Native, Flutter
+# and Kotlin Multiplatform the app logic is JS / Dart / Kotlin, so every `source`
+# rule under-detects there rather than false-firing — and a clean-looking result
+# would rest on ground nobody read. Detection is file presence only
+# (framework-detect.sh); the count is derived from the evidence catalogue, like the
+# store-listing gap above, so it cannot rot as rules are added.
+FRAMEWORK="$(detect_framework .)"
+if [[ "$FRAMEWORK" != native ]]; then
+  set_rule "framework-not-audited"
+  _src_list="$(rules_with_evidence source)"
+  _src_rules="$(printf '%s\n' "$_src_list" | grep -c .)"
+  skip "framework — ${_src_rules} code-level checks under-detect on ${FRAMEWORK} (source greps read Swift/ObjC only): the metadata, manifest, resource and build-setting checks apply in full, but a ${FRAMEWORK} app's logic lives outside the files those checks read, so a clean result from them is partial. Review the listed guidelines against the ${FRAMEWORK} code by hand, or run the Phase 6 dynamic tier on a built simulator app."
+  detail "$(printf '%s\n' "$_src_list" | tr '\n' ' ' | sed 's/ $//')"
   set_rule ""
 fi
 

@@ -1,0 +1,8 @@
+2026-09-02 10:41:02.113 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Task <A1> {strength 1, tls 1} request https://api.receipts.example.com/v1/session
+2026-09-02 10:41:02.201 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Connection 1: connected to api.receipts.example.com:443
+2026-09-02 10:41:03.502 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Task <A2> request https://launches.appsflyer.com/api/v6.3/androidevent?app_id=id123
+2026-09-02 10:41:03.610 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Connection 2: connected to launches.appsflyer.com:443
+2026-09-02 10:41:04.001 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Task <A3> request https://graph.facebook.com/v18.0/123/activities
+2026-09-02 10:41:04.120 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Task <A4> request http://203.0.113.10:8080/legacy/ping
+2026-09-02 10:41:05.000 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Task <A5> request https://API.Receipts.Example.com/v1/receipts
+2026-09-02 10:41:05.500 Df ReceiptsApp[41231:9b1c] [com.apple.CFNetwork:Diagnostics] Task <A6> request https://endpoint/placeholder (unset base URL)

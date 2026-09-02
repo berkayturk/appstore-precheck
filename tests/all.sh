@@ -29,6 +29,10 @@ SUITE=(
   "test-design-40.sh" # guideline 4.0: baseline N.0 sections, pinned quote, deep-review check 31
   "test-phase6-doc.sh" # Phase 6 reference contract: D0 install step, D3 StoreKit SKIP, device lifecycle, rule ids, D3b, four launch signals
   "test-dynamic-reconcile.sh" # dynamic.sh transcript -> runtime records, reconciliation table, Debug guard, RESOLVED inertness
+  "test-framework-detect.sh" # framework-detect.sh (rn/flutter/kmp/native from file presence) + scan.sh framework-not-audited gap record
+  "test-app-discover.sh" # app-discover.sh: DerivedData/.app candidates, config from dir name, newest recommended, never builds
+  "test-dynamic-libs.sh" # lib/dyn-*: launch-signal verdict, N=3 quorum, png-uniform, geometry heuristics, hosts parity, installed-bundle readers
+  "test-dynamic-run.sh" # dynamic-run.sh against a shimmed xcrun/maestro: lifecycle order, erase between repeats, delete-only-created, Metro guard, dry-run plan
   "test-rag-ingest.sh" # eval/rag/ingest.sh full-corpus extraction (RAG eval, no network)
   "test-rag-embed.sh" # eval/rag/embed.py SQL generation (RAG eval, no network)
   "test-rag-gemini-client.sh" # eval/rag/gemini_client.py retry-delay parsing + 429 backoff (RAG eval, no network)

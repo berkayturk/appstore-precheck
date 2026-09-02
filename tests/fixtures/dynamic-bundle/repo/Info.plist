@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0"><dict>
+  <key>CFBundleExecutable</key><string>Installed</string>
+  <key>CFBundleIdentifier</key><string>com.example.installed</string>
+  <key>NSCameraUsageDescription</key><string>We scan receipts with the camera</string>
+  <key>NSPhotoLibraryUsageDescription</key><string>Save receipts to your library</string>
+  <key>UIDeviceFamily</key><array><integer>1</integer><integer>2</integer></array>
+</dict></plist>

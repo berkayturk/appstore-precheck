@@ -183,6 +183,13 @@ clean result. It is counted separately (`skip=` in `verdict.sh`, `summary.not_au
 **never changes the verdict**: a gap in coverage is not a defect in the build. It must never be
 presented as a pass.
 
+**`SKIP: framework — …`** (`framework-not-audited`) appears when the repo is React Native, Flutter
+or Kotlin Multiplatform (`scripts/framework-detect.sh`, file presence only): the code-level checks
+grep Swift/ObjC, so on those toolkits they under-detect rather than false-fire, and the line names
+how many checks (derived from the evidence catalogue) and which. The metadata, manifest, resource
+and build-setting checks still apply in full. Tell the user; the Phase 6 tier observes the built
+app regardless of toolkit.
+
 **When the scan emits `SKIP: metadata`, ask the user for the listing.** The App Store Connect
 listing is a real rejection surface — roughly a fifth of the checks read it — and a repo without a
 `fastlane/metadata` directory silently skips all of them. Ask for:
@@ -509,8 +516,28 @@ and receives the demo credentials you supplied — tell the user so before the f
 requires macOS + Xcode + a simulator runtime and is permanently local-only (it cannot run in CI).
 It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA replacement.
 
+**Getting a build without building.** Never run `xcodebuild` / `flutter build` / `gradle`. Run
+`bash <skill-dir>/scripts/app-discover.sh --repo <repo> --json`: it lists the simulator `.app`
+bundles the user already built (DerivedData, `build/ios/iphonesimulator`) with build time,
+configuration (from the directory name: `debug` / `release` / `unknown`) and bundle id, and
+recommends the newest. **Ask the user to confirm one candidate explicitly** before anything is
+installed or launched. If it finds none, keep the `runtime-not-audited` gap and paste the build
+command it prints for the user to run themselves.
+
+**Observation-based checks are scripted.** `bash <skill-dir>/scripts/dynamic-run.sh --app <path>.app
+--repo <repo> --out <tmp>` creates a throwaway device, runs the launch checks **three times on an
+erased device** (a crash FINDING needs 3/3; a mixed result carries its ratio and never blocks),
+then dark-mode / Dynamic Type layout heuristics, the installed bundle (`Info.plist` purpose
+strings, `DTXcode`, `otool -L`), and hosts contacted, writing `<tmp>/transcript.txt` and
+`<tmp>/run.json` (which carries the `build_config` to pass on). Add `--ipad` for the iPad pass. On
+React Native without Metro on port 8081 it SKIPs the launch checks instead of reporting a false
+crash; on Flutter / KMP it pre-SKIPs the selector-based checks (no accessibility semantics). Then
+drive the selector-based checks (D3 paywall, D3b Restore tap, D4 prompts, D5 demo login, D6
+parity) with the Maestro MCP tools — **one flow per `mcp__maestro__run` call**, labels read from
+`accessibilityText` — appending `DYNAMIC-*` lines to the same transcript.
+
 Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-review.md) for the
-setup step (D0), the 7-check dynamic checklist (D1–D6 + D3b Restore tap) and the output format.
+setup step (D0), the full checklist (D1–D11 incl. D3b) and the output format.
 Afterwards feed the transcript to [`scripts/dynamic.sh`](scripts/dynamic.sh) with the static
 `--format json` output: it records every observation as `evidence: runtime` with the run's
 `runtime_target` and `build_config`, and reconciles them with the static findings (a runtime
@@ -542,7 +569,9 @@ from, and leave it `unknown` if you do not know.
   `REVIEW-FINDING` lines that do not change the verdict. Neither phase is a guarantee of Apple's decision.
 - Most accurate for native Swift / SwiftUI. The metadata, privacy-manifest, screenshots, and
   export-compliance checks apply to any iOS app, but the code-level checks read Swift source, so on
-  React Native (JavaScript) or Flutter (Dart) they under-detect rather than false-fire.
+  React Native (JavaScript), Flutter (Dart) or Kotlin Multiplatform they under-detect rather than
+  false-fire — and the scan now says so with a `SKIP: framework` gap record (`framework-not-audited`)
+  naming the affected checks.
 - iOS only.
 - Phase 0 detects only **structural** drift (added/removed section numbers); see the reference for why.
 - Guideline citations are **pinned snapshots**, not a live fetch: offline and reproducible, but only

@@ -1,0 +1,7 @@
+name: flutterapp
+description: A fixture.
+environment:
+  sdk: ^3.5.0
+dependencies:
+  flutter:
+    sdk: flutter
