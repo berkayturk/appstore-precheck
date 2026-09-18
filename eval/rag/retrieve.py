@@ -99,6 +99,7 @@ def main(argv):
 
     top_k = 3
     dry_run_query = False
+    rerank_typesafe = False
     while args:
         arg = args.pop(0)
         if arg == "--top-k":
@@ -112,6 +113,8 @@ def main(argv):
                 return 64
         elif arg == "--dry-run-query":
             dry_run_query = True
+        elif arg == '--rerank-typesafe':
+            rerank_typesafe = True
         else:
             print(f"retrieve.py: unknown arg {arg}", file=sys.stderr)
             return 64
@@ -141,6 +144,24 @@ def main(argv):
         print(f"retrieve.py: query failed: {result.stderr}", file=sys.stderr)
         return 1
     rows = json.loads(result.stdout.strip() or "[]")
+    if rerank_typesafe and rows:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'skills/appstore-precheck/scripts'))
+        from semantic.engine import run_job, validate_bundle
+        job = {'id': 'guideline-rerank', 'workflow': 'rerank',
+               'context': {'query': query, 'candidates': [
+                   {'id': str(row['section_number']), 'text': row['text']} for row in rows]},
+               'evidence': [], 'coverage': {'complete': True, 'missing': []}}
+        try:
+            validate_bundle({'version': 1, 'jobs': [job]})
+            ranked = run_job(job, live=True)
+            if ranked.get('action') == 'ranked':
+                by_id = {str(row['section_number']): row for row in rows}
+                rows = [{**by_id[c['id']], 'typesafe_score': c['model_score'],
+                         'model_confidence': c['model_confidence']} for c in ranked['ranking']]
+            else:
+                print('retrieve.py: TypeSafe unavailable/uncertain; original order retained', file=sys.stderr)
+        except ValueError:
+            print('retrieve.py: TypeSafe input exceeds limits; original order retained', file=sys.stderr)
     print(json.dumps(rows))
     return 0
 

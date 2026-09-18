@@ -26,6 +26,11 @@ def response_text(response):
 
 def parse_verdict(response):
     """Return {"verdict": <str>, "line": <str|None>} for one raw API response."""
+    if response.get('provider') == 'typesafe':
+        outcome = response.get('result', {}).get('outcome')
+        if outcome in ('finding', 'pass', 'not_applicable', 'insufficient_evidence'):
+            return {'verdict': 'not-applicable' if outcome == 'not_applicable' else outcome, 'line': None}
+        return {'verdict': 'unparseable', 'line': None}
     if response.get("stop_reason") == "refusal":
         return {"verdict": "unparseable", "line": None}
     match = REVIEW_RE.search(response_text(response))

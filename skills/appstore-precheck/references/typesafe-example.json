@@ -1,0 +1,239 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "review-example",
+      "workflow": "review",
+      "context": {
+        "check_definition": "Does this user-facing release note describe an unfinished app?"
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/review.txt",
+          "line": 1,
+          "text": "Welcome to our unfinished public beta."
+        }
+      ]
+    },
+    {
+      "id": "copy-example",
+      "workflow": "copy",
+      "context": {
+        "text": "Try the preview of your invoice before sending.",
+        "locale": "en",
+        "ui_role": "invoice toolbar",
+        "flow_stage": "document editing"
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/copy.txt",
+          "line": 1,
+          "text": "Try the preview of your invoice before sending."
+        }
+      ]
+    },
+    {
+      "id": "purpose-example",
+      "workflow": "purpose",
+      "context": {
+        "permission_key": "NSMicrophoneUsageDescription",
+        "text": "Sesli notlarınızı kaydetmek için mikrofon kullanılır.",
+        "locale": "tr",
+        "feature_description": "Users record voice notes."
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/purpose.txt",
+          "line": 1,
+          "text": "Sesli notlarınızı kaydetmek için mikrofon kullanılır."
+        }
+      ]
+    },
+    {
+      "id": "disclosure-example",
+      "workflow": "disclosure",
+      "context": {
+        "copy": "After 7 days, $9.99/month. Renews automatically. Cancel in Settings before renewal.",
+        "product_terms": {
+          "trial": true,
+          "price": "9.99 USD/month"
+        },
+        "locale": "en",
+        "policy_excerpt": "Review whether the supplied disclosure explains trial billing, renewal and cancellation.",
+        "locale_pair": {
+          "en": "7 days free, then $9.99/month",
+          "fr": "7 jours gratuits, puis 9,99 USD/mois"
+        }
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/disclosure.txt",
+          "line": 1,
+          "text": "After 7 days, $9.99/month. Renews automatically. Cancel in Settings before renewal."
+        }
+      ]
+    },
+    {
+      "id": "consistency-example",
+      "workflow": "consistency",
+      "context": {
+        "claim": "We never collect location.",
+        "comparison_kind": "privacy policy versus observed implementation"
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/consistency.txt",
+          "line": 1,
+          "text": "The observed runtime trace records GPS coordinates and transmits them to analytics.example."
+        }
+      ]
+    },
+    {
+      "id": "routing-example",
+      "workflow": "routing",
+      "context": {
+        "offering": "Home-delivered groceries",
+        "flow": "Card payment for delivered physical goods",
+        "policy_excerpt": "For this synthetic example, physical goods use an external processor."
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/routing.txt",
+          "line": 1,
+          "text": "Card payment for delivered physical goods"
+        }
+      ]
+    },
+    {
+      "id": "rerank-example",
+      "workflow": "rerank",
+      "context": {
+        "query": "Purpose strings must describe why microphone access is needed",
+        "candidates": [
+          {
+            "id": "privacy",
+            "text": "Explain why microphone access benefits the user."
+          },
+          {
+            "id": "screenshots",
+            "text": "Screenshots must show the app."
+          }
+        ]
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": []
+    },
+    {
+      "id": "verify-example",
+      "workflow": "verify",
+      "context": {
+        "claim": "The production binary transmits location.",
+        "source_id": "source",
+        "evidence_class": "source",
+        "build_config": "unknown",
+        "quote": "requestWhenInUseAuthorization()"
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/verify.txt",
+          "line": 1,
+          "text": "requestWhenInUseAuthorization()"
+        }
+      ]
+    },
+    {
+      "id": "drift-example",
+      "workflow": "drift",
+      "context": {
+        "old_text": "Include a privacy policy.",
+        "new_text": "Include a privacy policy and disclose each AI provider.",
+        "publication_date": "2026-09-18",
+        "rule_catalog": [
+          {
+            "id": "privacy",
+            "description": "Privacy policy matches collection."
+          },
+          {
+            "id": "ai-consent",
+            "description": "AI provider disclosure."
+          }
+        ]
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/drift.txt",
+          "line": 1,
+          "text": "Include a privacy policy and disclose each AI provider."
+        }
+      ]
+    },
+    {
+      "id": "functionality-example",
+      "workflow": "functionality",
+      "context": {
+        "app_purpose": "Voice notebook",
+        "reachable_flows": [
+          "create recording",
+          "play recording",
+          "delete recording"
+        ],
+        "coverage_notes": "Synthetic observed flows only"
+      },
+      "coverage": {
+        "complete": true,
+        "missing": []
+      },
+      "evidence": [
+        {
+          "id": "source",
+          "path": "synthetic/functionality.txt",
+          "line": 1,
+          "text": "Observed: create a recording, play it, then delete it."
+        }
+      ]
+    }
+  ]
+}

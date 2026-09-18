@@ -6,5 +6,6 @@
   "expected": "finding",
   "rationale": "Paywall copy offers a week of Premium in exchange for a 5-star review — a quid-pro-quo review incentive.",
   "label_confirmed": true,
-  "fixture": "fixtures/check10-incentivized-review/"
+  "fixture": "fixtures/check10-incentivized-review/",
+  "check_key": "review-incentives"
 }

@@ -4,7 +4,7 @@
 Stdlib-only (no jsonschema dependency): the constraints in the schema file are
 enforced here directly, plus cross-field checks the schema cannot express:
   - id must equal the case filename (without .json)
-  - tier must match check_id (Tier B = checks 4, 5, 7, 10, 15, 28)
+  - tier and stable check_key must match the current versioned catalog
   - fixture directory must exist and contain at least one file
 
 Exit 0 if all cases pass, 1 otherwise. Usage: validate_case.py <eval-dir>
@@ -13,12 +13,13 @@ import json
 import re
 import sys
 from pathlib import Path
+from catalog import BY_NUMBER, resolve
 
-TIER_B_CHECKS = frozenset({4, 5, 7, 10, 15, 28})
+TIER_B_CHECKS = frozenset(n for n, c in BY_NUMBER.items() if c['tier'] == 'B')
 REQUIRED = ("id", "check_id", "tier", "guideline", "expected", "rationale",
             "label_confirmed", "fixture")
-ALLOWED = frozenset(REQUIRED) | {"fetched_urls", "notes"}
-EXPECTED_VALUES = ("finding", "pass", "not-applicable")
+ALLOWED = frozenset(REQUIRED) | {"fetched_urls", "notes", "check_key"}
+EXPECTED_VALUES = ("finding", "pass", "not-applicable", "insufficient_evidence")
 ID_RE = re.compile(r"^check[0-9]{2}-[a-z0-9-]+$")
 FIXTURE_RE = re.compile(r"^fixtures/[a-z0-9-]+/$")
 
@@ -47,13 +48,17 @@ def check_case(path, dataset_dir):
     if case["id"] != path.stem:
         errors.append(f"id {case['id']!r} != filename stem {path.stem!r}")
 
-    if not (isinstance(case["check_id"], int) and 1 <= case["check_id"] <= 28):
-        errors.append(f"check_id {case['check_id']!r} must be an integer in 1..28")
+    if not (type(case["check_id"]) is int and case["check_id"] in BY_NUMBER):
+        errors.append(f"check_id {case['check_id']!r} must be an integer in 1..31")
     else:
         want_tier = "B" if case["check_id"] in TIER_B_CHECKS else "A"
         if case["tier"] != want_tier:
             errors.append(f"tier {case['tier']!r} inconsistent with check_id "
                           f"{case['check_id']} (expected {want_tier!r})")
+        try:
+            resolve(case)
+        except ValueError as exc:
+            errors.append(str(exc))
 
     if not (isinstance(case["guideline"], str) and case["guideline"]):
         errors.append("guideline must be a non-empty string")

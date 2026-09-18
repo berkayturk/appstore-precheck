@@ -7,5 +7,6 @@
   "rationale": "NSCameraUsageDescription is a generic template sentence and NSLocationWhenInUseUsageDescription is literally 'TODO' — placeholder/generic purpose strings per procedure step 2.",
   "label_confirmed": true,
   "fixture": "fixtures/check18-placeholder-purpose-string/",
-  "notes": "Positive pair for check18-specific-purpose-strings."
+  "notes": "Positive pair for check18-specific-purpose-strings.",
+  "check_key": "purpose-strings"
 }

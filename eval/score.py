@@ -22,6 +22,7 @@ is not a passing measurement, and must never be fabricated).
 import json
 import os
 import sys
+import math
 from collections import Counter
 from pathlib import Path
 
@@ -33,6 +34,7 @@ DEFAULT_DATASET = REPO / "eval" / "dataset"
 BASELINE_DIR = REPO / "eval" / "baseline"
 CARD = REPO / "docs" / "llm-scorecard.md"
 DEFAULT_FLOOR = 0.80
+DECISIONS = {'finding', 'pass', 'not-applicable'}
 
 
 def all_baselines():
@@ -59,11 +61,23 @@ def load_cases(dataset_dir):
             for p in sorted((dataset_dir / "cases").glob("*.json"))]
 
 
+def cases_for_run(run_dir, dataset_dir):
+    # Preserve historical labels/numbering. Never reinterpret an old cached response
+    # against a newly numbered check or a newly edited expected label.
+    if dataset_dir.resolve() == DEFAULT_DATASET.resolve():
+        snapshot = run_dir / 'cases.json'
+        if snapshot.is_file():
+            return json.loads(snapshot.read_text())
+        if run_dir.parent.resolve() == BASELINE_DIR.resolve():
+            return json.loads((BASELINE_DIR / 'cases-v1.json').read_text())
+    return load_cases(dataset_dir)
+
+
 def majority(verdicts):
-    """Return (majority_verdict, unanimous). Ties -> ('no-majority', False)."""
+    """Require a strict majority; a mere plurality also counts as abstention."""
     counts = Counter(verdicts)
     top, top_n = counts.most_common(1)[0]
-    if list(counts.values()).count(top_n) > 1:
+    if top_n <= len(verdicts) / 2:
         return "no-majority", False
     return top, len(counts) == 1
 
@@ -86,6 +100,8 @@ def confusion(results):
     """Binary confusion over scored cases: positive = 'finding'."""
     tp = fp = fn = tn = 0
     for r in results:
+        if r['predicted'] not in DECISIONS or r['expected'] not in DECISIONS:
+            continue  # Abstention is neither a clean bill of health nor a true negative.
         want_pos = r["expected"] == "finding"
         got_pos = r["predicted"] == "finding"
         if want_pos and got_pos:
@@ -117,11 +133,14 @@ def tier_row(name, results):
 def run_stats(run_dir, dataset_dir):
     """Everything one run contributes to the card: results and summary numbers."""
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
-    cases = load_cases(dataset_dir)
+    cases = cases_for_run(run_dir, dataset_dir)
     results = [score_case(c, run_dir) for c in cases]
     unlabeled = [r for r in results if not r["label_confirmed"]]
     not_run = [r for r in results if r["label_confirmed"] and r["predicted"] == "not-run"]
-    scored = [r for r in results if r["label_confirmed"] and r["predicted"] != "not-run"]
+    attempted = [r for r in results if r['label_confirmed'] and r['predicted'] != 'not-run']
+    abstained = [r for r in attempted if r['predicted'] not in DECISIONS]
+    answerable = [r for r in attempted if r['expected'] in DECISIONS]
+    scored = [r for r in attempted if r['predicted'] in DECISIONS and r['expected'] in DECISIONS]
     tier_a = [r for r in scored if r["tier"] == "A"]
     tier_b = [r for r in scored if r["tier"] == "B"]
     _, b_fp, _, b_tn = confusion(tier_b)
@@ -134,6 +153,9 @@ def run_stats(run_dir, dataset_dir):
         "b_fp_rate": b_fp / (b_fp + b_tn) if b_fp + b_tn else 0.0,
         "unanimous": unanimous,
         "consistency": unanimous / len(scored) if scored else 0.0,
+        'abstained': abstained, 'attempted': attempted,
+        'coverage': len(scored) / len(answerable) if answerable else 0.0,
+        'expected_abstentions': [r for r in attempted if r['expected'] == 'insufficient_evidence'],
     }
 
 
@@ -145,8 +167,10 @@ def _header():
         "",
         "## Methodology",
         "",
-        "Pierre's Phase 4 deep review (28 semantic checks; Tier B = checks 4, 5, 7,",
-        "10, 15, 28) is measured against the labelled dataset in `eval/dataset/`:",
+        "The current catalog has 31 semantic checks (Tier B: 4, 5, 7, 10, 15, 29, 30, 31).",
+        "Historical baselines retain their original 28-check identities and labels.",
+        "New runs snapshot cases; historical cases are pinned in `eval/baseline/cases-v1.json`.",
+        "Pierre is measured against the labelled dataset in `eval/dataset/`:",
         "minimal, human-labelled fixtures, one target check per case. `eval/run.sh`",
         "calls the pinned model once per case per repeat and caches raw responses;",
         "this scorer re-parses those caches offline. The scored verdict per case is",
@@ -155,6 +179,8 @@ def _header():
         "human has not confirmed are counted as UNLABELED and excluded from every",
         "headline metric. Live URL fetches are substituted by pre-fetched contents",
         "embedded in the case (a deliberate determinism trade-off).",
+        "Abstentions are excluded from binary metrics and reported separately with decision coverage.",
+        "The F1 gate also requires at least 95% decision coverage among attempted answerable labeled cases.",
         "",
     ]
 
@@ -177,6 +203,9 @@ def run_body(stats, h):
         else "| prompt sha256 | not recorded (run predates the prompt fingerprint) |",
         f"| cases | {len(scored)} scored, {len(stats['unlabeled'])} UNLABELED, "
         f"{len(stats['not_run'])} not run |",
+        f"| abstentions | {len(stats['abstained'])}/{len(stats['attempted'])} attempted labeled cases |",
+        f"| decision coverage (answerable cases) | {stats['coverage']:.2%} |",
+        f"| expected abstentions correct | {sum(r['predicted'] == 'insufficient_evidence' for r in stats['expected_abstentions'])}/{len(stats['expected_abstentions'])} |",
         "",
         f"{h} Per-tier metrics",
         "",
@@ -212,10 +241,52 @@ def run_body(stats, h):
     return lines
 
 
+def telemetry(run_dir, cases):
+    latencies, costs, briers, confidence_pairs = [], [], [], []
+    unknown_cost = 0
+    for case in cases:
+        for path in (run_dir / case['id']).glob('rep*.json'):
+            body = json.loads(path.read_text())
+            if body.get('provider') != 'typesafe':
+                continue
+            r = body.get('result', {})
+            latency = r.get('latency_ms')
+            if r.get('request_attempted') and isinstance(latency, (float, int)) and math.isfinite(latency):
+                latencies.append(latency)
+            cost = r.get('estimated_cost_usd')
+            if cost is None:
+                unknown_cost += 1
+            else:
+                costs.append(cost)
+            answer = r.get('response', {}).get('answers', {}).get('outcome', {})
+            probabilities = answer.get('probabilities', {})
+            if case['label_confirmed'] and case['expected'] in DECISIONS and 'finding' in probabilities:
+                briers.append((probabilities['finding'] - (case['expected'] == 'finding')) ** 2)
+                predicted = answer.get('choice', '').replace('_', '-')
+                confidence_pairs.append((max(probabilities.values()), predicted == case['expected']))
+    if not latencies:
+        return []
+    def percentile(p):
+        return sorted(latencies)[max(0, math.ceil(len(latencies) * p) - 1)]
+    lines = ['', '### TypeSafe telemetry', '',
+             f"Measured request latency: p50 {percentile(.5):.1f} ms; p95 {percentile(.95):.1f} ms.",
+             f"Estimated Jev input cost: ${sum(costs):.6f}; {unknown_cost} request(s) with unknown cost.",
+             'Cost excludes host/Pierre escalation. Repeated cases are correlated observations.']
+    if briers:
+        lines.append(f"Finding-probability Brier score: {sum(briers)/len(briers):.4f} over {len(briers)} labeled responses.")
+        lines += ['', '| Selected probability band | Responses | Exact outcome accuracy |', '|---|---|---|']
+        for low, high in ((0, .5), (.5, .8), (.8, .9), (.9, 1.01)):
+            group = [ok for p, ok in confidence_pairs if low <= p < high]
+            accuracy = f'{sum(group)/len(group):.2%}' if group else 'n/a'
+            lines.append(f'| {low:.1f}–{min(high,1):.1f} | {len(group)} | {accuracy} |')
+    return lines
+
+
 def render(run_dir, dataset_dir):
     """Single-run card (--run DIR)."""
     lines = _header()
     lines += run_body(run_stats(run_dir, dataset_dir), "##")
+    lines += telemetry(run_dir, cases_for_run(run_dir, dataset_dir))
     lines += ["", _honesty()]
     return "\n".join(lines) + "\n"
 
@@ -252,10 +323,11 @@ def render_all(runs, dataset_dir):
             f"| {s['b_fp_rate']:.2f} ({s['b_fp']}/{s['b_fp'] + s['b_tn']}) "
             f"| {s['consistency']:.2f} ({s['unanimous']}/{len(s['scored'])}) |")
     lines.append("")
-    for s in stats:
+    for run, s in zip(runs, stats):
         m = s["manifest"]
         lines += [f"## `{m['model']}` — {m['run_date'][:10]}", ""]
         lines += run_body(s, "###")
+        lines += telemetry(run, cases_for_run(run, dataset_dir))
         lines.append("")
     lines.append(_honesty())
     return "\n".join(lines) + "\n"
@@ -277,10 +349,10 @@ def _honesty():
 
 
 def tier_a_f1(run_dir, dataset_dir):
-    cases = load_cases(dataset_dir)
+    cases = cases_for_run(run_dir, dataset_dir)
     scored = [r for c in cases if c["label_confirmed"]
               for r in [score_case(c, run_dir)]
-              if r["predicted"] != "not-run" and r["tier"] == "A"]
+              if r["predicted"] in DECISIONS and r['expected'] in DECISIONS and r["tier"] == "A"]
     tp, fp, fn, _ = confusion(scored)
     _, _, f1 = metrics(tp, fp, fn)
     return f1, len(scored)
@@ -327,6 +399,10 @@ def main(argv):
         for run in runs:
             model = json.loads((run / "manifest.json").read_text(encoding="utf-8"))["model"]
             f1, n = tier_a_f1(run, dataset_dir)
+            stats = run_stats(run, dataset_dir)
+            if stats['coverage'] < .95 or n == 0:
+                print(f"score.py: {model}: insufficient decision coverage or no Tier-A observations", file=sys.stderr)
+                failed = True
             if f1 < floor:
                 print(f"score.py: {model}: Tier-A F1 {f1:.2f} (over {n} case(s)) "
                       f"below floor {floor:.2f}", file=sys.stderr)

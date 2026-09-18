@@ -11,6 +11,14 @@
 # cached responses, so re-scoring never re-bills.
 set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Explicit provider path; the normal Anthropic evaluation remains unchanged.
+if [[ "${1:-}" == "--provider" ]]; then
+  case "${2:-}" in
+    typesafe) shift 2; exec python3 -B "$ROOT/eval/typesafe/run.py" "$@" ;;
+    anthropic) shift 2 ;;
+    *) echo 'run.sh: --provider must be typesafe or anthropic' >&2; exit 64 ;;
+  esac
+fi
 CASES_DIR="$ROOT/eval/dataset/cases"
 API_URL="https://api.anthropic.com/v1/messages"
 
@@ -88,6 +96,10 @@ if [[ -s "$OUT/manifest.json" ]]; then
     echo "run.sh: $OUT was produced with rag=$prev_rag — refusing to mix grounded/ungrounded runs (use --out <fresh dir>)" >&2
     exit 1
   fi
+  prev_dataset="$(jq -r '.dataset_sha256 // ""' "$OUT/manifest.json")"
+  if [[ -n "$prev_dataset" && "$prev_dataset" != "$dataset_sha" ]]; then
+    echo 'run.sh: refusing to mix dataset versions' >&2; exit 1
+  fi
 fi
 
 jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
@@ -95,11 +107,16 @@ jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
       --arg prompt_sha "$prompt_sha" \
       --argjson repeat "$REPEAT" --argjson max_tokens "$MAX_TOKENS" \
       --argjson rag "$([[ $RAG -eq 1 ]] && echo true || echo false)" \
-  '{model:$model, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
+  '{model:$model, catalog_version:2, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
     repeat:$repeat, cases_glob:$glob, dataset_sha256:$sha,
     prompt_sha256:$prompt_sha, run_date:$date, rag:$rag,
     api:"https://api.anthropic.com/v1/messages", generator:"eval/run.sh"}' \
   > "$OUT/manifest.json"
+python3 -B - "$CASES_DIR" "$OUT/cases.json" <<'PY'
+import json, sys
+from pathlib import Path
+Path(sys.argv[2]).write_text(json.dumps([json.loads(p.read_text()) for p in sorted(Path(sys.argv[1]).glob('*.json'))], indent=2) + '\n')
+PY
 
 total=0; failed=0
 for case_file in "$CASES_DIR"/$GLOB.json; do

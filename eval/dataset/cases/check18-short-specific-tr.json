@@ -1,0 +1,12 @@
+{
+  "id": "check18-short-specific-tr",
+  "check_id": 18,
+  "check_key": "purpose-strings",
+  "tier": "A",
+  "guideline": "5.1.1(ii)",
+  "expected": "pass",
+  "rationale": "Short Turkish purpose string names a concrete scanning feature.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check18-short-specific-tr/",
+  "notes": "Candidate authored during TypeSafe integration; needs independent human label confirmation."
+}

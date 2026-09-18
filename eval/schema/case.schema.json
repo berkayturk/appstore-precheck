@@ -1,9 +1,18 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "appstore-precheck LLM eval case",
-  "description": "One labelled evaluation case for Pierre's deep-review layer. Each case targets exactly one of the 28 checks, ships a minimal self-contained fixture, and carries a human-confirmed expected outcome. Cases with label_confirmed=false are counted as UNLABELED and excluded from headline metrics.",
+  "description": "One labelled evaluation case for Pierre's deep-review layer. Each case targets exactly one of the 31 checks, ships a minimal self-contained fixture, and carries a human-confirmed expected outcome. Cases with label_confirmed=false are counted as UNLABELED and excluded from headline metrics.",
   "type": "object",
-  "required": ["id", "check_id", "tier", "guideline", "expected", "rationale", "label_confirmed", "fixture"],
+  "required": [
+    "id",
+    "check_id",
+    "tier",
+    "guideline",
+    "expected",
+    "rationale",
+    "label_confirmed",
+    "fixture"
+  ],
   "additionalProperties": false,
   "properties": {
     "id": {
@@ -14,12 +23,15 @@
     "check_id": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 28,
+      "maximum": 31,
       "description": "Target check number from pierre-deep-review.md (table order)"
     },
     "tier": {
-      "enum": ["A", "B"],
-      "description": "Must match the check's tier: B for checks 4, 5, 7, 10, 15, 28; A otherwise"
+      "enum": [
+        "A",
+        "B"
+      ],
+      "description": "Must match catalog: B for 4, 5, 7, 10, 15, 29, 30, 31; A otherwise"
     },
     "guideline": {
       "type": "string",
@@ -27,7 +39,12 @@
       "description": "Apple guideline reference as written in the check table, e.g. \"2.2\" or \"5.1.1(ii)\""
     },
     "expected": {
-      "enum": ["finding", "pass", "not-applicable"],
+      "enum": [
+        "finding",
+        "pass",
+        "not-applicable",
+        "insufficient_evidence"
+      ],
       "description": "finding = REVIEW-FINDING expected; pass = REVIEW-PASS expected; not-applicable = REVIEW-PASS with 'not applicable' wording expected"
     },
     "rationale": {
@@ -46,12 +63,18 @@
     },
     "fetched_urls": {
       "type": "object",
-      "additionalProperties": { "type": "string" },
+      "additionalProperties": {
+        "type": "string"
+      },
       "description": "Pre-fetched URL contents keyed by kind (e.g. privacy, support). Substitutes Pierre's live WebFetch so eval runs are deterministic and offline-scoreable."
     },
     "notes": {
       "type": "string",
       "description": "Optional free-form notes for maintainers (not sent to the model)"
+    },
+    "check_key": {
+      "type": "string",
+      "description": "Stable identity from references/review-catalog.json; must match check_id"
     }
   }
 }

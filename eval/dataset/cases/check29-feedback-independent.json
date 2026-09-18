@@ -1,0 +1,12 @@
+{
+  "id": "check29-feedback-independent",
+  "check_id": 29,
+  "check_key": "rating-manipulation",
+  "tier": "B",
+  "guideline": "5.6.1/5.6.3",
+  "expected": "pass",
+  "rationale": "Feedback prompt has no branch into the independent system rating request.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check29-feedback-independent/",
+  "notes": "Candidate authored during TypeSafe integration; needs independent human label confirmation."
+}

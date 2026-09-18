@@ -7,5 +7,6 @@
   "rationale": "App uses the system SKStoreReviewController.requestReview after organic engagement; no incentive or star-count language anywhere.",
   "label_confirmed": true,
   "fixture": "fixtures/check10-clean-review-prompt/",
-  "notes": "Negative control for check 10: 'review' vocabulary is present but compliant."
+  "notes": "Negative control for check 10: 'review' vocabulary is present but compliant.",
+  "check_key": "review-incentives"
 }
