@@ -23,7 +23,7 @@ All notable changes to this project are documented here. Versioning follows
   decision coverage and calibration alongside accuracy.
 - Four candidate evaluation fixtures (unconfirmed until independent human review),
   17 offline TypeSafe behavioral tests, and npm-package self-containment checks for
-  all ten workflows. The suite now contains 43 test files.
+  all ten workflows. The suite now contains 40 test files.
 
 ### Safety and validation scope
 - Jev output stays advisory and experimental. It cannot change scanner verdicts,
