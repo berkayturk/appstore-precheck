@@ -46,6 +46,7 @@ SUITE=(
   "test-rag-build-request.sh" # eval/lib/build_request.py --retrieved flag (RAG eval, no network)
   "test-rag-run-guard.sh" # eval/run.sh --rag mismatch guard (RAG eval, no network)
   "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
+  "test-typesafe.sh"   # optional typed semantic review, transport/cache failures, gate isolation
 )
 
 failed=()

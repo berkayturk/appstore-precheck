@@ -15,6 +15,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from catalog import resolve
 
 REPO = Path(__file__).resolve().parents[2]
 PIERRE_MD = REPO / "skills" / "appstore-precheck" / "references" / "pierre-deep-review.md"
@@ -33,7 +34,7 @@ def extract_section(text, heading):
 
 
 def extract_check_row(text, check_id):
-    """Return the markdown table row for check <check_id> from the 28-check table."""
+    """Return the markdown table row for the current numbered check."""
     for line in text.splitlines():
         if re.match(rf"^\|\s*{check_id}\s*\|", line):
             return line.strip()
@@ -65,6 +66,9 @@ def fixture_files(fixture_dir):
     paths = sorted(p for p in fixture_dir.rglob("*")
                    if p.is_file() and p.name not in FIXTURE_EXCLUDE)
     for path in paths:
+        if path.suffix.lower() in ('.png', '.jpg', '.jpeg', '.mp4', '.mov'):
+            yield path.relative_to(fixture_dir).as_posix(), '[Binary visual asset; requires separate host vision review]'
+            continue
         yield path.relative_to(fixture_dir).as_posix(), path.read_text(encoding="utf-8")
 
 
@@ -73,7 +77,7 @@ def build_system(pierre_text):
     output_format = extract_section(pierre_text, "Output format")
     return (
         "You are Pierre, the review-simulator of appstore-precheck, running ONE check "
-        "of the Phase 4 deep review (28 semantic checks) on an iOS project.\n\n"
+        "of the Phase 4 deep review (31 semantic checks) on an iOS project.\n\n"
         "The full project relevant to this check is provided verbatim in the user "
         "message. You cannot fetch URLs; when a check needs fetched URL content, it "
         "is supplied pre-fetched in the user message (treat it as the fetch result).\n\n"
@@ -87,10 +91,10 @@ def build_system(pierre_text):
 
 
 def build_user(case, pierre_text, retrieved=None):
-    check_id = case["check_id"]
+    check_id = resolve(case)['number']
     parts = [
         f"# Target check: {check_id} (guideline {case['guideline']})",
-        "Table row from the 28-check catalog:",
+        "Table row from the current versioned review catalog:",
         extract_check_row(pierre_text, check_id),
         "## Procedure",
         extract_procedure(pierre_text, check_id),

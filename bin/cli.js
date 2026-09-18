@@ -29,6 +29,8 @@ function printHelp() {
     `\n` +
     `Usage:\n` +
     `  npx appstore-precheck [options]\n` +
+    `  npx appstore-precheck review --repo <path> --prepare\n` +
+    `  npx appstore-precheck review --bundle <json> --live\n` +
     `\n` +
     `Runs the static scanner over the current directory and prints a\n` +
     `GREEN / YELLOW / RED verdict. Read-only: it never edits your files.\n` +
@@ -82,6 +84,12 @@ function parseArgs(argv) {
 }
 
 function main() {
+  if (process.argv[2] === 'review') {
+    const script = path.join(PKG_ROOT, 'skills', 'appstore-precheck', 'scripts', 'semantic-review.py');
+    const result = spawnSync('python3', ['-B', script, ...process.argv.slice(3)], { stdio: 'inherit' });
+    if (result.error) fail('python3 is required for optional semantic review', 70);
+    process.exit(result.signal ? 70 : (result.status || 0));
+  }
   const opts = parseArgs(process.argv.slice(2));
 
   if (!fs.existsSync(SCAN) || !fs.existsSync(VERDICT)) {

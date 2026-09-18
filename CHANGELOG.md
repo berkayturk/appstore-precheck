@@ -5,6 +5,37 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.19.0] — 2026-09-18
+
+### Added (optional TypeSafe / Jev semantic review)
+- **`appstore-precheck review`**: opt-in text-only semantic review using pinned Jev
+  `jev-1.13.0`, with ten bounded workflows: typed review verdicts, contextual copy,
+  purpose strings, subscription disclosures, claim/privacy consistency, applicability
+  routing, guideline reranking, explanation verification, policy-change triage, and
+  functional evidence. Uses Python 3.8+ standard library; no new install dependency.
+- Evidence bundle preparation and dry runs, strict typed-response validation,
+  explicit uncertainty handoffs to Pierre, bounded HTTP retries, private opt-in
+  caches, and measured latency/token-cost reporting. Live calls require
+  `TYPESAFE_API_KEY` and explicit opt-in; default scans remain offline.
+- Optional TypeSafe evaluation provider and RAG reranking. Versioned stable check
+  identities correct the rating-manipulation check number; historical baseline labels
+  are preserved. Scoring separates abstentions from true negatives and reports
+  decision coverage and calibration alongside accuracy.
+- Four candidate evaluation fixtures (unconfirmed until independent human review),
+  17 offline TypeSafe behavioral tests, and npm-package self-containment checks for
+  all ten workflows. The suite now contains 40 test files.
+
+### Safety and validation scope
+- Jev output stays advisory and experimental. It cannot change scanner verdicts,
+  evidence provenance, runtime reconciliation, or `.precheck-pass`. Screenshots and
+  runtime inspection stay with the host tools.
+- A three-case live purpose-description pilot verified API connectivity and typed
+  responses. Only one of two human-labeled cases passed the complete decision gate;
+  this is not a production-accuracy claim. One additional Turkish case is unlabeled.
+- Real simulator smoke testing requires a user-built `.app`; none was available in
+  the release environment. Shimmed runtime tests cover the scripted runner.
+
+
 Phases 0, 1 and 2 of the dynamic-tier plan. Phase 0: four static corrections that are right
 regardless of whether a runtime tier ever ships. Phase 1: the Phase 6 tier changes what it
 **records**, not what it observes — its output becomes machine-readable and is reconciled with the
@@ -12,8 +43,7 @@ static findings under the same honesty model (evidence class, derived build-veri
 qualifier, SKIP). Phase 2: the tier learns to **find** a build without making one, to know which
 toolkit it is looking at, to repeat before it accuses, and to read what the installed bundle
 actually shipped. Still advisory, still local-only; the CI suite runs the runner against a shimmed
-`xcrun`, the real simulator path lives under `tests/local/`. No version bump yet; the dynamic tier
-lands in 1.19.0.
+`xcrun`, the real simulator path lives under `tests/local/`. The dynamic tier ships in 1.19.0 alongside the optional Jev integration.
 
 ### Added (Phase 2 — discovery, framework awareness, determinism; still advisory)
 - **`scripts/app-discover.sh`** lists the simulator `.app` bundles the user already built

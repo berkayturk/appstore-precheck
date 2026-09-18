@@ -10,5 +10,6 @@
   "fetched_urls": {
     "privacy_policy": "BillFold Privacy Policy\n\nLast updated: January 2026\n\nCamera: BillFold uses your camera solely to scan receipts. Images are processed on your device with the Vision framework and are never uploaded.\n\nWhat we store: scanned totals and merchant names stay in the app's local database on your device.\n\nWhat we do not do: no analytics SDKs, no advertising identifiers, no location access, no data sharing with third parties.\n\nContact: privacy@billfold.example"
   },
-  "notes": "Negative pair for check17-policy-contradicts-location."
+  "notes": "Negative pair for check17-policy-contradicts-location.",
+  "check_key": "privacy-consistency"
 }

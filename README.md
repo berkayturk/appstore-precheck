@@ -114,6 +114,22 @@ signal-gated advisory checks stay silent unless their triggering signal is found
 
 ### Pierre deep review (31 semantic checks)
 
+Optional **TypeSafe / Jev** support adds typed semantic judgments for purpose strings,
+copy, disclosures, claims/privacy consistency, review routing, guideline reranking,
+explanation verification, policy changes, and functional evidence. It is off by default,
+text-only, and advisory; it cannot alter the release verdict or upload token.
+
+```sh
+npx appstore-precheck review --repo /path/to/app --prepare > /tmp/review-bundle.json
+npx appstore-precheck review --bundle /tmp/review-bundle.json --dry-run
+# After inspecting/enriching the bundle; TYPESAFE_API_KEY comes from the environment:
+npx appstore-precheck review --bundle /tmp/review-bundle.json --live
+```
+
+See the [TypeSafe guide](skills/appstore-precheck/references/typesafe.md) for all ten
+workflows, fallback behavior, private caches, costs, and evaluation. No new dependency
+is needed beyond Python 3.8+ for this optional command.
+
 After the static scan, Pierre reads your project end-to-end and runs **31 evidence-based checks**
 the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (they do **not**
 change the GREEN/YELLOW/RED verdict). Full procedure:

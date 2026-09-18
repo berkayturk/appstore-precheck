@@ -6,6 +6,10 @@
 fastlane/.env
 .env
 
+# Optional semantic-review caches contain source evidence. Keep them local.
+.typesafe-cache/
+__pycache__/
+
 # Node
 node_modules/
 

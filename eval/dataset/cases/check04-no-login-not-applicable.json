@@ -6,5 +6,6 @@
   "expected": "not-applicable",
   "rationale": "No login UI, no account wall, no SecureField anywhere — per the Tier B rule the check must report REVIEW-PASS as not applicable.",
   "label_confirmed": true,
-  "fixture": "fixtures/check04-no-login-not-applicable/"
+  "fixture": "fixtures/check04-no-login-not-applicable/",
+  "check_key": "review-notes"
 }

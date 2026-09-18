@@ -20,9 +20,9 @@ fi
 work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
 
 section "npm pack produces a tarball"
-tarball="$(cd "$REPO" && npm pack --pack-destination "$work" 2>/dev/null | tail -1)"
+tarball="$(cd "$REPO" && npm --cache "$work/npm-cache" pack --pack-destination "$work" 2>/dev/null | tail -1)"
 assert_contains "$tarball" "appstore-precheck-" "npm pack names the tarball"
-[[ -f "$work/$tarball" ]] || { echo "  FAIL: tarball not found at $work/$tarball"; fails=$((fails+1)); }
+[[ -n "$tarball" && -f "$work/$tarball" ]] || { echo "  FAIL: tarball not found at $work/$tarball"; exit 1; }
 
 section "extracted package is self-contained"
 tar -xzf "$work/$tarball" -C "$work"
@@ -33,6 +33,12 @@ PKG="$work/package"
 expected_version="$(node -p "require('$REPO/package.json').version")"
 got_version="$(node "$PKG/bin/cli.js" --version)"
 assert_eq "$got_version" "$expected_version" "extracted CLI reports the packaged version"
+
+section "extracted optional TypeSafe command is self-contained"
+review="$(node "$PKG/bin/cli.js" review --bundle "$PKG/skills/appstore-precheck/references/typesafe-example.json" --dry-run 2>&1)"; review_code=$?
+assert_eq "$review_code" "0" "packaged semantic review prepares requests without repo-only dependencies"
+assert_eq "$(printf '%s' "$review" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)["requests"]))')" "10" \
+  "all ten semantic workflows are packaged"
 
 section "extracted CLI scans a fixture end-to-end"
 app="$work/app"

@@ -1,0 +1,12 @@
+{
+  "id": "check17-policy-unavailable",
+  "check_id": 17,
+  "check_key": "privacy-consistency",
+  "tier": "A",
+  "guideline": "5.1.1(i)",
+  "expected": "insufficient_evidence",
+  "rationale": "A URL without fetched policy contents cannot establish policy consistency.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check17-policy-unavailable/",
+  "notes": "Candidate authored during TypeSafe integration; needs independent human label confirmation."
+}

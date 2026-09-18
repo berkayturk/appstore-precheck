@@ -7,5 +7,6 @@
   "rationale": "The description claims offline storage and PDF export, and both have direct code evidence (local persistence, UIGraphicsPDFRenderer) — no unimplemented claim remains.",
   "label_confirmed": true,
   "fixture": "fixtures/check03-claims-implemented/",
-  "notes": "Negative pair for check03-unimplemented-claims: same check, claims fully backed by code."
+  "notes": "Negative pair for check03-unimplemented-claims: same check, claims fully backed by code.",
+  "check_key": "claims-code"
 }

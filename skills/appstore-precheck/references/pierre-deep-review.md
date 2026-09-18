@@ -16,6 +16,12 @@ that Pierre explains in Phase 5 presentation.
 
 ## Rules
 
+**Optional TypeSafe/Jev support:** when the user enables semantic assistance, follow
+[`typesafe.md`](typesafe.md) for bounded typed judgments, evidence bundles and uncertainty
+handoffs. Keep full Pierre review during shadow evaluation; Jev cannot inspect images.
+Use stable identities from [`review-catalog.json`](review-catalog.json). Neither the
+typed judgments nor their advisory output changes the scanner verdict or upload token.
+
 - **Read-only:** never modify project files.
 - **Evidence-based:** cite `file:line`, metadata path, screenshot filename, or fetched URL text.
   If you cannot read something (private URL, missing file), say so — do not invent findings.

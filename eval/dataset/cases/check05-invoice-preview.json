@@ -1,0 +1,12 @@
+{
+  "id": "check05-invoice-preview",
+  "check_id": 5,
+  "check_key": "beta-language",
+  "tier": "B",
+  "guideline": "2.2",
+  "expected": "pass",
+  "rationale": "Preview describes a document action, not an unfinished app.",
+  "label_confirmed": false,
+  "fixture": "fixtures/check05-invoice-preview/",
+  "notes": "Candidate authored during TypeSafe integration; needs independent human label confirmation."
+}
