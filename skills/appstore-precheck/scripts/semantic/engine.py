@@ -218,11 +218,13 @@ def run_job(job, model=MODEL, live=False, cache_dir=None, call=evaluate):
     key = digest({'request': request, 'questions_version': VERSION, 'thresholds': THRESHOLDS})
     path = Path(cache_dir) / (key + '.json') if cache_dir else None
     started = time.monotonic()
+    transport = {'attempts': 0}
     context = job['context']
     if not job['coverage']['complete'] or job['coverage']['missing']:
         result = fallback(job, 'incomplete evidence coverage; complete the bundle or continue with Pierre')
         result.update(cached=False, request_sha256=key, latency_ms=0,
-                      estimated_cost_usd=0, billed_input_tokens=0, request_attempted=False)
+                      estimated_cost_usd=0, billed_input_tokens=0, request_attempted=False,
+                      transport_attempts=0, retry_count=0, retry_billing_unknown=False)
         return result
     if job['workflow'] == 'verify' and context.get('quote'):
         source = next(e for e in job['evidence'] if e['id'] == context['source_id'])
@@ -230,7 +232,8 @@ def run_job(job, model=MODEL, live=False, cache_dir=None, call=evaluate):
             result = fallback(job, 'quoted text is absent from the cited source; use original finding template')
             result.update(outcome='finding', action='advisory_finding', evidence=[source], cached=False,
                           request_sha256=key, latency_ms=0, estimated_cost_usd=0, billed_input_tokens=0,
-                          request_attempted=False)
+                          request_attempted=False, transport_attempts=0,
+                          retry_count=0, retry_billing_unknown=False)
             return result
     try:
         cached = False
@@ -251,7 +254,7 @@ def run_job(job, model=MODEL, live=False, cache_dir=None, call=evaluate):
             if call is evaluate and not os.environ.get('TYPESAFE_API_KEY'):
                 raise ServiceError('TYPESAFE_API_KEY is not set')
             attempted = True
-            body = validate_response(call(request), request)
+            body = validate_response(call(request, telemetry=transport) if call is evaluate else call(request), request)
             if path:
                 try:
                     atomic_json(path, {'request_sha256': key, 'request': request, 'response': body})
@@ -267,6 +270,9 @@ def run_job(job, model=MODEL, live=False, cache_dir=None, call=evaluate):
         result = fallback(job, str(exc))
         result.update(cached=False, estimated_cost_usd=None if attempted else 0,
                       billed_input_tokens=None if attempted else 0, request_attempted=attempted)
+    result['transport_attempts'] = transport['attempts'] if call is evaluate else (1 if result.get('request_attempted') else 0)
+    result['retry_count'] = max(0, result['transport_attempts'] - 1)
+    result['retry_billing_unknown'] = result['retry_count'] > 0
     result['request_sha256'] = key
     result['latency_ms'] = round((time.monotonic() - started) * 1000, 3)
     return result

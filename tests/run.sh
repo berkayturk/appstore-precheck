@@ -231,7 +231,7 @@ assert_has "---END-OF-SCAN---"                                           "scanne
 assert_has "WARN: 2.1 Demo account"                                      "2.1 flagged: credential login without demo account"
 assert_has "WARN: 2.5.2 Executable code"                                 "2.5.2 flagged: hot-patch framework (JSPatch)"
 assert_has "WARN: 2.5.4 Background modes"                                "2.5.4 flagged: location background mode unused"
-assert_has "WARN: 3.1.5(a) Cryptocurrency"                               "3.1.5(a) flagged: crypto SDK (WalletConnect)"
+assert_has "WARN: 3.1.5 Cryptocurrency"                               "3.1.5 flagged: crypto SDK (WalletConnect)"
 assert_has "WARN: 4.2.7 Remote desktop"                                  "4.2.7 flagged: remote-desktop SDK"
 assert_has "WARN: 4.4.2 Safari extension"                                "4.4.2 flagged: Safari content-blocker extension"
 assert_has "WARN: 5.1.1(v) Account deletion"                             "5.1.1(v) flagged: account creation without deletion"
@@ -249,7 +249,7 @@ finish_fixture
 # ---------------------------------------------------------------------------
 check_fixture "webview-app" "thin WKWebView wrapper (§35)"
 assert_has "---END-OF-SCAN---"                                           "scanner ran to completion"
-assert_has "WARN: 4.2.3 Minimum functionality"                           "4.2.3 flagged: thin WKWebView wrapper"
+assert_has "WARN: 4.2 Minimum functionality"                           "4.2 flagged: thin WKWebView wrapper"
 assert_absent "FAIL:"                                                     "advisory only — no FAIL lines"
 assert_absent "WARN: 2.3.3 Screenshots — screenshots dir not found"       "no-screenshots: absent in-repo screenshots dir is not a WARN (managed in ASC)"
 finish_fixture
@@ -446,9 +446,9 @@ finish_fixture
 # promo-metadata-app — §44 metadata-pricing-language fixture. "Free" in
 # name.txt must be flagged; the "Ad-free" compound in subtitle.txt must not.
 # ---------------------------------------------------------------------------
-check_fixture "promo-metadata-app" "pricing/promo language in app name (2.3.1)"
+check_fixture "promo-metadata-app" "pricing/promo language in app name (2.3.7)"
 assert_has "---END-OF-SCAN---"                                            "scanner ran to completion"
-assert_has "WARN: 2.3.1 Pricing language in app name/subtitle"            "'Free' in the app name is flagged"
+assert_has "WARN: 2.3.7 Pricing language in app name/subtitle"            "'Free' in the app name is flagged"
 assert_has "name.txt"                                                     "the offending metadata file is cited"
 assert_absent "subtitle.txt:1"                                            "the 'Ad-free' compound in the subtitle is not flagged"
 finish_fixture

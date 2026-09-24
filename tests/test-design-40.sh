@@ -34,7 +34,7 @@ assert_contains "$(cat "$ref")" "| 31 | **4.0** |" "check 31 row present in the 
 assert_contains "$(cat "$ref")" "### 31 — 4.0" "check 31 procedure present"
 assert_contains "$(grep -A4 '### 31 — 4.0' "$ref")" "Tier B" "check 31 is Tier B (heuristic)"
 assert_contains "$(cat "$ref")" "31 checks" "count updated to 31 in the reference"
-assert_contains "$(cat "$SK/SKILL.md")" "| 31 † | **4.0** |" "SKILL.md table carries check 31"
+assert_contains "$(cat "$SK/SKILL.md")" "check 31 (4.0 design quality)" "SKILL.md links the canonical check 31 table"
 assert_contains "$(cat "$ROOT/README.md")" "31 deep semantic checks" "README count updated"
 
 exit "$fails"

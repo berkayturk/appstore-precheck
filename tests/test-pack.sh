@@ -17,12 +17,22 @@ if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
   exit 0
 fi
 
-work="$(mktemp -d)"; trap 'rm -rf "$work"' EXIT
+mkdir -p "$REPO/.planning"
+private_probe="$(mktemp -d "$REPO/.planning/pack-privacy.XXXXXX")"
+work="$(mktemp -d)"; trap 'rm -rf "$work" "$private_probe"' EXIT
+# Synthetic private files prove that the archive exclusion works on clean CI too.
+printf 'synthetic private evidence\n' > "$private_probe/source-snapshot.html"
+printf 'SYNTHETIC_ONLY=true\n' > "$private_probe/.env"
+printf '{}\n' > "$private_probe/test-asc-key.json"
 
 section "npm pack produces a tarball"
 tarball="$(cd "$REPO" && npm --cache "$work/npm-cache" pack --pack-destination "$work" 2>/dev/null | tail -1)"
 assert_contains "$tarball" "appstore-precheck-" "npm pack names the tarball"
 [[ -n "$tarball" && -f "$work/$tarball" ]] || { echo "  FAIL: tarball not found at $work/$tarball"; exit 1; }
+
+section "private source archives and credentials stay outside the package"
+private_entries="$(tar -tzf "$work/$tarball" | grep -E '(^|/)(\.planning|\.typesafe-cache|\.git)(/|$)|(^|/)\.env$|asc-key[^/]*\.json$|^package/eval/rag/corpus/sections\.json$' || true)"
+assert_eq "$private_entries" "" "tarball excludes private archives, corpus and credentials"
 
 section "extracted package is self-contained"
 tar -xzf "$work/$tarball" -C "$work"

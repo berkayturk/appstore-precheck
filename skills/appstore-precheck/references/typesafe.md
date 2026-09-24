@@ -199,3 +199,18 @@ Sources: [API](https://docs.typesafe.ai/api), [models/pricing](https://docs.type
 [confidence](https://docs.typesafe.ai/confidence), [state](https://docs.typesafe.ai/concepts/state),
 [reranking](https://docs.typesafe.ai/cookbooks/rerank_typesafe),
 [citation verification](https://docs.typesafe.ai/cookbooks/citation_check).
+
+## Request-attempt telemetry
+
+JSON results include `transport_attempts`, `retry_count` and
+`retry_billing_unknown`. Cache hits, offline fallbacks and evidence guards use
+zero attempts. The built-in client counts each HTTP attempt, including failed
+ones. Injected test/custom clients count one invocation; their internal retries
+are not observable.
+
+When a retry occurs, usage and estimated cost from the final response do not
+account for unknown billing of earlier attempts. Treat `retry_billing_unknown`
+as an incomplete billing record, not a zero-cost retry. Failed requests without
+usage keep billing unknown. These local fields do not alter the API contract or
+authorize live calls. See the [TypeSafe API reference](https://docs.typesafe.ai/api)
+for the current transport contract.

@@ -73,8 +73,8 @@ mkdir -p "$OUT"
 # invalidates cached responses, and the manifest must make that visible.
 dataset_sha="$(cd "$ROOT/eval/dataset" && find . -type f ! -name .DS_Store -print0 \
   | sort -z | xargs -0 shasum -a 256 | shasum -a 256 | awk '{print $1}')"
-prompt_sha="$(shasum -a 256 \
-  "$ROOT/skills/appstore-precheck/references/pierre-deep-review.md" | awk '{print $1}')"
+prompt_sha="$(python3 -B "$ROOT/eval/lib/catalog.py")"
+catalog_versions="$(jq -s '[.[] | .catalog_version // 2] | unique' "$CASES_DIR"/*.json)"
 
 # Resume guard: cached rep files are only reusable if they were produced with
 # the same model AND the same prompt. Refuse to mix rather than silently skip
@@ -104,10 +104,11 @@ fi
 
 jq -n --arg model "$MODEL" --arg date "$(date -u +%FT%TZ)" \
       --arg sha "$dataset_sha" --arg glob "$GLOB" --arg thinking "$THINKING" \
-      --arg prompt_sha "$prompt_sha" \
+      --arg prompt_sha "$prompt_sha" --argjson catalog_versions "$catalog_versions" \
       --argjson repeat "$REPEAT" --argjson max_tokens "$MAX_TOKENS" \
       --argjson rag "$([[ $RAG -eq 1 ]] && echo true || echo false)" \
-  '{model:$model, catalog_version:2, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
+  '{model:$model, catalog_version:(if ($catalog_versions | length) == 1 then $catalog_versions[0] else null end),
+    case_catalog_versions:$catalog_versions, max_tokens:$max_tokens, thinking:$thinking, effort:"low",
     repeat:$repeat, cases_glob:$glob, dataset_sha256:$sha,
     prompt_sha256:$prompt_sha, run_date:$date, rag:$rag,
     api:"https://api.anthropic.com/v1/messages", generator:"eval/run.sh"}' \

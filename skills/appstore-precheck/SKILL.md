@@ -146,10 +146,10 @@ bash skills/appstore-precheck/scripts/scan.sh
 
 Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 55 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
-(2.3.10), metadata limits (2.3.1), localized parity (2.3.7), screenshots (2.3.3), trial &
+(2.3.10), metadata limits (2.3.7), localized parity (2.3), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
 functionality (4.2), Sign in with Apple parity (4.8), external purchase links (3.1.1(a)), an
-opt-in Screen Time / FamilyControls justification (5.1.5), tracking/IDFA SDK without an ATT prompt
+opt-in Screen Time / FamilyControls review preparation (no numbered guideline), tracking/IDFA SDK without an ATT prompt
 (5.1.2), the export-compliance key (`ITSAppUsesNonExemptEncryption`), support/privacy URLs in
 fastlane metadata (2.3 / 1.5 / 5.1.1(i)), analytics SDK vs PrivacyInfo data-types (5.1.1),
 placeholder/dummy metadata copy (2.1), third-party payment SDK for digital goods (3.1.1),
@@ -159,7 +159,7 @@ marketing claims (2.3.1), "For Kids" wording outside the Kids Category (2.3.8), 
 extensions requiring full access (4.4.1), HealthKit data with an iCloud sync path (5.1.3), VPN /
 NetworkExtension usage (5.4), a demo account for a login-gated app (2.1), executable-code download
 / native hot-patching (2.5.2), unused background modes (2.5.4), cryptocurrency wallet/mining
-(3.1.5(a)), thin WKWebView wrappers (4.2.3), remote-desktop apps (4.2.7), Safari extensions
+(3.1.5), thin WKWebView wrappers (4.2), remote-desktop apps (4.2.7), Safari extensions
 (4.4.2), account creation without in-app deletion (5.1.1(v) Account Sign-In), kids audience with
 third-party ads/analytics (5.1.4), real-money gambling copy (5.3.4), MDM signals (5.5), and
 screenshot format/dimension mismatches (2.3.3), permission-priming CTA copy that steers users
@@ -280,99 +280,14 @@ covered by Phase 1, so `include_in_app_purchases:false` avoids the API-key IAP l
 
 ### Phase 3: Pierre explains every finding
 
-After Phases 0–2, role-play **Pierre** — a veteran Apple App Reviewer with a French critic's deadpan
-tone. His job in this phase is **not** to hunt for new issues or pick random guidelines. The scanner
-already did the detection. Pierre **explains every FAIL and WARN** the pipeline emitted.
-
-**Input to explain (all of it, no sampling):**
-
-1. Every `WARN:` from Phase 0 (guideline drift and guideline news), if any.
-2. Every `FAIL:` and `WARN:` from Phase 1 (`scan.sh`), verbatim.
-3. Every violation from Phase 2 (`fastlane precheck`), if Phase 2 ran — treat each as a FAIL.
-
-**Rules:**
-
-- **One entry per finding.** Do not merge, skip, or summarize away individual lines.
-- **2–3 sentences per FAIL or WARN** in Pierre's voice: (1) which guideline Apple cares about and
-  why it matters at review, (2) what the scan found in plain language, (3) the concrete fix or
-  what to verify before submitting.
-- **Never quote guideline wording from memory.** Before explaining a finding, get Apple's actual
-  text for its guideline number:
-
-  ```bash
-  bash skills/appstore-precheck/scripts/guideline-cite.sh 5.1.1     # or 5.1.1(v), 3.1.1(a), …
-  ```
-
-  It is offline and deterministic — it prints a **pinned** quote taken from the live guidelines at
-  the last reconciliation, plus a deep link and the verification date. Use that quote (or a short
-  excerpt of it) for the "why Apple cares" half of the explanation, in quotation marks.
-  - **Exit 3 / `NO PINNED CITATION`** → say plainly that the exact wording could not be verified
-    this run and link the section. Do **not** reconstruct the text from memory; a plausible
-    paraphrase presented as Apple's words is worse than no quote.
-  - **`STALE`** → still quote it, but say the pinned wording is older than the staleness window and
-    should be re-checked against the live page.
-
-  **When the machine has network, add `--verify-live`:**
-
-  ```bash
-  bash skills/appstore-precheck/scripts/guideline-cite.sh --verify-live 5.1.1
-  ```
-
-  This re-hashes the live section and compares it with the pinned fingerprint, turning staleness
-  from a question about the pin's *age* into a question about whether Apple's text actually
-  *changed*. It fetches once and caches for the day, so verifying every finding costs one request.
-  - **Exit 4 / `CHANGED`** → the pinned wording is out of date. Do not quote it as current: say
-    Apple's text for that section has changed, link the section, and describe the requirement in
-    your own words marked as such.
-  - Confirmed unchanged → the quote is current regardless of how old the pin is, and the `STALE`
-    marker is correctly withdrawn.
-  - Any failure (offline, fetch error, section not found) degrades to the offline behaviour above
-    and **never** reports a verification that did not happen.
-- **Carry the evidence label.** Every FAIL/WARN in the scan output is followed by an indented
-  `evidence: <class> · <confidence>` line (also in `--format json` / `sarif`). Reflect it:
-  - `validator-blocking` → Apple's own validation stops this; say so with certainty.
-  - `review-risk` → a human reviewer rejects this frequently; say it is a likely rejection, not a
-    mechanical one.
-  - `judgment-call` → a heuristic. Say it may be a false positive and what would confirm it.
-  - `· needs build verification` → the claim rests on a source grep or a build setting, not on the
-    shipping build. Say explicitly that it blocks the upload **if that code ships as-is**, and name
-    what would settle it (conditional compilation, target membership, the actual archive).
-- Quote or repeat the **exact** `FAIL:`/`WARN:` line (or Phase 2 violation text) before each
-  explanation block so the user can match Pierre to the machine output.
-- **Read-only:** never modify files; if a line lacks a path, say what to check manually — do not
-  invent evidence.
-- **Zero FAIL and zero WARN:** Pierre gives a short all-clear (2–3 sentences total). Do not fabricate
-  issues to seem thorough.
-- **Language:** write the 2–3 sentence explanations in the **user's conversation language** (keep
-  Pierre's dry critic register). The Phase 5 trilingual one-liner stays separate.
-
-**Output format (repeat for each finding):**
-
-```
-FAIL: <verbatim line from scan.sh or Phase 2>
-Pierre: <2–3 sentences>
-```
-
-For WARN lines, use the same shape with `WARN:` instead of `FAIL:`.
-
-Use this prompt verbatim after Phases 0–2 complete, pasting in the collected findings:
-
-> You are **Pierre**, a veteran Apple App Reviewer who speaks like a French critic — dry, exacting,
-> never impressed. Phases 0–2 already ran. Your only job is to **explain every FAIL and WARN below**
-> in **2–3 sentences each**. Do not pick random guidelines. Do not hunt for extra issues. Do not skip
-> any line. For each finding: print the line verbatim, then `Pierre:` followed by your explanation
-> (why Apple flags this guideline, what the scan found, what to fix or verify). Before each
-> explanation run `bash skills/appstore-precheck/scripts/guideline-cite.sh <guideline>` and quote the
-> pinned wording it returns; if it exits 3 with `NO PINNED CITATION`, say the exact wording could not
-> be verified this run and **never** quote guideline text from memory. Reflect the finding's
-> `evidence:` line — in particular, when it says `needs build verification`, say the claim rests on a
-> source grep or a build setting rather than on the shipping build. If there are zero FAILs and zero
-> WARNs, say so briefly in 2–3 sentences. Read-only — never modify files. Write the explanations in
-> `<USER_LANGUAGE>`.
+Follow [`references/finding-commentary.md`](references/finding-commentary.md) for the
+complete procedure and prompt: every scanner finding verbatim, evidence strength,
+pinned/live citations, and a short explanation in the user's language. Never invent
+citations or claim a source grep establishes release behavior.
 
 ### Phase 4: Pierre deep review (31 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 30 read-only, evidence-based checks the
+After Phase 3, Pierre runs the **Review Simulator**: 31 read-only, evidence-based checks the
 static scanner cannot fully judge (**23 Tier A** + **8 Tier B v1** heuristic — marked † below).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
@@ -386,56 +301,25 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 
 **Rules (summary):**
 
-- Run **all 31 checks every time** — report each as `REVIEW-PASS:` or `REVIEW-FINDING:` (never skip).
+- Run **all 31 checks every time** — report an outcome for each using the reference status definitions; missing evidence never means PASS.
 - `REVIEW-FINDING:` is always **WARN** (advisory). It does **not** change FAIL/WARN counts or the verdict.
-- † **Tier B v1** checks (4, 5, 7, 10, 15, 29, 30, 31) are heuristic — use cautious language; prefer not applicable when no signal.
+- † **Tier B v1** checks (4, 5, 7, 10, 15, 29, 30, 31) are heuristic — use cautious language; require evidence of non-applicability.
 - When Phase 1 already flagged a guideline, still run the matching deep check and add semantic context.
 - Cite evidence (`file:line`, metadata path, screenshot name, fetched URL excerpt). Read-only — never edit files.
 
-**The 31 checks (guideline order):**
-
-| # | Guideline | Deep question |
-|---|-----------|---------------|
-| 1 | **1.2.1** | UGC → real report/block/moderation UI flow? |
-| 2 | **1.4.1** | Health/medical claims without disclaimers? |
-| 3 | **2.1** | Metadata claims match implemented features? |
-| 4 † | **2.1** | Demo account / App Review notes actionable (not placeholder)? |
-| 5 † | **2.2** | Beta / test / preview language in store-facing copy? |
-| 6 | **2.3.2** | Primary category fits app type? |
-| 7 † | **2.3.4** | App preview assets match shipped features? |
-| 8 | **2.3.5** | Screenshots match shipped features? |
-| 9 | **2.3.6** | Metadata pricing language matches paywall? |
-| 10 † | **2.3.9** | Incentivized review copy (rate for reward)? |
-| 11 | **2.3.11–2.3.13** | Cross-locale metadata materially consistent? |
-| 12 | **3.1.1** | Digital goods unlocked via external purchase links? |
-| 13 | **3.1.2** | Trial/auto-renew/cancel disclosures are legible sentences? |
-| 14 | **4.2.1–4.2.2** | More than a thin WebView shell / template? |
-| 15 † | **4.5.1–4.5.3** | Push / HomeKit entitlements used as intended? |
-| 16 | **4.8** | Third-party login → Sign in with Apple or valid exempt case? |
-| 17 | **5.1.1(i)** | Privacy policy text matches code + PrivacyInfo? |
-| 18 | **5.1.1(ii)** | Purpose strings specific and feature-tied? |
-| 19 | **5.1.1(iii)** | Permissions/SDKs proportionate to app purpose? |
-| 20 | **5.1.1(iv)** | Permission denial handled without forced loops? |
-| 21 | **5.1.1(iv)** | Pre-permission priming CTA neutral ("Continue"/"Next"), not steering? |
-| 22 | **5.1.2** | ATT, tracking description, policy, and ad SDKs align? |
-| 23 | **5.1.3** | HealthKit data not used for ads/marketing? |
-| 24 | **5.1.4** | Kids signals → parental gate before links/IAP/account? |
-| 25 | **5.4** | VPN → on-screen disclosure copy in UI strings? |
-| 26 | **5.2.1–5.2.3** | Obvious trademark/brand misuse in metadata or UI? |
-| 27 | **5.3.1–5.3.3** | Contest/sweepstakes copy includes official rules? |
-| 28 | **5.6.2–5.6.3** | Developer identity consistent (support URL, domains, app name)? |
-| 29 † | **5.6.1 / 5.6.3** | Rating manipulation dark patterns beyond scan §25? |
-| 30 † | **4.3** | Meaningfully different from the incumbents in a category Apple names as saturated? |
-| 31 † | **4.0** | Meets Apple's minimum design bar (iPad / large-text layout, no placeholder or degraded UI)? |
+The canonical 31-check table, including check 31 (4.0 design quality), is in
+[`references/pierre-deep-review.md`](references/pierre-deep-review.md). Its versioned
+mapping is recorded in `references/review-catalog.json`.
 
 Use this prompt after Phase 3:
 
 > You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 31 checks in
 > [`references/pierre-deep-review.md`](references/pierre-deep-review.md), in table order. For each
-> check emit `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`. For every REVIEW-FINDING,
+> check use the reference outcome format, including NEEDS-REVIEW, UNSUPPORTED, NOT-RUN or
+> evidence-backed NOT-APPLICABLE where appropriate. For every REVIEW-FINDING,
 > add `Pierre:` with 2–3 sentences (why Apple cares, what you found, what to fix). Read-only.
 > Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Tier B checks
-> (4, 5, 7, 10, 15, 29, 30, 31): prefer not applicable when no signal; use cautious language when flagging.
+> (4, 5, 7, 10, 15, 29, 30, 31): require evidence of non-applicability; use cautious language when flagging.
 
 ### Phase 5: Consolidation + token
 
@@ -573,7 +457,7 @@ from, and leave it `unknown` if you do not know.
   false-fire — and the scan now says so with a `SKIP: framework` gap record (`framework-not-audited`)
   naming the affected checks.
 - iOS only.
-- Phase 0 detects only **structural** drift (added/removed section numbers); see the reference for why.
+- Phase 0 checks section-number drift and fingerprints of covered sections; it does not establish complete guideline coverage.
 - Guideline citations are **pinned snapshots**, not a live fetch: offline and reproducible, but only
   as current as the last reconciliation. `guideline-cite.sh` prints the verification date and marks a
   citation `STALE` past the staleness window; `--verify-live` upgrades that to a real change check

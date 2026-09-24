@@ -21,7 +21,8 @@ from semantic.client import ServiceError, evaluate, validate_response
 from semantic.engine import compose, request_for, run_job, validate_bundle, render_text
 from semantic.collect import collect
 from semantic.questions import WORKFLOWS
-from catalog import BY_KEY, resolve
+from catalog import BY_KEY, resolve, procedure_path, fingerprint
+from build_request import build_system
 from parse_verdict import parse_verdict
 import score
 
@@ -160,12 +161,76 @@ class TypeSafeTests(unittest.TestCase):
             if len(calls) < 3:
                 raise urllib.error.HTTPError(req.full_url, 429, 'secret body', {'Retry-After': '600'}, None)
             return io.BytesIO(json.dumps(response(request)).encode())
-        evaluate(request, opener=open_mock, sleep=delays.append)
+        transport = {}
+        evaluate(request, opener=open_mock, sleep=delays.append, telemetry=transport)
+        self.assertEqual(transport['attempts'], 3)
         self.assertEqual(delays, [5, 5])
         def unauthorized(req, timeout):
             raise urllib.error.HTTPError(req.full_url, 401, 'never-print-this-key', {}, None)
         with self.assertRaisesRegex(ServiceError, '^TypeSafe HTTP 401$'):
             evaluate(request, opener=unauthorized)
+
+    @patch.dict(os.environ, {'TYPESAFE_API_KEY': 'synthetic-test-only'})
+    def test_retry_telemetry_success_failure_and_cache(self):
+        j = job('review'); request = request_for(j)
+        class Opener:
+            def __init__(self, always_fail=False):
+                self.calls = 0
+                self.always_fail = always_fail
+            def open(self, req, timeout):
+                self.calls += 1
+                if self.always_fail or self.calls == 1:
+                    raise urllib.error.HTTPError(req.full_url, 429, 'retry', {'Retry-After': '0'}, None)
+                return io.BytesIO(json.dumps(response(request)).encode())
+        with tempfile.TemporaryDirectory() as directory:
+            transport = Opener()
+            with patch('semantic.client.urllib.request.build_opener', return_value=transport):
+                result = run_job(j, live=True, cache_dir=directory)
+            self.assertEqual(result['transport_attempts'], 2)
+            self.assertEqual(result['retry_count'], 1)
+            self.assertTrue(result['retry_billing_unknown'])
+            self.assertEqual(result['billed_input_tokens'], 1000)
+            cached = run_job(j, cache_dir=directory)
+            self.assertTrue(cached['cached'])
+            self.assertEqual(cached['transport_attempts'], 0)
+            self.assertFalse(cached['retry_billing_unknown'])
+        with patch('semantic.client.urllib.request.build_opener', return_value=Opener(True)):
+            failed = run_job(j, live=True)
+        self.assertEqual(failed['transport_attempts'], 3)
+        self.assertEqual(failed['retry_count'], 2)
+        self.assertIsNone(failed['estimated_cost_usd'])
+        self.assertTrue(failed['retry_billing_unknown'])
+        self.assertEqual(failed['action'], 'pierre_review')
+
+    def test_no_request_paths_have_zero_transport_attempts(self):
+        incomplete = job('review'); incomplete['coverage']['complete'] = False
+        mismatch = job('verify'); mismatch['context']['quote'] = 'absent fabricated quote'
+        with patch.dict(os.environ, {}, clear=True):
+            results = [run_job(incomplete, live=True), run_job(mismatch, live=True),
+                       run_job(job('review')), run_job(job('review'), live=True)]
+        for result in results:
+            self.assertEqual(result['transport_attempts'], 0)
+            self.assertEqual(result['retry_count'], 0)
+            self.assertFalse(result['retry_billing_unknown'])
+            self.assertFalse(result['request_attempted'])
+
+    def test_catalog_versions_preserve_historical_guidelines_and_procedures(self):
+        historical = {'check_id': 6, 'catalog_version': 2}
+        current = {'check_id': 6, 'catalog_version': 3}
+        self.assertEqual(resolve(historical)['guideline'], '2.3.2')
+        self.assertEqual(resolve({'check_id': 6})['guideline'], '2.3.2')
+        self.assertEqual(resolve(current)['guideline'], '2.3.5')
+        self.assertIn('### 6 — 2.3.2 Category fit', procedure_path(historical).read_text())
+        self.assertIn('### 6 — 2.3.5 Category fit', procedure_path(current).read_text())
+        self.assertIn('### 8 — 2.3.5 Screenshots', procedure_path(historical).read_text())
+        self.assertIn('### 8 — 2.3.3 Screenshots', procedure_path(current).read_text())
+        for version in (1, 4, '3', True, 3.0, None):
+            with self.assertRaises(ValueError):
+                resolve({'check_id': 6, 'catalog_version': version})
+        with tempfile.TemporaryDirectory() as directory:
+            reviews = [j for j in collect(Path(directory))['jobs'] if j['workflow'] == 'review']
+        self.assertEqual(len(reviews), 31)
+        self.assertTrue(all(j['catalog_version'] == 3 for j in reviews))
 
     def test_collector_limits_and_skips_credentials_and_symlinks(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -190,6 +255,24 @@ class TypeSafeTests(unittest.TestCase):
         legacy = json.loads((ROOT / 'eval/baseline/cases-v1.json').read_text())
         self.assertEqual(next(c for c in legacy if c['id'] == case['id'])['check_id'], 28)
         self.assertEqual(len(BY_KEY), 31)
+
+    def test_v3_statuses_are_abstentions_and_explicit_nonapplicability(self):
+        for status in ('NEEDS-REVIEW', 'UNSUPPORTED', 'NOT-RUN'):
+            raw = {'content': [{'type': 'text', 'text': 'REVIEW-' + status + ': 2.3 — evidence unavailable'}]}
+            self.assertEqual(parse_verdict(raw)['verdict'], 'insufficient_evidence')
+        raw = {'content': [{'type': 'text', 'text': 'REVIEW-NOT-APPLICABLE: 1.2 — verified scope excludes UGC'}]}
+        self.assertEqual(parse_verdict(raw)['verdict'], 'not-applicable')
+        current = procedure_path({'check_id': 6, 'catalog_version': 3}).read_text()
+        prompt = build_system(current, 3)
+        self.assertIn('REVIEW-NEEDS-REVIEW', prompt)
+        self.assertNotIn('exactly one REVIEW-PASS: or REVIEW-FINDING:', prompt)
+        before = fingerprint()
+        original = Path.read_text
+        def changed(path, *args, **kwargs):
+            text = original(path, *args, **kwargs)
+            return text + ' changed' if path.name == 'pierre-deep-review-v2.md' else text
+        with patch.object(Path, 'read_text', changed):
+            self.assertNotEqual(fingerprint(), before)
 
     def test_abstentions_are_not_true_negatives_and_count_in_coverage(self):
         samples = [{'predicted': 'insufficient_evidence', 'expected': 'pass'},

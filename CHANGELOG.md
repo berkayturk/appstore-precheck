@@ -5,6 +5,18 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Fixed
+- Correct scanner and Pierre guideline references, and require storefront/exception
+  context before drawing conclusions from payment SDK signals.
+- Keep missing evidence, unsupported inspection and unexecuted checks separate from
+  supported review outcomes. Freeze catalog v2 procedures for historical evaluation
+  cases while current reviews use catalog v3; bind resumed evaluations to both.
+- Report TypeSafe transport attempts and retries, including unknown retry billing.
+
+### Maintenance
+- Keep private source archives outside Git and npm packages; exercise the package
+  boundary with synthetic private files.
+
 ## [1.19.0] — 2026-09-18
 
 ### Added (optional TypeSafe / Jev semantic review)

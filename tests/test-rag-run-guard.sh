@@ -12,7 +12,7 @@ trap 'rm -rf "$TMP"' EXIT
 export ANTHROPIC_API_KEY="dummy-guard-test-key"
 
 mkdir -p "$TMP/run"
-prompt_sha="$(shasum -a 256 "$ROOT/skills/appstore-precheck/references/pierre-deep-review.md" | awk '{print $1}')"
+prompt_sha="$(python3 -B "$ROOT/eval/lib/catalog.py")"
 jq -n --arg model "claude-sonnet-5" --arg prompt_sha "$prompt_sha" \
   '{model:$model, prompt_sha256:$prompt_sha, rag:false}' > "$TMP/run/manifest.json"
 

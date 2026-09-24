@@ -37,7 +37,7 @@ after major guideline updates. Pay special attention to the signal lists that go
   vendor lists go stale the same way the ad/analytics lists do.
 - The Required Reason API categories in §1 and the sensitive frameworks in §2.
 - The banned / deprecated API list in §11.
-- The account-deletion rule in §38 (5.1.1(v)) and the 4.2.3 web-wrapper heuristic threshold in
+- The account-deletion rule in §38 (5.1.1(v)) and the 4.2 web-wrapper heuristic threshold in
   §35; both are policy-sensitive and worth re-checking after a guidelines update.
 - The IPv4 exclusion heuristics in §55 (`ipv4-literal`): loopback / `0.0.0.0` / `255.x` / CIDR /
   version-looking values / comments. A false WARN here is cheap to add an exclusion for; a missed
@@ -122,3 +122,19 @@ exemption-prone checks are WARN, never FAIL.
 - **After `npm publish`:** run `bash scripts/update-brew-formula.sh` so the Homebrew tap ships the
   new version. Not optional — brew users stay on the old release until this runs, and the weekly
   `brew-sync` CI check goes red on drift.
+
+## Public-source boundary
+
+Keep full third-party source snapshots, copied guideline corpora, private review
+evidence and personal work logs outside public Git and npm artifacts. Use ignored
+`.planning/` for local development archives; the RAG corpus is separately ignored.
+Commit original procedures, source links, reference mappings and synthetic tests.
+Do not force-add ignored archives. Preserve a verified local copy before splitting
+private source-dependent experiments from publishable fixes. `tests/test-pack.sh`
+checks that private archives and credential files are excluded from the tarball.
+
+Review catalog v3 corrects guideline mappings and distinguishes missing evidence
+from supported outcomes. Existing v2 evaluation cases resolve the frozen catalog
+and procedure in `eval/catalog-history/`; do not silently reinterpret historical
+labels using current review wording. Omitted `catalog_version` means v2. Coverage
+lists index touched sections; they do not establish full obligation coverage.

@@ -14,7 +14,7 @@ import json
 import re
 import sys
 
-REVIEW_RE = re.compile(r"^\s*(REVIEW-(?:FINDING|PASS)):\s*(.*)$", re.MULTILINE)
+REVIEW_RE = re.compile(r"^\s*(REVIEW-(?:FINDING|PASS|NOT-APPLICABLE|NEEDS-REVIEW|UNSUPPORTED|NOT-RUN)):\s*(.*)$", re.MULTILINE)
 
 
 def response_text(response):
@@ -38,6 +38,10 @@ def parse_verdict(response):
         return {"verdict": "unparseable", "line": None}
     kind, rest = match.group(1), match.group(2)
     line = f"{kind}: {rest}".strip()
+    if kind in ("REVIEW-NEEDS-REVIEW", "REVIEW-UNSUPPORTED", "REVIEW-NOT-RUN"):
+        return {"verdict": "insufficient_evidence", "line": line}
+    if kind == "REVIEW-NOT-APPLICABLE":
+        return {"verdict": "not-applicable", "line": line}
     if kind == "REVIEW-FINDING":
         return {"verdict": "finding", "line": line}
     if "not applicable" in rest.lower():

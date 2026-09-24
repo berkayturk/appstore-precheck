@@ -83,23 +83,23 @@ citable like any sub-section; every link and citation resolves `N.0` back to `#N
 | 2 | **5.1.1 Purpose Strings** | Every imported sensitive framework (FamilyControls, CoreLocation, AVFoundation, Photos, Contacts, HealthKit) has a non-empty `NS*UsageDescription` in Info.plist |
 | 3 | **5.1.2 ATT** | If `AppTrackingTransparency`/`ATTrackingManager` is used, `NSUserTrackingUsageDescription` is present |
 | 4 | **2.3.10 Other platforms** | No "Android" / "Google Play" / competitor store names in store metadata |
-| 5 | **2.3.1 Metadata limits** | name ≤30, subtitle ≤30, keywords ≤100, promotional_text ≤170, description ≤4000 (Unicode codepoints, matching ASC) |
-| 6 | **2.3.7 Localized parity** | Every detected locale has name + subtitle + description + keywords |
+| 5 | **2.3.7 / ASC Metadata limits** | name ≤30, subtitle ≤30, keywords ≤100, promotional_text ≤170, description ≤4000 (Unicode codepoints, matching ASC) |
+| 6 | **2.3 Localized parity** | Every detected locale has name + subtitle + description + keywords |
 | 7 | **2.3.3 Screenshots** | Each locale folder has at least one screenshot (warns if <3) |
 | 8 | **3.1.2 Trial disclosure** | If trial wording exists, a trial→paid auto-renew disclosure key exists |
 | 9 | **3.1.2 Auto-renew disclosure** | A subscription disclosure string exists and covers each locale |
 | 10 | **3.1.2 Required links** | The paywall view contains Restore Purchases + Terms of Use (EULA) + Privacy Policy |
 | 11 | **2.5.1 Private API** | No banned identifiers (`UIWebView`, `setSelectionIndicatorImage`, `_UIBackdropView`, `NSURLConnection`, …) |
 | 12 | **4.2 Minimum functionality** | At least one navigation hub (`TabView` / `NavigationStack` / `NavigationSplitView`) |
-| 13 | **5.1.5 Sensitive APIs** *(opt-in)* | If FamilyControls is used and `optionalChecks.familyControls` is on, a reviewer-notes justification exists |
+| 13 | **Review preparation: Sensitive APIs** *(opt-in)* | If FamilyControls is used and `optionalChecks.familyControls` is on, a reviewer-notes justification exists |
 | 14 | **4.8 Sign in with Apple** *(advisory)* | If a third-party social login SDK (Google, Facebook, Auth0, …) is used, Sign in with Apple is offered too |
-| 15 | **3.1.1(a) External purchase link** *(advisory)* | If StoreKit External Purchase APIs or the entitlement are present, the 3.1.1(a) disclosure/reporting requirements are flagged |
+| 15 | **3.1.1(a) External purchase link** *(advisory)* | If StoreKit External Purchase APIs or the entitlement are present, review offering, storefront, distribution and applicable agreements before determining entitlement/disclosure/reporting duties |
 | 16 | **5.1.2 Tracking SDK / IDFA** *(advisory)* | If an ad / attribution SDK (AdMob, AppLovin, AppsFlyer, Adjust, Branch, ironSource, Unity Ads, Vungle, Chartboost, InMobi, Mintegral, Pangle, Singular, Kochava, Tenjin) or raw IDFA access is present but no ATT prompt is, it is flagged (the reverse of vector 3). Per-SDK coverage: [`tests/test-sdk-signals.sh`](../../../tests/test-sdk-signals.sh) |
 | 17 | **Export compliance** *(advisory)* | If a checked-in Info.plist lacks `ITSAppUsesNonExemptEncryption`, set it (true/false) to skip the App Store Connect encryption-export question |
 | 18 | **2.3 Support / Privacy URL** *(advisory)* | fastlane metadata has a non-empty `support_url.txt` and `privacy_url.txt` across locales, with no placeholder URLs |
 | 19 | **5.1.1 Privacy manifest** *(advisory)* | If an analytics SDK (Firebase, Amplitude, Mixpanel, Sentry, Segment, Bugsnag, App Center, Datadog, PostHog, Heap, Countly, Matomo, Smartlook, Instabug, New Relic, Embrace) is linked but `PrivacyInfo.xcprivacy` declares no collected data types or tracking domains, it is flagged. Per-SDK coverage: [`tests/test-sdk-signals.sh`](../../../tests/test-sdk-signals.sh) |
 | 20 | **2.1 Placeholder content** *(advisory)* | No lorem ipsum / TODO / FIXME / `example.com` / "insert X here" / changeme in store metadata |
-| 21 | **3.1.1 Third-party payment SDK** *(advisory)* | If a third-party payment SDK (Stripe, Braintree, PayPal, Square, Adyen, …) is linked, flag it: digital goods/services must use in-app purchase (allowed only for physical goods/services) |
+| 21 | **3.1.1 Third-party payment SDK** *(advisory)* | If a third-party payment SDK (Stripe, Braintree, PayPal, Square, Adyen, …) is linked, review the offering, storefront, distribution and applicable 3.1.1/3.1.3 exceptions; SDK presence alone establishes no violation |
 | 22 | **1.2 UGC moderation** *(advisory)* | If user-generated-content signals (post/comment/upload, chat SDKs) are present but no report/block/moderation affordance is found, flag the missing 1.2 safety controls |
 | 23 | **1.6 App Transport Security** *(advisory)* | `NSAllowsArbitraryLoads=true` in Info.plist disables ATS app-wide |
 | 24 | **4.9 Apple Pay recurring** *(advisory)* | If the recurring Apple Pay API (`PKRecurringPaymentRequest`) is used: verify the renewal term, what's provided, charges, and cancel disclosure |
@@ -112,8 +112,8 @@ citable like any sub-section; every link and citation resolves `N.0` back to `#N
 | 31 | **2.1 Demo account** *(advisory)* | If a credential login (`SecureField` / a Login/SignIn view) is present but no demo account/credentials for App Review are found (fastlane `review_information` or `.reviewPrepNotes`) |
 | 32 | **2.5.2 Executable code** *(advisory)* | A native hot-patch / remote-code framework (JSPatch, Rollout, DynamicCocoa) that downloads code which changes features. Allowed JS-bundle OTA (React Native CodePush) is not flagged |
 | 33 | **2.5.4 Background modes** *(advisory)* | A mode declared in `UIBackgroundModes` (location, audio, voip, fetch, processing, bluetooth, remote-notification) with no matching API used in Swift |
-| 34 | **3.1.5(a) Cryptocurrency** *(advisory)* | A crypto wallet / exchange / mining signal (WalletConnect, web3swift, TrustWalletCore, mining libraries) with its entity/licensing and no-on-device-mining requirements |
-| 35 | **4.2.3 Web wrapper** *(advisory)* | A `WKWebView` in a project with very few Swift files — heuristic for a thin wrapper around a website. The most false-positive-prone of the batch, so WARN/verify |
+| 34 | **3.1.5 Cryptocurrency** *(advisory)* | A crypto wallet / exchange / mining signal (WalletConnect, web3swift, TrustWalletCore, mining libraries) with its entity/licensing and no-on-device-mining requirements |
+| 35 | **4.2 Web wrapper** *(advisory)* | A `WKWebView` in a project with very few Swift files — heuristic for a thin wrapper around a website. The most false-positive-prone of the batch, so WARN/verify |
 | 36 | **4.2.7 Remote desktop** *(advisory)* | A remote-desktop / host-mirroring signal (VNC/RDP libraries); host-mirroring apps must only show the owner's host and be free or use IAP |
 | 37 | **4.4.2 Safari extension** *(advisory)* | A Safari content-blocker / web extension (`com.apple.Safari.*` extension point); must use the APIs as intended and not hide analytics/ads |
 | 38 | **5.1.1(v) Account deletion** *(advisory)* | Account creation (`signUp`/`createUser`/`createAccount`/…) detected but no in-app account-deletion path (`deleteAccount`/`closeAccount`/…). This is the real 5.1.1(v) Account Sign-In rule |
@@ -123,7 +123,7 @@ citable like any sub-section; every link and citation resolves `N.0` back to `#N
 | 42 | **2.3.3 Screenshot format/dimensions** *(advisory)* | Reads each in-repo screenshot's magic bytes and, for PNGs, its IHDR pixel dimensions; WARNs on a file whose content does not match its extension, a truncated PNG, or a PNG whose size matches no known App Store screenshot size (either orientation). JPEG dimensions are not parsed (format-checked only). WARN-only — never forces a RED verdict. |
 | 43 | **5.1.1(iv) Permission priming** *(advisory)* | Custom pre-permission screens whose consent CTA steers users toward granting access ("Allow and continue", "Grant access to start", bare "Enable notifications" buttons) near a runtime permission request; Apple requires neutral wording ("Continue"/"Next"). Post-denial "Enable X in Settings" guidance is excluded. Source-language strings only (String Catalogs + hardcoded literals; English + common tr/de/fr/es steering patterns) |
 | 44 | **3.1.2 Trial-emphasized paywall CTA** *(advisory)* | Paywall purchase buttons that promote the free trial over the billed price ("Continue with free trial", "Start your free trial") and "free-trial toggle" paywalls (a Toggle next to trial wording) — the 2026 App Review rejection wave under 3.1.2. A CTA that already shows the price is excluded; the fix is a neutral CTA ("Continue"/"Subscribe") with price + renewal term legible next to it. Source-language strings only (English + common tr/de/fr/es trial patterns, both word orders) |
-| 45 | **2.3.1 Pricing language in name/subtitle** *(advisory)* | "Free", "% off", "sale", "discount", or a currency amount in `name.txt` / `subtitle.txt` (2.3.1 / 2.3.7 accurate metadata): prices vary by storefront and belong in the price field. Hyphen compounds ("ad-free") are excluded; keywords and descriptions are not scanned. The offline complement to `fastlane precheck`'s pricing rules (Phase 2 needs ASC credentials; this does not) |
+| 45 | **2.3.7 Pricing language in name/subtitle** *(advisory)* | "Free", "% off", "sale", "discount", or a currency amount in `name.txt` / `subtitle.txt` (2.3.7 accurate metadata): prices vary by storefront and belong in the price field. Hyphen compounds ("ad-free") are excluded; keywords and descriptions are not scanned. The offline complement to `fastlane precheck`'s pricing rules (Phase 2 needs ASC credentials; this does not) |
 | 46 | **5.1.1(ii) Generic purpose strings** *(advisory)* | Non-empty `NS*UsageDescription` values that are very short (<20 chars) or restate the permission without the user-facing feature ("This app needs camera access"). Vector 2 checks presence; this checks substance. Static complement to deep-review check 18 |
 | 47 | **5.1.1 Third-party AI consent** *(advisory)* | An external AI endpoint/SDK (OpenAI, Anthropic, Gemini, Mistral, OpenRouter, Groq, Perplexity, Together) is in the code but no user-facing string names the provider — since 2026 App Review expects a consent screen naming the AI provider and what data is shared (5.1.1 / 5.1.2(i)). The endpoint URL literal itself does not count as a mention |
 | 48 | **3.1.2 Paywall urgency/scarcity** *(advisory)* | Fake-urgency purchase pressure near the paywall: "limited time" / "only today" / "last chance" copy (multilingual), or a countdown timer combined with discount wording in a paywall view (3.1.2 / 2.3.1 misleading purchase pressure) |
@@ -198,16 +198,16 @@ finds; Pierre explains.
 
 After Phase 3, Pierre runs the **Review Simulator**: 31 evidence-based checks the static scanner
 cannot fully judge — **23 Tier A** (high-confidence) plus **8 Tier B v1** heuristic checks (items
-**4, 5, 7, 10, 15, 29, 30, 31** in the checklist: 2.1 review notes, 2.2, 2.3.4, 2.3.9, 4.5.1–4.5.3,
+**4, 5, 7, 10, 15, 29, 30, 31** in the checklist: 2.1 review notes, 2.2, 2.3.4, 3.2.2(x)/5.6.3, 2.5.1/4.5.3/4.5.4,
 5.6.1/5.6.3, 4.3 differentiation, 4.0 design minimum). Full procedure, output format, and per-check steps are in
 [`pierre-deep-review.md`](pierre-deep-review.md).
 
-**Verdict impact:** none. Phase 4 emits `REVIEW-PASS:` or `REVIEW-FINDING: <guideline> WARN — …`.
+**Verdict impact:** none. Phase 4 uses the reference outcome definitions, separating missing evidence, unsupported inspection, unexecuted checks and evidence-backed non-applicability from PASS/FINDING.
 These are advisory; FAIL/WARN counts and GREEN/YELLOW/RED come only from Phases 0–2.
 
 **Coverage:** deepens scan hits where applicable (e.g. 5.1.1 purpose strings → 5.1.1(ii) quality;
-§22 UGC keyword → 1.2.1 moderation UI) and adds net-new semantic areas (2.3.5 screenshots,
-5.1.1(i) privacy policy fetch, 2.3.11–13 locale consistency, etc.). Guideline numbers touched
+§22 UGC keyword → 1.2 moderation UI) and adds net-new semantic areas (2.3.3 screenshots,
+5.1.1(i) privacy policy fetch, 2.3 locale consistency, etc.). Guideline numbers touched
 are tracked in `guidelines-baseline.json` → `covered_by_pierre_deep_review`.
 
 **Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 31 findings) and

@@ -45,7 +45,7 @@
         "not-applicable",
         "insufficient_evidence"
       ],
-      "description": "finding = REVIEW-FINDING expected; pass = REVIEW-PASS expected; not-applicable = REVIEW-PASS with 'not applicable' wording expected"
+      "description": "finding = REVIEW-FINDING expected; pass = REVIEW-PASS expected; not-applicable = REVIEW-NOT-APPLICABLE (legacy v2: REVIEW-PASS with 'not applicable'); insufficient_evidence includes missing, unsupported or unexecuted inspection"
     },
     "rationale": {
       "type": "string",
@@ -75,6 +75,14 @@
     "check_key": {
       "type": "string",
       "description": "Stable identity from references/review-catalog.json; must match check_id"
+    },
+    "catalog_version": {
+      "type": "integer",
+      "enum": [
+        2,
+        3
+      ],
+      "description": "Absent means frozen catalog v2; use 3 explicitly for corrected mappings."
     }
   }
 }

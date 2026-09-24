@@ -10,8 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'skills/appstore-precheck/scripts'))
 sys.path.insert(0, str(ROOT / 'eval/lib'))
-from catalog import CATALOG, resolve
-from build_request import PIERRE_MD, extract_procedure, fixture_files
+from catalog import CATALOG, resolve, procedure_path
+from build_request import extract_procedure, fixture_files
 from validate_case import check_case
 from semantic.engine import atomic_json, digest, request_for, run_job, validate_bundle, THRESHOLDS
 from semantic.questions import MODEL, VERSION
@@ -29,7 +29,7 @@ def job_for(case, dataset):
         if text.strip():
             evidence.append({'id': 'e%d' % len(evidence), 'path': 'prefetched/' + kind, 'line': 1, 'text': redact(text)})
     return {'id': case['id'], 'workflow': 'review', 'check_key': check['key'],
-            'context': {'check_definition': {**check, 'procedure': extract_procedure(PIERRE_MD.read_text(), check['number'])},
+            'context': {'check_definition': {**check, 'procedure': extract_procedure(procedure_path(case).read_text(), check['number'])},
                         'scope': 'entire synthetic fixture, not a real shipping app'},
             'coverage': {'complete': not (check['requires_vision'] and visual_assets),
                          'missing': ['visual evidence cannot be inspected by Jev']
@@ -74,7 +74,9 @@ def main(argv=None):
         # never cache replays that would falsely inflate consistency.
         fingerprint = digest({'cases': cases, 'requests': requests, 'catalog': CATALOG,
                               'version': VERSION, 'thresholds': THRESHOLDS})
-        manifest = {'provider': 'typesafe', 'catalog_version': CATALOG['version'], 'model': args.model,
+        versions = sorted({c.get('catalog_version', 2) for c in cases})
+        manifest = {'provider': 'typesafe', 'catalog_version': versions[0] if len(versions) == 1 else None,
+                    'case_catalog_versions': versions, 'model': args.model,
                     'max_tokens': None, 'thinking': 'none', 'effort': 'typed judgments',
                     'repeat': args.repeat, 'run_date': stamp, 'dataset_sha256': digest(cases),
                     'prompt_sha256': fingerprint, 'questions_version': VERSION, 'thresholds': THRESHOLDS,

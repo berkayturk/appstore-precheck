@@ -15,7 +15,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from catalog import resolve
+from catalog import resolve, procedure_path
 
 REPO = Path(__file__).resolve().parents[2]
 PIERRE_MD = REPO / "skills" / "appstore-precheck" / "references" / "pierre-deep-review.md"
@@ -72,9 +72,11 @@ def fixture_files(fixture_dir):
         yield path.relative_to(fixture_dir).as_posix(), path.read_text(encoding="utf-8")
 
 
-def build_system(pierre_text):
+def build_system(pierre_text, catalog_version=2):
     rules = extract_section(pierre_text, "Rules")
     output_format = extract_section(pierre_text, "Output format")
+    outcomes = ('one REVIEW-PASS: or REVIEW-FINDING: line for it' if catalog_version == 2 else
+                'one line using the applicable outcome prefix defined above')
     return (
         "You are Pierre, the review-simulator of appstore-precheck, running ONE check "
         "of the Phase 4 deep review (31 semantic checks) on an iOS project.\n\n"
@@ -84,7 +86,7 @@ def build_system(pierre_text):
         "## Rules\n\n" + rules + "\n\n"
         "## Output format\n\n" + output_format + "\n\n"
         "Report ONLY the single target check named in the user message: output exactly "
-        "one REVIEW-PASS: or REVIEW-FINDING: line for it (plus the Pierre: explanation "
+        f"{outcomes} (plus the Pierre: explanation "
         "block when it is a REVIEW-FINDING). Do not report any other check. Write the "
         "Pierre explanation in English."
     )
@@ -94,7 +96,7 @@ def build_user(case, pierre_text, retrieved=None):
     check_id = resolve(case)['number']
     parts = [
         f"# Target check: {check_id} (guideline {case['guideline']})",
-        "Table row from the current versioned review catalog:",
+        "Table row from the case's versioned review catalog:",
         extract_check_row(pierre_text, check_id),
         "## Procedure",
         extract_procedure(pierre_text, check_id),
@@ -141,7 +143,7 @@ def main(argv):
             return 64
 
     case = json.loads(Path(case_path).read_text(encoding="utf-8"))
-    pierre_text = PIERRE_MD.read_text(encoding="utf-8")
+    pierre_text = procedure_path(case).read_text(encoding="utf-8")
     model_name = model
     max_tokens = int(max_tokens_s)
     body = {
@@ -150,7 +152,7 @@ def main(argv):
         "output_config": {"effort": "low"},
         "system": [{
             "type": "text",
-            "text": build_system(pierre_text),
+            "text": build_system(pierre_text, case.get("catalog_version", 2)),
             "cache_control": {"type": "ephemeral"},
         }],
         "messages": [{"role": "user", "content": build_user(case, pierre_text, retrieved)}],

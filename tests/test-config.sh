@@ -30,7 +30,7 @@ assert_contains "$with_cfg" "subscription disclosure key 'my_sub_key' present" \
   "disclosureKeys.subscription honored"
 
 section "opt-in FamilyControls check runs with reviewer notes"
-assert_contains "$with_cfg" "5.1.5 Screen Time API — reviewer-prep justification note present" \
+assert_contains "$with_cfg" "review-preparation Screen Time API — reviewer-prep justification note present" \
   "optionalChecks.familyControls + reviewPrepNotes honored"
 
 section "config-driven layout produces no FAIL"
@@ -67,7 +67,7 @@ else
   fails=$((fails + 1))
 fi
 assert_absent  "$no_cfg" "key 'my_sub_key' present" "custom disclosure key not used without config"
-assert_absent  "$no_cfg" "5.1.5 Screen Time"        "FamilyControls check off by default"
+assert_absent  "$no_cfg" "review-preparation Screen Time"        "FamilyControls check off by default"
 
 # Regression: without config, auto-detection lands on decoy/ (see layout_no
 # above), yet the TabView nav hub lives under custom/src/ — OUTSIDE the
@@ -111,9 +111,9 @@ JSON
 out2="$( cd "$TMP2" && APPSTORE_PRECHECK_CONFIG="$TMP2/precheck-config.json" bash "$SCAN" 2>&1 )"
 
 section "config locale absent on disk warns, never fails (option A)"
-assert_contains "$out2" "2.3.7 Locale 'ru' is in" "missing config locale is reported"
-assert_contains "$out2" "WARN: 2.3.7 Locale 'ru'" "missing config locale is a WARN"
-assert_absent   "$out2" "2.3.7 Locale missing — " "missing config locale is not a hard FAIL"
+assert_contains "$out2" "2.3 Locale 'ru' is in" "missing config locale is reported"
+assert_contains "$out2" "WARN: 2.3 Locale 'ru'" "missing config locale is a WARN"
+assert_absent   "$out2" "2.3 Locale missing — " "missing config locale is not a hard FAIL"
 
 section "screenshots dir EXISTS but a locale folder is missing — still WARNs (TP-guard)"
 assert_contains "$out2" "WARN: 2.3.3 Screenshots — no folder for ru" \

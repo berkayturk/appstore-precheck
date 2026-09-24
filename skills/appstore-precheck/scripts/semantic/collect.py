@@ -79,6 +79,7 @@ def collect(repo):
             gaps.append('live privacy/support contents must be supplied by the host')
         procedure = re.search(r'^### %d — .*?(?=^### |^---$)' % check['number'], prose, re.M | re.S)
         jobs.append({'id': check['key'], 'workflow': 'review', 'check_key': check['key'],
+                     'catalog_version': catalog['version'], 'review_catalog_version': catalog['version'],
                      'context': {'check_definition': {**check, 'procedure': procedure[0] if procedure else check['question']},
                                  'scope': 'repository source review only; not proof of a shipping binary'},
                      'coverage': {'complete': not gaps, 'missing': gaps[:64]}, 'evidence': evidence})

@@ -18,7 +18,7 @@ from catalog import BY_NUMBER, resolve
 TIER_B_CHECKS = frozenset(n for n, c in BY_NUMBER.items() if c['tier'] == 'B')
 REQUIRED = ("id", "check_id", "tier", "guideline", "expected", "rationale",
             "label_confirmed", "fixture")
-ALLOWED = frozenset(REQUIRED) | {"fetched_urls", "notes", "check_key"}
+ALLOWED = frozenset(REQUIRED) | {"fetched_urls", "notes", "check_key", "catalog_version"}
 EXPECTED_VALUES = ("finding", "pass", "not-applicable", "insufficient_evidence")
 ID_RE = re.compile(r"^check[0-9]{2}-[a-z0-9-]+$")
 FIXTURE_RE = re.compile(r"^fixtures/[a-z0-9-]+/$")

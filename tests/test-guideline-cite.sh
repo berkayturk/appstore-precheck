@@ -147,7 +147,10 @@ section "the shipped fingerprint store is wired up and non-empty"
 real="$ROOT/skills/appstore-precheck/guidelines-fingerprints.json"
 cited="$(jq '[.sections[]|select(.quote != null and .quote != "")]|length' "$real")"
 total="$(jq '.sections|length' "$real")"
-assert_gt "$cited" "50" "the shipped store pins quotes for most covered sections"
+# The coverage index can shrink when unrelated guideline mappings are corrected.
+# Require >90% citation coverage rather than an obsolete absolute section count.
+assert_gt "$total" "0" "the shipped fingerprint store is non-empty"
+assert_gt "$((cited * 100))" "$((total * 90))" "the shipped store pins quotes for over 90% of covered sections"
 echo "  (info: $cited/$total covered sections carry a pinned quote)"
 # Every pinned quote must be substantial enough to actually cite.
 short="$(jq '[.sections[]|select(.quote != null and (.quote|length) < 40)]|length' "$real")"
@@ -155,5 +158,12 @@ assert_eq "$short" "0" "no pinned quote is too short to be a citation"
 # And every quote must carry a verification date.
 undated="$(jq '[.sections[]|select(.quote != null and .quote_verified_on == null)]|length' "$real")"
 assert_eq "$undated" "0" "every pinned quote is dated"
+
+section "hash-only source records never fabricate a quotation"
+for section_id in 1.3 3.2.2 4.5.4; do
+  out="$(bash "$CITE" --fingerprints "$real" "$section_id" 2>&1)"; st=$?
+  assert_eq "$st" "3" "$section_id has a fingerprint but no pinned quote"
+  assert_contains "$out" "NO PINNED CITATION" "source hash is not substituted for a citation"
+done
 
 exit "$fails"

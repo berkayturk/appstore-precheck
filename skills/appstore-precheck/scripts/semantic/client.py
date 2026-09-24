@@ -63,7 +63,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None  # Never forward the bearer credential to another endpoint.
 
 
-def evaluate(request, timeout=15, retries=2, opener=None, sleep=time.sleep):
+def evaluate(request, timeout=15, retries=2, opener=None, sleep=time.sleep, telemetry=None):
     key = os.environ.get('TYPESAFE_API_KEY')
     if not key:
         raise ServiceError('TYPESAFE_API_KEY is not set')
@@ -71,6 +71,8 @@ def evaluate(request, timeout=15, retries=2, opener=None, sleep=time.sleep):
     req = urllib.request.Request(ENDPOINT, data=json.dumps(request, ensure_ascii=False).encode(),
                                  headers={'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json'})
     for attempt in range(retries + 1):
+        if telemetry is not None:
+            telemetry['attempts'] = attempt + 1
         try:
             with opener(req, timeout=timeout) as response:
                 raw = response.read(2_000_001)

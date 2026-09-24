@@ -1,11 +1,11 @@
 {
-  "version": 3,
+  "version": 2,
   "checks": [
     {
       "key": "ugc-moderation",
       "number": 1,
       "tier": "A",
-      "guideline": "1.2",
+      "guideline": "1.2.1",
       "question": "UGC present → is there a real report/block/moderation UI flow, not just keywords in copy?",
       "requires_vision": false
     },
@@ -45,7 +45,7 @@
       "key": "category-fit",
       "number": 6,
       "tier": "A",
-      "guideline": "2.3.5",
+      "guideline": "2.3.2",
       "question": "Primary category plausible for app type (game vs utility vs health, etc.)?",
       "requires_vision": false
     },
@@ -61,7 +61,7 @@
       "key": "screenshot-consistency",
       "number": 8,
       "tier": "A",
-      "guideline": "2.3.3 / 2.3.1(a)",
+      "guideline": "2.3.5",
       "question": "Screenshots show features the app actually ships; no misleading device frames or competitor UI?",
       "requires_vision": true
     },
@@ -69,7 +69,7 @@
       "key": "pricing-consistency",
       "number": 9,
       "tier": "A",
-      "guideline": "2.3.2 / 3.1.2(c)",
+      "guideline": "2.3.6",
       "question": "Pricing/subscription language in metadata matches paywall (free vs paid, trial terms)?",
       "requires_vision": false
     },
@@ -77,7 +77,7 @@
       "key": "review-incentives",
       "number": 10,
       "tier": "B",
-      "guideline": "3.2.2(x) / 5.6.3",
+      "guideline": "2.3.9",
       "question": "Incentivized review copy (\"rate 5 stars\", \"review for reward\") in metadata or UI?",
       "requires_vision": false
     },
@@ -85,7 +85,7 @@
       "key": "locale-parity",
       "number": 11,
       "tier": "A",
-      "guideline": "2.3",
+      "guideline": "2.3.11–2.3.13",
       "question": "Cross-locale metadata consistent (feature lists, trial terms, support/privacy URLs, pricing claims)?",
       "requires_vision": false
     },
@@ -109,7 +109,7 @@
       "key": "minimum-functionality",
       "number": 14,
       "tier": "A",
-      "guideline": "4.2 / 4.2.2",
+      "guideline": "4.2.1–4.2.2",
       "question": "App is more than a thin shell: meaningful navigation, native affordances, not a lone WebView brochure?",
       "requires_vision": false
     },
@@ -117,7 +117,7 @@
       "key": "entitlement-purpose",
       "number": 15,
       "tier": "B",
-      "guideline": "2.5.1 / 4.5.3 / 4.5.4",
+      "guideline": "4.5.1–4.5.3",
       "question": "Push or HomeKit entitlement → used as intended (no spam-push promises; HomeKit without home UI)?",
       "requires_vision": false
     },
@@ -189,7 +189,7 @@
       "key": "parental-gates",
       "number": 24,
       "tier": "A",
-      "guideline": "1.3 / 5.1.4",
+      "guideline": "5.1.4",
       "question": "Kids-audience signals → parental gate before external links/purchases/account areas?",
       "requires_vision": false
     },
@@ -205,7 +205,7 @@
       "key": "brand-use",
       "number": 26,
       "tier": "A",
-      "guideline": "5.2.1",
+      "guideline": "5.2.1–5.2.3",
       "question": "Obvious third-party trademark/brand misuse in metadata, assets, or UI copy?",
       "requires_vision": false
     },
@@ -213,7 +213,7 @@
       "key": "contest-rules",
       "number": 27,
       "tier": "A",
-      "guideline": "5.3.1 / 5.3.2",
+      "guideline": "5.3.1–5.3.3",
       "question": "Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata?",
       "requires_vision": false
     },
@@ -221,7 +221,7 @@
       "key": "developer-identity",
       "number": 28,
       "tier": "A",
-      "guideline": "1.5 / 5.6.2",
+      "guideline": "5.6.2–5.6.3",
       "question": "Developer identity consistent: app name, support URL content, bundle/marketing domain match?",
       "requires_vision": false
     },

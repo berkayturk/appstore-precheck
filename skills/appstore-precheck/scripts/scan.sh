@@ -431,7 +431,7 @@ check_len() {
     len=$(wc -m < "$file" | tr -d ' ')
   fi
   [[ -z "$len" ]] && return
-  (( len > limit )) && fail "2.3.1 $label — $file ${len} chars (limit ${limit})" "$file"
+  (( len > limit )) && fail "2.3.7 $label — $file ${len} chars (limit ${limit})" "$file"
 }
 for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
   d="$META_DIR/$loc"; [[ -d "$d" ]] || continue
@@ -443,7 +443,7 @@ for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
 done
 
 # ===================================================================
-# §6 — 2.3.7 Localized metadata parity across all detected locales
+# §6 — 2.3 Localized metadata parity across all detected locales
 # ===================================================================
 set_rule "locale-metadata-parity"
 if (( ${#LOCALES[@]} > 0 )); then
@@ -456,9 +456,9 @@ if (( ${#LOCALES[@]} > 0 )); then
       # submitted. Warn (don't block) so an approved set isn't falsely RED.
       # Auto-detected locales always exist, so this only fires in config mode.
       if [[ -n "$LOCALES_FROM_CONFIG" ]]; then
-        warn "2.3.7 Locale '$loc' is in .appstore-precheck.json but has no metadata folder ($d) — add it or remove '$loc' from the config 'locales' list"
+        warn "2.3 Locale '$loc' is in .appstore-precheck.json but has no metadata folder ($d) — add it or remove '$loc' from the config 'locales' list"
       else
-        fail "2.3.7 Locale missing — $d does not exist"
+        fail "2.3 Locale missing — $d does not exist"
       fi
       continue
     fi
@@ -467,18 +467,18 @@ if (( ${#LOCALES[@]} > 0 )); then
       case "$f" in
         name.txt|description.txt)
           # App Store Connect will not accept a localization without these.
-          fail "2.3.7 Metadata missing — $d/$f is empty or absent" ;;
+          fail "2.3 Metadata missing — $d/$f is empty or absent" ;;
         *)
           # Subtitle and keywords are OPTIONAL in App Store Connect (verified
           # 2026-09-01). An empty one is a discovery/parity gap, not a blocker —
           # reporting it as a validator FAIL was an overstatement.
           set_confidence "judgment-call"
-          warn "2.3.7 Metadata gap — $d/$f is empty or absent (optional in App Store Connect, but every other locale should not be the only place it exists)"
+          warn "2.3 Metadata gap — $d/$f is empty or absent (optional in App Store Connect, but every other locale should not be the only place it exists)"
           set_confidence "" ;;
       esac
     done
   done
-  pass "2.3.7 Localized metadata — checked ${#LOCALES[@]} locales"
+  pass "2.3 Localized metadata — checked ${#LOCALES[@]} locales"
 fi
 
 # ===================================================================
@@ -684,14 +684,14 @@ else
 fi
 
 # ===================================================================
-# §13 — 5.1.5 Screen Time / sensitive-API justification (optional, opt-in)
+# §13 — review-preparation Screen Time / sensitive-API justification (optional, opt-in)
 # ===================================================================
 set_rule "screentime-justification"
 if [[ "$CHECK_FAMILY" == "true" ]] && grep -q "NSFamilyControlsUsageDescription" "$INFO_PLIST" 2>/dev/null; then
   if [[ -n "$REVIEW_PREP" && -f "$REVIEW_PREP" ]] && grep -qiE 'family|screen[[:space:]]?time' "$REVIEW_PREP" 2>/dev/null; then
-    pass "5.1.5 Screen Time API — reviewer-prep justification note present"
+    pass "review-preparation Screen Time API — reviewer-prep justification note present"
   else
-    warn "5.1.5 Screen Time API in use — add a justification in your ASC App Review notes (point .reviewPrepNotes at the file). Otherwise 5.1.1 rejection risk is high."
+    warn "review-preparation Screen Time API in use — add a justification in your ASC App Review notes (point .reviewPrepNotes at the file). This is preparation advice; it is not a Location Services requirement."
   fi
 fi
 
@@ -718,7 +718,7 @@ ext_purchase=""
 grep -rqE 'ExternalPurchase|ExternalPurchaseLink|ExternalPurchaseCustomLink' "${IOS_DIR:-.}" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null && ext_purchase=1
 grep -rqE 'external-purchase' "${IOS_DIR:-.}" "${GREP_PRUNE[@]}" --include='*.entitlements' 2>/dev/null && ext_purchase=1
 if [[ -n "$ext_purchase" ]]; then
-  warn "3.1.1(a) External purchase link detected — ensure the External Purchase entitlement, eligible storefronts, the required disclosure sheet, and App Store Connect reporting are in place (3.1.1(a))."
+  warn "3.1.1(a) External purchase link detected — review the offering, storefront, distribution and applicable agreement before checking entitlement, disclosure and reporting duties. United States storefront links do not require these entitlements under 3.1.1(a); SDK presence alone is not a violation."
 fi
 
 # ===================================================================
@@ -835,7 +835,7 @@ set_rule "thirdparty-payment-sdk"
 if [[ -n "$IOS_DIR" ]]; then
   payment_sdk=$(grep -rlE 'import Stripe|StripePaymentSheet|StripeApplePay|import Braintree|BTPaymentFlow|import PayPal|PayPalCheckout|PayPalNativeCheckout|import Square|SquareInAppPayments|import Adyen|AdyenComponents|RazorpaySDK|import Paddle' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$payment_sdk" ]]; then
-    warn "3.1.1 Third-party payment SDK — '$(basename "$payment_sdk")' detected; selling digital content/functionality must use in-app purchase, not an external processor (3.1.1). Allowed only for physical goods/services — verify your offering."
+    warn "3.1.1 Third-party payment SDK — '$(basename "$payment_sdk")' detected; verify the actual digital/physical offering, storefront, distribution and 3.1.1/3.1.3 exception before deciding which payment methods are allowed. SDK presence alone establishes no violation."
   fi
 fi
 
@@ -1053,18 +1053,18 @@ if [[ -f "$INFO_PLIST" && -n "$IOS_DIR" ]]; then
 fi
 
 # ===================================================================
-# §34 — 3.1.5(a) Cryptocurrency wallet / exchange / mining
+# §34 — 3.1.5 Cryptocurrency wallet / exchange / mining
 # ===================================================================
 set_rule "crypto-wallet-mining"
 if [[ -n "$IOS_DIR" ]]; then
   crypto_sdk=$(grep -rlE 'import Web3|web3swift|Web3Swift|WalletConnect|TrustWalletCore|CoinbaseWalletSDK|SolanaSwift|CryptoMining|coinhive|MoneroMiner' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$crypto_sdk" ]]; then
-    warn "3.1.5(a) Cryptocurrency — a crypto wallet/exchange/mining signal was detected (e.g. $(basename "$crypto_sdk")); wallets & exchanges have entity and licensing requirements, and on-device mining is not permitted (3.1.5(a)). Verify eligibility."
+    warn "3.1.5 Cryptocurrency — a crypto wallet/exchange/mining signal was detected (e.g. $(basename "$crypto_sdk")); wallets & exchanges have entity and licensing requirements, and on-device mining is not permitted (3.1.5). Verify eligibility."
   fi
 fi
 
 # ===================================================================
-# §35 — 4.2.3 Web-wrapper / thin app
+# §35 — 4.2 Web-wrapper / thin app
 # ===================================================================
 # A thin WKWebView wrapper around a website is rejected under minimum
 # functionality. Heuristic: WKWebView present in a project with very few Swift
@@ -1074,7 +1074,7 @@ if [[ -n "$IOS_DIR" ]]; then
   if grep -rqE 'WKWebView' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
     swift_n=$(find "$IOS_DIR" "${PRUNE[@]}" -name '*.swift' 2>/dev/null | wc -l | tr -d ' ')
     if (( swift_n > 0 && swift_n <= 4 )); then
-      warn "4.2.3 Minimum functionality — the app appears to be a WKWebView wrapper with only $swift_n Swift file(s); a thin wrapper around a website is rejected under 4.2.3. Add native value, or verify this is a real app rather than a repackaged site."
+      warn "4.2 Minimum functionality — the app appears to be a WKWebView wrapper with only $swift_n Swift file(s); a thin wrapper around a website is reviewed under 4.2. Add native value, or verify this is a real app rather than a repackaged site."
     fi
   fi
 fi
@@ -1310,10 +1310,10 @@ if [[ -d "$META_DIR" ]]; then
   price_hits="$(printf '%s' "$price_hits" | grep -v '^$' | head -10)"
   if [[ -n "$price_hits" ]]; then
     price_first="$(printf '%s\n' "$price_hits" | head -1)"
-    warn "2.3.1 Pricing language in app name/subtitle — price or promo wording (\"Free\", \"% off\", a currency amount) in the name or subtitle is a common metadata rejection (2.3.1/2.3.7); prices belong in the price field, not the title:" "${price_first%%:*}"
+    warn "2.3.7 Pricing language in app name/subtitle — price or promo wording (\"Free\", \"% off\", a currency amount) in the name or subtitle is a common metadata rejection (2.3.7); prices belong in the price field, not the title:" "${price_first%%:*}"
     detail "$price_hits"
   else
-    pass "2.3.1 App name/subtitle — no pricing/promo language detected"
+    pass "2.3.7 App name/subtitle — no pricing/promo language detected"
   fi
 fi
 

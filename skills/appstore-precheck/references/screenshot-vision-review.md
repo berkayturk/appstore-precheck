@@ -1,6 +1,6 @@
 # Screenshot vision review (agent-mode, non-blocking)
 
-Deepens Pierre deep-review check #8 (2.3.5) into a dedicated, structured screenshot review.
+Deepens Pierre deep-review check #8 (2.3.3) into a dedicated, structured screenshot review.
 This is the **vision layer** of the Review Simulator: the host model reads the actual screenshot
 images and cross-checks their content against the metadata and the shipped app.
 
@@ -18,9 +18,9 @@ deep-review.
 - Evidence-based: cite the screenshot **filename** (and locale) for every finding. If you cannot
   read an image, say so — do not invent findings.
 - Read at least one screenshot per primary locale; when several are present, scan them all.
-- All five checks, every run: report each as `REVIEW-PASS:` or `REVIEW-FINDING: … WARN`.
+- All five checks, every run: report a supported `REVIEW-PASS:` or `REVIEW-FINDING: … WARN`, or use the missing/unsupported/not-run evidence statuses from the Pierre reference.
 - If there are no in-repo screenshots, report each check as
-  `REVIEW-PASS: <guideline> — not applicable (no in-repo screenshots; managed in App Store Connect)`.
+  `REVIEW-NEEDS-REVIEW: <guideline> — ASC screenshot evidence unavailable`.
 - Severity is always WARN (advisory). Cautious language ("may trigger review questions").
 - Write Pierre's 2–3 sentence explanations in the user's conversation language.
 
@@ -30,16 +30,16 @@ deep-review.
 |---|-----------|----------|
 | S1 | 2.3.3 / 2.3.7 | Placeholder / dev-debug / empty-state content: Lorem ipsum, debug overlays or logs, visible TODO/FIXME, empty lists or skeleton loaders shown as content, simulator status bar with placeholder carrier/time. |
 | S2 | 2.3.3 | Text overflow / truncation / clipping: clipped or overlapping labels, cut-off buttons, text running off-screen. |
-| S3 | 2.3.5 | Wrong device frame / aspect: an iPad screenshot in an iPhone slot (or vice-versa), letterboxing, obviously stretched/squished aspect. |
-| S4 | 2.3.3 / 2.3.10 | Misleading marketing: 2.3.3 "show the app in use" — the shot is a splash/title/logo/pure marketing art, not actual app UI; 2.3.10 — a feature is depicted that the app does not ship. |
-| S5 | 2.3.5 | Metadata ↔ screenshot claim mismatch: visible UI text/features contradict the description, keywords, or promo text. |
+| S3 | 2.3.3 | Wrong device frame / aspect: an iPad screenshot in an iPhone slot (or vice-versa), letterboxing, obviously stretched/squished aspect. |
+| S4 | 2.3.3 / 2.3.1(a) | Misleading marketing: 2.3.3 "show the app in use" — the shot is a splash/title/logo/pure marketing art, not actual app UI; 2.3.1(a) — a feature is depicted that the app does not ship. |
+| S5 | 2.3 / 2.3.1(a) | Metadata ↔ screenshot claim mismatch: visible UI text/features contradict the description, keywords, or promo text. |
 
 ## Per-check procedure
 
 ### S1 — Placeholder / dev-debug / empty-state
 1. Open each screenshot; read visible text and UI state.
 2. Flag Lorem ipsum, debug HUDs, log text, "TODO"/"FIXME", empty/skeleton content presented as real, or a simulator status bar with placeholder carrier/time.
-3. Cite the filename. Not applicable if no screenshots.
+3. Cite the filename. Missing screenshots are REVIEW-NEEDS-REVIEW unless an ASC inventory proves non-applicability.
 
 ### S2 — Text overflow / truncation
 1. Inspect labels, buttons, and headings for clipping, overlap, or off-screen text.
@@ -51,7 +51,7 @@ deep-review.
 
 ### S4 — Misleading marketing
 1. Determine whether each screenshot shows the app actually in use (real UI) vs pure title/splash/logo art.
-2. Flag shots that are marketing art rather than the app in use (2.3.3), or that depict a feature absent from the build (2.3.10).
+2. Flag shots that are marketing art rather than the app in use (2.3.3), or that depict a feature absent from the build (2.3.1(a)).
 
 ### S5 — Metadata ↔ screenshot mismatch
 1. Read the visible UI text/features and compare to the description, keywords, and promo text.

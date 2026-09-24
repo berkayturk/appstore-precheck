@@ -25,28 +25,23 @@ typed judgments nor their advisory output changes the scanner verdict or upload 
 - **Read-only:** never modify project files.
 - **Evidence-based:** cite `file:line`, metadata path, screenshot filename, or fetched URL text.
   If you cannot read something (private URL, missing file), say so — do not invent findings.
-- **All 31 checks, every run:** report an outcome for every item. Missing evidence is `REVIEW-NEEDS-REVIEW`, unsupported inspection is `REVIEW-UNSUPPORTED`, and unexecuted checks are `REVIEW-NOT-RUN`; none is PASS.
+- **All 31 checks, every run:** report each item as `REVIEW-PASS:` or `REVIEW-FINDING:` — no skipping.
 - **REVIEW-FINDING severity:** always `WARN` (advisory). Never emit `REVIEW-FINDING: … FAIL`.
   A deep-review issue informs the human; it does not block the token by itself.
-- **Tier B checks (4, 5, 7, 10, 15, 29, 30, 31):** require affirmative applicability evidence; absent repository signals alone do not prove non-applicability;
+- **Tier B checks (4, 5, 7, 10, 15, 29, 30, 31):** prefer `REVIEW-PASS: … — not applicable` when the signal is absent;
   when flagging, use cautious language ("may trigger review questions") — these are heuristics.
 - **Deepen scan hits:** when Phase 1 already flagged a guideline, Phase 4 still runs the matching
   deep check and adds semantic context (do not repeat the machine line verbatim — add what the
   scanner could not see).
 - **WebFetch:** use `WebFetch` (or equivalent) on `privacy_url.txt` and `support_url.txt` when
-  present. If fetch fails, `REVIEW-NEEDS-REVIEW: … — privacy policy unavailable`.
+  present. If fetch fails, `REVIEW-FINDING: … WARN — could not fetch privacy policy; verify manually`.
 - **Screenshots:** read at least one PNG/JPEG per primary locale; compare visible UI/features to
   metadata claims.
 - **Language:** write Pierre's 2–3 sentence explanations in the user's conversation language.
 
 ## Output format
 
-For each of the 31 checks (in table order), preserve the legacy PASS/FINDING forms
-for supported conclusions. Use REVIEW-NEEDS-REVIEW, REVIEW-NOT-RUN, REVIEW-UNSUPPORTED
-or REVIEW-NOT-APPLICABLE when inspection is blocked, unexecuted or provably outside
-the applicable scope. Report those counts separately from PASS and FINDING;
-missing evidence never establishes compliance.
-
+For each of the 31 checks (in table order):
 
 ```
 REVIEW-PASS: <guideline> — <one-line why it looks OK, with evidence pointer>
@@ -62,11 +57,11 @@ Pierre: <2–3 sentences: why Apple cares, what you found, what to fix or verify
 If a check is **not applicable** (e.g. no HealthKit, no VPN, no contest copy), still report:
 
 ```
-REVIEW-NOT-APPLICABLE: <guideline> — <evidence-backed reason>
+REVIEW-PASS: <guideline> — not applicable (<reason>)
 ```
 
-"Not applicable" requires sufficiently complete scope and evidence that the subject is absent
-or an explicit platform/distribution predicate excludes it. A missing repository signal is insufficient. When the
+"Not applicable" is only for checks whose subject matter is entirely absent from the
+project (no HealthKit import, no VPN entitlement, no contest copy anywhere). When the
 material a check inspects exists and is clean — release notes present but free of beta
 language, a review prompt present but using the system API — report a plain
 `REVIEW-PASS` with the evidence pointer, not "not applicable".
@@ -76,22 +71,22 @@ language, a review prompt present but using the system API — report a plain
 ## The 31 checks (guideline order)
 
 | # | Guideline | Deep question | Primary sources |
-|---|---|---|---|
-| 1 | **1.2** | UGC present → is there a real report/block/moderation UI flow, not just keywords in copy? | Swift navigation, moderation views, §22 scan context |
+|---|-----------|---------------|-----------------|
+| 1 | **1.2.1** | UGC present → is there a real report/block/moderation UI flow, not just keywords in copy? | Swift navigation, moderation views, §22 scan context |
 | 2 | **1.4.1** | Health/medical/wellness claims in metadata or UI without appropriate disclaimers or HealthKit compliance? | metadata, Swift HealthKit usage, onboarding copy |
 | 3 | **2.1** | Metadata/marketing claims match implemented features (AI, offline, ad-block, sync, etc.)? | metadata, description, Swift feature grep |
 | 4 | **2.1** | Login-gated app → App Review demo account / notes **actionable** (credentials, steps, not placeholder)? | `review_information/`, `.reviewPrepNotes`, §31 scan context |
 | 5 | **2.2** | Store-facing copy or UI still says beta / test / preview / work-in-progress? | metadata, release_notes, Swift UI strings |
-| 6 | **2.3.5** | Primary category plausible for app type (game vs utility vs health, etc.)? | fastlane `primary_category`, metadata tone, code structure |
+| 6 | **2.3.2** | Primary category plausible for app type (game vs utility vs health, etc.)? | fastlane `primary_category`, metadata tone, code structure |
 | 7 | **2.3.4** | App preview assets present → features shown match the shipped app and metadata? | preview video paths, metadata, Swift UI |
-| 8 | **2.3.3 / 2.3.1(a)** | Screenshots show features the app actually ships; no misleading device frames or competitor UI? | screenshot images, metadata, Swift UI |
-| 9 | **2.3.2 / 3.1.2(c)** | Pricing/subscription language in metadata matches paywall (free vs paid, trial terms)? | metadata, paywall Swift, xcstrings |
-| 10 | **3.2.2(x) / 5.6.3** | Incentivized review copy ("rate 5 stars", "review for reward") in metadata or UI? | metadata, onboarding, paywall, §25 scan context |
-| 11 | **2.3** | Cross-locale metadata consistent (feature lists, trial terms, support/privacy URLs, pricing claims)? | all `fastlane/metadata/*` locales |
+| 8 | **2.3.5** | Screenshots show features the app actually ships; no misleading device frames or competitor UI? | screenshot images, metadata, Swift UI |
+| 9 | **2.3.6** | Pricing/subscription language in metadata matches paywall (free vs paid, trial terms)? | metadata, paywall Swift, xcstrings |
+| 10 | **2.3.9** | Incentivized review copy ("rate 5 stars", "review for reward") in metadata or UI? | metadata, onboarding, paywall, §25 scan context |
+| 11 | **2.3.11–2.3.13** | Cross-locale metadata consistent (feature lists, trial terms, support/privacy URLs, pricing claims)? | all `fastlane/metadata/*` locales |
 | 12 | **3.1.1** | Digital goods sold or unlocked via external purchase links (web checkout, Stripe in WebView)? | Swift WebView/paywall, metadata, entitlements |
 | 13 | **3.1.2** | Subscription/trial/auto-renew/cancel disclosures are **legible sentences**, not keyword stubs? | paywall views, xcstrings, String Catalog |
-| 14 | **4.2 / 4.2.2** | App is more than a thin shell: meaningful navigation, native affordances, not a lone WebView brochure? | Swift UI structure, §12/§35 scan context |
-| 15 | **2.5.1 / 4.5.3 / 4.5.4** | Push or HomeKit entitlement → used as intended (no spam-push promises; HomeKit without home UI)? | entitlements, Info.plist, metadata, Swift |
+| 14 | **4.2.1–4.2.2** | App is more than a thin shell: meaningful navigation, native affordances, not a lone WebView brochure? | Swift UI structure, §12/§35 scan context |
+| 15 | **4.5.1–4.5.3** | Push or HomeKit entitlement → used as intended (no spam-push promises; HomeKit without home UI)? | entitlements, Info.plist, metadata, Swift |
 | 16 | **4.8** | Third-party login present → Sign in with Apple offered, or a documented exempt case (enterprise, existing account, etc.)? | login Swift, SDK imports, §14 scan context |
 | 17 | **5.1.1(i)** | Privacy policy text (fetched) matches data collection in code, PrivacyInfo, and App Privacy narrative? | fetch privacy URL, PrivacyInfo, SDK imports |
 | 18 | **5.1.1(ii)** | Purpose strings are specific and tied to a visible feature (not empty, generic, or copy-paste)? | Info.plist, permission usage in Swift |
@@ -100,11 +95,11 @@ language, a review prompt present but using the system API — report a plain
 | 21 | **5.1.1(iv)** | Custom pre-permission priming screens use neutral CTA copy ("Continue"/"Next") — no steering toward Allow/Grant/Enable? | priming/onboarding views, xcstrings CTA strings, §42 scan context |
 | 22 | **5.1.2** | ATT prompt, `NSUserTrackingUsageDescription`, privacy policy tracking section, and ad SDK usage align? | Info.plist, policy fetch, ad SDK imports |
 | 23 | **5.1.3** | HealthKit data not used for advertising/marketing; sync paths respect health-data rules? | HealthKit + analytics/ad SDK co-use |
-| 24 | **1.3 / 5.1.4** | Kids-audience signals → parental gate before external links/purchases/account areas? | metadata kids wording, parental gate UI |
+| 24 | **5.1.4** | Kids-audience signals → parental gate before external links/purchases/account areas? | metadata kids wording, parental gate UI |
 | 25 | **5.4** | VPN/NetworkExtension → on-screen disclosure text visible in UI strings (not only Info.plist)? | Swift strings, NetworkExtension usage |
-| 26 | **5.2.1** | Obvious third-party trademark/brand misuse in metadata, assets, or UI copy? | metadata, asset filenames, Swift strings |
-| 27 | **5.3.1 / 5.3.2** | Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata? | description, keywords, in-app contest UI |
-| 28 | **1.5 / 5.6.2** | Developer identity consistent: app name, support URL content, bundle/marketing domain match? | fetch support URL, metadata, legal/footer copy |
+| 26 | **5.2.1–5.2.3** | Obvious third-party trademark/brand misuse in metadata, assets, or UI copy? | metadata, asset filenames, Swift strings |
+| 27 | **5.3.1–5.3.3** | Contest/sweepstakes/lottery copy → official rules/eligibility/disclosure present in metadata? | description, keywords, in-app contest UI |
+| 28 | **5.6.2–5.6.3** | Developer identity consistent: app name, support URL content, bundle/marketing domain match? | fetch support URL, metadata, legal/footer copy |
 | 29 | **5.6.1 / 5.6.3** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
 | 30 | **4.3** | In a category Apple names as saturated (4.3(b)), is the app meaningfully different from the incumbents, and free of 4.3(a) per-variant bundle ids? | entry point, main views, `project.pbxproj` targets, §54 scan context |
 | 31 | **4.0** | Would the app pass Apple's minimum design bar: usable iPad / large-text layout, no clipped, overlapping or placeholder UI, no degraded or non-functional screens? | SwiftUI/UIKit layout code, `Info.plist` device family + orientations, screenshot assets |
@@ -113,9 +108,9 @@ language, a review prompt present but using the system API — report a plain
 
 ## Per-check procedure (detail)
 
-### 1 — 1.2 UGC moderation UI
+### 1 — 1.2.1 UGC moderation UI
 
-1. Establish UGC scope (posts, comments, chat, uploads) from feature and runtime evidence. Mark not applicable only when sufficient evidence excludes UGC.
+1. If no UGC signals (posts, comments, chat, uploads), mark not applicable.
 2. Search Swift for report/block/flag/moderate flows and screens reachable from content.
 3. Compare to metadata promises ("community", "share", "chat").
 4. Flag if UGC exists but moderation is only mentioned in text, not implemented in UI.
@@ -149,7 +144,7 @@ language, a review prompt present but using the system API — report a plain
 2. Exclude legitimate internal keys and developer log strings not shown to users.
 3. Flag any store-facing copy implying the App Store build is unfinished or a beta.
 
-### 6 — 2.3.5 Category fit
+### 6 — 2.3.2 Category fit
 
 1. Read primary category if present in fastlane or `.appstore-precheck.json`.
 2. Infer app type from code (game loop, utility, reader, social).
@@ -158,11 +153,11 @@ language, a review prompt present but using the system API — report a plain
 ### 7 — 2.3.4 App preview consistency *(Tier B v1)*
 
 1. Look for app preview assets under `fastlane/metadata/*/preview*` or `*.mov` / `*.mp4` in metadata trees.
-2. If no preview assets in-repo, report REVIEW-NEEDS-REVIEW until the ASC asset inventory establishes whether previews exist.
+2. If no preview assets in-repo, mark not applicable (previews may live only in App Store Connect).
 3. If previews exist: compare visible features/captions to metadata and Swift UI; flag previews
    showing features absent from the build.
 
-### 8 — 2.3.3 Screenshots vs reality
+### 8 — 2.3.5 Screenshots vs reality
 
 1. Open ≥1 screenshot per primary locale.
 2. List visible features (tabs, paywall, login, maps, etc.).
@@ -171,19 +166,19 @@ language, a review prompt present but using the system API — report a plain
    wrong device frame, misleading marketing, metadata mismatch), follow
    `screenshot-vision-review.md` (sibling file in this same `references/` directory).
 
-### 9 — 2.3.2 / 3.1.2(c) Pricing language
+### 9 — 2.3.6 Pricing language
 
 1. Compare metadata "free", trial, and price claims to paywall/subscription UI strings.
 2. Flag "completely free" metadata when IAP/paywall exists without clear disclosure.
 
-### 10 — 3.2.2(x) / 5.6.3 Incentivized review *(Tier B v1)*
+### 10 — 2.3.9 Incentivized review *(Tier B v1)*
 
 1. Grep metadata, onboarding, and paywall strings for: `rate us`, `leave a review`, `5 star`,
    `five star`, `review and get`, `gift card`, `reward for review`, `write a review to unlock`.
 2. Cross-check scan §25 (custom review prompt) — Phase 4 adds semantic context if §25 passed.
 3. Flag quid-pro-quo review incentives or star-rating manipulation copy.
 
-### 11 — 2.3 Locale parity (semantic)
+### 11 — 2.3.11–2.3.13 Locale parity (semantic)
 
 1. Beyond scan's file-presence check: compare trial terms, feature bullets, and pricing claims across locales.
 2. Flag material omissions (trial mentioned in en-US only, different feature lists).
@@ -191,7 +186,7 @@ language, a review prompt present but using the system API — report a plain
 ### 12 — 3.1.1 External digital purchase
 
 1. Search for external checkout URLs, Stripe/PayPal in WebView, "subscribe on our website".
-2. Establish the offering, storefront, distribution and applicable 3.1.1(a)/3.1.3 exception with dated evidence. US links do not universally require entitlements. Missing context is REVIEW-NEEDS-REVIEW; a payment SDK alone is not a violation.
+2. Flag digital unlocks that bypass StoreKit without 3.1.1(a) entitlement context.
 
 ### 13 — 3.1.2 Disclosure quality
 
@@ -199,12 +194,12 @@ language, a review prompt present but using the system API — report a plain
 2. Flag if trial/auto-renew/cancel info is a single keyword, lorem, or unreadably dense.
 3. Require human-readable sentences covering trial length, renewal, and cancellation path.
 
-### 14 — 4.2 / 4.2.2 Minimum functionality (semantic)
+### 14 — 4.2.1–4.2.2 Minimum functionality (semantic)
 
 1. Map primary user journeys (launch → core action).
 2. Flag single-screen WebView brochure, template placeholder flows, or no native navigation beyond §12 minimum.
 
-### 15 — 2.5.1 / 4.5.3 / 4.5.4 Push / HomeKit abuse *(Tier B v1)*
+### 15 — 4.5.1–4.5.3 Push / HomeKit abuse *(Tier B v1)*
 
 1. Read entitlements and Info.plist for push notifications and HomeKit.
 2. **Push:** if push entitlement present, scan metadata/UI for spam patterns ("notify every hour",
@@ -222,7 +217,7 @@ language, a review prompt present but using the system API — report a plain
 
 1. Fetch privacy URL from primary locale metadata.
 2. Compare policy statements to: PrivacyInfo collected types, tracking domains, location/camera/health SDK usage.
-3. Flag a contradiction only with verified location collection/sharing evidence; a CoreLocation import alone cannot establish collection.
+3. Flag direct contradictions ("we do not collect location" + CoreLocation).
 
 ### 18 — 5.1.1(ii) Purpose string quality
 
@@ -275,17 +270,17 @@ language, a review prompt present but using the system API — report a plain
 1. If NetworkExtension/NEVPNManager: search UI strings for data-collection disclosure required at launch/settings.
 2. Flag VPN capability with no user-visible disclosure copy.
 
-### 26 — 5.2.1 IP / trademarks
+### 26 — 5.2.1–5.2.3 IP / trademarks
 
 1. Scan metadata and visible strings for other companies' brands used as if owned.
 2. Flag likely trademark misuse (not generic descriptive use).
 
-### 27 — 5.3.1 / 5.3.2 Contests
+### 27 — 5.3.1–5.3.3 Contests
 
 1. If sweepstakes/contest/giveaway language: check for rules, eligibility, sponsor, no-purchase-necessary.
 2. Flag contest marketing without rules in metadata or in-app.
 
-### 28 — 1.5 / 5.6.2 Developer identity
+### 28 — 5.6.2–5.6.3 Developer identity
 
 1. Fetch support URL; confirm it resolves and shows developer contact or support path.
 2. Compare app name, support domain, and privacy policy domain for consistency.
@@ -328,8 +323,8 @@ Guideline 4.0 is the intro prose of the Design section, and it is Apple's **sing
 removal reason** (42,252 removals in the 2024 App Store Transparency Report, ahead of every
 numbered sub-section). It rejects apps that are not "simple, refined, innovative, and easy to use"
 or that "stop working or offer a degraded experience". No grep can judge that; this check reads
-the layout code with the reviewer's eyes. Heuristic by nature — report missing runtime or visual evidence as
-`REVIEW-NEEDS-REVIEW`; a clean source read alone does not establish design compliance.
+the layout code with the reviewer's eyes. Heuristic by nature — prefer *not applicable* over a
+vague finding.
 
 1. **iPad and large-text layout.** If `UIDeviceFamily` includes iPad (or the app does not opt
    out), look for iPad-hostile layouts: hardcoded frame widths, `UIScreen.main.bounds`
@@ -342,8 +337,7 @@ the layout code with the reviewer's eyes. Heuristic by nature — report missing
 3. **Consistency with screenshots.** Where check 8 found screenshots, the shipped UI should not
    look obviously less finished than what is marketed (empty states, missing icons).
 4. Flag as `REVIEW-FINDING: 4.0 WARN — …` only with a concrete `file:line`; otherwise
-   report `REVIEW-NEEDS-REVIEW: 4.0 — runtime/visual evidence required` unless sufficient
-   evidence supports PASS. Quote Apple's own wording via
+   `REVIEW-PASS: 4.0 — not applicable / no signal`. Quote Apple's own wording via
    `guideline-cite.sh 4.0` (the page anchors it as `#4`, not `#4.0`).
 
 What this check cannot do: see the running app. iPad rotation, real Dynamic Type rendering and
@@ -357,6 +351,6 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 31 checks → separate counts for PASS, FINDING, NEEDS-REVIEW, UNSUPPORTED, NOT-RUN and NOT-APPLICABLE (note Tier B items 4, 5, 7, 10, 15, 29, 30, 31 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 31" count.
+3. Phase 4 summary table: 31 checks → count of `REVIEW-FINDING` vs `REVIEW-PASS` (note Tier B items 4, 5, 7, 10, 15, 29, 30, 31 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 31" count.
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.

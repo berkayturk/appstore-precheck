@@ -61,12 +61,12 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **2.1** | A login-gated app ships demo credentials / review notes for App Review |
 | **2.1** | Project's `LastUpgradeCheck` vs the April 2026 iOS 26 SDK (Xcode 26) upload minimum *(advisory)* |
 | **2.3** | A working support URL and a privacy URL in fastlane metadata (no placeholders) — also satisfies 1.5 and 5.1.1(i) |
-| **2.3.1** | Metadata length limits (name, subtitle, keywords, promo, description) |
+| **2.3.7 / ASC** | Metadata length limits (name, subtitle, keywords, promo, description) |
 | **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
-| **2.3.1** | Pricing / promo language ("Free", "% off", a currency amount) in the app name or subtitle |
+| **2.3.7** | Pricing / promo language ("Free", "% off", a currency amount) in the app name or subtitle |
 | **2.3.3** | At least one screenshot per locale |
 | **2.3.3** | Screenshot format + PNG dimensions match a known App Store screenshot size *(advisory, WARN-only)* |
-| **2.3.7** | Localized metadata parity across every locale |
+| **2.3** | Localized metadata parity across every locale |
 | **2.3.8** | "For Kids" / "For Children" wording outside the Kids Category |
 | **2.3.10** | No other-platform / competitor names in metadata |
 | **2.5.1** | No private / banned APIs |
@@ -79,9 +79,9 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
 | **3.1.2** | Trial-emphasized paywall CTA ("Continue with free trial") or a free-trial toggle instead of one clear price |
 | **3.1.2** | Urgency / scarcity dark patterns on the paywall ("only today", countdown + discount) |
-| **3.1.5(a)** | Cryptocurrency wallet / exchange / mining signal |
+| **3.1.5** | Cryptocurrency wallet / exchange / mining signal |
 | **4.2** | Minimum functionality (real navigation) |
-| **4.2.3** | Thin WKWebView wrapper around a website |
+| **4.2** | Thin WKWebView wrapper around a website |
 | **4.2.7** | Remote-desktop / host-mirroring app |
 | **4.4.1** | Keyboard extension that requires full access (`RequestsOpenAccess`) |
 | **4.4.2** | Safari content-blocker / web extension |
@@ -101,7 +101,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **5.1.2** | Tracking / IDFA SDK (AdMob, AppLovin, AppsFlyer, Adjust, …) shipped without an ATT prompt |
 | **5.1.3** | HealthKit data with an iCloud / CloudKit sync path |
 | **5.1.4** | Kids-audience metadata shipping a third-party ads / analytics SDK |
-| **5.1.5** | Sensitive-API justification *(opt-in)* |
+| **Review preparation** | Sensitive-API justification *(opt-in)* |
 | **5.3.4** | Real-money gambling language in metadata |
 | **5.4** | VPN / NetworkExtension usage (org account + on-screen data disclosure) |
 | **5.5** | Mobile Device Management (MDM) signal |
@@ -137,25 +137,25 @@ change the GREEN/YELLOW/RED verdict). Full procedure:
 
 **23 checks (Tier A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
 screenshots, paywall copy). **8 checks (Tier B v1, marked †)** are heuristic — useful pre-submit
-signals with a higher false-positive rate; Pierre prefers `not applicable` when no signal is present.
+signals with a higher false-positive rate; missing evidence is reported separately, and `not applicable` requires evidence that the check is outside scope.
 
 | Guideline | Deep check |
 |-----------|------------|
-| **1.2.1** | User-generated content → is there a real report / block / moderation UI flow? |
+| **1.2** | User-generated content → is there a real report / block / moderation UI flow? |
 | **1.4.1** | Health or medical claims in metadata/UI without appropriate disclaimers? |
 | **2.1** | Store metadata claims match features actually implemented in code |
 | **2.1** † | App Review demo account / review notes actionable (credentials, steps — not placeholder) |
 | **2.2** † | Beta, test, preview, or work-in-progress language in store-facing copy or UI |
-| **2.3.2** | Primary App Store category fits the app type |
+| **2.3.5** | Primary App Store category fits the app type |
 | **2.3.4** † | App preview video/assets (if in-repo) match shipped features and metadata |
-| **2.3.5** | Screenshot images match shipped features (no misleading frames or missing UI) |
-| **2.3.6** | Metadata pricing / subscription language matches the paywall |
-| **2.3.9** † | Incentivized review copy ("rate 5 stars", "review for reward") in metadata or UI |
-| **2.3.11–2.3.13** | Cross-locale metadata materially consistent (trial terms, features, URLs) |
+| **2.3.3 / 2.3.1(a)** | Screenshot images match shipped features (no misleading frames or missing UI) |
+| **2.3.2 / 3.1.2(c)** | Metadata pricing / subscription language matches the paywall |
+| **3.2.2(x) / 5.6.3** † | Incentivized review copy ("rate 5 stars", "review for reward") in metadata or UI |
+| **2.3** | Cross-locale metadata materially consistent (trial terms, features, URLs) |
 | **3.1.1** | Digital goods unlocked via external purchase links (web checkout in WebView, etc.) |
 | **3.1.2** | Trial, auto-renew, and cancel disclosures are legible sentences — not keyword stubs |
-| **4.2.1–4.2.2** | Minimum functionality beyond a thin WebView shell or template app |
-| **4.5.1–4.5.3** † | Push notification or HomeKit entitlement used as intended (no spam-push / HomeKit without home UI) |
+| **4.2 / 4.2.2** | Minimum functionality beyond a thin WebView shell or template app |
+| **2.5.1 / 4.5.3 / 4.5.4** † | Push notification or HomeKit entitlement used as intended (no spam-push / HomeKit without home UI) |
 | **4.8** | Third-party login → Sign in with Apple offered, or a valid exempt case |
 | **5.1.1(i)** | Privacy policy text (fetched live) matches code, PrivacyInfo, and SDK usage |
 | **5.1.1(ii)** | Purpose strings are specific and tied to a visible feature |
@@ -164,16 +164,17 @@ signals with a higher false-positive rate; Pierre prefers `not applicable` when 
 | **5.1.1(iv)** | Pre-permission priming CTA is neutral ("Continue"/"Next"), not steering toward granting |
 | **5.1.2** | ATT prompt, tracking description, privacy policy, and ad SDK usage align |
 | **5.1.3** | HealthKit data not used for advertising or marketing |
-| **5.1.4** | Kids-audience signals → parental gate before external links / IAP / account areas |
+| **1.3 / 5.1.4** | Kids-audience signals → parental gate before external links / IAP / account areas |
 | **5.4** | VPN / NetworkExtension → on-screen disclosure copy visible in UI strings |
-| **5.2.1–5.2.3** | Obvious third-party trademark or brand misuse in metadata or UI copy |
-| **5.3.1–5.3.3** | Contest / sweepstakes copy includes official rules and eligibility |
-| **5.6.2–5.6.3** | Developer identity consistent (app name, support URL content, domains) |
+| **5.2.1** | Obvious third-party trademark or brand misuse in metadata or UI copy |
+| **5.3.1 / 5.3.2** | Contest / sweepstakes copy includes official rules and eligibility |
+| **1.5 / 5.6.2** | Developer identity consistent (app name, support URL content, domains) |
 | **5.6.1 / 5.6.3** † | Rating / review manipulation dark patterns (withhold features until 5 stars, write-review links without `requestReview`) |
 | **4.3** † | Meaningfully different from the incumbents in a category Apple names as saturated (4.3(b)); no 4.3(a) per-variant bundle ids |
 | **4.0** † | Apple's minimum design bar: iPad / large-text layout, no placeholder, clipped or degraded UI (Apple's #1 removal reason) |
 
-Pierre runs **all 31 every time** and reports each as `REVIEW-PASS:` or `REVIEW-FINDING:`. When the
+Pierre reports an outcome for **all 31 every time**, separating supported PASS/FINDING results
+from missing evidence, unsupported inspection, unexecuted checks and proven non-applicability. When the
 static scan already flagged a guideline, the deep check adds semantic context the scanner could not see.
 † Tier B v1 items are heuristic — treat findings as "verify before submit", not automatic blockers.
 
@@ -390,7 +391,7 @@ Severity says how bad a finding is. It does not say how firmly it is *establishe
 FAIL: 5.1.1 camera capture API used but Info.plist is missing 'NSCameraUsageDescription' [App/CameraView.swift:42]
       evidence: source · validator-blocking · needs build verification
 
-WARN: 2.3.1 Pricing language in app name/subtitle [fastlane/metadata/en-US/name.txt]
+WARN: 2.3.7 Pricing language in app name/subtitle [fastlane/metadata/en-US/name.txt]
       evidence: metadata · judgment-call
 ```
 
