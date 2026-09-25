@@ -4,9 +4,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1",
       "apple_ref": "1.0",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-a689de124a524a2ebcc13347ddba72a1",
       "kind": "informational",
@@ -21,7 +22,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -32,9 +33,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1",
       "apple_ref": "1.0",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-4f6a18e0ab0542a1aa934e24ec124677",
       "kind": "informational",
@@ -49,7 +51,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -60,9 +62,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1",
       "apple_ref": "1.0",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-61b8c4c9a2da412b8ad195fdd4a16dec",
       "kind": "informational",
@@ -77,7 +80,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -88,9 +91,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1",
       "apple_ref": "1.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-e24614f6d7894da89abaae68af8f6f30",
       "kind": "informational",
@@ -107,7 +111,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -118,9 +122,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1",
       "apple_ref": "1.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Review all app content for offensive or disturbing material, including cases beyond the listed examples.",
       "exceptions": [],
       "id": "atom-6a9ccd921f234306b5c47b9eb2cfc16b",
       "kind": "obligation",
@@ -140,12 +146,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1",
       "apple_ref": "1.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-03b09548e85e49128624fe855910654e",
-      "kind": "definition",
+      "kind": "informational",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -157,7 +164,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -168,9 +175,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.1",
       "apple_ref": "1.1.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-f4bd0f3301a34b91bad919ba4cf2b8af",
       "kind": "informational",
@@ -187,7 +195,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -198,10 +206,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.1",
       "apple_ref": "1.1.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Assess whether content defames, discriminates against, or maliciously targets any person or group; listed traits are examples.",
+      "exceptions": [
+        "atom-d5b89600bc7a4d759c84e7b75a11a2c3"
+      ],
       "id": "atom-a4f2adc1120b4379883ed7055ffc2a8f",
       "kind": "obligation",
       "platforms": [
@@ -220,12 +232,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.1",
       "apple_ref": "1.1.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked conditional exception or permission.",
       "exceptions": [],
       "id": "req-1992121705f84f3db88e1bbc0bc3daea",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -239,7 +252,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -250,9 +263,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.1",
       "apple_ref": "1.1.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Professional political satire or humor can qualify for a contextual exception to the targeted-content restriction.",
       "exceptions": [],
       "id": "atom-d5b89600bc7a4d759c84e7b75a11a2c3",
       "kind": "exception",
@@ -269,7 +284,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -280,9 +295,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.2",
       "apple_ref": "1.1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-762b78aaa68c44ec946452ec24c17dae",
       "kind": "informational",
@@ -300,7 +316,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -311,9 +327,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.2",
       "apple_ref": "1.1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Exclude lifelike depictions of killing, injury, torture, or abuse involving people or animals.",
       "exceptions": [],
       "id": "atom-54af33f29d8f46dfadc64688752cfba3",
       "kind": "obligation",
@@ -333,9 +351,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.2",
       "apple_ref": "1.1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not promote violence through app content.",
       "exceptions": [],
       "id": "atom-40fe49bd689740b4a9de179221c187e6",
       "kind": "obligation",
@@ -355,9 +375,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.2",
       "apple_ref": "1.1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-a04cd79cec524b6eaed83afd608a53fa",
       "kind": "informational",
@@ -374,7 +395,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -385,9 +406,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.2",
       "apple_ref": "1.1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "A game presents enemies or enemy targeting.",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "In games, avoid an enemy set aimed exclusively at a real race, culture, government, company, or other real entity.",
       "exceptions": [],
       "id": "atom-058d7ffef5fa4358b935b69aa1ef6e15",
       "kind": "obligation",
@@ -407,9 +430,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.3",
       "apple_ref": "1.1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-5ece3bde2fe9413899476f3aea9d3a4a",
       "kind": "informational",
@@ -427,7 +451,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -438,9 +462,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.3",
       "apple_ref": "1.1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not depict weapons or dangerous objects in ways that promote unlawful or reckless use.",
       "exceptions": [],
       "id": "atom-2fcd0b8878af4175b4809085a400c4d6",
       "kind": "obligation",
@@ -460,9 +486,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.3",
       "apple_ref": "1.1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not use the app to enable a firearms or ammunition purchase.",
       "exceptions": [],
       "id": "atom-a97b9a857f9149958f63e5c1ea5bb7d4",
       "kind": "obligation",
@@ -482,9 +510,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.4",
       "apple_ref": "1.1.4",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-414932c4e3b845619d1122f1c40a9fab",
       "kind": "informational",
@@ -502,7 +531,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -513,9 +542,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.4",
       "apple_ref": "1.1.4",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Keep explicit sexual content and pornography out of the app, including the listed app categories where they meet that standard.",
       "exceptions": [],
       "id": "atom-e1e5dd4351284c3cb362052ede106689",
       "kind": "obligation",
@@ -535,9 +566,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.4",
       "apple_ref": "1.1.4",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not enable prostitution through the app.",
       "exceptions": [],
       "id": "atom-a406cb745b2647ebab05e63c34564938",
       "kind": "obligation",
@@ -557,9 +590,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.5",
       "apple_ref": "1.1.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-2cbc763c473f49818c8059f589d4fee0",
       "kind": "informational",
@@ -577,7 +611,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -588,9 +622,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.5",
       "apple_ref": "1.1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Religious commentary or quotations of religious texts in app or remotely delivered content.",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Avoid religious commentary whose presentation is inflammatory.",
       "exceptions": [],
       "id": "atom-4d0fbfc8ac274eb6b65f5ca81789322b",
       "kind": "obligation",
@@ -610,9 +646,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.5",
       "apple_ref": "1.1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Religious commentary or quotations of religious texts in app or remotely delivered content.",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Represent religious texts accurately and without misleading quotation.",
       "exceptions": [],
       "id": "atom-abc7a5dcc4ea4dd39e530b5efdc6ef4c",
       "kind": "obligation",
@@ -632,9 +670,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
       "apple_ref": "1.1.6",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-827af714e7584b39bd97968f9d91d220",
       "kind": "informational",
@@ -651,7 +690,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -662,28 +701,25 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
       "apple_ref": "1.1.6",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Do not present false information as real, including inaccurate readings attributed to a device.",
+      "exceptions": [
+        "atom-30d30275ccba4cc8bf26fadf986b1e82"
+      ],
       "id": "atom-d21d8f8c5f4244f19324b26d9d109c57",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-827af714e7584b39bd97968f9d91d220"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "misleading-marketing",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "a3382e5873539be472e9a14274e2746763c8f1fc441dbc428f271b2d98a421e3"
     },
@@ -691,12 +727,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
       "apple_ref": "1.1.6",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked conditional exception or permission.",
       "exceptions": [],
       "id": "req-a950ef2b25664fe99023c7e502e20b59",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -710,7 +747,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -721,9 +758,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
       "apple_ref": "1.1.6",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "An entertainment disclaimer does not excuse deceptive information or features.",
       "exceptions": [],
       "id": "atom-30d30275ccba4cc8bf26fadf986b1e82",
       "kind": "exception",
@@ -740,7 +779,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -751,9 +790,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
       "apple_ref": "1.1.6",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-24aea17e273c43949a9b934d73033f31",
       "kind": "informational",
@@ -770,7 +810,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -781,28 +821,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
       "apple_ref": "1.1.6",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not provide anonymous or prank calling or SMS/MMS capabilities.",
       "exceptions": [],
       "id": "atom-a2a5e40a2f5946c7bfd103f3e7a02ad2",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-24aea17e273c43949a9b934d73033f31"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "misleading-marketing",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "429c903a8db292af0de34b2f6704e146b5af10a2d92186b6308520142a5fe209"
     },
@@ -810,9 +845,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.7",
       "apple_ref": "1.1.7",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-62f342189d69455794bf9ca37747e3d6",
       "kind": "informational",
@@ -829,7 +865,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -840,9 +876,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.7",
       "apple_ref": "1.1.7",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not use a recent or ongoing harmful event as a concept to exploit or profit from it.",
       "exceptions": [],
       "id": "atom-9209336ae03545949fabe472e53b563f",
       "kind": "obligation",
@@ -862,9 +900,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-3a28d21fd7e64084b3e6f812dedc683b",
       "kind": "informational",
@@ -879,7 +918,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -890,9 +929,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-c0517d39c8e24f7d94f1272b87f7e028",
       "kind": "informational",
@@ -910,7 +950,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -921,12 +961,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "The four UGC safeguards apply when the app hosts user contributions or provides social networking.",
       "exceptions": [],
       "id": "atom-2a92c4d60f464b529e653ebb1c419035",
-      "kind": "informational",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -940,7 +982,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -951,34 +993,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not operate a service chiefly used for pornography, random or anonymous chat, objectifying people, threats, or bullying.",
       "exceptions": [],
       "id": "atom-e90ce97c6e7d4632b40f9f6fefe9c4d0",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-c0517d39c8e24f7d94f1272b87f7e028"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "ugc-moderation",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "ugc-no-moderation",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "a22c0cae88c6af8c1d9379523faf2d3eca7b878bf2b50455be1660b35357f8f5"
     },
@@ -986,12 +1017,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked conditional exception or permission.",
       "exceptions": [],
       "id": "req-9b7c4b913dd04405814a767804222984",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1006,7 +1038,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1017,9 +1049,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "A web UGC service can show incidental mature content only under the linked visibility and opt-in conditions.",
       "exceptions": [],
       "id": "atom-d4fce7eecff7444d9bb83f193f54adaf",
       "kind": "exception",
@@ -1036,7 +1070,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -1047,12 +1081,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Keep incidental mature web UGC hidden by default within the app.",
       "exceptions": [],
       "id": "atom-4cef1aaf5be14dbfa4bc141618e5f661",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1066,7 +1102,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -1077,9 +1113,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-1d225dadf8f849c8af361262b7aff45c",
       "kind": "informational",
@@ -1096,7 +1133,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1107,34 +1144,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Remove UGC that breaches the safety rule, service terms, or community standards.",
       "exceptions": [],
       "id": "atom-e728e9764730455ab83bcf4a37e92384",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-1d225dadf8f849c8af361262b7aff45c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "ugc-moderation",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "ugc-no-moderation",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "cbc6477b570952cb2c157b67f3851ba9cdf71d4e4ef5202aa59e23c29114990e"
     },
@@ -1142,9 +1168,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-0edf89aa0a80484d9b689e661e92a061",
       "kind": "informational",
@@ -1162,7 +1189,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1173,12 +1200,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Apple identification of prohibited content triggers the requested remediation response.",
       "exceptions": [],
       "id": "atom-d0568df1354349a5a5446da302da12eb",
-      "kind": "informational",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1192,7 +1221,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -1203,34 +1232,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "When Apple requests remediation, provide a concrete plan for improving compliance.",
       "exceptions": [],
       "id": "atom-0dc300f5137a4c7e9833c5f4cca8bc24",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-0edf89aa0a80484d9b689e661e92a061"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "ugc-moderation",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "ugc-no-moderation",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "805e8e081dea29d3403f07d9db195de0142002ae3aa5d670faa6007b4bfcc3d3"
     },
@@ -1238,9 +1256,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-ff8906c8b7c94b9699ea41cd1f62c2b9",
       "kind": "informational",
@@ -1255,7 +1274,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1266,9 +1285,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-66a91aa89ae34e08a9ea81a3469270cf",
       "kind": "informational",
@@ -1283,7 +1303,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1294,9 +1314,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-448abf7794db44cca6d0260e0f3c1e4e",
       "kind": "informational",
@@ -1313,7 +1334,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1324,9 +1345,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Provide an effective way to stop objectionable user submissions before they appear.",
       "exceptions": [],
       "id": "atom-a9b4a1952d944e24a795730819986b70",
       "kind": "obligation",
@@ -1359,9 +1382,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-212ef69c3df8479d878b5a3af90e1bc9",
       "kind": "informational",
@@ -1379,7 +1403,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1390,9 +1414,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Let users flag offensive contributions through a usable reporting flow.",
       "exceptions": [],
       "id": "atom-b159c69f4a294eb68d1bc7aa7ebb98a8",
       "kind": "obligation",
@@ -1425,34 +1451,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Respond to user safety reports without undue delay.",
       "exceptions": [],
       "id": "atom-3695711bedf344469b8442714d23fca5",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-212ef69c3df8479d878b5a3af90e1bc9"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "ugc-moderation",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "ugc-no-moderation",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "2d8fe48c2402fc41fc59d54b75d797d106d44c479361f752500abdb333bf3d33"
     },
@@ -1460,9 +1475,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-c2818369c3784710bd8dcd0cf3560e89",
       "kind": "informational",
@@ -1479,7 +1495,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1490,9 +1506,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Let users prevent an abusive account from interacting with them through the service.",
       "exceptions": [],
       "id": "atom-8a14301460114ce3bca499a40882c0d6",
       "kind": "obligation",
@@ -1525,9 +1543,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-a601b1172b744f44abd3c14624d9fe57",
       "kind": "informational",
@@ -1544,7 +1563,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1555,34 +1574,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
       "apple_ref": "1.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Publish contact details that UGC users can actually use to reach the developer.",
       "exceptions": [],
       "id": "atom-dc2caed931c44f58abc0fc8807b00cfc",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-a601b1172b744f44abd3c14624d9fe57"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "ugc-moderation",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "ugc-no-moderation",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "8266381718007866dbe61709fb2e40011eeff8ba694067e024a7e74b24d168de"
     },
@@ -1590,9 +1598,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-09fb632629ef48d59e1389a603372aea",
       "kind": "informational",
@@ -1607,7 +1616,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1618,9 +1627,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-ee614bb1b9124be5adbbcc3c4c5002f8",
       "kind": "informational",
@@ -1635,7 +1645,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1646,9 +1656,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-49e9d284d6d54fcaad750761efe01685",
       "kind": "informational",
@@ -1663,7 +1674,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1674,9 +1685,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-d3146f69b9fd4b64b1cb6e1c29389a0a",
       "kind": "informational",
@@ -1693,7 +1705,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1704,9 +1716,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Creator-content app",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Keep creator experiences within the native app's existing core functionality.",
       "exceptions": [],
       "id": "atom-5f9ba791c2b746daa65864befd7bc7f9",
       "kind": "obligation",
@@ -1726,12 +1740,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked applicability condition.",
       "exceptions": [],
       "id": "req-3e9a7f9377a546b399fae9262d20c5b5",
-      "kind": "informational",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1745,7 +1760,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1756,12 +1771,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Creator-content app",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Treat separately authored creator experiences as app content subject to UGC review, not separate native apps.",
       "exceptions": [],
       "id": "atom-d33efe4394b14a1bbfa18a587a6d4045",
-      "kind": "informational",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1775,7 +1792,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -1786,9 +1803,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-5618a65dbb6644b79a81a6e4c39b67a3",
       "kind": "informational",
@@ -1803,7 +1821,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1814,12 +1832,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked applicability condition.",
       "exceptions": [],
       "id": "req-27782017530748c193aa9ad403cb97f1",
-      "kind": "informational",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1833,7 +1852,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1844,12 +1863,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Creator-content app",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Creator content remains subject to applicable moderation and purchase duties elsewhere in the Guidelines.",
       "exceptions": [],
       "id": "atom-d4805f00c9ed4f1d9a65aff0d3470881",
-      "kind": "informational",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -1863,7 +1884,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -1874,9 +1895,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-52b0a5d035a74201ae8e115bc611a0b6",
       "kind": "informational",
@@ -1893,7 +1915,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1904,9 +1926,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Creator-content app",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Make paid creator content identifiable to users.",
       "exceptions": [],
       "id": "atom-3d7e6af4e0984c4daeab01f0b2f02244",
       "kind": "obligation",
@@ -1926,9 +1950,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1(a)",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-e57ad23f5fe94a5ba34f1dfde2ba6213",
       "kind": "informational",
@@ -1946,7 +1971,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1957,9 +1982,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1(a)",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Creator-content app",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Expose a way to recognize creator material above the app's assigned age rating.",
       "exceptions": [],
       "id": "atom-3deb247ab0e740c9afb2f58c46fd852a",
       "kind": "obligation",
@@ -1979,9 +2006,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2.1",
       "apple_ref": "1.2.1(a)",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Creator-content app",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Use a declared or verified age to keep underage users from higher-rated creator material.",
       "exceptions": [],
       "id": "atom-57e208a826334b3792bb5b8484e236a2",
       "kind": "obligation",
@@ -2001,9 +2030,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-57923be449824f1b94087c690738dba1",
       "kind": "informational",
@@ -2018,7 +2048,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -2029,9 +2059,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-012ef3c3cb8c443289f72e3caf92309e",
       "kind": "informational",
@@ -2048,7 +2079,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2059,34 +2090,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For Kids Category participation, tailor the experience to the selected child age group.",
       "exceptions": [],
       "id": "atom-557e5451c175420c8b8992d746b49a07",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-012ef3c3cb8c443289f72e3caf92309e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "f5fafae308524198332447a39b9a244faf35b70ffbc6c897d137daed5ad5dc2b"
     },
@@ -2094,9 +2114,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-5bb2d1bafbbf4f73a5680742eafda9ad",
       "kind": "informational",
@@ -2116,7 +2137,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2127,27 +2148,25 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Put outbound links beyond an effective parent gate in a Kids Category app.",
+      "exceptions": [
+        "atom-f85a03d0854e432995003cbc11227d67"
+      ],
       "id": "atom-21a6b7b46d434be090a65751650f807d",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": "semantic",
       "related": [
         "req-5bb2d1bafbbf4f73a5680742eafda9ad"
       ],
       "retired_from": [],
       "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
         {
           "check_id": "parental-gates",
           "decides": "partial",
@@ -2162,27 +2181,25 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Put purchase access beyond an effective parent gate in a Kids Category app.",
+      "exceptions": [
+        "atom-f85a03d0854e432995003cbc11227d67"
+      ],
       "id": "atom-0108bfecf9ea4c2e8b1cf69d5d17662e",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": "semantic",
       "related": [
         "req-5bb2d1bafbbf4f73a5680742eafda9ad"
       ],
       "retired_from": [],
       "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
         {
           "check_id": "parental-gates",
           "decides": "partial",
@@ -2197,27 +2214,25 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Keep other child-disrupting destinations or actions beyond an effective parent gate.",
+      "exceptions": [
+        "atom-f85a03d0854e432995003cbc11227d67"
+      ],
       "id": "atom-32b3120b994f415c8d70ba45c88225c7",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": "semantic",
       "related": [
         "req-5bb2d1bafbbf4f73a5680742eafda9ad"
       ],
       "retired_from": [],
       "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
         {
           "check_id": "parental-gates",
           "decides": "partial",
@@ -2232,9 +2247,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "A designated parent-controlled area may contain otherwise restricted actions.",
       "exceptions": [],
       "id": "atom-f85a03d0854e432995003cbc11227d67",
       "kind": "exception",
@@ -2251,7 +2268,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2262,9 +2279,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-b5c19de684304a9e90d386f790bb8a7d",
       "kind": "informational",
@@ -2281,7 +2299,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2292,34 +2310,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Carry Kids Category protections into later updates when users have come to expect them, even after deselection.",
       "exceptions": [],
       "id": "atom-9c53e07611ad4df3b1fda0d14b0ab465",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-b5c19de684304a9e90d386f790bb8a7d"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "597806219ed2d0ffba76e18667ed167181f112a939e09da721d3d1b6634b62e9"
     },
@@ -2327,9 +2334,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-8a4cacb9959e4766b12794c7a221c543",
       "kind": "informational",
@@ -2344,7 +2352,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -2355,9 +2363,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-bc7a3d08f4824e339c048e47abf1e37c",
       "kind": "informational",
@@ -2374,7 +2383,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2385,34 +2394,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Resolve child-data privacy duties in every relevant country or region and comply with them.",
       "exceptions": [],
       "id": "atom-bb3fb63adabe4a5dbb7b9f569018a8c2",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-bc7a3d08f4824e339c048e47abf1e37c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "e9a0f54bfc5511e90b58f831862f438cbff8a7ff004e7f20b9d5bc18cd746b6d"
     },
@@ -2420,9 +2418,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-957574e9d69b4374954de7243715d594",
       "kind": "informational",
@@ -2437,7 +2436,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -2448,9 +2447,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-bd2678e76fad4ed28540d62b73acc24f",
       "kind": "informational",
@@ -2468,7 +2468,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2479,34 +2479,24 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "interpretation_status": "linked_kids_guidance_conflict_needs_review",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not send a child's personally identifying information from a Kids Category app to a third party; reconcile the linked Kids guidance before final assessment.",
       "exceptions": [],
       "id": "atom-6186554d692347f783bbb47b9052e065",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-bd2678e76fad4ed28540d62b73acc24f"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "6da21166a75b4a9bb2ef2c954da760a0178e44849ab9ada1d3b1d59e2674fc8d"
     },
@@ -2514,34 +2504,24 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "interpretation_status": "linked_kids_guidance_conflict_needs_review",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not send device information from a Kids Category app to a third party; reconcile the linked Kids guidance before final assessment.",
       "exceptions": [],
       "id": "atom-3e0f0c34543d434ba957cd1d634af137",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-bd2678e76fad4ed28540d62b73acc24f"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "kids-ads-analytics",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "6da21166a75b4a9bb2ef2c954da760a0178e44849ab9ada1d3b1d59e2674fc8d"
     },
@@ -2549,9 +2529,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-dd0261102bcb46188cb25dfa69c49436",
       "kind": "informational",
@@ -2569,7 +2550,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2580,10 +2561,19 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Exclude third-party analytics from Kids Category apps unless the narrow analytics conditions are substantiated.",
+      "exceptions": [
+        "atom-7edb6d5616cf4d89a20015609eb960fd",
+        "atom-8cbd095633d1484b8078e38487ff555b",
+        "atom-7fa8977b538f4c52b4e139328f0d9b09",
+        "atom-a27dc53d09e647b0ba9a37a28aa9567d",
+        "atom-b1fa2c5183264048a02d7f8f27bc003d",
+        "atom-46e0f4763f6c4bfd98c4510c37bcc469"
+      ],
       "id": "atom-46e109a06fef4a9999003e29a29d7c4a",
       "kind": "obligation",
       "platforms": [
@@ -2600,12 +2590,6 @@
           "decides": "partial",
           "evidence_class": "source",
           "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
         }
       ],
       "section": "1",
@@ -2615,10 +2599,16 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Exclude third-party ads from Kids Category apps unless the narrow contextual-ad conditions are substantiated.",
+      "exceptions": [
+        "atom-a60d137ff0f34744aa62bac5ca2d0b15",
+        "atom-543cef8ec19743e09df55246cf779485",
+        "atom-ec5d383477bc4334966d626c815327f1"
+      ],
       "id": "atom-ad8d2c491c07479395c8bfa313dda1d3",
       "kind": "obligation",
       "platforms": [
@@ -2635,12 +2625,6 @@
           "decides": "partial",
           "evidence_class": "source",
           "route": "static"
-        },
-        {
-          "check_id": "parental-gates",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
         }
       ],
       "section": "1",
@@ -2650,9 +2634,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-d27c1c4583484ceeb8b1c81f87dfde97",
       "kind": "informational",
@@ -2667,7 +2652,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -2678,12 +2663,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked conditional exception or permission.",
       "exceptions": [],
       "id": "req-e2c6de7bfda5499f875b2a7692312e23",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2701,7 +2687,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2712,9 +2698,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "The limited analytics allowance depends on meeting each listed data-collection and transfer restriction.",
       "exceptions": [],
       "id": "atom-7edb6d5616cf4d89a20015609eb960fd",
       "kind": "exception",
@@ -2731,7 +2719,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2742,12 +2730,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For an analytics exception, verify that the provider neither collects nor sends IDFA.",
       "exceptions": [],
       "id": "atom-8cbd095633d1484b8078e38487ff555b",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2761,7 +2751,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2772,12 +2762,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For an analytics exception, verify that the provider neither collects nor sends identifying details about children.",
       "exceptions": [],
       "id": "atom-7fa8977b538f4c52b4e139328f0d9b09",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2791,7 +2783,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2802,12 +2794,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For an analytics exception, verify that the provider neither collects nor sends child location data.",
       "exceptions": [],
       "id": "atom-a27dc53d09e647b0ba9a37a28aa9567d",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2821,7 +2815,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2832,12 +2826,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For an analytics exception, verify that the provider neither collects nor sends device-identifying data.",
       "exceptions": [],
       "id": "atom-b1fa2c5183264048a02d7f8f27bc003d",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2851,7 +2847,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2862,12 +2858,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked conditional exception or permission.",
       "exceptions": [],
       "id": "req-e556507afcfe4b0a9f3ecc2e89955c72",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2881,7 +2878,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2892,12 +2889,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Treat combinations of device and network details that identify a person or device as restricted information.",
       "exceptions": [],
       "id": "atom-46e0f4763f6c4bfd98c4510c37bcc469",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2911,7 +2910,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2922,12 +2921,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source occurrence defining the linked conditional exception or permission.",
       "exceptions": [],
       "id": "req-748d0f4a65f4417383488a4768117e1e",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2943,7 +2943,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2954,9 +2954,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "The limited advertising allowance applies only to qualifying contextual ads.",
       "exceptions": [],
       "id": "atom-a60d137ff0f34744aa62bac5ca2d0b15",
       "kind": "exception",
@@ -2973,7 +2975,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2984,12 +2986,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For a contextual-ad exception, confirm the provider publishes Kids Category policies and practices.",
       "exceptions": [],
       "id": "atom-543cef8ec19743e09df55246cf779485",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3003,7 +3007,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -3014,12 +3018,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.3",
       "apple_ref": "1.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Kids Category, including later updates where users still expect Kids protections",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "For a contextual-ad exception, confirm people review ad creatives for suitability to children.",
       "exceptions": [],
       "id": "atom-ec5d383477bc4334966d626c815327f1",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3033,7 +3039,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -3044,9 +3050,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4",
       "apple_ref": "1.4",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-728f063da48c45c4bed80cd24be58561",
       "kind": "informational",
@@ -3063,7 +3070,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3074,9 +3081,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4",
       "apple_ref": "1.4",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Assess app behavior for physical injury risks beyond the named examples.",
       "exceptions": [],
       "id": "atom-5f0e9701e9e84c24a76a30ecac3b7379",
       "kind": "obligation",
@@ -3096,12 +3105,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4",
       "apple_ref": "1.4",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-e29e8e0f1869436ca3315908638bd7f1",
-      "kind": "definition",
+      "kind": "informational",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3113,7 +3123,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -3124,9 +3134,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-0d49b1d878ba4d50888c4e3e717e41f7",
       "kind": "informational",
@@ -3141,7 +3152,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -3152,9 +3163,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-ea52953de85746429dd9521dd34cdcc5",
       "kind": "informational",
@@ -3171,7 +3183,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3182,28 +3194,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "If medical regulatory clearance exists, include a link to its documentation in the review submission.",
       "exceptions": [],
       "id": "atom-51aba889f71c499eb7faca3ed514d66b",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-ea52953de85746429dd9521dd34cdcc5"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "health-claims",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "4fbfeeaee6f1be0533203df640ae949947db5bcbe4e2debde3501106391737bb"
     },
@@ -3211,9 +3218,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-b02c2986efd048ce97abdcd292bfb276",
       "kind": "informational",
@@ -3231,7 +3239,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3242,28 +3250,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Disclose the evidence behind health measurement accuracy claims clearly.",
       "exceptions": [],
       "id": "atom-cf0dd5a70e5a47c8bd3ecd533d4c9c0d",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-b02c2986efd048ce97abdcd292bfb276"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "health-claims",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "55a5191b2c2585061d29f525bf5cc51476aeb2262baa38f14e9c8896edf1ce08"
     },
@@ -3271,28 +3274,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Disclose how claimed health measurements are produced.",
       "exceptions": [],
       "id": "atom-9b4aa004dae84a22a66c46f674f29272",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-b02c2986efd048ce97abdcd292bfb276"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "health-claims",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "55a5191b2c2585061d29f525bf5cc51476aeb2262baa38f14e9c8896edf1ce08"
     },
@@ -3300,9 +3298,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-fa7befb6927348edb4ac0de859885806",
       "kind": "informational",
@@ -3319,7 +3318,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3330,9 +3329,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not claim the phone's sensors alone can perform the listed medical measurements or x-ray function.",
       "exceptions": [],
       "id": "atom-00797e38ee51476aafe57e41aa87b9d2",
       "kind": "obligation",
@@ -3359,9 +3360,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-6c8563eef3cb4d60bee90f3e757a6087",
       "kind": "informational",
@@ -3378,7 +3380,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3389,9 +3391,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
       "apple_ref": "1.4.1",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Prompt medical users to consult a doctor as well as the app before medical decisions.",
       "exceptions": [],
       "id": "atom-b6bfe635e6cf49b3bdc8650244d8b675",
       "kind": "obligation",
@@ -3418,9 +3422,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.2",
       "apple_ref": "1.4.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-00ca4d20023e4329b88188a4660b2fe1",
       "kind": "informational",
@@ -3437,7 +3442,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3448,9 +3453,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.2",
       "apple_ref": "1.4.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Drug dosage calculator",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "A dose calculator needs an allowed institutional source or qualifying regulator approval.",
       "exceptions": [],
       "id": "atom-a7348ccb4c63425ca0384e3ee4c9e339",
       "kind": "obligation",
@@ -3470,9 +3477,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.2",
       "apple_ref": "1.4.2",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-8cf12cdc1fee4781bbf66af46abadec6",
       "kind": "informational",
@@ -3489,7 +3497,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3500,29 +3508,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.2",
       "apple_ref": "1.4.2",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Drug dosage calculator",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Provide credible ongoing support arrangements for a drug-dose calculator.",
       "exceptions": [],
       "id": "atom-55729f8061e341b694c5caac2a81bc92",
-      "kind": "informational",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-8cf12cdc1fee4781bbf66af46abadec6"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "4710d3b169b558e62eeb2a634152a79aa3bbd3d9137b5c0e1134e8fc4d1b819e"
     },
@@ -3530,9 +3532,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-fd2dba67a2a24dee99bd0f2074ec4686",
       "kind": "informational",
@@ -3551,7 +3554,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3562,9 +3565,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not encourage tobacco or vaping consumption.",
       "exceptions": [],
       "id": "atom-98d88ec86acc4741b25278e5405454bb",
       "kind": "obligation",
@@ -3584,9 +3589,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not encourage use of illegal drugs.",
       "exceptions": [],
       "id": "atom-e8f1053816464b5d9cc0200dac37129f",
       "kind": "obligation",
@@ -3606,9 +3613,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not encourage excessive alcohol use.",
       "exceptions": [],
       "id": "atom-e96ea933c0be4bafada64388114da3e5",
       "kind": "obligation",
@@ -3628,9 +3637,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-7c4b3ddcb4c7493289867486221e18c9",
       "kind": "informational",
@@ -3647,7 +3657,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3658,9 +3668,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not encourage a minor to consume any substance covered by the preceding rule.",
       "exceptions": [],
       "id": "atom-5cfe6efad6b0475fa06cbfd8233f675b",
       "kind": "obligation",
@@ -3680,9 +3692,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-93680e1020fa40668a94bddee4f1451c",
       "kind": "informational",
@@ -3701,7 +3714,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3712,10 +3725,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
-      "exceptions": [],
+      "criterion": "Do not enable controlled-substance sales unless the specific licensing or legal exception applies.",
+      "exceptions": [
+        "atom-49e33ae2dae14a4f84b7a46ddd09d1ef"
+      ],
       "id": "atom-1120cf24fc3e431b87ba3e7bf5583dd5",
       "kind": "obligation",
       "platforms": [
@@ -3734,9 +3751,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not facilitate tobacco sales.",
       "exceptions": [],
       "id": "atom-a11ad225300a477d8bdef0b539f52389",
       "kind": "obligation",
@@ -3756,9 +3775,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.3",
       "apple_ref": "1.4.3",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "The controlled-substance sale exception can cover qualified pharmacies and legal cannabis dispensaries; it does not cover tobacco.",
       "exceptions": [],
       "id": "atom-49e33ae2dae14a4f84b7a46ddd09d1ef",
       "kind": "exception",
@@ -3775,7 +3796,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Condition, permission, or exception; applied with related obligation.",
+          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -3786,9 +3807,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.4",
       "apple_ref": "1.4.4",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-e92408d73a234c928375a5e1fead35b1",
       "kind": "informational",
@@ -3806,7 +3828,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3817,9 +3839,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.4",
       "apple_ref": "1.4.4",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Only show impaired-driving checkpoints released by a law-enforcement agency.",
       "exceptions": [],
       "id": "atom-2cfda6d6703b4610aac220d3f6bfafc9",
       "kind": "obligation",
@@ -3839,9 +3863,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.4",
       "apple_ref": "1.4.4",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not prompt drunk driving, speeding, or similarly reckless driving.",
       "exceptions": [],
       "id": "atom-98dd49825df5474bb71c4d416caf00b8",
       "kind": "obligation",
@@ -3861,9 +3887,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.5",
       "apple_ref": "1.4.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-e2f1baa23c2042cc9114732e864e8dce",
       "kind": "informational",
@@ -3881,7 +3908,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3892,9 +3919,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.5",
       "apple_ref": "1.4.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not urge activities that create a physical injury risk.",
       "exceptions": [],
       "id": "atom-8e828e3910c64410ba6ef42c1155a17b",
       "kind": "obligation",
@@ -3914,9 +3943,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.5",
       "apple_ref": "1.4.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Physical Harm",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Do not urge users to handle a device in a way that creates a physical injury risk.",
       "exceptions": [],
       "id": "atom-7c7546436ef84b0c99c309a7bde451bc",
       "kind": "obligation",
@@ -3936,9 +3967,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-68e73a81885847eebcd8e82c4e25d47c",
       "kind": "informational",
@@ -3953,7 +3985,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -3964,9 +3996,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-ead196cd874547c587e67148c3159425",
       "kind": "informational",
@@ -3984,7 +4017,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3995,34 +4028,24 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Developer Information",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Offer an accessible way to contact the developer from within the app.",
       "exceptions": [],
       "id": "atom-d188d94683794eb6a1e3977400195292",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
-        "req-ead196cd874547c587e67148c3159425"
+        "req-ead196cd874547c587e67148c3159425",
+        "atom-dc2caed931c44f58abc0fc8807b00cfc"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "developer-identity",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "support-privacy-url",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "432e8fdac4b173c64364cce2c9002d63e064d525d8e4751542909b764484ffc0"
     },
@@ -4030,27 +4053,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Developer Information",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Ensure the Support URL leads to an accessible developer contact method.",
       "exceptions": [],
       "id": "atom-cb980266eda4426cb44c7d30b2a00ca1",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-ead196cd874547c587e67148c3159425"
       ],
       "retired_from": [],
       "routes": [
-        {
-          "check_id": "developer-identity",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
         {
           "check_id": "support-privacy-url",
           "decides": "partial",
@@ -4065,9 +4084,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Context, scope, example, or Apple process statement for this guideline section.",
       "exceptions": [],
       "id": "req-bebff0531e2c45cd8f9ea979071acf06",
       "kind": "informational",
@@ -4082,7 +4102,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -4093,9 +4113,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-2cbc0557c9ea43a180acfac799ad7f96",
       "kind": "informational",
@@ -4112,7 +4133,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -4123,9 +4144,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Developer Information",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Keep developer contact details accurate and current wherever they are provided.",
       "exceptions": [],
       "id": "atom-aee38865f5f34a8e8d3d9b67bba99c53",
       "kind": "obligation",
@@ -4143,12 +4166,6 @@
           "decides": "partial",
           "evidence_class": "semantic",
           "route": "semantic"
-        },
-        {
-          "check_id": "support-privacy-url",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
         }
       ],
       "section": "1",
@@ -4158,9 +4175,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-0ae8442a288444f8a21c1731150c9003",
       "kind": "informational",
@@ -4178,7 +4196,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -4189,34 +4207,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "App issues Wallet passes",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Put valid issuer contact details in a Wallet pass.",
       "exceptions": [],
       "id": "atom-d1a35f3c93ba453fb776bf0a5b2a9612",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-0ae8442a288444f8a21c1731150c9003"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "developer-identity",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "support-privacy-url",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "c82a381e4e1fa947e8edc6058bd9d9372d33c8a1004be8780ec4da070d2a8e2b"
     },
@@ -4224,34 +4231,23 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.5",
       "apple_ref": "1.5",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "App issues Wallet passes",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Sign a Wallet pass with the dedicated certificate assigned to its brand or trademark owner.",
       "exceptions": [],
       "id": "atom-564c86e5c2b44721aacf6d633eec6024",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-0ae8442a288444f8a21c1731150c9003"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "developer-identity",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "check_id": "support-privacy-url",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "c82a381e4e1fa947e8edc6058bd9d9372d33c8a1004be8780ec4da070d2a8e2b"
     },
@@ -4259,9 +4255,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.6",
       "apple_ref": "1.6",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-a3939636698847b1b99524bf28913b8e",
       "kind": "informational",
@@ -4279,7 +4276,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -4290,28 +4287,25 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.6",
       "apple_ref": "1.6",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Data Security",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Use security controls suitable for collected user information that prevent unauthorized outside use, disclosure, or access.",
       "exceptions": [],
       "id": "atom-5185983edd3c4ce6b703a88850a08ad3",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-a3939636698847b1b99524bf28913b8e"
       ],
-      "retired_from": [],
-      "routes": [
-        {
-          "check_id": "ats-arbitrary-loads",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
+      "retired_from": [
+        "atom-a49d95a973f54ac3894ad3168f6e7559"
       ],
+      "routes": [],
       "section": "1",
       "text_sha256": "7ab9abc1eb2dccf2db434ac9d98542224ba098f0d6a74f77063f104bf383a41b"
     },
@@ -4319,26 +4313,29 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.6",
       "apple_ref": "1.6",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Data Security",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Retired duplicate of the linked unified information-security duty.",
       "exceptions": [],
       "id": "atom-a49d95a973f54ac3894ad3168f6e7559",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": "not_app_checkable",
       "related": [
-        "req-a3939636698847b1b99524bf28913b8e"
+        "atom-5185983edd3c4ce6b703a88850a08ad3"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "ats-arbitrary-loads",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "Historical candidate merged into the linked security obligation after section review.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "1",
@@ -4348,9 +4345,10 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.7",
       "apple_ref": "1.7",
       "applicability": {
-        "review_status": "needs_editorial_review"
+        "review_status": "section_reviewed",
+        "role": "source_fragment"
       },
-      "criterion": "Source fragment awaiting independent section review.",
+      "criterion": "Source fragment decomposed into the linked atomic rules and qualifiers.",
       "exceptions": [],
       "id": "req-b72953d37c154971aa63d4bfc16a03cf",
       "kind": "informational",
@@ -4368,7 +4366,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -4379,9 +4377,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.7",
       "apple_ref": "1.7",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "App reports alleged criminal activity",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Involve local law enforcement in a crime-reporting app's operation.",
       "exceptions": [],
       "id": "atom-07be96c43fdd40c9a9a80c9dad4e5094",
       "kind": "obligation",
@@ -4401,9 +4401,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.7",
       "apple_ref": "1.7",
       "applicability": {
-        "review_status": "pending_independent_review"
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "App reports alleged criminal activity",
+        "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Determine whether the applicable source requirement is satisfied.",
+      "criterion": "Distribute a crime-reporting app only where its law-enforcement involvement is active.",
       "exceptions": [],
       "id": "atom-e3de8c3eed2c43fca45d753b8816164e",
       "kind": "obligation",
@@ -38062,6 +38064,156 @@
       ],
       "section": "intro",
       "text_sha256": "c65bc43b38a33eba7bb8817bc2f71cdaac4e559f9f090edb3b001532359e8501"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.6",
+      "apple_ref": "1.1.6",
+      "applicability": {
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Do not present a deceptive feature as genuine, including a tracker that merely simulates location.",
+      "exceptions": [],
+      "id": "atom-cd332aacc916d543227d199423c74576",
+      "kind": "obligation",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": null,
+      "related": [
+        "atom-d21d8f8c5f4244f19324b26d9d109c57",
+        "req-827af714e7584b39bd97968f9d91d220"
+      ],
+      "retired_from": [],
+      "routes": [],
+      "section": "1",
+      "text_sha256": "a3382e5873539be472e9a14274e2746763c8f1fc441dbc428f271b2d98a421e3"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.1.4",
+      "apple_ref": "1.1.4",
+      "applicability": {
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Objectionable Content",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Do not enable human trafficking or exploitation through the app.",
+      "exceptions": [],
+      "id": "atom-a737e601b645d959436ab8f711a3015f",
+      "kind": "obligation",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": null,
+      "related": [
+        "atom-a406cb745b2647ebab05e63c34564938",
+        "req-414932c4e3b845619d1122f1c40a9fab"
+      ],
+      "retired_from": [],
+      "routes": [],
+      "section": "1",
+      "text_sha256": "f65c60be30def862378c80f1a6393063607d6f8c078fab0b951329158bb72524"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.2",
+      "apple_ref": "1.2",
+      "applicability": {
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "UGC or social networking service",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Show incidental mature web UGC only after the user turns it on through the website.",
+      "exceptions": [],
+      "id": "atom-958acc1e293ff59d2c168434a84f98b5",
+      "kind": "exception",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": null,
+      "related": [
+        "atom-4cef1aaf5be14dbfa4bc141618e5f661",
+        "req-9b7c4b913dd04405814a767804222984"
+      ],
+      "retired_from": [],
+      "routes": [],
+      "section": "1",
+      "text_sha256": "f61c4aebd24079e1dccbfdb42df49e362beac1696681f7c31c19c0bca8cf3b80"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
+      "apple_ref": "1.4.1",
+      "applicability": {
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Substantiate the claimed level of health measurement accuracy with verifiable evidence.",
+      "exceptions": [],
+      "id": "atom-726881973a096ad43aa49a76b2f997b1",
+      "kind": "obligation",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": null,
+      "related": [
+        "atom-9b4aa004dae84a22a66c46f674f29272",
+        "req-b02c2986efd048ce97abdcd292bfb276"
+      ],
+      "retired_from": [],
+      "routes": [],
+      "section": "1",
+      "text_sha256": "55a5191b2c2585061d29f525bf5cc51476aeb2262baa38f14e9c8896edf1ce08"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.1",
+      "apple_ref": "1.4.1",
+      "applicability": {
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Substantiate that the disclosed health measurement method is valid.",
+      "exceptions": [],
+      "id": "atom-c969c9f28aa1f547adc9c2c637bb10fb",
+      "kind": "obligation",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": null,
+      "related": [
+        "atom-9b4aa004dae84a22a66c46f674f29272",
+        "req-b02c2986efd048ce97abdcd292bfb276"
+      ],
+      "retired_from": [],
+      "routes": [],
+      "section": "1",
+      "text_sha256": "55a5191b2c2585061d29f525bf5cc51476aeb2262baa38f14e9c8896edf1ce08"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#1.4.2",
+      "apple_ref": "1.4.2",
+      "applicability": {
+        "distribution": "App Store; confirm notarization applicability at the source element",
+        "feature_condition": "Drug dosage calculator",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Provide a credible plan for keeping a drug-dose calculator updated over time.",
+      "exceptions": [],
+      "id": "atom-3e6c8461610ea4b69e9d276e85b06725",
+      "kind": "obligation",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": null,
+      "related": [
+        "atom-55729f8061e341b694c5caac2a81bc92",
+        "req-8cf12cdc1fee4781bbf66af46abadec6"
+      ],
+      "retired_from": [],
+      "routes": [],
+      "section": "1",
+      "text_sha256": "4710d3b169b558e62eeb2a634152a79aa3bbd3d9137b5c0e1134e8fc4d1b819e"
     }
   ],
   "schema_version": 1,
