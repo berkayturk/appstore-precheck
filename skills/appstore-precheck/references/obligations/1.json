@@ -2195,7 +2195,7 @@
         "feature_condition": "Objectionable Content",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Assess whether content defames, discriminates against, or maliciously targets any person or group; listed traits are examples.",
+      "criterion": "Exclude defamatory, discriminatory, or mean-spirited material targeting a person or group, including attacks involving protected traits; assess the linked political satire exception narrowly.",
       "exceptions": [
         "atom-d5b89600bc7a4d759c84e7b75a11a2c3"
       ],
@@ -2253,7 +2253,7 @@
         "feature_condition": "Objectionable Content",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Exclude lifelike depictions of killing, injury, torture, or abuse involving people or animals.",
+      "criterion": "Exclude prolonged, intense, or sadistic realistic portrayals of killing, maiming, torture, or abuse of people or animals; review borderline depictions in context.",
       "exceptions": [],
       "id": "atom-54af33f29d8f46dfadc64688752cfba3",
       "kind": "obligation",
@@ -2373,7 +2373,7 @@
         "feature_condition": "Objectionable Content",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Keep explicit sexual content and pornography out of the app, including the listed app categories where they meet that standard.",
+      "criterion": "Exclude pornography and explicit sexual material; separately assess whether the app is designed for sexual hookups or facilitates pornography or sex trade, regardless of displayed imagery.",
       "exceptions": [],
       "id": "atom-e1e5dd4351284c3cb362052ede106689",
       "kind": "obligation",
@@ -2608,7 +2608,11 @@
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Do not operate a service chiefly used for pornography, random or anonymous chat, objectifying people, threats, or bullying.",
-      "exceptions": [],
+      "exceptions": [
+        "atom-d4fce7eecff7444d9bb83f193f54adaf",
+        "atom-4cef1aaf5be14dbfa4bc141618e5f661",
+        "atom-958acc1e293ff59d2c168434a84f98b5"
+      ],
       "id": "atom-e90ce97c6e7d4632b40f9f6fefe9c4d0",
       "kind": "obligation",
       "platforms": [
@@ -2631,7 +2635,7 @@
         "feature_condition": "UGC or social networking service",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "A web UGC service can show incidental mature content only under the linked visibility and opt-in conditions.",
+      "criterion": "An otherwise compliant UGC service may expose incidental mature web content only when hidden in the app by default and enabled by the user on the website; this does not permit a primarily pornographic service.",
       "exceptions": [],
       "id": "atom-d4fce7eecff7444d9bb83f193f54adaf",
       "kind": "exception",
@@ -3427,20 +3431,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3459,20 +3455,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3491,20 +3479,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3523,20 +3503,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3555,20 +3527,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3587,20 +3551,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-e556507afcfe4b0a9f3ecc2e89955c72"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "6bd560d2a42fb057fa902921dd335b1ac3c9d10af2cbedcaf5eb2127845e5f9a"
     },
@@ -3619,20 +3575,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-748d0f4a65f4417383488a4768117e1e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "28f809a9787a7b1b79532fc65c2f68b12b88116e6932d19cfe07a670199bb4b6"
     },
@@ -3651,20 +3599,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-748d0f4a65f4417383488a4768117e1e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "28f809a9787a7b1b79532fc65c2f68b12b88116e6932d19cfe07a670199bb4b6"
     },
@@ -3683,20 +3623,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
         "req-748d0f4a65f4417383488a4768117e1e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "1",
       "text_sha256": "28f809a9787a7b1b79532fc65c2f68b12b88116e6932d19cfe07a670199bb4b6"
     },
@@ -3804,7 +3736,7 @@
         "feature_condition": "Medical or health measurement feature; clearance-link duty only when clearance exists",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Do not claim the phone's sensors alone can perform the listed medical measurements or x-ray function.",
+      "criterion": "Do not claim device sensors alone can perform unsupported medical measurements or functions; named examples are illustrative rather than an exhaustive list.",
       "exceptions": [],
       "id": "atom-00797e38ee51476aafe57e41aa87b9d2",
       "kind": "obligation",
