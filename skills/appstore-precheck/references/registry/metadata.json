@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "meta-age-rating": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-review-notes": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-demo-account": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-iap-review-notes": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-iap-screenshot": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-privacy-url": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-support-url": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-category": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-price": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-storefront": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"},
+    "meta-screenshots": {"route": "metadata", "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py", "symbol": "review", "tests": ["tests/test-metadata-review.sh"], "line_prefix": "METADATA-", "evidence_class": "metadata"}
+  }
+}
