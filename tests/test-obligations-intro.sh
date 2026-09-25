@@ -25,7 +25,7 @@ for row in rows:
     assert 'text' not in row and 'source_context' not in row
     assert all(route.get('check_id', 'absent') is not None for route in row['routes'])
     if row['kind'] == 'obligation':
-        assert not row['routes'], f"Unimplemented route written into {row['id']}"
+        assert any(route['route'] == 'attestation' and route['check_id'] == 'attestation-generic' for route in row['routes']), f"Missing implemented attestation route: {row['id']}"
     else:
         assert row['primary_route'] == 'not_app_checkable'
         assert row['routes'][0]['reason']

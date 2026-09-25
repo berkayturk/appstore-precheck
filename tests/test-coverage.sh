@@ -8,7 +8,8 @@ python3 - "$tmp/coverage.json" <<'PY'
 import json,sys
 report=json.load(open(sys.argv[1]))
 assert report['total_obligations'] > 0
-assert report['obligations_without_route'] >= 0
+assert report['obligations_without_route'] == 0
+assert report['routed_obligations'] == report['total_obligations']
 assert report['routes']['static'] > 0
 assert report['routes']['runtime'] > 0
 assert report['routes']['semantic'] > 0
@@ -34,12 +35,5 @@ else:
 first['routes']=old
 tool.validate(catalog,registry)
 PY
-# Wave 0 deliberately preserves unassigned obligations. The complete gate is
-# enabled only after section review and implementation are merged.
-if python3 scripts/coverage.py --require-complete --output "$tmp/strict.json" --markdown "$tmp/strict.md" >/dev/null 2>&1; then
-  python3 - "$tmp/coverage.json" <<'PY'
-import json,sys
-assert json.load(open(sys.argv[1]))['obligations_without_route'] == 0
-PY
-fi
+python3 scripts/coverage.py --require-complete --output "$tmp/strict.json" --markdown "$tmp/strict.md" >/dev/null
 echo 'coverage schema and registry: OK'

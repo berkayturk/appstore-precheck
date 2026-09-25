@@ -28,7 +28,7 @@ for item in part:
     for linked in item['exceptions'] + item['related'] + item['retired_from']:
         assert linked in all_ids, (item['id'], linked)
     if item['kind'] == 'obligation':
-        assert all(r['decides'] == 'partial' for r in item['routes'])
+        assert all(r['decides'] == 'partial' or (r['route'] == 'attestation' and r['decides'] == 'full') for r in item['routes'])
         assert all(r['check_id'] in checks for r in item['routes'])
         assert all(r['route'] == checks[r['check_id']]['route'] for r in item['routes'])
         assert item['primary_route'] == (item['routes'][0]['route'] if item['routes'] else None)

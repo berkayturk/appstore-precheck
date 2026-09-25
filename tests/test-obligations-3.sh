@@ -30,7 +30,7 @@ for entry in section:
         check_id = route['check_id']
         if check_id is not None:
             assert check_id in registry, (entry['id'], check_id)
-            assert route['decides'] == 'partial', (entry['id'], check_id)
+            assert route['decides'] == 'partial' or (route['route'] == 'attestation' and route['decides'] == 'full'), (entry['id'], check_id)
             assert registry[check_id]['route'] == route['route'], (entry['id'], check_id)
         elif route['route'] != 'not_app_checkable':
             raise AssertionError((entry['id'], 'unimplemented route in public section'))

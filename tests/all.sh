@@ -58,6 +58,7 @@ SUITE=(
   "test-obligations-5.sh" # Legal section atomic classification
   "test-obligations-intro.sh" # Submission process atomic classification
   "test-artifact-review.sh" # compiled bundle inspection and evidence gaps
+  "test-attestation-report.sh" # developer answers and obligation-level run report
 )
 
 failed=()

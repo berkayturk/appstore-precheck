@@ -1951,12 +1951,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d26a51fa86e74ad2b604bdde147c8bb9"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "c9260c88fdc3a1952b14216bb591d9bea2d2b3dcb8516dd348815b157319acb4"
     },
@@ -1980,12 +1987,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-df1ef4572037492a889758f63e8c7507"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "b35a6c66167f207ca5848bfa3340239733bf84d662995c35537bf21a99f83502"
     },
@@ -2008,12 +2022,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-1f2c02e380d74260b717cd62a1db4c72"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "e237f9a724047f72cf2bae877dfc246f4c0c5acfe39b90e6ace3430a1191ee63"
     },
@@ -2036,12 +2057,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-1f2c02e380d74260b717cd62a1db4c72"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "e237f9a724047f72cf2bae877dfc246f4c0c5acfe39b90e6ace3430a1191ee63"
     },
@@ -2064,12 +2092,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ae367c0fad77408d802a5d1c957f01ed"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "e3b17f4f2fa5a6b98402b0b70fb1740a4bf9a0c0febe4438fe274e984dada66e"
     },
@@ -2093,12 +2128,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-aaa914fb7837449792affda757ec3b57"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "4b19f23f7741411d58028911b20cc60a79477329fe268c3edbf4fbe74bcd046f"
     },
@@ -2151,12 +2193,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-3f67da2598b44452a1f9d9f34bf6d928"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "4c5e6e9c5030ad6089d69cbe2d81bb20a9223816d202b58c1f3204d522ba81ce"
     },
@@ -2179,12 +2228,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-c59656dacdd949e2881338f05fc6cdc9"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "aeadc0ade1f1c621510d21e9948c4385c8d1d7133e5eb232cf1718d546ce688c"
     },
@@ -2208,12 +2264,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-f8b39e9813ab4a0e98d5a7a30111f812"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "181963b470b2a1725dc69952bd87e4e1167d862fd13813dd829114abb8456e6e"
     },
@@ -2237,12 +2300,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ba63a06dfa084f0880eb3d789ff26cdb"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "08c75ce9d816a9990f2ac6597243bb5fae64388fc36a6b8dec6e060028a5a86c"
     },
@@ -2266,12 +2336,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ba63a06dfa084f0880eb3d789ff26cdb"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "08c75ce9d816a9990f2ac6597243bb5fae64388fc36a6b8dec6e060028a5a86c"
     },
@@ -2320,12 +2397,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e1235dc007a9401dbae80e6567f8a969"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "1dba3d7a59659520334f47746c40fc22b49649892328fdfea3e9b9a8dc9ca1fc"
     },
@@ -2346,12 +2430,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-8338b41405c243e0ae666cfc5d2181d8"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "intro",
       "text_sha256": "021d305c601b121a74a782bbdb610e4aa5a7c774137ecef43322f7c3ed8d8f04"
     }

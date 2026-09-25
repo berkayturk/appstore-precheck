@@ -38,7 +38,7 @@ for item in items:
         else:
             check = registry[route['check_id']]
             assert check['route'] == route['route']
-            assert route['decides'] == 'partial', 'section review cannot claim a full automated decision'
+            assert route['decides'] == 'partial' or (route['route'] == 'attestation' and route['decides'] == 'full'), 'only attestation may add a full section route'
     if item['routes']:
         assert item['primary_route'] in {r['route'] for r in item['routes']}
     else:

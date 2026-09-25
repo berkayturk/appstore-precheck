@@ -18,10 +18,10 @@ assert all(row['apple_ref'].startswith('1.') for row in rows)
 assert all('text' not in row and len(row['criterion'].split()) <= 55 for row in rows)
 assert all(row['text_sha256'] and row['anchor'].startswith('https://developer.apple.com/') for row in rows)
 assert all(row['criterion'] not in ('Determine whether the applicable source requirement is satisfied.', 'Source fragment awaiting independent section review.') for row in rows)
-assert all(route['check_id'] in registry and route['decides'] == 'partial'
+assert all(route['check_id'] in registry and (route['decides'] == 'partial' or (route['route'] == 'attestation' and route['decides'] == 'full'))
            for row in rows for route in row['routes'] if route['route'] != 'not_app_checkable')
 assert all(row['kind'] != 'obligation' for row in rows for route in row['routes'] if route['route'] == 'not_app_checkable')
-assert any(row['kind'] == 'obligation' and not row['routes'] for row in rows)
+assert all(any(route['route'] == 'attestation' for route in row['routes']) for row in rows if row['kind'] == 'obligation')
 assert any(row['retired_from'] for row in rows)
 
 # The source catalogue is intentionally private. Compare against it only if installed.

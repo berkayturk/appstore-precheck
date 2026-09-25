@@ -35,7 +35,7 @@ for record in records:
     for route in record['routes']:
         if record['kind'] == 'obligation':
             assert route['check_id'] in checks, record['id']
-            assert route['decides'] == 'partial', record['id']
+            assert route['decides'] == 'partial' or (route['route'] == 'attestation' and route['decides'] == 'full'), record['id']
             assert checks[route['check_id']]['route'] == route['route'], record['id']
         elif route['check_id'] is not None:
             assert route['check_id'] in checks

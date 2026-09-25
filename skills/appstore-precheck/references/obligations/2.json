@@ -50,12 +50,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "28b2c7d71889226139f37071a31a1a19ad5a1ce24c29b5a54bd2098c73409ca8"
     },
@@ -74,12 +81,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "28b2c7d71889226139f37071a31a1a19ad5a1ce24c29b5a54bd2098c73409ca8"
     },
@@ -103,12 +117,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "28b2c7d71889226139f37071a31a1a19ad5a1ce24c29b5a54bd2098c73409ca8"
     },
@@ -176,6 +197,12 @@
           "check_id": "S1",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -235,12 +262,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-85267cbbea1e4b35a4eb8f3fb75cbdd7"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "632f4df5ef5d707ae65a0d2d42082f08a46494ba3e72cbd32a151380a255e5f3"
     },
@@ -289,6 +323,12 @@
           "check_id": "dyn-demo-login",
           "decides": "partial",
           "evidence_class": "runtime"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -314,12 +354,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-85267cbbea1e4b35a4eb8f3fb75cbdd7"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "632f4df5ef5d707ae65a0d2d42082f08a46494ba3e72cbd32a151380a255e5f3"
     },
@@ -408,12 +455,19 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4cafad91225042b1bb83102f273b34cc"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "8c99a7154eaf21caa910d40235407bbff840f2d1b4a0750b1fde4564d9182bdd"
     },
@@ -447,6 +501,12 @@
           "check_id": "dyn-first-screen",
           "decides": "partial",
           "evidence_class": "runtime"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -502,12 +562,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e54e6de45bd3429e8ddb7a777a16ea68"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "7f06b928e5af1a514d035890ce7bfe11b9354224a73017ae462e8eb21b65ef95"
     },
@@ -526,12 +593,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e54e6de45bd3429e8ddb7a777a16ea68"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "7f06b928e5af1a514d035890ce7bfe11b9354224a73017ae462e8eb21b65ef95"
     },
@@ -561,6 +635,12 @@
           "check_id": "dyn-paywall-visible",
           "decides": "partial",
           "evidence_class": "runtime"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -581,12 +661,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e54e6de45bd3429e8ddb7a777a16ea68"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "7f06b928e5af1a514d035890ce7bfe11b9354224a73017ae462e8eb21b65ef95"
     },
@@ -637,12 +724,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b19d875ff61146bf8db39fea093f0db0"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6ce29e7dde516715d6488e4cbc4e8740483cf1cb179be9bb7dfeb428b5cb40e3"
     },
@@ -704,6 +798,12 @@
           "check_id": "beta-language",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -757,12 +857,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a3935b006df242fdaba34d3719bcf498"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "de5e97f1e3941d6bdc3fe54778785885e1570555682bbe497371caf8700501fa"
     },
@@ -781,12 +888,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a3935b006df242fdaba34d3719bcf498"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "de5e97f1e3941d6bdc3fe54778785885e1570555682bbe497371caf8700501fa"
     },
@@ -837,12 +951,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-26ec2732419b42258cd242316c744036"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "b957216efc607b91cd643749aac76b4b990f9912ff6c1999d50b5329813e2349"
     },
@@ -893,12 +1014,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-2604402debb94716b11c7f024ddf17fc"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "93d505ae943f91cbb921e7341fdf1d1dc456b78dac0b0ed5b28895c5d0745a32"
     },
@@ -997,6 +1125,12 @@
           "check_id": "locale-metadata-parity",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1057,6 +1191,12 @@
           "check_id": "privacy-consistency",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1109,12 +1249,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-1e93d4e8720c43b98d6caecef8016c1d"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "f7808bf411340849ce60385bc52cd23dc0a1f6e850c978ac06c97c570d855cb5"
     },
@@ -1182,6 +1329,12 @@
           "check_id": "S5",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1235,12 +1388,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bd22d2dffb55421c94d4a0a0669da1cd"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "19b72822da62b066f7e712990d4a0bc1f03a4cf35caa3a6c8ffddf24a2828bdc"
     },
@@ -1259,12 +1419,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bd22d2dffb55421c94d4a0a0669da1cd"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "19b72822da62b066f7e712990d4a0bc1f03a4cf35caa3a6c8ffddf24a2828bdc"
     },
@@ -1351,6 +1518,12 @@
           "check_id": "screenshot-consistency",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1382,6 +1555,12 @@
           "check_id": "pricing-consistency",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1535,6 +1714,12 @@
           "check_id": "pricing-consistency",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1589,12 +1774,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-8cab542a80ce4eafa153af14635e4889"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6e74012e6760306ea2d797347de9205d9fe990eac535ae3ff1e85f08c834baff"
     },
@@ -1613,12 +1805,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-8cab542a80ce4eafa153af14635e4889"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6e74012e6760306ea2d797347de9205d9fe990eac535ae3ff1e85f08c834baff"
     },
@@ -1637,12 +1836,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-8cab542a80ce4eafa153af14635e4889"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6e74012e6760306ea2d797347de9205d9fe990eac535ae3ff1e85f08c834baff"
     },
@@ -1710,6 +1916,12 @@
           "check_id": "screenshot-consistency",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -1859,12 +2071,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-267d2df7b8f744b18a6e69b065216a2f"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6cc2536d787ad6d4577a42fa232aec9f1ea2be4e14d1d2a3dc977bbecbeb5f0d"
     },
@@ -2056,6 +2275,12 @@
           "check_id": "category-fit",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -2138,12 +2363,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a758e9098eee4b8f9db5a859fac55eb9"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "1acc1c4d5769dd4488a6d26a5832611e0b1fa3295dbc3742f2e9bf84bbd361b0"
     },
@@ -2224,12 +2456,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-7af8cf36e10f4d30b94c4ce2151e3d89"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "859b88509a7aaadab6489c41a958f8b9e443ea622e2f0fac2ad8805e88ee4c23"
     },
@@ -2282,12 +2521,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-52a64756b9324ddd8aa388c91622a031"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "e691d91da2a71ccd456b7229c68b1060ca6fe3509c65cb6dfdde1ef5cb4cf1b2"
     },
@@ -2306,12 +2552,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-52a64756b9324ddd8aa388c91622a031"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "e691d91da2a71ccd456b7229c68b1060ca6fe3509c65cb6dfdde1ef5cb4cf1b2"
     },
@@ -2347,6 +2600,12 @@
           "check_id": "metadata-pricing-language",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -2410,6 +2669,12 @@
           "check_id": "metadata-char-limits",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -2473,6 +2738,12 @@
           "check_id": "metadata-pricing-language",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -2557,12 +2828,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-be713dff090345099f6a919ac469ba09"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "e7d4d1cf322982e42e6921159e01f23d70d92b7783b2964d3b6b4a8850609f65"
     },
@@ -2592,6 +2870,12 @@
           "check_id": "competitor-mentions",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -2612,12 +2896,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-be713dff090345099f6a919ac469ba09"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "e7d4d1cf322982e42e6921159e01f23d70d92b7783b2964d3b6b4a8850609f65"
     },
@@ -2698,12 +2989,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b13caabf6d294e3f8cf35e4e2b16ae2e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "3bb43f960319d35f30f0dd6e02f66c9af42d90e8d3233021df777b4caee2d317"
     },
@@ -2795,6 +3093,12 @@
           "check_id": "kids-wording",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -2847,12 +3151,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-026baf37357e477dab2d5d41984e0c12"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "d3ec7de30bcefd22f10695360c1912d6aeb872ce0f067c569bdb0bec37106d74"
     },
@@ -2904,12 +3215,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-81c68c5d6bf044739b9ebf84051f4341"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "80240e7373a1280930cdc313318a7b1b961e0384abec40be6d93a599511d074a"
     },
@@ -2928,12 +3246,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-81c68c5d6bf044739b9ebf84051f4341"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "80240e7373a1280930cdc313318a7b1b961e0384abec40be6d93a599511d074a"
     },
@@ -2998,6 +3323,12 @@
           "check_id": "competitor-mentions",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -3083,12 +3414,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d0569215811d464f85488754fd8e876f"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "7519f84f2734784fbc3f2d847e16757e670314374facd1b82ed655c69bf9164b"
     },
@@ -3139,12 +3477,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-7a0e9a148d3947859e25b2b72ec94e20"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "5f53ee18138107a9240a3522958ed3d2a0689f836226abfd220c45900012102a"
     },
@@ -3195,12 +3540,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-cfe0af23398e4f8798104f0a4e32aecf"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "d42cfe1d390c29445b5a5aa6dd17dbdebabf7a2b93888af164f75b1dc3df7b62"
     },
@@ -3251,12 +3603,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-cb103b0c2d704f999558dcf8ce37e362"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "4e4db3fa400d6340732d0a7bd509c3bb9d7ee3996ecca5f9428fc06784b1a394"
     },
@@ -3307,12 +3666,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-5c6b98b2228a47c5971030a3da5f16b7"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "02230e8ba642ce6a48412fe540c6862d8577ad159a631832013b80160e600b1c"
     },
@@ -3365,12 +3731,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-af8f8d1d70c543d19e94a1e4de4998aa"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "aaee85f0c9438b875bae08a12b3a1f12b3788f5ce3eab0e0fe05447428c72641"
     },
@@ -3549,12 +3922,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-99c3e5271d0b4afa82f5c2e50d80add8"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "f48387bf0bcdb9090738eeb9d73311ea23151adc8a1cef55b94d9fdd856bf1be"
     },
@@ -3606,12 +3986,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b4adac772f924218a731d25e2b29c919"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "8c2bf2cd0919d330def7c288c899b0804a07d3309cef45dded289a022cf45073"
     },
@@ -3630,12 +4017,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b4adac772f924218a731d25e2b29c919"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "8c2bf2cd0919d330def7c288c899b0804a07d3309cef45dded289a022cf45073"
     },
@@ -3686,12 +4080,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-8c4f6823e44a4c6c9bab384908141d28"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "ca784aa8ea0d111634ed55ff23343e6d8d7019c2be74997d967da20df49a9cd9"
     },
@@ -3839,12 +4240,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b95b474af5b84eeb93dd4cbc855ed8bd"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "c6ef0e2cd10534ba82aa1c3336688ad75e9577377dd81a09d723f91d068dad7f"
     },
@@ -3941,6 +4349,12 @@
           "check_id": "dyn-ipad-layout",
           "decides": "partial",
           "evidence_class": "runtime"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -4059,12 +4473,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0ff649bc38bd4965875e9fed06a7ce4e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "907bf7c2981a6465d646238bdbf58874625210394215e556382a07c09a9200aa"
     },
@@ -4083,12 +4504,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0ff649bc38bd4965875e9fed06a7ce4e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "907bf7c2981a6465d646238bdbf58874625210394215e556382a07c09a9200aa"
     },
@@ -4141,12 +4569,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bcd5293db7a14f24a533877925228b22"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "74ef08b2e8abb002b5958813f178cfd1829021cd970371ebbc1551b3eef6466d"
     },
@@ -4165,12 +4600,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bcd5293db7a14f24a533877925228b22"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "74ef08b2e8abb002b5958813f178cfd1829021cd970371ebbc1551b3eef6466d"
     },
@@ -4189,12 +4631,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bcd5293db7a14f24a533877925228b22"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "74ef08b2e8abb002b5958813f178cfd1829021cd970371ebbc1551b3eef6466d"
     },
@@ -4275,12 +4724,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ea4af5769402437fbc1d44929dda49b5"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "78ba7e6cea7bf0c25cb1cd4a26ccf4fb34e68214e2ca200778a3abcebc8d9357"
     },
@@ -4334,12 +4790,19 @@
       "platforms": [
         "tvOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-974bccf85015437b89ffbbc6df02a636"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "7bf4bf6f480aea2ff342e65387a51bffa2f5ba67d782090886e6fe41b90d991c"
     },
@@ -4423,12 +4886,19 @@
       "platforms": [
         "tvOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-f08330cac9714fa58f62758a14860e52"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "9b94e43896fc97790e0a9fcc6952214c7dfaa5f9a5853abd14c2a6e9598f423e"
     },
@@ -4480,12 +4950,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e6248b018d6d475b9987a73e1219a942"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "62af4648507a49ff7a2874b319e1e28f47b9c078f251f30ed98d83405aa81e0f"
     },
@@ -4504,12 +4981,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e6248b018d6d475b9987a73e1219a942"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "62af4648507a49ff7a2874b319e1e28f47b9c078f251f30ed98d83405aa81e0f"
     },
@@ -4621,12 +5105,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d5bfa189d30c472ab3e916fd70ca3ed6"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "787f38ba858eee8041ae88fcf99c47d66f792467fc77691dad49efc6ae950f7e"
     },
@@ -4645,12 +5136,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d5bfa189d30c472ab3e916fd70ca3ed6"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "787f38ba858eee8041ae88fcf99c47d66f792467fc77691dad49efc6ae950f7e"
     },
@@ -4701,12 +5199,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a052407bb408448aa528ddce1453f5f2"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "97a0481cbd5c3bd8ffeea3cdc4b416f09665ad73b5d005d8e2b4cb55af212165"
     },
@@ -4757,12 +5262,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d55e312e72d341f2bebd1fa02332f0ea"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "725dffc5787342647272be218a19bb167389afac88a63ec3e1524624e90dea59"
     },
@@ -4813,12 +5325,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-5b4ddcfe5ed748e8a29fef8f0631d207"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "1659f6f86c2887fc2efd21851a925daddd2db831fd013e1282cfaa32e1aa017c"
     },
@@ -4870,12 +5389,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4181ebd846ed4c54ae7e5c32e2be9c8a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6ff8630258298ed0910c0aff8630dd7d9d768fb4d794351a81928a1dab2f3d16"
     },
@@ -4894,12 +5420,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4181ebd846ed4c54ae7e5c32e2be9c8a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6ff8630258298ed0910c0aff8630dd7d9d768fb4d794351a81928a1dab2f3d16"
     },
@@ -4951,12 +5484,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-81518fa90cb84689832a0fe82e50be7e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "17d112d1d86b8e2893fbad7aa5d77ce57583980c8b007e10967de78670c57907"
     },
@@ -4975,12 +5515,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-81518fa90cb84689832a0fe82e50be7e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "17d112d1d86b8e2893fbad7aa5d77ce57583980c8b007e10967de78670c57907"
     },
@@ -5032,12 +5579,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-692ad476961d4f60a4994308bc8b09f6"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "16008a195b0a0d83230135d93ec5977c03132d38baa8c9312d636eb4a4825617"
     },
@@ -5056,12 +5610,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-692ad476961d4f60a4994308bc8b09f6"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "16008a195b0a0d83230135d93ec5977c03132d38baa8c9312d636eb4a4825617"
     },
@@ -5113,12 +5674,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b97d40d8b4804d318457ca3ec874619d"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "368f536031ac3606673cf2a1f74f4c276aefd0b716eece6b9281271a0ae38b20"
     },
@@ -5137,12 +5705,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b97d40d8b4804d318457ca3ec874619d"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "368f536031ac3606673cf2a1f74f4c276aefd0b716eece6b9281271a0ae38b20"
     },
@@ -5194,12 +5769,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-5af81d12e65a4dca83ea65d7022b8322"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6995cdcd343ec267d7bed74e320e56560e16b0a199e72c0c309a030117997497"
     },
@@ -5218,12 +5800,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-5af81d12e65a4dca83ea65d7022b8322"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "6995cdcd343ec267d7bed74e320e56560e16b0a199e72c0c309a030117997497"
     },
@@ -5276,12 +5865,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0819d70b80954384a2b3822de696a232"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "0c479277972c885e3f17bbe4ab9b5cd49b21cb73f96b103cbbd3edd0c8ee06d8"
     },
@@ -5300,12 +5896,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0819d70b80954384a2b3822de696a232"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "0c479277972c885e3f17bbe4ab9b5cd49b21cb73f96b103cbbd3edd0c8ee06d8"
     },
@@ -5324,12 +5927,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0819d70b80954384a2b3822de696a232"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "0c479277972c885e3f17bbe4ab9b5cd49b21cb73f96b103cbbd3edd0c8ee06d8"
     },
@@ -5380,12 +5990,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-fedbc8834e644b5680a31c8261646d9b"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "1bf8a6885f3f75d485e849563b4d9b8a663ce88dd23ce61e81bb2924783d169b"
     },
@@ -5469,12 +6086,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-320874d2e08e457e8caf8bffdefc2dd1"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "e6e5270ae2a49feee020a05725cb94b92db48c498ac3f8fb84466986b18d8bcc"
     },
@@ -5493,12 +6117,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-320874d2e08e457e8caf8bffdefc2dd1"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "e6e5270ae2a49feee020a05725cb94b92db48c498ac3f8fb84466986b18d8bcc"
     },
@@ -5549,12 +6180,19 @@
       "platforms": [
         "macOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d52922e9e4d0440b805cce43969dbcae"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "fece333c79c359282d1fdabd81634f9f0661167993d4ed1f0cb66e12222135dd"
     },
@@ -5617,6 +6255,12 @@
           "check_id": "private-api",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -5637,12 +6281,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-1b462ad2109b4537adf71c202f2e6224"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "5d9187b23f6fe5587ba943e265bf2fa0bbd10087590d5401b6e06f9885c44afb"
     },
@@ -5723,12 +6374,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-c3184e5e5cdc43b58331ad8ee72a31a0"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "858ff52184b591512cadf965f1af2999eb88d20914bc164a32feef01e371e6c0"
     },
@@ -5791,6 +6449,12 @@
           "check_id": "entitlement-purpose",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -5811,12 +6475,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-77f3c32dd6c14cceb1f7c7f5f2fe2726"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "39e5c5ec82174c08f4135255e441b269e776762968d4a94cc913a6a62721b70c"
     },
@@ -5908,6 +6579,12 @@
           "check_id": "entitlement-purpose",
           "decides": "partial",
           "evidence_class": "semantic"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -5962,12 +6639,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0400203387f14ef69bf053ab6e9ef316"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "bbf451102ab0caeddcc3fd8d9eb8839e0943b1ba777964462a55c991ddcedb7f"
     },
@@ -5986,12 +6670,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0400203387f14ef69bf053ab6e9ef316"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "bbf451102ab0caeddcc3fd8d9eb8839e0943b1ba777964462a55c991ddcedb7f"
     },
@@ -6024,6 +6715,12 @@
           "check_id": "executable-code-download",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -6175,12 +6872,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-7de78ded1cbf4944b3bf7fd8ef1da093"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "2691168ffd45ce8ed529a380fda46045baffbf97768ac46ea8435f778e7331c1"
     },
@@ -6231,12 +6935,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-d8579feef1ba4d00a2b36154df55bb47"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "a568ef9911714de18740fda3ca934d24efb716cf959ece08c2474da5113a5f22"
     },
@@ -6328,6 +7039,12 @@
           "check_id": "background-modes-unused",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -6391,6 +7108,12 @@
           "check_id": "ipv4-literal",
           "decides": "partial",
           "evidence_class": "source"
+        },
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
         }
       ],
       "section": "2",
@@ -6446,12 +7169,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-7e198796a5814130b624f4b6bc56f4c8"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "ac2f5ef84d469f806c05cf8b510ffedc1a208aaa5bd7d1d036971b0167322003"
     },
@@ -6631,12 +7361,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ff284e549c994d46bdd659d23e9c3645"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "a3536f47f36137c1d1c0e9d3e32ab0ecb0feee8b383d464d0e83cab7d01054dd"
     },
@@ -6687,12 +7424,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-08e527093a8e45588809ddae40583450"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "ede4df3d4541c51964b96724034e4e0c99c87cb968ddbeda7fa21af5dcb05e23"
     },
@@ -6804,12 +7548,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bf67d954325244228fe55aa7c510fbac"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "a2eac090b36eba699853e84e85fa511a27936d8faf16bf4ee136af62884cee26"
     },
@@ -6828,12 +7579,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-bf67d954325244228fe55aa7c510fbac"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "a2eac090b36eba699853e84e85fa511a27936d8faf16bf4ee136af62884cee26"
     },
@@ -6914,12 +7672,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-a1edf6c9e462495d85ea3e8bbbe760d8"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "b3068a9f38e71ea9d6e1e480d1ab804393d6fdfbfdac75d83cf12ebc67a91c9a"
     },
@@ -6971,12 +7736,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0a14555967c94e23b3495971022dda89"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "434cddefe2baab8fd273e3cc0a2706b1bbc4846eb00309de34289de88ed0c2bb"
     },
@@ -6995,12 +7767,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-0a14555967c94e23b3495971022dda89"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "434cddefe2baab8fd273e3cc0a2706b1bbc4846eb00309de34289de88ed0c2bb"
     },
@@ -7052,12 +7831,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b010908a53a45698e616677e1987373"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "54110b83cf20c61f5710865ea2fba7ed9d5db1769893a89055a2c743636034f3"
     },
@@ -7076,12 +7862,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b010908a53a45698e616677e1987373"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "54110b83cf20c61f5710865ea2fba7ed9d5db1769893a89055a2c743636034f3"
     },
@@ -7132,12 +7925,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-68f2917bded2479ca2b969ca3a5de64a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "bdb4a8d5e512c30e215c5217f4c331b5d7f529366e909d141ade080cc9a3340c"
     },
@@ -7190,12 +7990,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-e2a0c06647cf4a5a84072387fe82e9a0"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "8c5444c966bfc559bed05d0db15e250ed3faa2963d20341fa88b7b952a3ba857"
     },
@@ -7249,12 +8056,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ac0daf0268ce45eaa8856ed61eb761ae"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "da556bf32df4aad8f357031041760e3c3e412ecb1ed3449812eebdee476f5003"
     },
@@ -7274,12 +8088,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-ac0daf0268ce45eaa8856ed61eb761ae"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "da556bf32df4aad8f357031041760e3c3e412ecb1ed3449812eebdee476f5003"
     },
@@ -7332,12 +8153,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-257beba2335b435384db200b42624d5c"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "b17e60ea82c823d7069e8f712825ebb4a3565018cea9cfcce0fe88ea70cee44a"
     },
@@ -7391,12 +8219,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-cb354ab9c195458390b302034eb8ba20"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "8ba76e56f41a453d726a8927a103879c5ef4f5797fbe8a6be82032e17cc06c4c"
     },
@@ -7416,12 +8251,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-cb354ab9c195458390b302034eb8ba20"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "8ba76e56f41a453d726a8927a103879c5ef4f5797fbe8a6be82032e17cc06c4c"
     },
@@ -7473,12 +8315,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-352daab632464f00a6e2b31dcb7cc437"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "90f2ae5677756ecc38e3ad3ff64ab262a1f8787e1d0e89cdb55f56d655c4d135"
     },
@@ -7497,12 +8346,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-352daab632464f00a6e2b31dcb7cc437"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "90f2ae5677756ecc38e3ad3ff64ab262a1f8787e1d0e89cdb55f56d655c4d135"
     },
@@ -7620,12 +8476,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-f412a108d7ea479d8f332678fc7ca089"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "c545260578a1e550aa3bec3f938929ee7897b85eebb2f171125e4633e0a50f48"
     },
@@ -7645,12 +8508,19 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-f412a108d7ea479d8f332678fc7ca089"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "c545260578a1e550aa3bec3f938929ee7897b85eebb2f171125e4633e0a50f48"
     },
@@ -7701,12 +8571,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-6070d8bcf1c24e0d9d7553e833c63318"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "67bc1db587ebfc562af83deab88a49d10011f03bd1ba32ec534e65ad328e0307"
     },
@@ -7757,12 +8634,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-58556c3596ff4014ae01b8ee51a1a709"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "f4ed2ae4d1647fbe70ec5445b590fdb6b44a1fbb12949919dcfcab8697f22b63"
     },
@@ -7813,12 +8697,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-b87864da75a24396b909a491135fba6b"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "dd492df119b4d5cfa7eb5e66a1a0e0a95376274ad768ac390c1198e9ece2c976"
     },
@@ -7869,12 +8760,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-42d1d67f00564817af14ef896105d27f"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "168aebaf6d6e3aa644eb945c208aedef5b967f26d323f812645956209c006aaa"
     },
@@ -7925,12 +8823,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-8498d3bf47b94e65b386836b60627590"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "229f8209ad422b81c51849b487eeaedced23dbd09f04346bab7ab5d37cd39f30"
     },
@@ -7987,12 +8892,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8011,12 +8923,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8035,12 +8954,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8059,12 +8985,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8083,12 +9016,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8107,12 +9047,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8131,12 +9078,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-4b54800f4fd644f3b9b20e0df768c32a"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "08d4b26bb711b2f07476571a51a99cf57e899de2eea7b1ce8301f9f956ac5153"
     },
@@ -8187,12 +9141,19 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "attestation",
       "related": [
         "req-936fbaea8eb444699d27bf488f127fee"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "route": "attestation",
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation"
+        }
+      ],
       "section": "2",
       "text_sha256": "c22b08f8a385976183e2d4a73f40f0a34ebca493eb246b9239bc6a6529bb8881"
     }
