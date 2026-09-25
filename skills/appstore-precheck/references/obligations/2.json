@@ -50,12 +50,24 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "artifact",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "artifact",
+          "check_id": "artifact-debug",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
+        {
+          "route": "static",
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -81,12 +93,24 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "metadata",
+          "check_id": "meta-support-url",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-privacy-url",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -117,12 +141,42 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "metadata",
+          "check_id": "meta-category",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-support-url",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-privacy-url",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-screenshots",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -186,6 +240,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "static",
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
         {
           "route": "static",
           "check_id": "placeholder-metadata",
@@ -307,6 +367,18 @@
       "retired_from": [],
       "routes": [
         {
+          "route": "metadata",
+          "check_id": "meta-demo-account",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "static",
+          "check_id": "section2-review-access-signals",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
+        {
           "route": "static",
           "check_id": "demo-account",
           "decides": "partial",
@@ -354,12 +426,18 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-85267cbbea1e4b35a4eb8f3fb75cbdd7"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "static",
+          "check_id": "section2-review-access-signals",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -490,6 +568,18 @@
       "related": [],
       "retired_from": [],
       "routes": [
+        {
+          "route": "artifact",
+          "check_id": "artifact-debug",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
+        {
+          "route": "static",
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
         {
           "route": "runtime",
           "check_id": "dyn-launch",
@@ -724,12 +814,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-b19d875ff61146bf8db39fea093f0db0"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "metadata",
+          "check_id": "meta-iap-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -793,6 +889,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "static",
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
         {
           "route": "semantic",
           "check_id": "beta-language",
@@ -1164,6 +1266,12 @@
       "routes": [
         {
           "route": "semantic",
+          "check_id": "section2-screenshot-packet",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
+        {
+          "route": "semantic",
           "check_id": "S5",
           "decides": "partial",
           "evidence_class": "semantic"
@@ -1388,12 +1496,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-bd22d2dffb55421c94d4a0a0669da1cd"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "metadata",
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -1906,6 +2020,18 @@
       "retired_from": [],
       "routes": [
         {
+          "route": "metadata",
+          "check_id": "meta-screenshots",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "semantic",
+          "check_id": "section2-screenshot-packet",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
+        {
           "route": "semantic",
           "check_id": "S4",
           "decides": "partial",
@@ -2271,6 +2397,12 @@
       "retired_from": [],
       "routes": [
         {
+          "route": "metadata",
+          "check_id": "meta-category",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
           "route": "semantic",
           "check_id": "category-fit",
           "decides": "partial",
@@ -2363,12 +2495,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-a758e9098eee4b8f9db5a859fac55eb9"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "metadata",
+          "check_id": "meta-age-rating",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -6251,6 +6389,12 @@
       "retired_from": [],
       "routes": [
         {
+          "route": "artifact",
+          "check_id": "artifact-private-api",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
+        {
           "route": "static",
           "check_id": "private-api",
           "decides": "partial",
@@ -6281,12 +6425,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "artifact",
       "related": [
         "req-1b462ad2109b4537adf71c202f2e6224"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "artifact",
+          "check_id": "artifact-sdk",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -6639,12 +6789,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "artifact",
       "related": [
         "req-0400203387f14ef69bf053ab6e9ef316"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "artifact",
+          "check_id": "artifact-executable-loading",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -6710,6 +6866,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "artifact",
+          "check_id": "artifact-executable-loading",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
         {
           "route": "static",
           "check_id": "executable-code-download",
@@ -7034,6 +7196,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "route": "artifact",
+          "check_id": "artifact-entitlements",
+          "decides": "partial",
+          "evidence_class": "artifact"
+        },
         {
           "route": "static",
           "check_id": "background-modes-unused",
