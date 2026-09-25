@@ -7,19 +7,25 @@ does not collect data, and does not modify your code or assets. Its security sur
 but real, because it can be pointed at a repository and, in Phase 2, handed App Store Connect
 credentials.
 
-One exception to "read-only": the optional, opt-in **Phase 6 dynamic tier** (agent mode only,
-never in the CLI, the GitHub Action or CI) **executes your application code** on a throwaway
-local simulator that it creates and deletes itself. It never writes to your repository or to an
-existing simulator, but the app it launches does whatever your app does: it reaches the backends
-it is configured for, it receives the review demo credentials you supplied for D5, and its
-screenshots may show data the app renders. The tier states this before the first launch; see
+The optional local dynamic tier **executes your application code** on a throwaway
+simulator that it creates and deletes itself. It never writes to your repository or to an
+existing simulator, but the app it launches can reach configured backends and display
+private data in screenshots. Demo credentials are passed only to the login flow and
+must not enter logs or report metadata. The tier states this before the first launch; see
 [`simulator-dynamic-review.md`](skills/appstore-precheck/references/simulator-dynamic-review.md).
 `scripts/dynamic.sh`, which turns the transcript into findings, is a pure text transform and
 launches nothing. `scripts/app-discover.sh` only *reads* `~/Library/Developer/Xcode/DerivedData`
-and the repo's build output to list simulator apps you already built; it never builds (no
-`xcodebuild`, `flutter`, `gradle`) and never launches. `scripts/dynamic-run.sh` is the runner:
-it creates and deletes its own simulator, and its optional `--pktap` host capture needs `sudo
-tcpdump` (off by default; you are asked by sudo, never by the script).
+and the repo's build output to list simulator apps you already built; it never builds or
+launches. An explicit `--build` or `dynamic.build: true` setting uses `build-run.sh` to
+copy the project with `rsync` into a temporary directory, excluding Git history,
+dependencies, build output, `.env*`, App Store Connect keys, provisioning profiles,
+and the precheck config. Xcode, package managers, CocoaPods, Flutter, and project build
+scripts run in that copy, with DerivedData there too. The copy is deleted after the
+run unless `--keep-build` is selected. Build scripts are arbitrary code: a script
+using an absolute path can still access the original project or the network, which
+the copy alone cannot prevent. `scripts/dynamic-run.sh` is the simulator runner:
+it creates and deletes its own simulator, and its optional `--pktap` host capture needs
+`sudo tcpdump` (off by default; you are asked by sudo, never by the script).
 
 ## Reporting a vulnerability
 
@@ -45,6 +51,8 @@ in the release notes unless you prefer to remain anonymous.
 - **The dynamic tier's device policy.** Phase 6 must only ever boot, erase or delete a device it
   created in the same run. A path by which it touches a pre-existing simulator, or writes into
   the user's project, is a security bug.
+- **The opt-in build boundary.** Build commands must run in a disposable project copy with
+  DerivedData there, avoid copying secrets, and never print tool output containing credentials.
 
 ## Good to know (not vulnerabilities)
 
