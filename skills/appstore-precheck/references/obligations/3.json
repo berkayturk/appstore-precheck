@@ -74,20 +74,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": null,
       "related": [
         "req-3a1143c63ad44488966d4929d69dcb49"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-6a41938d",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "3cd25d0ff2161a20c3d018bdcd82f06b41dc3bb517467a2acf6cd798b2224f3a"
     },
@@ -136,20 +128,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": null,
       "related": [
         "req-f9bcd4cb69124272a4ad6230a0557c40"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-c78e6e52",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "a91ea4f09aea2f2aadf37a0acccc72828b6c0740eea336927f62d5ee1f8543f7"
     },
@@ -198,20 +182,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": null,
       "related": [
         "req-72e7ede554b642099ff8801bdf3edc4e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-4a698ec6",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "cd66661eb5dead9c01e72fc0fec20e4f40ca421eedf71da376ee17959852b640"
     },
@@ -260,20 +236,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": null,
       "related": [
         "req-f9f0171186d544f2bfd09b2404378ad1"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-6a7fc154",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "09053f62fbbfd15c77807e179a8de323d23630c79692f505289f587284aafa11"
     },
@@ -323,7 +291,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-46d96ccad774480e9f35b418a58b34ad"
       ],
@@ -334,13 +302,6 @@
           "check_id": "rating-manipulation",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-48bff8fe",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
         }
       ],
       "section": "3",
@@ -377,13 +338,6 @@
           "check_id": "rating-manipulation",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-87abf334",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -463,13 +417,6 @@
           "check_id": "external-purchase",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-997058a4",
-          "decides": "full",
-          "evidence_class": "source-inspection"
         }
       ],
       "section": "3",
@@ -531,13 +478,6 @@
           "check_id": "thirdparty-payment-sdk",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-ec57f602",
-          "decides": "full",
-          "evidence_class": "source-inspection"
         }
       ],
       "section": "3",
@@ -635,13 +575,6 @@
           "check_id": "subscription-links-restore",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-6c351a87",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
         }
       ],
       "section": "3",
@@ -661,20 +594,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": null,
       "related": [
         "req-58d02aae204d4852ae5cb55ad2259b1d"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-a10550e1",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4ef21d460865972901ee9cdbb69f6d806e1129fb43c68df2ecafedd55271b519"
     },
@@ -753,20 +678,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-9f6ea1a7ed9d4fa0a68e3457ae739388"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-cd878659",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4b2beda4365894108555c70f3b36123cc2124dd4e55dc32439a428daf28de25a"
     },
@@ -784,20 +701,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-9f6ea1a7ed9d4fa0a68e3457ae739388"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-ff90b78a",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4b2beda4365894108555c70f3b36123cc2124dd4e55dc32439a428daf28de25a"
     },
@@ -875,20 +784,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-48d6d8d407e641498bfc5a1c2a41fedd"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-d362f099",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "068200130a905ca6720be1a33647cc63791531662a8d368a34da607660db8181"
     },
@@ -937,20 +838,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-b0e4e9e05b0b4a58a1dac15905e9836b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-f1e50671",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "edf39fb28b682d6d8b1ae71ca8a66c4fc9e1a1183c59d8cd205a1874a1e79f17"
     },
@@ -1031,7 +924,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-55acdfadb1e24315a5e5ee0fad8fabc7"
       ],
@@ -1042,13 +935,6 @@
           "check_id": "trial-disclosure",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-02ffb30d",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -1068,7 +954,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": "static",
       "related": [
         "req-55acdfadb1e24315a5e5ee0fad8fabc7"
       ],
@@ -1079,13 +965,6 @@
           "check_id": "trial-disclosure",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-2c72981d",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
         }
       ],
       "section": "3",
@@ -1105,7 +984,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-55acdfadb1e24315a5e5ee0fad8fabc7"
       ],
@@ -1116,13 +995,6 @@
           "check_id": "trial-disclosure",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-642f6e61",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -1142,7 +1014,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-55acdfadb1e24315a5e5ee0fad8fabc7"
       ],
@@ -1159,13 +1031,6 @@
           "check_id": "dyn-paywall-visible",
           "decides": "partial",
           "evidence_class": "runtime"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-9a6d8f60",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -1274,20 +1139,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": null,
       "related": [
         "req-9d51ae64a7bc4344b3c281ae554b9cc2"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-283dcbbc",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "f0da2eaef36d3d0c7c6785811ebb72cd3ca74f83fafc85fe35def14a772d3e16"
     },
@@ -1337,7 +1194,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-d176522c618741778f939956d239440b"
       ],
@@ -1354,13 +1211,6 @@
           "check_id": "external-purchase",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-a6114024",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -1501,7 +1351,7 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-b75a0f82829341af80022b191b4b3ce0"
       ],
@@ -1512,13 +1362,6 @@
           "check_id": "external-purchase-link",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-2b5f4747",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -1601,20 +1444,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-51300d26526748488851c82d4faa68ed"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-792af3fd",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d3e3f8f6f5215c190623494feb9661369fbfa53535ea15c2e135b133469e0dc1"
     },
@@ -1666,20 +1501,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-8ad8056dd2a34927a919b4bc2691afd7"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-3c81315e",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "8b10d3034ec930da89a25e4ae86613ee32a18133a4fe8e97b97c9b3ec8ab361a"
     },
@@ -1734,7 +1561,7 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-6c95883d212046ceb8bb1b019d7e0c7e"
       ],
@@ -1751,13 +1578,6 @@
           "check_id": "external-purchase",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-a017a644",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -1811,20 +1631,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-50205226be7d4948be3e98e21c23852b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-14ae5df8",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "ddd1fbf1a9760a77ddb88b6bf653f80702d04c138729072746dc37884710d65d"
     },
@@ -1876,20 +1688,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-cf367c30671e44ea937f1570073ccaa8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-aa202703",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "dc6c97f4ccab5030431c1f3f53acc443b55c2602df48149ba3904d48d48c3626"
     },
@@ -1970,20 +1774,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-38c3591a8431465ba41aa4ea71ae664d"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-f6e1ab3c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d24f167ab482078926554184d5623feed9c403e8285c7085b1de078efbda1e8a"
     },
@@ -2035,20 +1831,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-397ff211bad24697906fbfbc974ffd76"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-24997ece",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "8b10d3034ec930da89a25e4ae86613ee32a18133a4fe8e97b97c9b3ec8ab361a"
     },
@@ -2100,7 +1888,7 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-5a28177fea854bc0b5436061145711fa"
       ],
@@ -2111,13 +1899,6 @@
           "check_id": "external-purchase-link",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-c21f214d",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -2171,7 +1952,7 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-656201f50f714f5088134412392fac62"
       ],
@@ -2182,13 +1963,6 @@
           "check_id": "misleading-marketing",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-a5cc1d35",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -2299,20 +2073,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-2b461d0964214812b02caba6068ac182"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-1cc05db6",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "de494f522d1ff1999be61b2a965e46f5b6204162ea364363f3e2afe58255b2db"
     },
@@ -2330,7 +2096,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-2b461d0964214812b02caba6068ac182"
       ],
@@ -2341,13 +2107,6 @@
           "check_id": "subscription-disclosure",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-7d481d3a",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
         }
       ],
       "section": "3",
@@ -2367,7 +2126,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": "static",
       "related": [
         "req-2b461d0964214812b02caba6068ac182"
       ],
@@ -2378,13 +2137,6 @@
           "check_id": "autorenew-disclosure",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-d697d853",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
         }
       ],
       "section": "3",
@@ -2727,20 +2479,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-67f27ac9d7804b93a90c124f3532bc1b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-315a0b77",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "effaf6c3485d40a25d5ca9512a2a72e51c4e5a83d3328c53507b3291755ca026"
     },
@@ -2758,20 +2502,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-67f27ac9d7804b93a90c124f3532bc1b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-68f316d5",
-          "decides": "full",
-          "evidence_class": "source-inspection"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "effaf6c3485d40a25d5ca9512a2a72e51c4e5a83d3328c53507b3291755ca026"
     },
@@ -2789,20 +2525,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-67f27ac9d7804b93a90c124f3532bc1b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-9e815f5b",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "effaf6c3485d40a25d5ca9512a2a72e51c4e5a83d3328c53507b3291755ca026"
     },
@@ -2911,20 +2639,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": null,
       "related": [
         "req-3ffc0dfc55f847b4abce7b522c381597"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-c19d8afd",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "6224bffbbb93397ae0f8b2b543bb9ca1ea7ad794107ea590f955d8495910f28c"
     },
@@ -3002,20 +2722,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-9be88d86e1424fad80d501ed1259873c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-5bcdac00",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "e5ae6b25db6d32eb76bc5a311a8d9c4b2583217b3d2c7ddd129fa6059ac1a021"
     },
@@ -3093,7 +2805,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-b6908a59ca3f452b9cdad5e7b78d2a00"
       ],
@@ -3104,13 +2816,6 @@
           "check_id": "trial-disclosure",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-96e8caad",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
         }
       ],
       "section": "3",
@@ -3242,13 +2947,6 @@
           "check_id": "paywall-trial-emphasis",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-5163dc4e",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -3328,20 +3026,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-5c1eb369f7694e6ab0065b287155f1b4"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-13f97b35",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "377b7bbfccb019317f7b9406b36499fa9ea32fc4e85a2209a8c23d2c966f226b"
     },
@@ -3390,20 +3080,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-6439920a34d24714a5f58749ec8755a7"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-0a55d4fa",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "42c1c8a6f03e50da8ae90c45c26acc7aa9338b10733baad862025c2d7422023f"
     },
@@ -3453,20 +3135,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7b8197ecc1864d4e85a81097783e8f9e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-25dc6b52",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9f6ddbf3c026e3ef88cd2eb9fc0f68d06d87179a541f2b6f2b233cb398b6e017"
     },
@@ -3484,20 +3158,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7b8197ecc1864d4e85a81097783e8f9e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-3916226c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9f6ddbf3c026e3ef88cd2eb9fc0f68d06d87179a541f2b6f2b233cb398b6e017"
     },
@@ -3547,7 +3213,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": "semantic",
       "related": [
         "req-aebcd2366725485591ba1e4308577423"
       ],
@@ -3558,13 +3224,6 @@
           "check_id": "subscription-disclosure",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-21321b05",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
         }
       ],
       "section": "3",
@@ -3584,20 +3243,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": null,
       "related": [
         "req-aebcd2366725485591ba1e4308577423"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-a1e34669",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "6b2cf2fd00c20f741b1bf98673fd7e75e88d270589ec333e8a315a0a2a5567b0"
     },
@@ -3675,7 +3326,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": "semantic",
       "related": [
         "req-f1da94481ef5432db7845e817f3d2484"
       ],
@@ -3692,13 +3343,6 @@
           "check_id": "dyn-paywall-visible",
           "decides": "partial",
           "evidence_class": "runtime"
-        },
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-60233698",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
         }
       ],
       "section": "3",
@@ -3836,7 +3480,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-bbd91a008a6842b6b564244e36c20846"
       ],
@@ -3847,13 +3491,6 @@
           "check_id": "subscription-eula-metadata",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-f42064f3",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
         }
       ],
       "section": "3",
@@ -3935,7 +3572,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": "static",
       "related": [
         "req-309803de7f2b41a59f42bc4238b81994"
       ],
@@ -3952,13 +3589,6 @@
           "check_id": "external-purchase",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-936a6cda",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
         }
       ],
       "section": "3",
@@ -4039,20 +3669,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-98f2c5be2bf14af69dc6ccd283895353"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-546e55f6",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "5f9da8735dd56671491ad85c3d44017d50438492775e1bc4b6b9b1fe3e34dfee"
     },
@@ -4102,20 +3724,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-212ddfdd37714110b0f8c3e7d09137b3"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-debd1989",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d2d7e224c8981e024f88ef73dffe44e574e49bec06b5dc2e6ea17ef892c38e17"
     },
@@ -4165,20 +3779,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-9ada251811754d16b1c596d285e63a23"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-14a13b16",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "01283a81338556eca164ed16bd18ae41035d34bf2bf021812bd195cefc1f53a5"
     },
@@ -4285,20 +3891,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-ed9498f185b34118a0d26efce7b73851"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-54c9e123",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "0c2e55e6b16cc42fbf6a728475f44288186369b4412623a7eb5b00bfb96f74fa"
     },
@@ -4347,20 +3945,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-93126169195246e1913afb9ae87c0047"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-f553a6d6",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "60eae450601ab145ef8799e2efb41a62c0a9ae99a71072910e53c4d3c348057a"
     },
@@ -4409,20 +3999,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-dab222c67899425b9eb88370ebbd142e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-57562ccf",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "272fa2ab341bd660000870225f85f22ceeae9519aaeeb8df54f26c6a74ebfe9e"
     },
@@ -4471,20 +4053,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-0ec30002d4934d929fe2cd390027a4f5"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-38fcb8bd",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "22aaa92e00ba12b2438654b33e8e4959324b7820d39acd19883bdad13bb83f7f"
     },
@@ -4533,20 +4107,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-9903e38891364352ab43b797db090ddb"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-8f02da19",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "df3e34caf44ed5e10c5255ab862072e8a3a71411d5247c416fd8f0565f6e4da7"
     },
@@ -4595,20 +4161,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-adc28525803c434699494d7b5a1cc3ee"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-3ad67610",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d3636dc9828c73b70eed0d3e810a4a4c8402f27a310e4f82a5dd71c08d104dc5"
     },
@@ -4657,20 +4215,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-80e3b847b9194ba39010065c337b3e6c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-2ddcf75d",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "763b6794025fe996e4c9d3cb2834837ec8ee6d79c906f13b2a44cb2a9f6cc4fd"
     },
@@ -4719,20 +4269,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-d3de8fe094db41d7b8b0d6d844c9da8c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-6bdf79fc",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "1e82a057c75c386ba5375763e714cdd5a2b34dee56961492b93ea935e4c7bf56"
     },
@@ -4781,20 +4323,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-bb5c91e223374755b8c18b21a3cf9701"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-4487c19c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "367c099c24288bc43c0fafa5ec76ac31bdd61c2ed009d178a1a8087ebc6da6ff"
     },
@@ -4843,7 +4377,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-01638af274464458b987b40bb453fc5a"
       ],
@@ -4854,13 +4388,6 @@
           "check_id": "thirdparty-payment-sdk",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-56257ec6",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
         }
       ],
       "section": "3",
@@ -4911,20 +4438,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7aca860be1e44fb3850c7be8d838e9d1"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-4ca70616",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "230cbb4e669b8a29766f960944f0dccffa77a4cb78649236b302a358368b47c5"
     },
@@ -4973,20 +4492,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-5e94742e4be74b13b8bf46ba8a8db11e"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-85bddc7f",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "45e88b7bd9184290f72d54bd67fc6f7a1b309055c746f61b90b73e06c4229d43"
     },
@@ -5036,20 +4547,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": null,
       "related": [
         "req-8d5d294e24544ee6b9a6f6b6354dd1f0"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-2eb3d1a4",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "fa34d1c8f4a57df62d385cdcbe5f3922fbf0143bc400a2298257ac04e2b6d857"
     },
@@ -5067,20 +4570,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": null,
       "related": [
         "req-8d5d294e24544ee6b9a6f6b6354dd1f0"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-bd5c1493",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "fa34d1c8f4a57df62d385cdcbe5f3922fbf0143bc400a2298257ac04e2b6d857"
     },
@@ -5130,20 +4625,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-307a11acb2ce48fd8d0cf4de58192ca7"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-5b8921dd",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "2b9f052639915f4e627a0d077df971ebfb79a63883ce9ec178f2a59759d11abb"
     },
@@ -5204,13 +4691,6 @@
           "check_id": "crypto-wallet-mining",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-4df376a5",
-          "decides": "full",
-          "evidence_class": "source-inspection"
         }
       ],
       "section": "3",
@@ -5262,20 +4742,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-be5d84dbed504b9d82c9ada1cb4c228f"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-0d521530",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "b8ef093f305a92d333c4522f2a6cef8e84395bb798311048f5b6383f93e2a56a"
     },
@@ -5326,20 +4798,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-251067d9b81b47548532b2bff9b2d3ff"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-903a6bd0",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d64cd88e53c798464744a42816a4359b051c9593bee5b7e390462d503470b736"
     },
@@ -5358,20 +4822,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-251067d9b81b47548532b2bff9b2d3ff"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-ba228b96",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d64cd88e53c798464744a42816a4359b051c9593bee5b7e390462d503470b736"
     },
@@ -5421,20 +4877,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-6fc831d4f9764b8bb982bf873fe31102"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-e700cc45",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "96e03916368c29d474cf9363dd31a0f3bc2578ede64fcdd712e40a2421263b82"
     },
@@ -5513,20 +4961,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-36bd84e54cb841009ae93c37f294b8ce"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-967f0a7a",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9d090baf8c396bde975ec3e6910283973e1baf0f0bd1880faa8ca95c8f815dac"
     },
@@ -5544,20 +4984,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-36bd84e54cb841009ae93c37f294b8ce"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-ec92610c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9d090baf8c396bde975ec3e6910283973e1baf0f0bd1880faa8ca95c8f815dac"
     },
@@ -5607,20 +5039,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-27caaf9816794665a3ffbb006645a29d"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-9b9f5785",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "7da512da04b59f205434b66baf7b863b269e8a312d8415e010dbe31383a45d11"
     },
@@ -5638,20 +5062,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-27caaf9816794665a3ffbb006645a29d"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-a35a226b",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "7da512da04b59f205434b66baf7b863b269e8a312d8415e010dbe31383a45d11"
     },
@@ -5700,20 +5116,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-1ebf903b56504b28b2f3faec6e11da7c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-b60c95e8",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "e57ae1343c895029329eabdf3673bf884a58dbdc63694d711ccb0f20a126db77"
     },
@@ -5762,20 +5170,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-6241a2681bbd4d9ab5b0e698cd924b4a"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-ba7b9603",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "a309abc3dbc2c5b875b1234c0e971f9588a17580b400f3f9cfada3706f565c79"
     },
@@ -5824,20 +5224,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-d4b1e4208ec84cff84403bd88c149f7a"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-d9a7820c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "7ea22b55628629b1ee848f971c09089453d80b7d4bc2d803d4644c9076edff93"
     },
@@ -5886,20 +5278,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-1a5e81a8f12146b8b213fbbfd55444fe"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-47a9fef9",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "805c5fbbf64272c6a28b9afb646e762cb52f35387997768078df9588e909371a"
     },
@@ -5948,20 +5332,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-c8c51d444d454a03861cbc0ee11a4ca5"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-55958e7c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "f8939c8996a584a8704ac3e7818f4d6ccb2b93efa4dfed5338ba31ffef244cac"
     },
@@ -6012,20 +5388,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-c13ced993b004efc9df51bdf61490519"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-27dfb56e",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "a8466464dd7e2cdcd5440f0331f32d440f9babaaca994abd58db05cb84ef7ad8"
     },
@@ -6043,20 +5411,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-c13ced993b004efc9df51bdf61490519"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-da0a9af6",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "a8466464dd7e2cdcd5440f0331f32d440f9babaaca994abd58db05cb84ef7ad8"
     },
@@ -6074,20 +5434,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-c13ced993b004efc9df51bdf61490519"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-de0b437b",
-          "decides": "full",
-          "evidence_class": "source-inspection"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "a8466464dd7e2cdcd5440f0331f32d440f9babaaca994abd58db05cb84ef7ad8"
     },
@@ -6139,20 +5491,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7538b3d1af5e4b6c995dc5d00d3302b8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-1811804b",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "e69b7cb71a3e97b62fd112e6be8faa90e1a0d8ca7248c684c922daf53b0afcee"
     },
@@ -6170,20 +5514,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7538b3d1af5e4b6c995dc5d00d3302b8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-463d5d26",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "e69b7cb71a3e97b62fd112e6be8faa90e1a0d8ca7248c684c922daf53b0afcee"
     },
@@ -6212,13 +5548,6 @@
           "check_id": "applepay-recurring-disclosure",
           "decides": "partial",
           "evidence_class": "source"
-        },
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-8dd8832b",
-          "decides": "full",
-          "evidence_class": "source-inspection"
         }
       ],
       "section": "3",
@@ -6238,20 +5567,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7538b3d1af5e4b6c995dc5d00d3302b8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-ee52cf5c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "e69b7cb71a3e97b62fd112e6be8faa90e1a0d8ca7248c684c922daf53b0afcee"
     },
@@ -6302,20 +5623,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-48a8bb2917504a48a54707cade0a2542"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-4f7c1f8c",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "03bf5ef1a7eb985ff34eeb332b96885f2f51df6c0a26eddcde5075d25addd243"
     },
@@ -6333,20 +5646,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-48a8bb2917504a48a54707cade0a2542"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-5953c065",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "03bf5ef1a7eb985ff34eeb332b96885f2f51df6c0a26eddcde5075d25addd243"
     },
@@ -6364,20 +5669,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-48a8bb2917504a48a54707cade0a2542"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-8f9af0d0",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "03bf5ef1a7eb985ff34eeb332b96885f2f51df6c0a26eddcde5075d25addd243"
     },
@@ -6426,20 +5723,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-fdc8162fd52842b29b473afe5f882d98"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-b319bc5b",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9761280adf05c5f6a90931984bfef6070f29f03db0773b6c7b0660a995d66a86"
     },
@@ -6488,20 +5777,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-441dc6709f4d4c4fbbdea070cefcbae9"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-9dc3572a",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "c52dca332b87fcb9a75af3194dde52c8f827891052b15aa45ea6656ceae665da"
     },
@@ -6581,20 +5862,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-b0b0cd1e07fa43078e173f9cff121b01"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-03f3e3c0",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4818903be205558643b2411052c565a18075f1df3d9fa0b9ec533d02cb995dbd"
     },
@@ -6612,20 +5885,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-b0b0cd1e07fa43078e173f9cff121b01"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-83acd6e5",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4818903be205558643b2411052c565a18075f1df3d9fa0b9ec533d02cb995dbd"
     },
@@ -6643,20 +5908,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-b0b0cd1e07fa43078e173f9cff121b01"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-a236bf6b",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4818903be205558643b2411052c565a18075f1df3d9fa0b9ec533d02cb995dbd"
     },
@@ -6705,20 +5962,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-dc3b1b50f64742748a78d71148bcccae"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-71995e2b",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "fabbdf01e8e517ba778e70ace2e5a4624d50e445cd72afe7df3d3e9b51fed916"
     },
@@ -6768,20 +6017,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-3a65a1d81f1148489782726f1b886cf6"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-5b0aab61",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9d45378d68eb34eb8569df898a4c9387f2a9408a3d702e118e43fbbf3ce4765e"
     },
@@ -6799,20 +6040,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-3a65a1d81f1148489782726f1b886cf6"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-8ea9c370",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "9d45378d68eb34eb8569df898a4c9387f2a9408a3d702e118e43fbbf3ce4765e"
     },
@@ -6861,20 +6094,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-2274468f684240afa2887e7d7c257541"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-c69e6140",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "5e1bcc4e07403cd67219c26e28e8056cd63ee450787771b206ad83b483a46d93"
     },
@@ -6924,20 +6149,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-63869687efec42e98f91017b03216a8c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-2cfcd9d2",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4f7f82da255f0a78ad7777ca4a50cc86d9d24329969d98919370136f3f697ae5"
     },
@@ -6955,20 +6172,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-63869687efec42e98f91017b03216a8c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-4f1e2d28",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "4f7f82da255f0a78ad7777ca4a50cc86d9d24329969d98919370136f3f697ae5"
     },
@@ -7020,20 +6229,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-7f333ad3c62d47aaa5ab6e47718e75e2"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-2973a6a6",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "6bd1370e991bc1b514e9d3fb2d05379e413107954d0c0e68221d02e83c47b8db"
     },
@@ -7051,20 +6252,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-7f333ad3c62d47aaa5ab6e47718e75e2"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-2e1ed01d",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "6bd1370e991bc1b514e9d3fb2d05379e413107954d0c0e68221d02e83c47b8db"
     },
@@ -7114,20 +6307,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-0bacd480b6294f62a49bde529de7e65b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-182b09e8",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "66ac0aa7d51206d51a608098856a6a41885fa120a8ed96f8aa8786a4d1f36ae5"
     },
@@ -7145,20 +6330,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-0bacd480b6294f62a49bde529de7e65b"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-21c3e063",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "66ac0aa7d51206d51a608098856a6a41885fa120a8ed96f8aa8786a4d1f36ae5"
     },
@@ -7207,20 +6384,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-d4d301aff41e4e51a5a2219737ccd6e2"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-f8ddbab6",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "06d47a8ef7b55c8c6ac0037fbff1fdf8bbed9a397c990f76f4958d91116172ff"
     },
@@ -7272,20 +6441,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-473e0741a1c8494ba75129dbcb74a1d8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-9d89f302",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "78ab26c09235b220423c58e026059fa0c0fb204316f5fdb7b9be12b4d91ebbc7"
     },
@@ -7303,20 +6464,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-473e0741a1c8494ba75129dbcb74a1d8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-c3a18330",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "78ab26c09235b220423c58e026059fa0c0fb204316f5fdb7b9be12b4d91ebbc7"
     },
@@ -7366,20 +6519,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-9b02d5ebea9444b193aa2c64efa2fa34"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": null,
-          "proposed_check_id": "biz-b61a39c8",
-          "decides": "full",
-          "evidence_class": "source-inspection"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "aaf2db3654efd90f3d72fe41ddf8f9bb6145cbd320aa7ad1adf4fae93b315278"
     },
@@ -7458,20 +6603,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-e39a38af0f134639a845498876376980"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-e591af43",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "0a2b81d237eeb1e8384f4329a77ad0181ec453dc451c89b2ac97277ba827cc80"
     },
@@ -7521,20 +6658,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": null,
       "related": [
         "req-8a2c1b64356943e98d7da527cb00ff2f"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-25cdf7a8",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d3f40910ce4b9a95b7113dc57fae6444f2812a027c9ae9e2a17ada165bd9ef84"
     },
@@ -7552,7 +6681,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "metadata",
+      "primary_route": "semantic",
       "related": [
         "req-8a2c1b64356943e98d7da527cb00ff2f"
       ],
@@ -7563,13 +6692,6 @@
           "check_id": "subscription-disclosure",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "metadata",
-          "check_id": null,
-          "proposed_check_id": "biz-6f16c518",
-          "decides": "full",
-          "evidence_class": "listing-or-connect-data"
         }
       ],
       "section": "3",
@@ -7621,20 +6743,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-4a6edc12e00649cd8851e47bcccc5b11"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-a65bca15",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "96105b8d3a74c862e97eaba6c1c13d0413763704514103ee70bbb24113c8c37b"
     },
@@ -7652,20 +6766,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": null,
       "related": [
         "req-4a6edc12e00649cd8851e47bcccc5b11"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "attestation",
-          "check_id": null,
-          "proposed_check_id": "biz-c6786ba2",
-          "decides": "full",
-          "evidence_class": "developer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "96105b8d3a74c862e97eaba6c1c13d0413763704514103ee70bbb24113c8c37b"
     },
@@ -7714,7 +6820,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": "static",
       "related": [
         "req-158cc607ce1547edbafb6ef05c1b96d5"
       ],
@@ -7731,13 +6837,6 @@
           "check_id": "review-incentives",
           "decides": "partial",
           "evidence_class": "semantic"
-        },
-        {
-          "route": "runtime",
-          "check_id": null,
-          "proposed_check_id": "biz-4599cc6b",
-          "decides": "full",
-          "evidence_class": "simulator-observation"
         }
       ],
       "section": "3",
@@ -7788,20 +6887,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-9ab5582bae5248288570302b8d628d6c"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": null,
-          "proposed_check_id": "biz-c6a14f55",
-          "decides": "full",
-          "evidence_class": "reviewer-evidence"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "995f70929445e0191000120fc8f3b79eac01b5eb142fab2eeba41f79b5590630"
     }

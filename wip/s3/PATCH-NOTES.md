@@ -10,7 +10,7 @@ Source reviewed: [Apple App Review Guidelines, section 3](https://developer.appl
 
 ## Route implementation requests
 
-Each atom has a proposed full route with `check_id: null` and a temporary `proposed_check_id`. These are **not implemented checks**. Replace the placeholders with registered and fixture-tested check IDs, or consolidate related atoms under a truthful broader check. Current check IDs are attached only as `partial`. Counts below describe proposals, not automatic coverage:
+The public file contains only implemented, registered checks. Current check IDs are attached only as `partial`. Atoms without such a check have an empty `routes` list and `primary_route: null`, so the coverage report shows an honest gap. Register and fixture-test the suggested routes below, or consolidate related atoms under a truthful broader check. Counts describe implementation proposals, not automatic coverage:
 
 | Proposed primary route | Atoms | Work needed |
 | --- | ---: | --- |
@@ -25,7 +25,7 @@ Existing checks contribute only partial evidence for 27 atoms (38 partial links)
 ## Merge and review points
 
 - Merge the section file into `guideline-obligations.json` by stable ID. Preserve the section's richer criteria and contextual links. The current skeleton's 3.x placeholders should be replaced, not appended.
-- The future coverage validator should treat null `check_id` on non-context routes as a gap until an implementation and test are registered. `proposed_check_id` is a planning hint, not evidence of coverage.
+- Preserve empty route lists as gaps until an implementation and test are registered. The section intentionally does not claim that a proposed semantic, metadata, runtime, static, or attestation control has run.
 - Review 3.1.1(a) against current entitlement contracts and storefront list at run time; those regions can change while the guideline text stays constant. A storefront-unavailable run is `NEEDS_REVIEW` or `NOT_RUN`, not `PASS`.
 - Review 3.1.2(c)'s referenced Schedule 2 terms separately. This section file records that incorporation by reference, but cannot reproduce or validate contractual text from the guideline alone.
 - Regulatory claims in 3.1.5 and 3.2.1–3.2.2 need territory-specific evidence; an observed app screen cannot establish a license or legal compliance.

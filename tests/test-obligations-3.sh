@@ -23,7 +23,6 @@ for entry in section:
     assert 'text' not in entry, entry['id']
     assert len(entry['text_sha256']) == 64, entry['id']
     assert entry['anchor'].startswith('https://developer.apple.com/app-store/review/guidelines/#'), entry['id']
-    assert entry['routes'], entry['id']
     for linked in entry['exceptions'] + entry['related']:
         assert linked in by_id, (entry['id'], linked)
     for route in entry['routes']:
@@ -33,10 +32,10 @@ for entry in section:
             assert route['decides'] == 'partial', (entry['id'], check_id)
             assert registry[check_id]['route'] == route['route'], (entry['id'], check_id)
         elif route['route'] != 'not_app_checkable':
-            assert route.get('proposed_check_id'), entry['id']
+            raise AssertionError((entry['id'], 'unimplemented route in public section'))
     if entry['id'].startswith('atom-'):
         assert entry['kind'] != 'informational', entry['id']
-        assert entry['primary_route'] != 'not_app_checkable', entry['id']
+        assert entry['primary_route'] is None or entry['primary_route'] in {r['route'] for r in entry['routes']}, entry['id']
 
 private_path = os.environ.get('PRIVATE_CATALOG_PATH')
 if not private_path:
