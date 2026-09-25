@@ -1,0 +1,11 @@
+{"attributes":{"text":"","bounds":"[0,0][393,852]"},"children":[
+ {"attributes":{"text":"Login","accessibilityText":"Login"},"children":[]},
+ {"attributes":{"text":"Sign in with Google","accessibilityText":"Sign in with Google","clickable":true},"children":[]},
+ {"attributes":{"text":"Subscribe for $9.99 monthly","accessibilityText":"Subscribe for $9.99 monthly","clickable":true},"children":[]},
+ {"attributes":{"text":"Restore Purchases","accessibilityText":"Restore Purchases","clickable":true},"children":[]},
+ {"attributes":{"text":"Lorem ipsum","accessibilityText":"Lorem ipsum"},"children":[]},
+ {"attributes":{"text":"Delete Account","accessibilityText":"Delete Account","clickable":true},"children":[]},
+ {"attributes":{"text":"Report Post","accessibilityText":"Report Post","clickable":true},"children":[]},
+ {"attributes":{"text":"Allow Camera","accessibilityText":"Allow Camera","clickable":true},"children":[]},
+ {"attributes":{"text":"Pay on website","accessibilityText":"Pay on website","clickable":true},"children":[]}
+]}
