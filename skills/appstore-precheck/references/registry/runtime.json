@@ -1,0 +1,134 @@
+{
+  "checks": {
+    "dyn-account-deletion": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-account-deletion",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-siwa-parity": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-siwa-parity",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-restore-response": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-restore-response",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-paywall-disclosure": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-paywall-disclosure",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-permission-purpose": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-permission-purpose",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-ugc-safety": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-ugc-safety",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-login-wall": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-login-wall",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-external-payment": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-external-payment",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-placeholder": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-placeholder",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-navigation-crash": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-navigation-crash",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-layout-review": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-layout-review",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-host-privacy": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-host-privacy",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    },
+    "dyn-bundle-drift": {
+      "route": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "symbol": "dyn-bundle-drift",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ],
+      "line_prefix": "RUNTIME-",
+      "evidence_class": "runtime"
+    }
+  }
+}
