@@ -497,6 +497,18 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-apple-branding",
+          "decides": "partial",
+          "evidence_class": "source"
+        },
+        {
+          "route": "semantic",
+          "check_id": "brand-use",
+          "decides": "partial",
+          "evidence_class": "semantic"
         }
       ],
       "section": "4",
@@ -528,6 +540,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "semantic",
+          "check_id": "brand-use",
+          "decides": "partial",
+          "evidence_class": "semantic"
         }
       ],
       "section": "4",
@@ -632,6 +650,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-placeholder-copy",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "4",
@@ -757,6 +781,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-placeholder-copy",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "4",
@@ -2767,6 +2797,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-extension-commerce",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "4",
@@ -2796,6 +2832,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-extension-commerce",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "4",
@@ -3060,6 +3102,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-keyboard-navigation",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "4",
@@ -3625,6 +3673,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section4-safari-access",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "4",
@@ -6267,6 +6321,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "runtime",
+          "check_id": "dyn-siwa-parity",
+          "decides": "partial",
+          "evidence_class": "runtime"
         }
       ],
       "section": "4",
