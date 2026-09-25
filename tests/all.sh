@@ -49,6 +49,7 @@ SUITE=(
   "test-typesafe.sh"   # optional typed semantic review, transport/cache failures, gate isolation
   "test-coverage.sh"   # obligation schema, registry, and route coverage
   "test-copyright-boundary.sh" # source-text and npm package boundary
+  "test-default-golden.sh" # default scan text pinned to main baseline
 )
 
 failed=()
