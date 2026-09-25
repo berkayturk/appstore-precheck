@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Delegate to an installed Gradle; no wrapper JAR is checked in.
+exec gradle "$@"
