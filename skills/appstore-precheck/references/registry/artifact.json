@@ -1,0 +1,13 @@
+{
+  "checks": {
+    "artifact-entitlements": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_entitlements", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-reason-api": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_reasons", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-private-api": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_private", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-url-schemes": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_schemes", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-ats": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_ats", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-sdk": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_sdk", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-embedded-sdk": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_frameworks", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-executable-loading": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_loading", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"},
+    "artifact-debug": {"route": "artifact", "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py", "symbol": "review_debug", "tests": ["tests/test-artifact-review.sh"], "line_prefix": "ARTIFACT-", "evidence_class": "artifact"}
+  }
+}
