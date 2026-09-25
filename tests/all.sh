@@ -59,6 +59,9 @@ SUITE=(
   "test-obligations-intro.sh" # Submission process atomic classification
   "test-artifact-review.sh" # compiled bundle inspection and evidence gaps
   "test-attestation-report.sh" # developer answers and obligation-level run report
+  "test-metadata-review.sh" # local and opt-in ASC listing evidence
+  "test-coverage-json.sh" # actual-run route states in the JSON envelope
+  "test-section1-review.sh" # Safety evidence routes and explicit abstention
 )
 
 failed=()

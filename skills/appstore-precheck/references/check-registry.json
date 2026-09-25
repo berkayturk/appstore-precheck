@@ -719,6 +719,116 @@
         "tests/test-evidence.sh"
       ]
     },
+    "meta-age-rating": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-category": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-demo-account": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-iap-review-notes": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-iap-screenshot": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-price": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-privacy-url": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-review-notes": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-screenshots": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-storefront": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-support-url": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
     "metadata-char-limits": {
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/scan.sh",
@@ -1056,6 +1166,36 @@
       "tests": [
         "tests/run.sh",
         "tests/test-evidence.sh"
+      ]
+    },
+    "section1-kids-dependencies": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "static",
+      "symbol": "review_kids",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
+    },
+    "section1-safety-signals": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "semantic",
+      "symbol": "review_safety",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
+    },
+    "section1-ugc-controls": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "static",
+      "symbol": "review_ugc",
+      "tests": [
+        "tests/test-section1-review.sh"
       ]
     },
     "siwa-parity": {

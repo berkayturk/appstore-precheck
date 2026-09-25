@@ -1636,5 +1636,11 @@ echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
   printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"
 fi
-if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json;
+if [[ "$FORMAT" == json ]]; then
+  exec 1>&4 4>&-
+  if command -v python3 >/dev/null 2>&1; then
+    render_json | python3 "$SCRIPT_DIR/augment-json.py" --config "$CONFIG"
+  else
+    render_json
+  fi
 elif [[ "$FORMAT" == sarif ]]; then exec 1>&4 4>&-; render_sarif; fi
