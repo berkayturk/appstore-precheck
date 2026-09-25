@@ -384,17 +384,16 @@
       "criterion": "Use Apple in-app purchase for digital features or content unlocked within the app, unless a named exception applies.",
       "exceptions": [
         "atom-2b5f47478f2b446ca8d0dfe048985f55",
-        "atom-546e55f649d44109859ed67495def6e3",
-        "atom-54c9e12357d247e6a0e41c048bd5d3dc",
-        "atom-f553a6d6863c4726a8dcd3a9f1ff6df9",
-        "atom-38fcb8bd11194471a2a365dfe7c60b81",
         "atom-3ad67610200b4020b09f991932b3071c",
-        "atom-2ddcf75d3e544bb6828e52f95a702bb4",
-        "atom-6bdf79fcd3134946a3cbd521bd33f9f8",
-        "atom-4ca70616c9714b4888be2a7ef99c08eb",
-        "atom-85bddc7ff5734633a258029655074c9b",
         "atom-83acd6e5a6634f2ab030f98ee08a87e4",
-        "atom-ce0ef87e6f5c40c6ae24083839137ffc"
+        "atom-ce0ef87e6f5c40c6ae24083839137ffc",
+        "req-98f2c5be2bf14af69dc6ccd283895353",
+        "req-ed9498f185b34118a0d26efce7b73851",
+        "req-93126169195246e1913afb9ae87c0047",
+        "req-0ec30002d4934d929fe2cd390027a4f5",
+        "req-80e3b847b9194ba39010065c337b3e6c",
+        "req-d3de8fe094db41d7b8b0d6d844c9da8c",
+        "req-7aca860be1e44fb3850c7be8d838e9d1"
       ],
       "id": "atom-997058a40b3344e99d8bdee763e77f8b",
       "kind": "obligation",
@@ -716,14 +715,15 @@
       "apple_ref": "3.1.1",
       "applicability": {
         "source_role": "conditional_permission",
-        "feature": "digital unlocks, gifting, virtual goods, trials, or NFTs"
+        "feature": "digital unlocks, gifting, virtual goods, trials, or NFTs",
+        "distribution": "Mac App Store"
       },
       "criterion": "Mac App Store plug-ins may use a separate enabling mechanism.",
       "exceptions": [],
       "id": "req-95650ef4819840ca891f87b367c802cc",
       "kind": "exception",
       "platforms": [
-        "all_apple_platforms"
+        "macOS"
       ],
       "primary_route": "not_app_checkable",
       "related": [],
@@ -955,19 +955,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-55acdfadb1e24315a5e5ee0fad8fabc7"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": "trial-disclosure",
-          "decides": "partial",
-          "evidence_class": "source"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "98e9f620258809bbd77986cfaf5a2dfc69c49b26d0bb64ea6da365b579f8a9bc"
     },
@@ -1554,7 +1547,8 @@
       "criterion": "Where neither the US rule nor an entitlement permits it, omit off-platform digital buying prompts from app and listing.",
       "exceptions": [
         "atom-2b5f47478f2b446ca8d0dfe048985f55",
-        "atom-14ae5df863d948a2bba1f3eaddd03398"
+        "atom-14ae5df863d948a2bba1f3eaddd03398",
+        "req-38283652f1c14cb7981d3a040eeb1294"
       ],
       "id": "atom-a017a6446edb434fb697a7a183abec0a",
       "kind": "obligation",
@@ -1953,19 +1947,12 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-656201f50f714f5088134412392fac62"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": "misleading-marketing",
-          "decides": "partial",
-          "evidence_class": "source"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "290d2a3b0fe63895b3961919e92ceb8f05c3bcc8352087dc515f364d5e9be5d2"
     },
@@ -2097,19 +2084,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-2b461d0964214812b02caba6068ac182"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": "subscription-disclosure",
-          "decides": "partial",
-          "evidence_class": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "de494f522d1ff1999be61b2a965e46f5b6204162ea364363f3e2afe58255b2db"
     },
@@ -2127,19 +2107,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-2b461d0964214812b02caba6068ac182"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": "autorenew-disclosure",
-          "decides": "partial",
-          "evidence_class": "source"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "de494f522d1ff1999be61b2a965e46f5b6204162ea364363f3e2afe58255b2db"
     },
@@ -2806,19 +2779,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-b6908a59ca3f452b9cdad5e7b78d2a00"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": "trial-disclosure",
-          "decides": "partial",
-          "evidence_class": "source"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "39633b0c7919b22bb804a690a62934bdfb375e35b9a1fe161c0d27b8b0538104"
     },
@@ -3214,19 +3180,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-aebcd2366725485591ba1e4308577423"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": "subscription-disclosure",
-          "decides": "partial",
-          "evidence_class": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "6b2cf2fd00c20f741b1bf98673fd7e75e88d270589ec333e8a315a0a2a5567b0"
     },
@@ -3631,16 +3590,18 @@
         "source_role": "conditional_permission",
         "feature": "reader app"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.3(a) are met.",
       "exceptions": [],
       "id": "req-98f2c5be2bf14af69dc6ccd283895353",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
       "related": [
-        "atom-546e55f649d44109859ed67495def6e3"
+        "atom-14a13b1656a44dcc95d27e7a5f3bb1d2",
+        "atom-546e55f649d44109859ed67495def6e3",
+        "atom-debd19891963471bb580fb1022273b57"
       ],
       "retired_from": [],
       "routes": [
@@ -3666,7 +3627,7 @@
       "criterion": "Limit reader-app prior-purchase access to the qualifying media categories.",
       "exceptions": [],
       "id": "atom-546e55f649d44109859ed67495def6e3",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3721,7 +3682,7 @@
       "criterion": "Limit reader-app account creation to free access and account management to existing customers.",
       "exceptions": [],
       "id": "atom-debd19891963471bb580fb1022273b57",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3776,7 +3737,7 @@
       "criterion": "Use a reader account website link only when its entitlement and ownership terms apply.",
       "exceptions": [],
       "id": "atom-14a13b1656a44dcc95d27e7a5f3bb1d2",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3854,10 +3815,10 @@
         "source_role": "conditional_permission",
         "feature": "content or features acquired on another platform"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.3(b) are met.",
       "exceptions": [],
       "id": "req-ed9498f185b34118a0d26efce7b73851",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3888,7 +3849,7 @@
       "criterion": "For cross-platform acquisitions accessed in the app, make matching items purchasable through in-app purchase there.",
       "exceptions": [],
       "id": "atom-54c9e12357d247e6a0e41c048bd5d3dc",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3908,10 +3869,10 @@
         "source_role": "conditional_permission",
         "feature": "direct institutional sales"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.3(c) are met.",
       "exceptions": [],
       "id": "req-93126169195246e1913afb9ae87c0047",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -3942,7 +3903,7 @@
       "criterion": "Apply organization-only prior-purchase access solely to direct sales for staff or students.",
       "exceptions": [],
       "id": "atom-f553a6d6863c4726a8dcd3a9f1ff6df9",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4016,10 +3977,10 @@
         "source_role": "conditional_permission",
         "feature": "live personal service"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.3(d) are met.",
       "exceptions": [],
       "id": "req-0ec30002d4934d929fe2cd390027a4f5",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4050,7 +4011,7 @@
       "criterion": "Limit the personal-service payment exception to live services delivered between two people.",
       "exceptions": [],
       "id": "atom-38fcb8bd11194471a2a365dfe7c60b81",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4178,10 +4139,10 @@
         "source_role": "conditional_permission",
         "feature": "free companion to a paid web service"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.3(f) are met.",
       "exceptions": [],
       "id": "req-80e3b847b9194ba39010065c337b3e6c",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4209,10 +4170,10 @@
         "feature": "free companion to a paid web service",
         "condition": "Applies when this business model or feature is offered."
       },
-      "criterion": "A free companion to a paid web service may omit in-app purchase only when it sells nothing or promotes no external checkout in the app.",
+      "criterion": "A free stand-alone companion to a paid web service may omit in-app purchase only when it has no in-app sales and no off-app checkout prompts.",
       "exceptions": [],
       "id": "atom-2ddcf75d3e544bb6828e52f95a702bb4",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4232,10 +4193,10 @@
         "source_role": "conditional_permission",
         "feature": "advertising campaign management or in-app promoted content"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.3(g) are met.",
       "exceptions": [],
       "id": "req-d3de8fe094db41d7b8b0d6d844c9da8c",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4266,7 +4227,7 @@
       "criterion": "Reserve the advertising management exception for apps devoted to cross-media campaign purchasing and administration.",
       "exceptions": [],
       "id": "atom-6bdf79fcd3134946a3cbd521bd33f9f8",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4401,16 +4362,17 @@
         "source_role": "conditional_permission",
         "feature": "accessory-based digital unlock"
       },
-      "criterion": "This source passage is split into the linked individual payment conditions.",
+      "criterion": "Qualified use of the named payment alternative is permitted only when the linked conditions for 3.1.4 are met.",
       "exceptions": [],
       "id": "req-7aca860be1e44fb3850c7be8d838e9d1",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
       "related": [
-        "atom-4ca70616c9714b4888be2a7ef99c08eb"
+        "atom-4ca70616c9714b4888be2a7ef99c08eb",
+        "atom-85bddc7ff5734633a258029655074c9b"
       ],
       "retired_from": [],
       "routes": [
@@ -4429,13 +4391,13 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#3.1.4",
       "apple_ref": "3.1.4",
       "applicability": {
-        "feature": "accessory-based digital unlock",
+        "feature": "digital functionality tied to specific hardware",
         "condition": "Applies when this business model or feature is offered."
       },
-      "criterion": "A hardware-triggered digital unlock without in-app purchase must depend on the connected device to function.",
+      "criterion": "A digital feature unlocked through specific hardware must actually depend on that hardware to function.",
       "exceptions": [],
       "id": "atom-4ca70616c9714b4888be2a7ef99c08eb",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4489,7 +4451,7 @@
       "criterion": "When an optional approved product unlocks app functionality, also offer an in-app purchase route.",
       "exceptions": [],
       "id": "atom-85bddc7ff5734633a258029655074c9b",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4622,7 +4584,7 @@
       "criterion": "Offer virtual-currency storage only through an enrolled organization developer account.",
       "exceptions": [],
       "id": "atom-5b8921dd8dc94abd992bd4b024718aee",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4739,7 +4701,7 @@
       "criterion": "Operate exchange transactions only where the exchange is approved and the operator holds the required local permissions.",
       "exceptions": [],
       "id": "atom-0d521530026845aa8ea7b9e7295b3283",
-      "kind": "exception",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -4792,7 +4754,7 @@
         "condition": "Applies when this business model or feature is offered.",
         "region": "Assess every country or region where the service is offered."
       },
-      "criterion": "Have a qualified financial institution submit apps for crypto securities or futures trading.",
+      "criterion": "Offer cryptocurrency securities, futures, or initial coin offerings only through organizations with the required standing and permissions.",
       "exceptions": [],
       "id": "atom-903a6bd06d5d494995c4aad1f0d38e87",
       "kind": "obligation",
@@ -5538,19 +5500,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-7538b3d1af5e4b6c995dc5d00d3302b8"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "static",
-          "check_id": "applepay-recurring-disclosure",
-          "decides": "partial",
-          "evidence_class": "source"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "e69b7cb71a3e97b62fd112e6be8faa90e1a0d8ca7248c684c922daf53b0afcee"
     },
@@ -6433,7 +6388,7 @@
         "feature": "outside-service ranking",
         "condition": "Applies when this business model or feature is offered."
       },
-      "criterion": "Do not manipulate a user’s standing on an outside service without that service’s permission.",
+      "criterion": "Do not use app or its listing to exploit another service or its brand without permission allowed by that service terms.",
       "exceptions": [
         "atom-c3a1833040944770b05f935ce6dbff31"
       ],
@@ -6513,7 +6468,7 @@
         "condition": "Applies when this business model or feature is offered.",
         "region": "Assess every country or region where the service is offered."
       },
-      "criterion": "Do not provide binary-options trading in an App Store app.",
+      "criterion": "Do not facilitate binary-options trading through the app.",
       "exceptions": [],
       "id": "atom-b61a39c81a9b47b6a300b3dc1a9b8a14",
       "kind": "obligation",
@@ -6675,26 +6630,19 @@
         "feature": "personal lending",
         "condition": "Applies when this business model or feature is offered."
       },
-      "criterion": "Make personal loan conditions prominent and understandable.",
+      "criterion": "Disclose the complete applicable loan terms prominently and understandably, including all required rates, charges, and repayment conditions.",
       "exceptions": [],
       "id": "atom-6f16c5183f3d41f49c43bfc5e9c7c210",
       "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": null,
       "related": [
         "req-8a2c1b64356943e98d7da527cb00ff2f"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "route": "semantic",
-          "check_id": "subscription-disclosure",
-          "decides": "partial",
-          "evidence_class": "semantic"
-        }
-      ],
+      "routes": [],
       "section": "3",
       "text_sha256": "d3f40910ce4b9a95b7113dc57fae6444f2812a027c9ae9e2a17ada165bd9ef84"
     },

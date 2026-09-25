@@ -4,11 +4,11 @@ This counts available routes, not checks that ran for an app. Routes can overlap
 
 | Measure | Count | Share |
 |---|---:|---:|
-| Obligations | 572 | 100% |
-| Routed | 127 | 22.2% |
-| Without route | 445 | 77.8% |
+| Obligations | 584 | 100% |
+| Routed | 119 | 20.4% |
+| Without route | 465 | 79.6% |
 | Potential automatic decision | 0 | 0.0% |
-| Semantic route | 69 | 12.1% |
+| Semantic route | 66 | 11.3% |
 | Attestation only | 0 | 0.0% |
 
 ## Route counts
@@ -20,7 +20,7 @@ This counts available routes, not checks that ran for an app. Routes can overlap
 | metadata | 0 |
 | not_app_checkable | 0 |
 | runtime | 8 |
-| semantic | 69 |
-| static | 72 |
+| semantic | 66 |
+| static | 67 |
 
 The source classification and atomic split remain subject to independent section review.
