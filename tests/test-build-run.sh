@@ -102,6 +102,7 @@ mkdir -p "$TMP/bin" "$TMP/output"
 cat > "$TMP/bin/xcodebuild" <<'SH'
 #!/usr/bin/env bash
 if [[ " $* " == *" -list -json "* ]]; then
+  printf 'simulator diagnostic {not-json} before scheme output\n'
   printf '{"project":{"schemes":["App"]}}\n'
   exit 0
 fi

@@ -107,11 +107,26 @@ def main():
     if status == "OK" and a.scheme:
         try:
             raw = result.decode("utf-8", "replace")
-            data = json.loads(raw[raw.index("{"):])
+            # xcodebuild may print simulator diagnostics before its JSON, and
+            # those diagnostics can themselves contain braces. Keep the last
+            # valid project/workspace object instead of trusting the first '{'.
             schemes = []
-            for value in data.values():
-                if isinstance(value, dict):
-                    schemes.extend(value.get("schemes", []))
+            decoder = json.JSONDecoder()
+            for pos, char in enumerate(raw):
+                if char != "{":
+                    continue
+                try:
+                    data, _ = decoder.raw_decode(raw[pos:])
+                except ValueError:
+                    continue
+                if not isinstance(data, dict):
+                    continue
+                found = []
+                for value in data.values():
+                    if isinstance(value, dict) and isinstance(value.get("schemes"), list):
+                        found.extend(value["schemes"])
+                if found:
+                    schemes = found
             schemes = sorted(s for s in schemes if isinstance(s, str) and s)
             if schemes:
                 print("SCHEME=" + schemes[0])
