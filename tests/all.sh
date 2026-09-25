@@ -55,6 +55,8 @@ SUITE=(
   "test-obligations-2.sh" # Performance section atomic classification
   "test-obligations-3.sh" # Business section atomic classification
   "test-obligations-4.sh" # Design section atomic classification
+  "test-obligations-5.sh" # Legal section atomic classification
+  "test-obligations-intro.sh" # Submission process atomic classification
   "test-artifact-review.sh" # compiled bundle inspection and evidence gaps
 )
 

@@ -9453,7 +9453,7 @@
         "feature_condition": "Developer identity and contact information supplied to Apple (App Review contact, membership and seller identity) and to customers (product-page identity, EU DSA trader contact where a trader) for App Store or alternative distribution.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Keep the information the developer provides to Apple and to customers up to date, so both can identify who they are dealing with and reach the developer about issues. This covers the App Store Connect App Review contact (name, email, phone), the developer membership and seller identity and contact details held by Apple, and customer-facing identity and contact details (for example Support URL contact details and, where applicable, EU DSA trader contact details).",
+      "criterion": "Keep developer identity and contact details current for Apple and customers, including App Review and membership contacts, customer support, and applicable trader disclosures.",
       "exceptions": [],
       "id": "atom-21008b99be694b86ac628de503f46e07",
       "kind": "obligation",
