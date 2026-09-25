@@ -14,6 +14,7 @@ section = json.loads((root / 'skills/appstore-precheck/references/obligations/3.
 registry = json.loads((root / 'skills/appstore-precheck/references/check-registry.json').read_text())['checks']
 assert section
 by_id = {entry['id']: entry for entry in section}
+all_ids = {x['id'] for x in json.loads((root / 'skills/appstore-precheck/references/guideline-obligations.json').read_text())['obligations']}
 assert len(by_id) == len(section), 'duplicate 3.x id'
 
 for entry in section:
@@ -24,7 +25,7 @@ for entry in section:
     assert len(entry['text_sha256']) == 64, entry['id']
     assert entry['anchor'].startswith('https://developer.apple.com/app-store/review/guidelines/#'), entry['id']
     for linked in entry['exceptions'] + entry['related']:
-        assert linked in by_id, (entry['id'], linked)
+        assert linked in all_ids, (entry['id'], linked)
     for route in entry['routes']:
         check_id = route['check_id']
         if check_id is not None:

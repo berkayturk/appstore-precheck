@@ -16,6 +16,7 @@ assert len(part) == len(original), (len(part), len(original))
 assert set(x['id'] for x in part) == set(original)
 assert len({x['id'] for x in part}) == len(part)
 by_id = {x['id']: x for x in part}
+all_ids = {x['id'] for x in json.loads((root / 'skills/appstore-precheck/references/guideline-obligations.json').read_text())['obligations']}
 for item in part:
     prior = original[item['id']]
     assert item['apple_ref'] == prior['apple_ref']
@@ -25,7 +26,7 @@ for item in part:
     assert 'text' not in item
     assert item['applicability'].get('condition')
     for linked in item['exceptions'] + item['related'] + item['retired_from']:
-        assert linked in by_id, (item['id'], linked)
+        assert linked in all_ids, (item['id'], linked)
     if item['kind'] == 'obligation':
         assert all(r['decides'] == 'partial' for r in item['routes'])
         assert all(r['check_id'] in checks for r in item['routes'])

@@ -223,7 +223,7 @@
         "distribution": "App Store; applicable notarization submissions only when the source marks them.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Before review, exercise the submitted build on real hardware and record stability defects and fixes.",
+      "criterion": "Test the submitted build on real platform hardware before review and resolve stability defects; a defect log is suggested evidence, not a policy prerequisite.",
       "exceptions": [],
       "id": "atom-3c95a205dfc5469d86927977e0e7c636",
       "kind": "obligation",
@@ -331,7 +331,7 @@
         "distribution": "App Store; applicable notarization submissions only when the source marks them.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope exception or permitted alternative for 2.1(a): A review submission needs production-ready content, working review access, and a stable submitted build.",
+      "criterion": "A demo mode may replace review credentials only when legal or security duties prevent supplying an account, Apple approved the alternative beforehand, and the mode exposes every relevant feature.",
       "exceptions": [],
       "id": "req-cfecb4c630e6425fb0e66478a005c2cd",
       "kind": "exception",
@@ -340,7 +340,8 @@
       ],
       "primary_route": "not_app_checkable",
       "related": [
-        "atom-e575151c903d4c8fb72cede56c55c136"
+        "atom-e575151c903d4c8fb72cede56c55c136",
+        "atom-98d454c351724f8b83bd56473cb39b85"
       ],
       "retired_from": [],
       "routes": [
@@ -3010,7 +3011,7 @@
         "distribution": "App Store listing; assess applicable storefronts and localizations.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope condition for 2.3.10: specific approved interactive functionality may justify otherwise restricted other-platform imagery.",
+      "criterion": "Specific Apple-approved interactive functionality may justify otherwise restricted other-platform names, icons, or imagery; approval must cover the actual use.",
       "exceptions": [],
       "id": "atom-b2b4076815824dc6a628c8d0d352c64d",
       "kind": "exception",
@@ -3953,7 +3954,7 @@
         "distribution": "Applicable App Store platform.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope condition for 2.4.1: documented platform or feature limitation may make iPad operation infeasible.",
+      "criterion": "An actual platform or feature limitation may make iPad operation infeasible; request supporting evidence when disputed without requiring a formal document.",
       "exceptions": [],
       "id": "atom-b05afb92394740e4ac5d57768caf349b",
       "kind": "exception",
@@ -5404,7 +5405,9 @@
         "macOS"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-5dae75e9eb9d47baba6e8af50f85422b"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -5887,7 +5890,7 @@
         "distribution": "Applicable Apple platform.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "HealthKit integration serves health/fitness use and connects to the Health app where required.",
+      "criterion": "When using HealthKit, support its health or fitness purpose and integration with the Health app.",
       "exceptions": [],
       "id": "atom-0162f240996e46ff9c4167f88c7efaa2",
       "kind": "obligation",
@@ -5976,7 +5979,7 @@
         "distribution": "Applicable Apple platform.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "App does not read or write data outside its designated container without a permitted exception.",
+      "criterion": "Do not read or write data outside the app designated container.",
       "exceptions": [],
       "id": "atom-770691ed891c49268f287bc54203bac2",
       "kind": "obligation",
@@ -6067,7 +6070,7 @@
         "distribution": "Applicable Apple platform.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope condition for 2.5.2: educational coding app may download user-provided executable code in limited circumstances.",
+      "criterion": "A qualifying educational coding app may download code solely for its educational purpose if it makes the app-provided source viewable and editable; code need not originate with the user.",
       "exceptions": [],
       "id": "atom-a794bf1568084157961eca5a24a2fc49",
       "kind": "exception",

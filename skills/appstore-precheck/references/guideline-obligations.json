@@ -4575,7 +4575,7 @@
         "feature_condition": "Before App Store submissions and applicable iOS/iPadOS Notarization submissions. Include first versions, updates and pre-orders. On-device means actual platform hardware, including a Mac for a macOS build; no universal iPhone-only requirement.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Before review, exercise the submitted build on real hardware and record stability defects and fixes.",
+      "criterion": "Test the submitted build on real platform hardware before review and resolve stability defects; a defect log is suggested evidence, not a policy prerequisite.",
       "exceptions": [],
       "id": "atom-3c95a205dfc5469d86927977e0e7c636",
       "kind": "obligation",
@@ -4683,7 +4683,7 @@
         "feature_condition": "Submitted app or purchase is under App Review; login, backend, or purchase conditions apply only when that feature exists.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope exception or permitted alternative for 2.1(a): A review submission needs production-ready content, working review access, and a stable submitted build.",
+      "criterion": "A demo mode may replace review credentials only when legal or security duties prevent supplying an account, Apple approved the alternative beforehand, and the mode exposes every relevant feature.",
       "exceptions": [],
       "id": "req-cfecb4c630e6425fb0e66478a005c2cd",
       "kind": "exception",
@@ -4692,7 +4692,8 @@
       ],
       "primary_route": "not_app_checkable",
       "related": [
-        "atom-e575151c903d4c8fb72cede56c55c136"
+        "atom-e575151c903d4c8fb72cede56c55c136",
+        "atom-98d454c351724f8b83bd56473cb39b85"
       ],
       "retired_from": [],
       "routes": [
@@ -7362,7 +7363,7 @@
         "feature_condition": "The named metadata surface, pre-order, event, or promoted purchase exists for the submitted listing.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope condition for 2.3.10: specific approved interactive functionality may justify otherwise restricted other-platform imagery.",
+      "criterion": "Specific Apple-approved interactive functionality may justify otherwise restricted other-platform names, icons, or imagery; approval must cover the actual use.",
       "exceptions": [],
       "id": "atom-b2b4076815824dc6a628c8d0d352c64d",
       "kind": "exception",
@@ -8305,7 +8306,7 @@
         "feature_condition": "Relevant platform and feature are present; assess actual operation.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope condition for 2.4.1: documented platform or feature limitation may make iPad operation infeasible.",
+      "criterion": "An actual platform or feature limitation may make iPad operation infeasible; request supporting evidence when disputed without requiring a formal document.",
       "exceptions": [],
       "id": "atom-b05afb92394740e4ac5d57768caf349b",
       "kind": "exception",
@@ -9756,7 +9757,9 @@
         "macOS"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-5dae75e9eb9d47baba6e8af50f85422b"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -10239,7 +10242,7 @@
         "feature_condition": "The named technical capability or behavior is present.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "HealthKit integration serves health/fitness use and connects to the Health app where required.",
+      "criterion": "When using HealthKit, support its health or fitness purpose and integration with the Health app.",
       "exceptions": [],
       "id": "atom-0162f240996e46ff9c4167f88c7efaa2",
       "kind": "obligation",
@@ -10328,7 +10331,7 @@
         "feature_condition": "The named technical capability or behavior is present.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "App does not read or write data outside its designated container without a permitted exception.",
+      "criterion": "Do not read or write data outside the app designated container.",
       "exceptions": [],
       "id": "atom-770691ed891c49268f287bc54203bac2",
       "kind": "obligation",
@@ -10419,7 +10422,7 @@
         "feature_condition": "The named technical capability or behavior is present.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Scope condition for 2.5.2: educational coding app may download user-provided executable code in limited circumstances.",
+      "criterion": "A qualifying educational coding app may download code solely for its educational purpose if it makes the app-provided source viewable and editable; code need not originate with the user.",
       "exceptions": [],
       "id": "atom-a794bf1568084157961eca5a24a2fc49",
       "kind": "exception",
@@ -12938,7 +12941,8 @@
         "atom-6bdf79fcd3134946a3cbd521bd33f9f8",
         "atom-4ca70616c9714b4888be2a7ef99c08eb",
         "atom-85bddc7ff5734633a258029655074c9b",
-        "atom-83acd6e5a6634f2ab030f98ee08a87e4"
+        "atom-83acd6e5a6634f2ab030f98ee08a87e4",
+        "atom-ce0ef87e6f5c40c6ae24083839137ffc"
       ],
       "id": "atom-997058a40b3344e99d8bdee763e77f8b",
       "kind": "obligation",
@@ -20287,7 +20291,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.1",
       "apple_ref": "4.2.1",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App uses ARKit to provide an augmented reality experience."
       },
       "criterion": "ARKit app delivers a rich and integrated augmented reality experience.",
       "exceptions": [],
@@ -20513,7 +20517,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.3",
       "apple_ref": "4.2.3(ii)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App downloads additional resources required during initial launch."
       },
       "criterion": "App discloses the size of additional resources required at initial launch.",
       "exceptions": [],
@@ -20535,7 +20539,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.3",
       "apple_ref": "4.2.3(ii)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App downloads additional resources required during initial launch."
       },
       "criterion": "App prompts the user before downloading those initial resources.",
       "exceptions": [],
@@ -20588,7 +20592,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.6",
       "apple_ref": "4.2.6",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is created through a commercial template or app-generation service for a content provider."
       },
       "criterion": "A commercial-template app is submitted directly by the content provider.",
       "exceptions": [
@@ -20673,7 +20677,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.6",
       "apple_ref": "4.2.6",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is created through a commercial template or app-generation service for a content provider."
       },
       "criterion": "Template service does not submit an app on a client’s behalf.",
       "exceptions": [
@@ -20697,7 +20701,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.6",
       "apple_ref": "4.2.6",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is created through a commercial template or app-generation service for a content provider."
       },
       "criterion": "Template service offers tools for client-customized innovative apps with unique customer experiences.",
       "exceptions": [],
@@ -20904,7 +20908,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(a)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Remote desktop client connects only to a user-owned host.",
       "exceptions": [],
@@ -20926,7 +20930,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(a)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "The remote host is the customer’s own computer or dedicated console.",
       "exceptions": [],
@@ -20948,7 +20952,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(a)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Host and client connect over a local LAN-based network.",
       "exceptions": [],
@@ -21002,7 +21006,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(b)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Client-visible software and services execute entirely on the host.",
       "exceptions": [],
@@ -21024,7 +21028,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(b)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Client-visible software and services are rendered on the host screen.",
       "exceptions": [],
@@ -21046,7 +21050,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(b)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Client does not use platform APIs/features beyond those required to stream the remote desktop.",
       "exceptions": [],
@@ -21098,7 +21102,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(c)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "All account creation and management start on the host device.",
       "exceptions": [],
@@ -21152,7 +21156,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(d)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "The streamed interface avoids mimicking native iOS screens or the App Store.",
       "exceptions": [],
@@ -21174,7 +21178,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(d)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Client UI does not provide a store-like interface.",
       "exceptions": [],
@@ -21196,7 +21200,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(d)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Client UI does not browse, select or purchase software the user does not already own or license.",
       "exceptions": [],
@@ -21260,7 +21264,8 @@
       ],
       "primary_route": "not_app_checkable",
       "related": [
-        "req-6e6773d0f6b94b48a3442fddfda95f5c"
+        "req-6e6773d0f6b94b48a3442fddfda95f5c",
+        "atom-997058a40b3344e99d8bdee763e77f8b"
       ],
       "retired_from": [],
       "routes": [
@@ -21339,7 +21344,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.2.7",
       "apple_ref": "4.2.7(e)",
       "applicability": {
-        "condition": "Every submitted app; apply the narrower AR, template, or remote-desktop conditions where relevant."
+        "condition": "App is a remote desktop client mirroring particular host software or services; distinguish a generic host-device stream before applying subtype conditions."
       },
       "criterion": "Remote desktop submission is not a thin client for a cloud-based app.",
       "exceptions": [],
@@ -22069,7 +22074,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension provides keyboard input functionality.",
       "exceptions": [],
@@ -22122,7 +22127,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension with images or emoji follows applicable Sticker guidelines.",
       "exceptions": [],
@@ -22204,7 +22209,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension provides a way to advance to the next keyboard.",
       "exceptions": [],
@@ -22257,7 +22262,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension remains functional without full network access.",
       "exceptions": [],
@@ -22279,7 +22284,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension remains functional without requiring Full Access.",
       "exceptions": [],
@@ -22338,7 +22343,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension collects user activity only to enhance its on-device keyboard functionality.",
       "exceptions": [],
@@ -22390,7 +22395,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension does not launch apps other than Settings.",
       "exceptions": [],
@@ -22470,7 +22475,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.1",
       "apple_ref": "4.4.1",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a keyboard extension."
       },
       "criterion": "Keyboard extension does not repurpose keyboard buttons for non-keyboard behaviors.",
       "exceptions": [],
@@ -22522,7 +22527,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.2",
       "apple_ref": "4.4.2",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a Safari extension."
       },
       "criterion": "Safari extension works on the current Safari version of its relevant Apple operating system.",
       "exceptions": [],
@@ -22576,7 +22581,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.2",
       "apple_ref": "4.4.2",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a Safari extension."
       },
       "criterion": "Safari add-ons leave the browser and operating-system interface intact.",
       "exceptions": [],
@@ -22598,7 +22603,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.2",
       "apple_ref": "4.4.2",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a Safari extension."
       },
       "criterion": "Safari extension contains no malicious content or code.",
       "exceptions": [],
@@ -22620,7 +22625,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.2",
       "apple_ref": "4.4.2",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a Safari extension."
       },
       "criterion": "Safari extension contains no misleading content or code.",
       "exceptions": [],
@@ -22700,7 +22705,7 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#4.4.2",
       "apple_ref": "4.4.2",
       "applicability": {
-        "condition": "Apps that contain an extension; subtype rules apply to keyboard or Safari extensions."
+        "condition": "App includes a Safari extension."
       },
       "criterion": "Safari extension requests access to no more websites than strictly necessary for its function.",
       "exceptions": [],
@@ -22787,7 +22792,9 @@
         "condition": "Apps using the named Apple service, media, push, or platform asset."
       },
       "criterion": "App does not scrape information from Apple sites.",
-      "exceptions": [],
+      "exceptions": [
+        "atom-6373c0202be34e0ba90bd8948283c332"
+      ],
       "id": "atom-d5429e6aa0b14c9da0fab53a0a821415",
       "kind": "obligation",
       "platforms": [
@@ -25168,7 +25175,13 @@
         "condition": "Third-party login used to establish or authenticate the primary app account; listed exceptions apply."
       },
       "criterion": "Equivalent login service limits collected data to the user’s name and email address.",
-      "exceptions": [],
+      "exceptions": [
+        "atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4",
+        "atom-759453879ab7403f8d55ed04024b7cb8",
+        "atom-8db964265c8745ec9966ac1aa0577cda",
+        "atom-aa57c772c1ea4b8b977a0903b21c8ea5",
+        "atom-e9b930721d8e41d9bd4e12d4ef8f0008"
+      ],
       "id": "atom-d0280e2be689410ab9ee1b606d8bd1b4",
       "kind": "obligation",
       "platforms": [
@@ -25227,7 +25240,13 @@
         "condition": "Third-party login used to establish or authenticate the primary app account; listed exceptions apply."
       },
       "criterion": "Equivalent login service lets users keep their email address private during account setup.",
-      "exceptions": [],
+      "exceptions": [
+        "atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4",
+        "atom-759453879ab7403f8d55ed04024b7cb8",
+        "atom-8db964265c8745ec9966ac1aa0577cda",
+        "atom-aa57c772c1ea4b8b977a0903b21c8ea5",
+        "atom-e9b930721d8e41d9bd4e12d4ef8f0008"
+      ],
       "id": "atom-239d3f04fa454852bd326b2388f6994d",
       "kind": "obligation",
       "platforms": [
@@ -25314,7 +25333,13 @@
         "condition": "Third-party login used to establish or authenticate the primary app account; listed exceptions apply."
       },
       "criterion": "Equivalent login service does not collect app interactions for advertising without user consent.",
-      "exceptions": [],
+      "exceptions": [
+        "atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4",
+        "atom-759453879ab7403f8d55ed04024b7cb8",
+        "atom-8db964265c8745ec9966ac1aa0577cda",
+        "atom-aa57c772c1ea4b8b977a0903b21c8ea5",
+        "atom-e9b930721d8e41d9bd4e12d4ef8f0008"
+      ],
       "id": "atom-57af4e2c851143f0a5fe5a1421dcb808",
       "kind": "obligation",
       "platforms": [
