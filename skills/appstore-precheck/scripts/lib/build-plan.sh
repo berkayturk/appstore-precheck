@@ -45,11 +45,13 @@ PY
 
 build_check_symlinks() { # reject links; a build script could otherwise follow one into the source
   python3 - "$1" <<'PY'
-import os, sys
+import fnmatch, os, sys
 excluded = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData'}
 for base, dirs, files in os.walk(sys.argv[1], followlinks=False):
     dirs[:] = [d for d in dirs if d not in excluded]
     for name in dirs + files:
+        if name in excluded or name == '.appstore-precheck.json' or name == '.env' or name.startswith('.env.') or fnmatch.fnmatch(name, '*asc-key*.json') or name.endswith(('.p8', '.p12', '.mobileprovision')):
+            continue
         if os.path.islink(os.path.join(base, name)):
             sys.exit(3)
 PY

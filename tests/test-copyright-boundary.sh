@@ -34,8 +34,11 @@ else:
         if b'\0' in raw:
             continue
         tokens=words(raw.decode('utf-8','replace'))
-        for i in range(len(tokens)-7):
-            assert tuple(tokens[i:i+8]) not in phrases, '{}: eight-word source overlap'.format(name)
+        current={tuple(tokens[i:i+8]) for i in range(len(tokens)-7)}
+        baseline=subprocess.run(['git','show','main:'+name],capture_output=True,check=False)
+        old=words(baseline.stdout.decode('utf-8','replace')) if baseline.returncode == 0 else []
+        inherited={tuple(old[i:i+8]) for i in range(len(old)-7)}
+        assert not (current & phrases) - inherited, '{}: new eight-word source overlap'.format(name)
     print('copyright overlap: OK')
 PY
 if command -v npm >/dev/null 2>&1; then

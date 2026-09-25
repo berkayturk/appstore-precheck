@@ -53,7 +53,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- Arguments --------------------------------------------------------------------
 APP="" UDID="" BID="" REPO="" FRAMEWORK="" REPO_PLIST="" REPEATS=3 WINDOW=10
-DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0 EXPLORE=0 DYN_BLOCKING=0 DYN_DEMO=0
+DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0 EXPLORE=0 EXPLORE_SECONDS=360 EXPLORE_SCREENS=25 DYN_BLOCKING=0 DYN_DEMO=0
 usage_err() { echo "dynamic-run.sh: $1" >&2; exit 64; }
 need() { [[ $# -ge 2 ]] || usage_err "$1 needs a value"; }
 while [[ $# -gt 0 ]]; do
@@ -73,12 +73,16 @@ while [[ $# -gt 0 ]]; do
     --pktap)       PKTAP=1; shift ;;
     --dry-run)     DYN_DRY_RUN=1; shift ;;
     --explore)     EXPLORE=1; shift ;;
+    --explore-seconds) need "$@"; EXPLORE_SECONDS="$2"; shift 2 ;;
+    --explore-screens) need "$@"; EXPLORE_SCREENS="$2"; shift 2 ;;
     --demo-login)  DYN_DEMO=1; shift ;;
     --dynamic-blocking) DYN_BLOCKING=1; shift ;;
     *) usage_err "unknown option '$1'" ;;
   esac
 done
 export DYN_DRY_RUN
+[[ "$EXPLORE_SECONDS" =~ ^[0-9]+$ ]] && (( EXPLORE_SECONDS >= 1 && EXPLORE_SECONDS <= 360 )) || usage_err "--explore-seconds must be 1..360"
+[[ "$EXPLORE_SCREENS" =~ ^[0-9]+$ ]] && (( EXPLORE_SCREENS >= 1 && EXPLORE_SCREENS <= 25 )) || usage_err "--explore-screens must be 1..25"
 if [[ -n "$APP" && -n "$UDID" ]]; then usage_err "give --app OR --udid, not both"; fi
 if [[ -z "$APP" && -z "$UDID" ]]; then usage_err "one of --app <path.app> or --udid <UDID> --bundle-id <id> is required"; fi
 if [[ -n "$UDID" && -z "$BID" ]]; then usage_err "--udid needs --bundle-id"; fi
@@ -327,6 +331,7 @@ if (( EXPLORE )); then
     note "explore SKIP: Maestro unavailable (install Maestro to capture accessibility screens)"
   else
     python3 "$HERE/lib/dyn-explore.py" --udid "$UDID" --bundle-id "$BID" --out "$OUT" \
+      --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" \
       ${HOSTS:+--hosts "$HOSTS"} ${PRIV:+--privacy-manifest "$PRIV"} \
       ${INSTALLED:+--installed-bundle "$INSTALLED"} ${APP:+--source-bundle "$APP"} \
       > "$OUT/explore.json" || note "explore SKIP: Maestro exploration failed or timed out"

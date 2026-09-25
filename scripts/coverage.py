@@ -119,7 +119,7 @@ def markdown(summary):
             '| Attestation only | {} | {:.1f}% |'.format(summary['attestation_only'], percent(summary['attestation_only'])),
             '', '## Route counts', '', '| Route | Obligations |', '|---|---:|']
     rows += ['| {} | {} |'.format(k, v) for k, v in summary['routes'].items()]
-    rows += ['', 'The source classification and atomic split remain subject to independent section review.', '']
+    rows += ['', 'Section classifications and atomic splits received an independent review; the route count is not an App Store approval guarantee.', '']
     return '\n'.join(rows)
 
 

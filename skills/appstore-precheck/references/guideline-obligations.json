@@ -4884,12 +4884,24 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "artifact",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "artifact-debug",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
+        {
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -4915,12 +4927,24 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "meta-support-url",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "meta-privacy-url",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -4951,12 +4975,42 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-a2cce144d0be4f38b50fc41a730705fe"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "meta-category",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "meta-support-url",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "meta-privacy-url",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "meta-screenshots",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -5020,6 +5074,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "placeholder-metadata",
           "decides": "partial",
@@ -5141,6 +5201,18 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "meta-demo-account",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "section2-review-access-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
           "check_id": "demo-account",
           "decides": "partial",
           "evidence_class": "source",
@@ -5188,12 +5260,18 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-85267cbbea1e4b35a4eb8f3fb75cbdd7"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section2-review-access-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -5324,6 +5402,18 @@
       "related": [],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "artifact-debug",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
+        {
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "dyn-launch",
           "decides": "partial",
@@ -5558,12 +5648,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-b19d875ff61146bf8db39fea093f0db0"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "meta-iap-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -5627,6 +5723,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section2-completeness-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "beta-language",
           "decides": "partial",
@@ -5997,6 +6099,12 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "section2-screenshot-packet",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
+        {
           "check_id": "S5",
           "decides": "partial",
           "evidence_class": "semantic",
@@ -6222,12 +6330,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-bd22d2dffb55421c94d4a0a0669da1cd"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -6740,6 +6854,18 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "meta-screenshots",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "section2-screenshot-packet",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
+        {
           "check_id": "S4",
           "decides": "partial",
           "evidence_class": "semantic",
@@ -7105,6 +7231,12 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "meta-category",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
           "check_id": "category-fit",
           "decides": "partial",
           "evidence_class": "semantic",
@@ -7197,12 +7329,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "metadata",
       "related": [
         "req-a758e9098eee4b8f9db5a859fac55eb9"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "meta-age-rating",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -11085,6 +11223,12 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "artifact-private-api",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
+        {
           "check_id": "private-api",
           "decides": "partial",
           "evidence_class": "source",
@@ -11115,12 +11259,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "artifact",
       "related": [
         "req-1b462ad2109b4537adf71c202f2e6224"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "artifact-sdk",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -11473,12 +11623,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "artifact",
       "related": [
         "req-0400203387f14ef69bf053ab6e9ef316"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "artifact-executable-loading",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -11544,6 +11700,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "artifact-executable-loading",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
         {
           "check_id": "executable-code-download",
           "decides": "partial",
@@ -11868,6 +12030,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "artifact-entitlements",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
         {
           "check_id": "background-modes-unused",
           "decides": "partial",
@@ -14187,7 +14355,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-72e7ede554b642099ff8801bdf3edc4e"
       ],
@@ -14198,6 +14366,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -14248,7 +14422,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-f9f0171186d544f2bfd09b2404378ad1"
       ],
@@ -14259,6 +14433,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -14454,6 +14634,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-payment-mechanisms",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -14521,6 +14707,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-license-unlock",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -14855,7 +15047,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-48d6d8d407e641498bfc5a1c2a41fedd"
       ],
@@ -14866,6 +15058,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-random-item-odds",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -15062,6 +15260,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -15098,6 +15302,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -15134,6 +15344,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -15560,7 +15776,7 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-51300d26526748488851c82d4faa68ed"
       ],
@@ -15571,6 +15787,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-external-entitlement",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -15624,7 +15846,7 @@
         "iOS",
         "iPadOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-8ad8056dd2a34927a919b4bc2691afd7"
       ],
@@ -15635,6 +15857,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-external-entitlement",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -15715,6 +15943,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-external-entitlement",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -16267,7 +16501,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-2b461d0964214812b02caba6068ac182"
       ],
@@ -16278,6 +16512,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-iap-catalog",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -17159,6 +17399,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -17596,6 +17842,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -17750,6 +18002,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-subscription-offer",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -17854,6 +18112,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-external-entitlement",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -18060,7 +18324,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-9ada251811754d16b1c596d285e63a23"
       ],
@@ -18071,6 +18335,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-external-entitlement",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "3",
@@ -21295,7 +21565,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-8a2c1b64356943e98d7da527cb00ff2f"
       ],
@@ -21306,6 +21576,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-loan-terms",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -21325,7 +21601,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-8a2c1b64356943e98d7da527cb00ff2f"
       ],
@@ -21336,6 +21612,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-loan-terms",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -21387,7 +21669,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-4a6edc12e00649cd8851e47bcccc5b11"
       ],
@@ -21398,6 +21680,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-loan-terms",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -21417,7 +21705,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-4a6edc12e00649cd8851e47bcccc5b11"
       ],
@@ -21428,6 +21716,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section3-loan-terms",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
         }
       ],
       "section": "3",
@@ -22057,6 +22351,18 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-apple-branding",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "brand-use",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "4",
@@ -22088,6 +22394,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "brand-use",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "4",
@@ -22192,6 +22504,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-placeholder-copy",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -22317,6 +22635,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-placeholder-copy",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -24327,6 +24651,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-extension-commerce",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -24356,6 +24686,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-extension-commerce",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -24620,6 +24956,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-keyboard-navigation",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -25185,6 +25527,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section4-safari-access",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -27827,6 +28175,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "dyn-siwa-parity",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "4",
@@ -29327,6 +29681,12 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "meta-privacy-url",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
           "check_id": "support-privacy-url",
           "decides": "partial",
           "evidence_class": "source",
@@ -29357,12 +29717,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-c37ec052c6704e34ab295d4af49eb5c7"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section5-privacy-entry",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -31189,12 +31555,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-bf52dc7f9a6f4c39a9b9b31b1d5ac108"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section5-safari-obscure",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -31895,6 +32267,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "dyn-hosts-contacted",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
         {
           "check_id": "ai-provider-consent",
           "decides": "partial",
@@ -32652,12 +33030,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-a8a698d66ed44986954862190ab95eaa"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section5-contact-select-all",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -32683,12 +33067,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "static",
       "related": [
         "req-a8a698d66ed44986954862190ab95eaa"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section5-contact-preselect",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -34643,12 +35033,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "runtime",
       "related": [
         "req-d74870de117449cd93a172ecc8af6ec2"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "dyn-permission-prompt",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -34674,12 +35070,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "runtime",
       "related": [
         "req-d74870de117449cd93a172ecc8af6ec2"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "dyn-permission-prompt",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
         {
           "check_id": "attestation-generic",
           "decides": "full",
@@ -39790,6 +40192,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "dyn-launch",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "intro",
@@ -40173,6 +40581,24 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "design-quality",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
+        },
+        {
+          "check_id": "minimum-functionality",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
+        },
+        {
+          "check_id": "dyn-launch",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "intro",
@@ -40345,6 +40771,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "rating-manipulation",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "intro",
@@ -40410,6 +40842,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section6-external-components",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "intro",
@@ -40775,6 +41213,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "dyn-launch",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "intro",
@@ -40981,6 +41425,18 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "meta-demo-account",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "dyn-demo-login",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "intro",
@@ -41048,6 +41504,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "section6-special-hardware",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "intro",
@@ -41143,6 +41605,18 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "review-notes",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "intro",
@@ -41179,6 +41653,12 @@
           "decides": "full",
           "evidence_class": "developer-attestation",
           "route": "attestation"
+        },
+        {
+          "check_id": "meta-iap-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
         }
       ],
       "section": "intro",

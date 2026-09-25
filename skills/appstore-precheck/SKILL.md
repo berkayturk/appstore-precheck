@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 55 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 8 heuristic checks (Tier B v1) — 31 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only default pre-submission check for an iOS app before App Store review, with explicit isolated build and simulator review options. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 55 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 8 heuristic checks (Tier B v1) — 31 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -16,8 +16,9 @@ metadata linter, watching for guideline drift, having Pierre explain every FAIL 
 running 31 semantic deep-review checks (23 Tier A + 8 Tier B v1 heuristic). The deep-review checklist lives in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md).
 
-**This skill is read-only.** It never edits code, metadata, or assets. It only reports and
-writes a pass token. The detailed method (every rejection vector, the drift-check mechanics)
+**The default scan is read-only.** It never edits code, metadata, or assets. Optional build and
+runtime tiers execute project code in a disposable copy and simulator when explicitly enabled.
+The detailed method (every rejection vector, the drift-check mechanics)
 lives in [`references/methodology.md`](references/methodology.md); read it when you need the
 specifics behind a check.
 
@@ -384,15 +385,16 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
 
 ### Phase 6: local dynamic simulator tier (optional, opt-in — off by default)
 
-**This phase does not run by default.** Run it ONLY when the user explicitly asks for a dynamic /
-simulator check AND supplies a built app (a simulator `.app` path, or a booted simulator UDID +
-bundle id). It uses `xcrun simctl` + Maestro MCP tools (`mcp__maestro__*`) to launch the app on a
-disposable simulator and observe real behavior — the free/local alternative to a paid cloud device
-farm.
+**This phase does not run by default.** An explicit `scan.sh --build` (or
+`appstore-precheck dynamic --build`) builds in a disposable project copy; `--app <path>.app`
+inspects a supplied build. `--metadata` adds local/optional read-only ASC review.
+`dynamic.build: true` in `.appstore-precheck.json` also enables the build. The runner creates a
+disposable simulator and observes real behavior. See
+[`references/guideline-coverage.md`](references/guideline-coverage.md) for route and result rules.
 
 It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines, each tagged with a
-rule id (`[dyn-launch]`, `[dyn-permission-prompt:NSCameraUsageDescription]`, …), and **never
-changes the GREEN/YELLOW/RED verdict** (the verdict stays derived only from Phases 0–2). A check
+rule id (`[dyn-launch]`, `[dyn-permission-prompt:NSCameraUsageDescription]`, …). Only explicit
+`--dynamic-blocking` can add a FAIL for a 3/3 launch crash or demo login failure. A check
 that could not be driven is a `DYNAMIC-SKIP`, never a PASS and never an invented FINDING. It is
 **no-write, but it executes your application code**: it creates its own throwaway simulator
 device and never touches an existing one or the repo, but the launched app reaches its backends
@@ -400,13 +402,10 @@ and receives the demo credentials you supplied — tell the user so before the f
 requires macOS + Xcode + a simulator runtime and is permanently local-only (it cannot run in CI).
 It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA replacement.
 
-**Getting a build without building.** Never run `xcodebuild` / `flutter build` / `gradle`. Run
-`bash <skill-dir>/scripts/app-discover.sh --repo <repo> --json`: it lists the simulator `.app`
-bundles the user already built (DerivedData, `build/ios/iphonesimulator`) with build time,
-configuration (from the directory name: `debug` / `release` / `unknown`) and bundle id, and
-recommends the newest. **Ask the user to confirm one candidate explicitly** before anything is
-installed or launched. If it finds none, keep the `runtime-not-audited` gap and paste the build
-command it prints for the user to run themselves.
+**Build selection.** `scripts/app-discover.sh --repo <repo> --json` lists existing simulator
+bundles. `scripts/build-run.sh --repo <repo> --out <tmp>` performs an explicitly requested
+isolated build and records its configuration. Missing tools or failed setup produce SKIP and
+`--app` remains available. `--dry-run` shows the plan without building.
 
 **Observation-based checks are scripted.** `bash <skill-dir>/scripts/dynamic-run.sh --app <path>.app
 --repo <repo> --out <tmp>` creates a throwaway device, runs the launch checks **three times on an

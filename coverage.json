@@ -1,20 +1,20 @@
 {
-  "attestation_only": 471,
+  "attestation_only": 430,
   "automatic_possible": 0,
   "obligations_without_route": 0,
-  "registered_checks": 130,
+  "registered_checks": 164,
   "routed_obligations": 585,
   "routes": {
-    "artifact": 0,
+    "artifact": 7,
     "attestation": 585,
-    "metadata": 0,
+    "metadata": 12,
     "not_app_checkable": 0,
-    "runtime": 8,
-    "semantic": 70,
-    "static": 58
+    "runtime": 16,
+    "semantic": 86,
+    "static": 78
   },
   "schema_version": 1,
-  "semantic_possible": 70,
+  "semantic_possible": 86,
   "source": {
     "apple_updated": "June 8, 2026",
     "snapshot_sha256": "c533b971f44f463af01ed5b8c0f4e5c44a2b0ee71919883d12350232cd93453f",

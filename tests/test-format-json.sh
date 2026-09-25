@@ -45,7 +45,7 @@ source "$HERE/../skills/appstore-precheck/scripts/findings.sh"
 source "$HERE/../skills/appstore-precheck/scripts/evidence.sh"
 catalogued="$(catalogue_slugs | wc -l | tr -d ' ')"
 assert_gt "$catalogued" "54" "catalogue walk reaches §55"
-assert_eq "$catalogued" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | grep -v -- '-not-audited"' | sort -u | wc -l | tr -d ' ')" \
+assert_eq "$catalogued" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | grep -v -- '-not-audited"' | grep -Ev 'set_rule "(opt-in-review|dynamic-blocking|\$\{BASH_REMATCH\[1\]\})"' | sort -u | wc -l | tr -d ' ')" \
   "every catalogued section ($catalogued) is tagged in scan.sh, and nothing untagged"
 
 # Version provenance: the JSON envelope must report the TOOL's own version (read

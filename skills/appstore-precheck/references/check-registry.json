@@ -362,6 +362,26 @@
         "tests/test-typesafe.py"
       ]
     },
+    "dyn-account-deletion": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-account-deletion",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-bundle-drift": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-bundle-drift",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
     "dyn-dark-mode": {
       "evidence_class": "runtime",
       "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
@@ -395,6 +415,16 @@
         "tests/test-dynamic-run.sh"
       ]
     },
+    "dyn-external-payment": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-external-payment",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
     "dyn-first-screen": {
       "evidence_class": "runtime",
       "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
@@ -404,6 +434,16 @@
       "tests": [
         "tests/test-dynamic-reconcile.sh",
         "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-host-privacy": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-host-privacy",
+      "tests": [
+        "tests/test-runtime-review.sh"
       ]
     },
     "dyn-hosts-contacted": {
@@ -450,6 +490,46 @@
         "tests/test-dynamic-run.sh"
       ]
     },
+    "dyn-layout-review": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-layout-review",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-login-wall": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-login-wall",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-navigation-crash": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-navigation-crash",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-paywall-disclosure": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-paywall-disclosure",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
     "dyn-paywall-visible": {
       "evidence_class": "runtime",
       "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
@@ -470,6 +550,36 @@
       "tests": [
         "tests/test-dynamic-reconcile.sh",
         "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-permission-purpose": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-permission-purpose",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-placeholder": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-placeholder",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-restore-response": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-restore-response",
+      "tests": [
+        "tests/test-runtime-review.sh"
       ]
     },
     "dyn-restore-tap": {
@@ -525,6 +635,26 @@
       "tests": [
         "tests/test-dynamic-reconcile.sh",
         "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-siwa-parity": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-siwa-parity",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-ugc-safety": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-ugc-safety",
+      "tests": [
+        "tests/test-runtime-review.sh"
       ]
     },
     "entitlement-purpose": {
@@ -1196,6 +1326,216 @@
       "symbol": "review_ugc",
       "tests": [
         "tests/test-section1-review.sh"
+      ]
+    },
+    "section2-completeness-signals": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
+      "line_prefix": "SECTION2-",
+      "route": "static",
+      "symbol": "review_completeness",
+      "tests": [
+        "tests/test-section2-review.sh"
+      ]
+    },
+    "section2-review-access-signals": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
+      "line_prefix": "SECTION2-",
+      "route": "static",
+      "symbol": "review_access",
+      "tests": [
+        "tests/test-section2-review.sh"
+      ]
+    },
+    "section2-screenshot-packet": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
+      "line_prefix": "SECTION2-",
+      "route": "semantic",
+      "symbol": "review_screenshots",
+      "tests": [
+        "tests/test-section2-review.sh"
+      ]
+    },
+    "section3-external-entitlement": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_entitlement",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-iap-catalog": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_catalog",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-license-unlock": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_license",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-loan-terms": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "semantic",
+      "symbol": "review_loan",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-payment-mechanisms": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_payment",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-random-item-odds": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "semantic",
+      "symbol": "review_random",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-subscription-offer": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "semantic",
+      "symbol": "review_offer",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section4-apple-branding": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_brand",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-extension-commerce": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_commerce",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-keyboard-navigation": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_keyboard",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-placeholder-copy": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_placeholder",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-safari-access": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_safari",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section5-contact-preselect": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_contact_preselect",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-contact-select-all": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_contact_select_all",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-privacy-entry": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_privacy_entry",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-safari-obscure": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_safari_obscure",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section6-external-components": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section6-review.py",
+      "line_prefix": "SECTION6-",
+      "route": "static",
+      "symbol": "review_external_components",
+      "tests": [
+        "tests/test-section6-review.sh"
+      ]
+    },
+    "section6-special-hardware": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section6-review.py",
+      "line_prefix": "SECTION6-",
+      "route": "static",
+      "symbol": "review_special_hardware",
+      "tests": [
+        "tests/test-section6-review.sh"
       ]
     },
     "siwa-parity": {

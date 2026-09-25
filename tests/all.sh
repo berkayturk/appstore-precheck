@@ -62,6 +62,13 @@ SUITE=(
   "test-metadata-review.sh" # local and opt-in ASC listing evidence
   "test-coverage-json.sh" # actual-run route states in the JSON envelope
   "test-section1-review.sh" # Safety evidence routes and explicit abstention
+  "test-section2-review.sh" # Performance evidence routes and explicit abstention
+  "test-section3-review.sh" # Commerce evidence routes and explicit abstention
+  "test-section4-review.sh" # Design evidence routes and explicit abstention
+  "test-section5-review.sh" # Privacy and legal evidence routes and explicit abstention
+  "test-section6-review.sh" # Intro and submission evidence routes and explicit abstention
+  "test-runtime-review.sh" # bounded screen discovery and opt-in blocking
+  "test-opt-in-review.sh" # temporary build orchestration and CLI opt-in
 )
 
 failed=()

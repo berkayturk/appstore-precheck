@@ -62,6 +62,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", type=Path)
     parser.add_argument("--run-results", type=Path)
+    parser.add_argument("--opt-summary", type=Path)
     args = parser.parse_args()
     try:
         envelope = json.load(sys.stdin)
@@ -89,6 +90,12 @@ def main():
         envelope["coverage_run"] = route_run_counts(report)
         envelope["coverage_summary"] = report["summary"]
         envelope["obligations"] = report["obligations"]
+        if args.opt_summary and args.opt_summary.is_file():
+            opt = json.loads(args.opt_summary.read_text())
+            envelope["opt_in"] = {"tiers": opt.get("tiers", {}),
+                                  "blocking": opt.get("blocking", []),
+                                  "run_results": opt.get("run_results"),
+                                  "report_dir": str(args.opt_summary.parent)}
         if errors:
             envelope["coverage_errors"] = errors
         json.dump(envelope, sys.stdout, ensure_ascii=False, separators=(",", ":"))

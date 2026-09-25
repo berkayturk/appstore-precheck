@@ -97,6 +97,8 @@ def review_access(rows):
 
 def review_screenshots(root):
     directory = root / "fastlane" / "screenshots"
+    if not directory.is_dir():
+        directory = root / "ios" / "fastlane" / "screenshots"
     if not directory.is_dir() or directory.is_symlink():
         return record(CHECKS[2], "SKIP", "No local fastlane screenshots; App Store Connect images were not inspected")
     files = [p for p in sorted(directory.rglob("*")) if p.is_file() and not p.is_symlink()

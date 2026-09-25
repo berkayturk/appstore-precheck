@@ -8,7 +8,7 @@ whole file to run the skill.
 - [Phase 0: Guideline drift check](#phase-0-guideline-drift-check)
 - [Phase 1: Rejection vectors](#phase-1-rejection-vectors)
 - [Phase 3: Pierre explains every finding](#phase-3-pierre-explains-every-finding)
-- [Phase 4: Pierre deep review (29 checks)](#phase-4-pierre-deep-review-29-semantic-checks)
+- [Phase 4: Pierre deep review (31 checks)](#phase-4-pierre-deep-review-31-semantic-checks)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [Evidence strength and confidence](#evidence-strength-and-confidence)
@@ -17,6 +17,7 @@ whole file to run the skill.
 - [SARIF output](#sarif-output---format-sarif)
 - [Real App Store outcomes](#real-app-store-outcomes-corpusoutcomes)
 - [Optional local dynamic simulator tier](#optional-local-dynamic-simulator-tier)
+- [Guideline obligation coverage](#guideline-obligation-coverage)
 - [Pre-submit manual checklist](#pre-submit-manual-checklist)
 
 ---
@@ -552,15 +553,22 @@ and emit advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` observa
 (three repeats on an erased device; a finding needs all three), first screen, dark-mode / Dynamic
 Type / iPad layout heuristics, the installed bundle's `Info.plist` / `DTXcode` / linked frameworks,
 hosts contacted vs `NSPrivacyTrackingDomains`, and the agent-driven paywall, Restore tap, permission
-prompt, demo-login and screenshot-parity checks. It is off by default, never changes the verdict,
-never writes to the user's project (it creates and deletes its own simulator, and never builds: the
-`.app` must already exist — `scripts/app-discover.sh` finds one), and is permanently local-only (it
+prompt, demo-login and screenshot-parity checks. It is off by default. Explicit
+`--dynamic-blocking` can add a FAIL only for a 3/3 launch or demo-login failure. It never writes
+to the user's project: `--build` builds a temporary copy, while `--app` uses a supplied artifact;
+the runner creates and deletes its own simulator. The tier is permanently local-only (it
 cannot run in CI). It *does* execute the app. `scripts/dynamic.sh` records every observation as
 `evidence: runtime` and reconciles it with the static findings; a Debug build never clears `needs
 build verification`. It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA
 replacement. When it is not run, the report carries the `runtime-not-audited` gap record; on a React
 Native / Flutter / Kotlin Multiplatform repo the static scan additionally carries
 `framework-not-audited`, because its code-level greps read Swift / ObjC only.
+
+---
+
+### Guideline obligation coverage
+
+The generated [coverage report](../../../docs/guideline-coverage.md) counts reviewed obligations and implemented routes separately from checks that actually ran for a project. The [route guide](guideline-coverage.md) documents the opt-in build, artifact, runtime, metadata, source evidence, and attestation results. Every obligation has a route, but partial evidence and a developer attestation do not amount to automatic approval. The default scan remains offline and read-only.
 
 ---
 

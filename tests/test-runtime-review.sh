@@ -99,8 +99,11 @@ chmod +x "$TMP/bin/xcrun"
 RUN="$ROOT/skills/appstore-precheck/scripts/dynamic-run.sh"
 APP="$ROOT/tests/fixtures/dynamic-bundle/Installed.app"
 PATH="$TMP/bin:$PATH" bash "$RUN" --app "$APP" --dynamic-blocking \
+  --explore --explore-seconds 60 --explore-screens 5 \
   --dry-run --out "$TMP/block-plan" > "$TMP/plan.txt" 2>/dev/null
 test "$(grep -c 'PLAN: xcrun simctl erase' "$TMP/plan.txt")" -eq 3
+PATH="$TMP/bin:$PATH" bash "$RUN" --app "$APP" --explore-seconds 361 \
+  --dry-run --out "$TMP/invalid-budget" >/dev/null 2>&1 && exit 1
 PATH="$TMP/bin:$PATH" bash "$RUN" --app "$APP" --dynamic-blocking \
   --repeats 2 --dry-run --out "$TMP/bad-plan" >/dev/null 2>&1 && exit 1
 

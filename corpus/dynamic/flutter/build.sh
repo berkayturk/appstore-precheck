@@ -9,8 +9,8 @@ shift
 command -v flutter >/dev/null 2>&1 || { echo "SKIP: Flutter SDK unavailable; install flutter and run flutter doctor"; exit 3; }
 STAGE="$(mktemp -d "${TMPDIR:-/tmp}/precheck-flutter-corpus.XXXXXX")" || exit 3
 trap 'rm -rf "$STAGE"' EXIT
-export HOME="$STAGE/home" PUB_CACHE="$STAGE/pub-cache"
-mkdir -p "$HOME"
+export PUB_CACHE="$STAGE/pub-cache" XDG_CONFIG_HOME="$STAGE/config" XDG_CACHE_HOME="$STAGE/cache"
+mkdir -p "$PUB_CACHE" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME"
 if ! flutter create --platforms ios --org org.appstoreprecheck.corpus --project-name precheck_flutter "$STAGE/project" >/dev/null 2>&1; then
   echo "SKIP: Flutter could not generate the iOS host (check flutter doctor and package access)"
   exit 3

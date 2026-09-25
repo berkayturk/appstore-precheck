@@ -169,4 +169,11 @@ out="$(bash "$RUN" --repo "$TMP/linked" --out "$TMP/output")"; st=$?
 assert_eq "$st" 3 "symlink input is SKIP"
 assert_contains "$out" 'symlink' "symlink gap explained"
 
+section "excluded dependency links do not block an isolated build"
+rm -rf "$TMP/native/node_modules"
+ln -s "$TMP/native" "$TMP/native/node_modules"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 0 "excluded node_modules symlink is ignored"
+rm "$TMP/native/node_modules"
+
 exit "$fails"

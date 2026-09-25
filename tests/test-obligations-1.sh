@@ -14,7 +14,7 @@ registry = json.loads((root / 'skills/appstore-precheck/references/check-registr
 rows = section['obligations']
 assert section['schema_version'] == 1 and section['section'] == '1'
 assert len(rows) == len({row['id'] for row in rows})
-assert all(row['apple_ref'].startswith('1.') for row in rows)
+assert all(row['apple_ref'] == '1' or row['apple_ref'].startswith('1.') for row in rows)
 assert all('text' not in row and len(row['criterion'].split()) <= 55 for row in rows)
 assert all(row['text_sha256'] and row['anchor'].startswith('https://developer.apple.com/') for row in rows)
 assert all(row['criterion'] not in ('Determine whether the applicable source requirement is satisfied.', 'Source fragment awaiting independent section review.') for row in rows)
@@ -28,7 +28,7 @@ assert any(row['retired_from'] for row in rows)
 private = Path(os.environ.get('APPSTORE_PRECHECK_PRIVATE_CATALOG', str(root / '.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json')))
 if private.is_file():
     source = json.loads(private.read_text())
-    fragments = [r for r in source['requirements'] if r['apple_ref'].startswith('1.')]
+    fragments = [r for r in source['requirements'] if r['apple_ref'] == '1' or r['apple_ref'].startswith('1.')]
     expected = {r['id'] for r in fragments}
     expected.update(a['id'] for r in fragments for a in r.get('editorial_draft', {}).get('proposed_atomic_parts', []))
     actual = {row['id'] for row in rows}

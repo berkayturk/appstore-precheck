@@ -117,13 +117,16 @@ unclassified=0
 # Ids ending in "-not-audited" are gap records (a SKIP that can be acknowledged by
 # id), not checks: they establish nothing, so they carry no labels and sit outside
 # the catalogue. The suffix is the convention; is_gap_record owns it.
+# The optional runner's diagnostic labels and dynamic rule expansion are not
+# static scanner sections; their check IDs are validated by the route registry.
 while IFS= read -r slug; do
   [[ -z "$slug" ]] && continue
   is_gap_record "$slug" && continue
   [[ -z "$(rule_evidence "$slug")" || -z "$(rule_confidence "$slug")" ]] && {
     echo "  FAIL: scan.sh sets '$slug' but it is unclassified"; unclassified=$((unclassified + 1)); }
 done < <(grep -oE 'set_rule "[^"]+"' "$ROOT/skills/appstore-precheck/scripts/scan.sh" \
-         | sed -E 's/set_rule "//; s/"$//' | sort -u)
+         | sed -E 's/set_rule "//; s/"$//' \
+         | grep -Ev '^(opt-in-review|dynamic-blocking|\$\{BASH_REMATCH\[1\]\})$' | sort -u)
 assert_eq "true"  "$(is_gap_record store-listing-not-audited && echo true || echo false)" "gap-record convention recognised"
 assert_eq "false" "$(is_gap_record ats-arbitrary-loads && echo true || echo false)"      "an ordinary rule is not a gap record"
 assert_eq "$unclassified" "0" "no scan.sh rule is missing a classification"

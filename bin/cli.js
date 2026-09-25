@@ -29,16 +29,26 @@ function printHelp() {
     `\n` +
     `Usage:\n` +
     `  npx appstore-precheck [options]\n` +
+    `  npx appstore-precheck dynamic --build [options]\n` +
     `  npx appstore-precheck review --repo <path> --prepare\n` +
     `  npx appstore-precheck review --bundle <json> --live\n` +
     `\n` +
     `Runs the static scanner over the current directory and prints a\n` +
-    `GREEN / YELLOW / RED verdict. Read-only: it never edits your files.\n` +
+    `GREEN / YELLOW / RED verdict. It never edits your project files.\n` +
+    `Dynamic build/run is opt-in and executes a temporary project copy.\n` +
     `\n` +
     `Options:\n` +
     `  --dir <path>        Directory to scan (default: current directory)\n` +
     `  --fail-on <level>   Exit non-zero at RED (default) or YELLOW\n` +
     `  --format <fmt>      Output format: text (default), json, or sarif\n` +
+    `  --build             Build a simulator app in a temporary project copy\n` +
+    `  --app <path>        Inspect and run an existing simulator .app\n` +
+    `  --metadata          Review local fastlane metadata\n` +
+    `  --asc-app-id <id>   Opt in to read-only App Store Connect metadata\n` +
+    `  --check-urls        Opt in to public support/privacy URL HEAD checks\n` +
+    `  --dynamic-blocking  Block only unanimous launch/demo-login failures\n` +
+    `  --out <path>        Keep the opt-in report outside the project\n` +
+    `  --dry-run           Plan an opt-in build without executing it\n` +
     `  -v, --version       Print the version and exit\n` +
     `  -h, --help          Show this help and exit\n` +
     `\n` +
@@ -56,7 +66,9 @@ function fail(message, code) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text' };
+  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text', build: false,
+    app: null, metadata: false, ascAppId: null, checkUrls: false,
+    dynamicBlocking: false, out: null, dryRun: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') { printHelp(); process.exit(0); }
@@ -78,6 +90,19 @@ function parseArgs(argv) {
       opts.format = v;
       continue;
     }
+    if (a === '--build') { opts.build = true; continue; }
+    if (a === '--app' || a === '--asc-app-id' || a === '--out') {
+      const value = argv[++i];
+      if (!value) fail(`${a} requires a value`, 64);
+      if (a === '--app') opts.app = value;
+      else if (a === '--asc-app-id') { opts.ascAppId = value; opts.metadata = true; }
+      else opts.out = value;
+      continue;
+    }
+    if (a === '--metadata') { opts.metadata = true; continue; }
+    if (a === '--check-urls') { opts.checkUrls = true; opts.metadata = true; continue; }
+    if (a === '--dynamic-blocking') { opts.dynamicBlocking = true; continue; }
+    if (a === '--dry-run') { opts.dryRun = true; continue; }
     fail(`unknown option: ${a} (try --help)`, 64);
   }
   return opts;
@@ -90,7 +115,10 @@ function main() {
     if (result.error) fail('python3 is required for optional semantic review', 70);
     process.exit(result.signal ? 70 : (result.status || 0));
   }
-  const opts = parseArgs(process.argv.slice(2));
+  const dynamic = process.argv[2] === 'dynamic';
+  const opts = parseArgs(process.argv.slice(dynamic ? 3 : 2));
+  if (dynamic && !opts.build && !opts.app) fail('dynamic requires --build or --app', 64);
+  if (opts.build && opts.app) fail('use --build or --app', 64);
 
   if (!fs.existsSync(SCAN) || !fs.existsSync(VERDICT)) {
     fail('bundled scanner scripts are missing from the package', 70);
@@ -104,6 +132,14 @@ function main() {
   // the enclosing git toplevel.
   const scanArgs = [SCAN, '--dir', opts.dir];
   if (opts.format !== 'text') scanArgs.push('--format', opts.format);
+  if (opts.build) scanArgs.push('--build');
+  if (opts.app) scanArgs.push('--app', opts.app);
+  if (opts.metadata) scanArgs.push('--metadata');
+  if (opts.ascAppId) scanArgs.push('--asc-app-id', opts.ascAppId);
+  if (opts.checkUrls) scanArgs.push('--check-urls');
+  if (opts.dynamicBlocking) scanArgs.push('--dynamic-blocking');
+  if (opts.out) scanArgs.push('--out', opts.out);
+  if (opts.dryRun) scanArgs.push('--dry-run');
   const scan = spawnSync('bash', scanArgs, {
     cwd: opts.dir,
     encoding: 'utf8',

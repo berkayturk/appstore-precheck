@@ -5,6 +5,11 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Added
+- Public, reviewed guideline obligation records with route and fixture validation; generated coverage and per-run evidence reports separate available routes from checks that executed.
+- Explicit isolated simulator builds, artifact inspection, bounded runtime exploration, read-only metadata/App Store Connect review, and developer attestation. Default scans remain offline and read-only.
+- A five-framework clean/broken simulator corpus and local scorecard runner. Runtime blocking is opt-in and limited to repeated launch or demo-login failure.
+
 ### Fixed
 - Correct scanner and Pierre guideline references, and require storefront/exception
   context before drawing conclusions from payment SDK signals.

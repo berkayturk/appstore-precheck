@@ -4,7 +4,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CHECK="$ROOT/skills/appstore-precheck/scripts/lib/section2-review.py"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
-mkdir -p "$TMP/risky/ios" "$TMP/risky/fastlane/screenshots/en-US" "$TMP/risky/node_modules" "$TMP/clean/ios"
+mkdir -p "$TMP/risky/ios" "$TMP/risky/fastlane/screenshots/en-US" "$TMP/risky/node_modules" "$TMP/clean/ios" "$TMP/nested/ios/fastlane/screenshots/en-US"
 cat > "$TMP/risky/ios/App.swift" <<'SWIFT'
 import SwiftUI
 struct AppView: View {
@@ -18,6 +18,7 @@ cat > "$TMP/risky/node_modules/ignored.ts" <<'TS'
 Text("Lorem ipsum")
 TS
 printf 'fake-image' > "$TMP/risky/fastlane/screenshots/en-US/phone.png"
+printf 'fake-image' > "$TMP/nested/ios/fastlane/screenshots/en-US/phone.png"
 cat > "$TMP/clean/ios/App.swift" <<'SWIFT'
 import SwiftUI
 // Text("Lorem ipsum") in a comment is not app content.
@@ -25,6 +26,7 @@ struct AppView: View { var body: some View { Text("Welcome") } }
 SWIFT
 python3 "$CHECK" --repo "$TMP/risky" > "$TMP/risky.json"
 python3 "$CHECK" --repo "$TMP/clean" > "$TMP/clean.json"
+python3 "$CHECK" --repo "$TMP/nested" > "$TMP/nested.json"
 python3 "$CHECK" --repo "$TMP/missing" > "$TMP/missing.json"
 python3 - "$TMP" <<'PY'
 import json, pathlib, sys
@@ -33,7 +35,7 @@ def checks(name):
     payload = json.loads((p/name).read_text())
     assert payload['schema_version'] == 1
     return {item['check_id']: item for item in payload['checks']}
-risky, clean, missing = map(checks, ('risky.json', 'clean.json', 'missing.json'))
+risky, clean, nested, missing = map(checks, ('risky.json', 'clean.json', 'nested.json', 'missing.json'))
 expected = {'section2-completeness-signals', 'section2-review-access-signals', 'section2-screenshot-packet'}
 assert set(risky) == expected
 assert all(item['status'] == 'NEEDS_REVIEW' for item in risky.values())
@@ -42,6 +44,7 @@ assert all(item['status'] == 'NOT_RUN' for item in missing.values())
 assert risky['section2-completeness-signals']['facets'] == {'placeholder': True, 'unfinished_code': True}
 assert risky['section2-review-access-signals']['facets'] == {'login': True, 'network': True}
 assert risky['section2-screenshot-packet']['facets'] == {'image_count': 1, 'locales': 1}
+assert nested['section2-screenshot-packet']['status'] == 'NEEDS_REVIEW'
 assert all(e.get('file') != 'node_modules/ignored.ts' for c in risky.values() for e in c['evidence'])
 assert 'Lorem ipsum' not in (p/'risky.json').read_text()
 assert 'authenticateUser' not in (p/'risky.json').read_text()

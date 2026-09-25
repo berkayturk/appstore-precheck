@@ -380,7 +380,17 @@ nothing is auto-fixed.
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
 | **4** | **Pierre deep review**: 31 semantic checks (23 Tier A + 8 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
-| **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: finds a simulator `.app` you already built (`scripts/app-discover.sh`, never builds), then `scripts/dynamic-run.sh` runs it on a throwaway simulator it creates and deletes — launch health three times on an erased device (a crash finding needs 3/3), first screen, dark-mode / Dynamic Type / iPad layout heuristics, the *installed* bundle's purpose strings / `DTXcode` / linked frameworks, hosts contacted vs `NSPrivacyTrackingDomains` — while the agent drives paywall / Restore-tap / permission / demo-login / screenshot-parity via Maestro. Advisory; never changes the verdict; a check it cannot drive is a `DYNAMIC-SKIP`, never a pass. `scripts/dynamic.sh` turns the transcript into `evidence: runtime` records and reconciles them with the static findings; a Debug build never clears `needs build verification`. Not read-only: it executes your app. |
+| **6** | *(opt-in)* **Artifact and simulator review**: `scan.sh --build` copies the project to a temporary directory, builds a simulator `.app`, inspects its bundle and runs it on a simulator created for this run. `--app <path>` uses an existing bundle; `--metadata` reads local fastlane metadata and optionally App Store Connect. Runtime findings are advisory unless `--dynamic-blocking` is explicit and a launch or demo login failure repeats 3/3. Unavailable evidence is SKIP/NOT_RUN. |
+
+### Guideline obligation coverage
+
+The public [coverage report](docs/guideline-coverage.md) is generated from reviewed obligation records and the check registry. It distinguishes routes that exist from checks that ran for an app; its automatic share only counts full automatic decisions. The default scan stays offline and keeps its existing verdict. To inspect a specific app with an isolated build, run:
+
+```bash
+bash skills/appstore-precheck/scripts/scan.sh --dir /path/to/app --build --metadata --out /tmp/precheck-review --format json
+```
+
+`--dry-run` shows the build plan. `--app /path/to/App.app` uses a supplied artifact, and `--asc-app-id <id>` enables read-only App Store Connect fields when credentials are in the environment. This opt-in path executes project build scripts and the app itself. See [route and result semantics](skills/appstore-precheck/references/guideline-coverage.md) and [the real simulator scorecard](docs/dynamic-scorecard.md).
 
 ### Evidence strength
 

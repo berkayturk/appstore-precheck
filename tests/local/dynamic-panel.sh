@@ -6,7 +6,7 @@ set -u
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 CORPUS="$ROOT/corpus/dynamic"
 SCRIPTS="$ROOT/skills/appstore-precheck/scripts"
-OUT="" FILTER_FW="" FILTER_VARIANT="" BUILD_TIMEOUT=1200 WINDOW=10 REPEATS=3
+OUT="" FILTER_FW="" FILTER_VARIANT="" BUILD_TIMEOUT=1200 WINDOW=10 REPEATS=3 EXPLORE_SECONDS=90
 usage() { echo "dynamic-panel.sh: $1" >&2; exit 64; }
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -16,12 +16,13 @@ while [[ $# -gt 0 ]]; do
     --build-timeout) [[ $# -ge 2 ]] || usage "$1 needs a value"; BUILD_TIMEOUT="$2"; shift 2 ;;
     --window) [[ $# -ge 2 ]] || usage "$1 needs a value"; WINDOW="$2"; shift 2 ;;
     --repeats) [[ $# -ge 2 ]] || usage "$1 needs a value"; REPEATS="$2"; shift 2 ;;
+    --explore-seconds) [[ $# -ge 2 ]] || usage "$1 needs a value"; EXPLORE_SECONDS="$2"; shift 2 ;;
     *) usage "unknown option '$1'" ;;
   esac
 done
 case "$FILTER_FW" in ""|swiftui|rn-bare|expo|flutter|kmp) ;; *) usage "unknown framework '$FILTER_FW'" ;; esac
 case "$FILTER_VARIANT" in ""|clean|broken) ;; *) usage "unknown variant '$FILTER_VARIANT'" ;; esac
-for n in "$BUILD_TIMEOUT" "$WINDOW" "$REPEATS"; do [[ "$n" =~ ^[0-9]+$ ]] || usage "time and repeat options must be integers"; done
+for n in "$BUILD_TIMEOUT" "$WINDOW" "$REPEATS" "$EXPLORE_SECONDS"; do [[ "$n" =~ ^[0-9]+$ ]] || usage "time and repeat options must be integers"; done
 (( BUILD_TIMEOUT >= 1 && REPEATS >= 1 )) || usage "timeout and repeats must be positive"
 [[ "$(uname -s)" == Darwin ]] || { echo "SKIP: dynamic panel requires macOS/Xcode"; exit 3; }
 command -v python3 >/dev/null 2>&1 || { echo "SKIP: Python 3 unavailable"; exit 3; }
@@ -55,7 +56,7 @@ for fw in swiftui rn-bare expo flutter kmp; do
     fi
     case "$fw" in swiftui) runtime_fw=native ;; rn-bare|expo) runtime_fw=rn ;; *) runtime_fw="$fw" ;; esac
     extra=()
-    if grep -q -- '--explore' "$SCRIPTS/dynamic-run.sh"; then extra+=(--explore); fi
+    if grep -q -- '--explore' "$SCRIPTS/dynamic-run.sh"; then extra+=(--explore --explore-seconds "$EXPLORE_SECONDS"); fi
     bash "$SCRIPTS/dynamic-run.sh" --app "$app" --repo "$CORPUS/$fw/$variant" \
       --framework "$runtime_fw" --out "$case_dir/runtime" --repeats "$REPEATS" \
       --window "$WINDOW" "${extra[@]+"${extra[@]}"}" > "$case_dir/runtime.txt" 2>&1

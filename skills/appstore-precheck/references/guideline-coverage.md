@@ -1,46 +1,25 @@
-# Guideline coverage and developer attestations
+# Guideline obligation coverage
 
-The public obligation catalog records each app obligation, its source reference, and possible check routes. `coverage.json` counts these routes. A route means a check is implemented; it does not mean that check ran or passed for a particular app. The run report records that distinction for every obligation.
+`python3 scripts/coverage.py --merge` combines the reviewed section files in `references/obligations/` and check fragments in `references/registry/`. It validates every route against an implementation and fixture test, then writes `guideline-obligations.json`, `check-registry.json`, the repository `coverage.json`, and `docs/guideline-coverage.md`. Run `python3 scripts/coverage.py --require-complete` in CI. Counts in the generated files are authoritative; route counts overlap.
 
-Run an obligation report with a results file from the checks you invoked:
+An obligation can have several partial routes. A static, artifact, runtime, or metadata signal is only a full automatic decision when its route declares `decides: full`. A `PASS` from a partial check does not prove that the obligation passed. Semantic review requires evidence and human judgment. Attestation records a developer answer and evidence pointer; `ATTESTED_YES` is not a verified pass. Process text and definitions carry a documented `not_app_checkable` reason rather than a false app result.
 
-```sh
-python3 skills/appstore-precheck/scripts/attestation-report.py \
-  --config /path/to/app/.appstore-precheck.json \
-  --run-results /path/to/check-results.json \
-  --out /path/to/obligation-report.json \
-  --markdown /path/to/obligation-report.md
+The optional local workflow is:
+
+```bash
+bash skills/appstore-precheck/scripts/scan.sh --dir /path/to/app --build --metadata --out /tmp/precheck-review --format json
+bash skills/appstore-precheck/scripts/scan.sh --dir /path/to/app --app /path/to/App.app --out /tmp/precheck-review --format json
+appstore-precheck dynamic --build --dir /path/to/app --out /tmp/precheck-review
 ```
 
-The config may contain developer answers under `attestations`. Use each public catalog obligation ID as a key:
+`--build` and `.appstore-precheck.json` `dynamic.build: true` are explicit build opt-ins. The build uses a temporary project copy and DerivedData there. It may run project scripts and access networks or backends. The runtime tier creates, erases, and deletes its own simulator, and executes the app. `--dry-run` prints the build plan without building. `--metadata` reads local fastlane data; `--asc-app-id` enables read-only App Store Connect queries using environment credentials. `--check-urls` explicitly enables public URL checks. Keep `--out` outside the app project. Without `--out`, a generated temporary report directory is retained and named in `opt_in.report_dir` so evidence pointers stay valid. The generated run results, source signal packets, artifact review, metadata review, runtime transcript, and screen inventory live there.
 
-```json
-{
-  "attestations": {
-    "atom-example-id": {
-      "answer": "yes",
-      "evidence": "docs/review-notes.md#content-rights",
-      "answered_on": "2026-09-25"
-    }
-  }
-}
+`scan.sh --format json` includes `coverage_run`, `coverage_summary`, and per-obligation results. `ran`, `skipped`, and `not_run` describe this particular run, not catalog capability. Missing tools, unreadable evidence, a failed build, or a timed-out simulator yield `SKIP` or `NOT_RUN`; a clean static scan alone does not turn unexecuted checks into passes. The attestation report can be generated with:
+
+```bash
+python3 skills/appstore-precheck/scripts/attestation-report.py --config /path/to/app/.appstore-precheck.json --run-results /tmp/precheck-review/run-results.json --out /tmp/precheck-review/attestation.json --markdown /tmp/precheck-review/attestation.md
 ```
 
-The example ID is a placeholder; use an ID from `guideline-obligations.json`. Answers are exactly `yes`, `no`, or `unknown`. Evidence is a nonempty, single-line pointer to a document, screenshot, test result, or review note; use a date in `YYYY-MM-DD` form. Do not put credentials or private content in the evidence pointer. A missing or invalid answer is `ATTESTATION_REQUIRED`. `unknown` stays `ATTESTATION_UNKNOWN`. A `yes` becomes `ATTESTED_YES`, which remains a developer statement and never becomes an observed PASS. A `no` becomes `ATTESTED_NO` for manual review.
+The config may contain `attestations` keyed by obligation ID, each with `answer` (`yes`, `no`, or `unknown`), `evidence`, and `answered_on`. Keep sensitive evidence in a private location; the report stores the pointer rather than uploading the material.
 
-The `--run-results` file is a JSON object whose `checks` field maps registered check IDs to results. A decisive result needs an evidence pointer. A skipped or unavailable result needs a reason:
-
-```json
-{
-  "checks": {
-    "registered-check-id": {
-      "status": "SKIP",
-      "reason": "Required input was unavailable"
-    }
-  }
-}
-```
-
-Accepted run statuses are `PASS`, `FINDING`, `WARN`, `SKIP`, `NOT_RUN`, and `REVIEW_REQUIRED`. A check missing from that file is `NOT_RUN`. Only a `full` route with an actual `PASS` or `FINDING` decides an obligation. Partial routes remain evidence but do not close the decision. The report's automatic decision rate counts only `static`, `artifact`, `runtime`, or `metadata` routes that made such a decision in this run. Semantic decisions and developer answers have their own status. The summary distinguishes available route counts from routes actually run. The report includes every obligation's routes, outcome, evidence pointer, section summary, required questions, and NOT_RUN/SKIP reasons.
-
-This is a local review aid. It does not change the existing scanner verdict or submission token. Keep generated run reports outside the app repository when their evidence pointers are sensitive.
+Runtime exploration uses a bounded screen and time budget. Its detected patterns are leads for review, especially with sparse Flutter or Compose accessibility trees. Only explicit `--dynamic-blocking` can add a `FAIL:` for a repeated 3/3 launch crash or demo login failure. Other runtime observations remain advisory. A Debug build never clears a build verification qualifier. The default invocation remains offline and keeps its existing text and verdict contract.

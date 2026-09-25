@@ -64,6 +64,9 @@ bash "$RUN" --repo "$TMP/clean" --login-required --asc-app-id test-app \
 bash "$RUN" --repo "$TMP/broken" --login-required --asc-app-id test-app \
   --asc-fixture "$TMP/broken-asc.json" > "$TMP/broken.json"
 bash "$RUN" --repo "$TMP/broken" > "$TMP/offline.json"
+mkdir -p "$TMP/nested/ios"
+cp -R "$TMP/clean/fastlane" "$TMP/nested/ios/fastlane"
+bash "$RUN" --repo "$TMP/nested" > "$TMP/nested.json"
 
 python3 - "$TMP" <<'PY'
 import json, pathlib, sys
@@ -71,6 +74,7 @@ root = pathlib.Path(sys.argv[1])
 clean = json.loads((root / 'clean.json').read_text())
 broken = json.loads((root / 'broken.json').read_text())
 offline = json.loads((root / 'offline.json').read_text())
+nested = json.loads((root / 'nested.json').read_text())
 good = {x['check_id']: x for x in clean['results']}
 bad = {x['check_id']: x for x in broken['results']}
 assert len(good) == 11 and len(bad) == 11, (good.keys(), bad.keys())
@@ -82,6 +86,9 @@ assert 'private-' not in (root / 'broken.json').read_text()
 assert clean['sources']['app_store_connect_fixture'] is True
 assert {x['check_id']: x['status'] for x in offline['results']}['meta-age-rating'] == 'NOT_RUN'
 assert {x['check_id']: x['status'] for x in offline['results']}['meta-review-notes'] == 'NEEDS_REVIEW'
+local = {x['check_id']: x['status'] for x in nested['results']}
+assert local['meta-privacy-url'] == 'PASS', local
+assert local['meta-screenshots'] == 'PASS', local
 PY
 
 # A transport/API failure is a gap, not an automatic clean result.

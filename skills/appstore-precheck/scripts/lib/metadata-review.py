@@ -334,9 +334,19 @@ def unavailable(check_id, source, reason):
     return record(check_id, "SKIP" if source else "NOT_RUN", reason)
 
 
+def local_metadata_dir(args):
+    if args.metadata_dir:
+        return pathlib.Path(args.metadata_dir)
+    repo = pathlib.Path(args.repo)
+    for path in (repo / "fastlane" / "metadata", repo / "ios" / "fastlane" / "metadata"):
+        if path.is_dir():
+            return path
+    return repo / "fastlane" / "metadata"
+
+
 def review(args, asc):
-    metadata = pathlib.Path(args.metadata_dir) if args.metadata_dir else pathlib.Path(args.repo) / "fastlane" / "metadata"
-    screenshots = pathlib.Path(args.repo) / "fastlane" / "screenshots"
+    metadata = local_metadata_dir(args)
+    screenshots = metadata.parent / "screenshots"
     local = metadata.is_dir()
     asc_on = asc is not None
     results = []
@@ -506,7 +516,7 @@ def main(argv=None):
     summary = {s: sum(x["status"] == s for x in results) for s in
                ("PASS", "FINDING", "NEEDS_REVIEW", "SKIP", "NOT_RUN")}
     payload = {"schema_version": 1,
-               "sources": {"fastlane_metadata": pathlib.Path(args.metadata_dir or pathlib.Path(args.repo) / "fastlane" / "metadata").is_dir(),
+               "sources": {"fastlane_metadata": local_metadata_dir(args).is_dir(),
                            "app_store_connect_requested": bool(args.asc_app_id),
                            "app_store_connect_fixture": bool(args.asc_fixture),
                            "url_head_requested": bool(args.check_urls)},
