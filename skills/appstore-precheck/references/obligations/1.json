@@ -2398,12 +2398,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-5ece3bde2fe9413899476f3aea9d3a4a"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-safety-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -2618,12 +2624,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-24aea17e273c43949a9b934d73033f31"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-safety-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -2905,12 +2917,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-448abf7794db44cca6d0260e0f3c1e4e"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-ugc-controls",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "ugc-moderation",
           "decides": "partial",
@@ -2948,12 +2966,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-212ef69c3df8479d878b5a3af90e1bc9"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-ugc-controls",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "ugc-moderation",
           "decides": "partial",
@@ -3022,12 +3046,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-c2818369c3784710bd8dcd0cf3560e89"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-ugc-controls",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "ugc-moderation",
           "decides": "partial",
@@ -3604,6 +3634,12 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "section1-kids-dependencies",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
           "check_id": "kids-ads-analytics",
           "decides": "partial",
           "evidence_class": "source",
@@ -3644,6 +3680,12 @@
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-kids-dependencies",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
         {
           "check_id": "kids-ads-analytics",
           "decides": "partial",
@@ -4022,6 +4064,12 @@
       "retired_from": [],
       "routes": [
         {
+          "check_id": "section1-safety-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
+        {
           "check_id": "health-claims",
           "decides": "partial",
           "evidence_class": "semantic",
@@ -4277,12 +4325,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-93680e1020fa40668a94bddee4f1451c"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-safety-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
@@ -4308,12 +4362,18 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "semantic",
       "related": [
         "req-93680e1020fa40668a94bddee4f1451c"
       ],
       "retired_from": [],
       "routes": [
+        {
+          "check_id": "section1-safety-signals",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "semantic"
+        },
         {
           "route": "attestation",
           "check_id": "attestation-generic",
