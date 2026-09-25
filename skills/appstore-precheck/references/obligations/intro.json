@@ -1962,6 +1962,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "runtime",
+          "check_id": "dyn-launch",
+          "decides": "partial",
+          "evidence_class": "runtime"
         }
       ],
       "section": "intro",
@@ -2068,6 +2074,24 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "semantic",
+          "check_id": "design-quality",
+          "decides": "partial",
+          "evidence_class": "semantic"
+        },
+        {
+          "route": "semantic",
+          "check_id": "minimum-functionality",
+          "decides": "partial",
+          "evidence_class": "semantic"
+        },
+        {
+          "route": "runtime",
+          "check_id": "dyn-launch",
+          "decides": "partial",
+          "evidence_class": "runtime"
         }
       ],
       "section": "intro",
@@ -2103,6 +2127,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "semantic",
+          "check_id": "rating-manipulation",
+          "decides": "partial",
+          "evidence_class": "semantic"
         }
       ],
       "section": "intro",
@@ -2139,6 +2169,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section6-external-components",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "intro",
@@ -2204,6 +2240,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "runtime",
+          "check_id": "dyn-launch",
+          "decides": "partial",
+          "evidence_class": "runtime"
         }
       ],
       "section": "intro",
@@ -2239,6 +2281,18 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-demo-account",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "runtime",
+          "check_id": "dyn-demo-login",
+          "decides": "partial",
+          "evidence_class": "runtime"
         }
       ],
       "section": "intro",
@@ -2275,6 +2329,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "static",
+          "check_id": "section6-special-hardware",
+          "decides": "partial",
+          "evidence_class": "source"
         }
       ],
       "section": "intro",
@@ -2311,6 +2371,18 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata"
+        },
+        {
+          "route": "semantic",
+          "check_id": "review-notes",
+          "decides": "partial",
+          "evidence_class": "semantic"
         }
       ],
       "section": "intro",
@@ -2347,6 +2419,12 @@
           "check_id": "attestation-generic",
           "decides": "full",
           "evidence_class": "developer-attestation"
+        },
+        {
+          "route": "metadata",
+          "check_id": "meta-iap-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata"
         }
       ],
       "section": "intro",
