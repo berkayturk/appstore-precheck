@@ -1,9 +1,9 @@
 {
   "attestation_only": 0,
   "automatic_possible": 0,
-  "obligations_without_route": 465,
+  "obligations_without_route": 475,
   "registered_checks": 115,
-  "routed_obligations": 119,
+  "routed_obligations": 110,
   "routes": {
     "artifact": 0,
     "attestation": 0,
@@ -11,7 +11,7 @@
     "not_app_checkable": 0,
     "runtime": 8,
     "semantic": 66,
-    "static": 67
+    "static": 58
   },
   "schema_version": 1,
   "semantic_possible": 66,
@@ -20,7 +20,7 @@
     "snapshot_sha256": "c533b971f44f463af01ed5b8c0f4e5c44a2b0ee71919883d12350232cd93453f",
     "url": "https://developer.apple.com/app-store/review/guidelines/"
   },
-  "total_obligations": 584,
+  "total_obligations": 585,
   "unrouted_ids": [
     "atom-6a9ccd921f234306b5c47b9eb2cfc16b",
     "atom-a4f2adc1120b4379883ed7055ffc2a8f",
@@ -366,6 +366,7 @@
     "atom-c38322d596c14993add7e247e19cea65",
     "atom-7e03867476aa4cc18bae2fca15c601af",
     "atom-eeabb9f540ca4925878c50301cab752f",
+    "atom-99e6360448f44c4eb98c1d6666b10b6d",
     "atom-8acd67995bb540da8799affe1d0ce235",
     "atom-bb20ccdb409842d0adbfcf265851b93a",
     "atom-ce94405f21d247f8855d6a6dbe2869a3",
@@ -402,6 +403,8 @@
     "atom-ff59fd94cf244bcb93683f762aef55c9",
     "atom-7bf8c37054064b7dad74dc80aee26117",
     "atom-3a537a6bfc9a4cada31f0e71a523dfbb",
+    "atom-5428457075704d9380e0b77dd56e167d",
+    "atom-8dab1547f1934f7fa816c63312c62158",
     "atom-ab5fede520524d80a3cc78a7f60fba2b",
     "atom-5345fc39e3384d7d877bbc3ab4690564",
     "atom-17d9787fe0d6421c8d75312e2e90b399",
@@ -439,12 +442,20 @@
     "atom-b615317e82294f26950c88c94b100f57",
     "atom-012fd83424324b45b0bb8ae62b355585",
     "atom-9cee242a020143f9bdbe68a1861f3e2b",
+    "atom-bf59fd54e04c4661a6a4dcbb248357af",
+    "atom-9b377905684f459fbbf35cef4a81a4b1",
+    "atom-2a8d143171424611a2ad06c9912de8c1",
+    "atom-9c54d5fd9e0547e3b0591c744198766a",
+    "atom-d4e0b637d3684d8db3ab8e803d6be810",
+    "atom-f48da7fed9d84582a76a058d068a0f43",
+    "atom-cf5b8329d8674d7ba0887cd89036a335",
     "atom-78f312ec6cf04db4913d28c197c363b8",
     "atom-fa591b0a5a0a46c7b4065a857dc24730",
     "atom-c2e46b4ee9a24f2494b96b9e2657ddbc",
     "atom-f1e2d49b361e4aa2bd28d71508586fd8",
     "atom-8116e55d49224629bc42c51e4b953b1f",
     "atom-5dbfbb56b2f24dc68e899b34ad4f7f9b",
+    "atom-05ddad1ca9ff409f92c7a87ae64473a1",
     "atom-c04cdf6675c044958452daefd7a8b545",
     "atom-b480b51d141242809e25a1049c9e423d",
     "atom-4d1e304f75454effa650679c9bfba5f3",
@@ -485,7 +496,6 @@
     "atom-a737e601b645d959436ab8f711a3015f",
     "atom-726881973a096ad43aa49a76b2f997b1",
     "atom-c969c9f28aa1f547adc9c2c637bb10fb",
-    "atom-3e6c8461610ea4b69e9d276e85b06725",
-    "atom-272cc4613bd9fafd09e58bcf425d944e"
+    "atom-3e6c8461610ea4b69e9d276e85b06725"
   ]
 }

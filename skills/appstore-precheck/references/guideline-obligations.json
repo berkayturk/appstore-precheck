@@ -26457,19 +26457,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-c37ec052c6704e34ab295d4af49eb5c7"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "support-privacy-url",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "5fcfd133cb2d1219d4b4d5e808ca7f1c1a83ec203de59bac7153e7f562300934"
     },
@@ -26855,8 +26848,10 @@
         "feature_condition": "Release collects user or usage data through the app or its SDKs.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "App obtains user consent before collecting user or usage data, including data considered anonymous at or immediately after collection.",
-      "exceptions": [],
+      "criterion": "Obtain consent before collecting user or usage data unless a specific applicable law authorizes collection without it and every condition of that law is met.",
+      "exceptions": [
+        "req-52f14863aefc46c48acb8417878ef66a"
+      ],
       "id": "atom-e3c314310e024e5298cd8539cc8ee3c8",
       "kind": "obligation",
       "platforms": [
@@ -27063,15 +27058,16 @@
         "review_status": "section_reviewed",
         "source_context": true
       },
-      "criterion": "Source passage for the separately identified 5.1.1(ii) criteria.",
+      "criterion": "A documented, applicable legal basis may permit collection without consent only under all of that law conditions.",
       "exceptions": [],
       "id": "req-52f14863aefc46c48acb8417878ef66a",
-      "kind": "informational",
+      "kind": "exception",
       "platforms": [
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
       "related": [
+        "atom-ce94405f21d247f8855d6a6dbe2869a3",
         "atom-ce94405f21d247f8855d6a6dbe2869a3"
       ],
       "retired_from": [],
@@ -27770,7 +27766,7 @@
         "feature_condition": "App offers social-network login but core app functionality does not require that network.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "App provides access without a specific social-network login, or through another mechanism, when core functionality is unrelated to that network.",
+      "criterion": "Do not require social-network login when core functionality works without it; profile retrieval, sharing, or friend invitations alone do not establish a core dependency.",
       "exceptions": [],
       "id": "atom-97d112fa95e74e209e31bf4ab46b2917",
       "kind": "obligation",
@@ -27808,7 +27804,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-97d112fa95e74e209e31bf4ab46b2917"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -28216,7 +28214,7 @@
         "feature_condition": "App aggregates or compiles personal information from any source.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Do not assemble personal profiles from indirect sources unless each affected person expressly agrees.",
+      "criterion": "Do not compile personal profiles from indirect sources, including public data; also obtain explicit consent for any allowed direct-source collection.",
       "exceptions": [],
       "id": "atom-7cb28983fd1b400a97da56fdf9f7c6da",
       "kind": "obligation",
@@ -29834,7 +29832,7 @@
         "feature_condition": "App uses a user’s health/fitness data to provide that user a direct benefit.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "A user’s health/fitness data may provide a benefit directly to that user.",
+      "criterion": "Direct health-data benefit is permitted only when the benefit provider submits the app and does not share the data with outsiders.",
       "exceptions": [],
       "id": "atom-11db63a9d44443c6ab6e0a88e3eacfc3",
       "kind": "exception",
@@ -29843,7 +29841,9 @@
       ],
       "primary_route": "not_app_checkable",
       "related": [
-        "req-45d1ab7f607a45329dafab591f3365d9"
+        "req-45d1ab7f607a45329dafab591f3365d9",
+        "atom-5428457075704d9380e0b77dd56e167d",
+        "atom-8dab1547f1934f7fa816c63312c62158"
       ],
       "retired_from": [],
       "routes": [
@@ -29866,27 +29866,20 @@
         "feature_condition": "App uses a user’s health/fitness data to provide that user a direct benefit.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "The organization granting a health-data-based benefit must submit the app itself.",
+      "criterion": "When a benefit uses health or fitness data, the entity providing that benefit submits the app.",
       "exceptions": [],
       "id": "atom-5428457075704d9380e0b77dd56e167d",
-      "kind": "definition",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
-        "req-45d1ab7f607a45329dafab591f3365d9"
+        "req-45d1ab7f607a45329dafab591f3365d9",
+        "atom-11db63a9d44443c6ab6e0a88e3eacfc3"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "3f0ad6ecb0e29ce5d095b381aa4a3e96ea93252108cef4c3006b0fd3413ef10d"
     },
@@ -29898,27 +29891,20 @@
         "feature_condition": "App uses a user’s health/fitness data to provide that user a direct benefit.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "The direct-benefit allowance requires keeping the relevant health data away from outside recipients.",
+      "criterion": "When a benefit uses health or fitness data, the app does not share that data with third parties.",
       "exceptions": [],
       "id": "atom-8dab1547f1934f7fa816c63312c62158",
-      "kind": "definition",
+      "kind": "obligation",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "not_app_checkable",
+      "primary_route": null,
       "related": [
-        "req-45d1ab7f607a45329dafab591f3365d9"
+        "req-45d1ab7f607a45329dafab591f3365d9",
+        "atom-11db63a9d44443c6ab6e0a88e3eacfc3"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": null,
-          "decides": "full",
-          "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
-          "route": "not_app_checkable"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "3f0ad6ecb0e29ce5d095b381aa4a3e96ea93252108cef4c3006b0fd3413ef10d"
     },
@@ -33011,19 +32997,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-4d18efd02eeb4ea083312e83633b1874"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "6dec59537ff1b44d684976c108c15f9aacd068e6020fb93a4adcc807cd2c3b8e"
     },
@@ -33042,19 +33021,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-4d18efd02eeb4ea083312e83633b1874"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "6dec59537ff1b44d684976c108c15f9aacd068e6020fb93a4adcc807cd2c3b8e"
     },
@@ -33073,19 +33045,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-4d18efd02eeb4ea083312e83633b1874"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "6dec59537ff1b44d684976c108c15f9aacd068e6020fb93a4adcc807cd2c3b8e"
     },
@@ -33135,19 +33100,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-931a5dbef88740ceb93bd290b7e7f545"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "fe301c79e0a5020db2f1711610cf091a421a87e0b739be0b704be10f2be55d73"
     },
@@ -33199,19 +33157,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-d7da5e9a4c57406c99e654e2ce758d81"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "42c212be19ab5d24d3db921264e2e48196eae241debdcb6178a1588a22f77c5f"
     },
@@ -33230,19 +33181,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-d7da5e9a4c57406c99e654e2ce758d81"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "42c212be19ab5d24d3db921264e2e48196eae241debdcb6178a1588a22f77c5f"
     },
@@ -33261,19 +33205,12 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
         "req-d7da5e9a4c57406c99e654e2ce758d81"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "realmoney-gambling",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "42c212be19ab5d24d3db921264e2e48196eae241debdcb6178a1588a22f77c5f"
     },
@@ -33468,7 +33405,7 @@
         "feature_condition": "App offers a VPN service and handles user data.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "VPN app does not sell VPN user data.",
+      "criterion": "VPN service does not sell any data it obtains through the service.",
       "exceptions": [],
       "id": "atom-fa591b0a5a0a46c7b4065a857dc24730",
       "kind": "obligation",
@@ -33492,7 +33429,7 @@
         "feature_condition": "App offers a VPN service and handles user data.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "VPN app does not use VPN user data for a separate purpose prohibited by this clause.",
+      "criterion": "VPN service does not use any data it obtains through the service for any purpose outside the permitted service.",
       "exceptions": [],
       "id": "atom-c2e46b4ee9a24f2494b96b9e2657ddbc",
       "kind": "obligation",
@@ -33516,7 +33453,7 @@
         "feature_condition": "App offers a VPN service and handles user data.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "VPN app does not disclose VPN user data to third parties for any purpose.",
+      "criterion": "VPN service does not disclose any data it obtains through the service to third parties for any purpose.",
       "exceptions": [],
       "id": "atom-f1e2d49b361e4aa2bd28d71508586fd8",
       "kind": "obligation",
@@ -33804,7 +33741,7 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service.",
+        "feature_condition": "App offers MDM service. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "MDM app requests and obtains the applicable Apple MDM capability before offering the service.",
@@ -33814,19 +33751,13 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": null,
       "related": [
-        "req-dfb9a93d0a5f47c9ba1ccfdd7ae8f458"
+        "req-dfb9a93d0a5f47c9ba1ccfdd7ae8f458",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
-      "routes": [
-        {
-          "check_id": "mdm",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        }
-      ],
+      "routes": [],
       "section": "5",
       "text_sha256": "f191a4a16298f34f9c442e0aea07f8c3e681b470634f776241217718ec61a2b7"
     },
@@ -33867,7 +33798,7 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service.",
+        "feature_condition": "App offers MDM service. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "MDM app is offered by a qualifying commercial enterprise, educational institution or government agency.",
@@ -33881,7 +33812,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-4fe0ff05651e4f8d86777d7ea7442b4c"
+        "req-4fe0ff05651e4f8d86777d7ea7442b4c",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -33957,7 +33889,7 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service.",
+        "feature_condition": "App offers MDM service. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "MDM app clearly declares user-data collection and uses on screen before purchase or use.",
@@ -33969,7 +33901,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-5b7b915a8f86452abbda3c80616f9252"
+        "req-5b7b915a8f86452abbda3c80616f9252",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -34012,7 +33945,7 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service.",
+        "feature_condition": "App offers MDM service. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "MDM app complies with applicable local laws in each offered territory.",
@@ -34024,7 +33957,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-3a658be4e50b44ec89f6b81137357e5e"
+        "req-3a658be4e50b44ec89f6b81137357e5e",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -34070,10 +34004,10 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service and processes managed data.",
+        "feature_condition": "App offers MDM service and processes managed data. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "MDM app does not sell user, device or managed-app data.",
+      "criterion": "MDM or configuration-profile app does not sell any data obtained through its service.",
       "exceptions": [],
       "id": "atom-1c570ec994cd459facac23fe6583a1a2",
       "kind": "obligation",
@@ -34082,7 +34016,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-c3e33eff995b4db5ac06ee436244228b"
+        "req-c3e33eff995b4db5ac06ee436244228b",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -34094,10 +34029,10 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service and processes managed data.",
+        "feature_condition": "App offers MDM service and processes managed data. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "MDM app does not use such data for a prohibited separate purpose.",
+      "criterion": "MDM or configuration-profile app does not use any data obtained through its service for a separate purpose.",
       "exceptions": [],
       "id": "atom-0d5d7c64c4a9440994be9ba845e06ac0",
       "kind": "obligation",
@@ -34106,7 +34041,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-c3e33eff995b4db5ac06ee436244228b"
+        "req-c3e33eff995b4db5ac06ee436244228b",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -34118,10 +34054,10 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service and processes managed data.",
+        "feature_condition": "App offers MDM service and processes managed data. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "MDM app does not disclose such data to third parties outside a supported narrow analytics exception.",
+      "criterion": "MDM or configuration-profile app does not disclose any data obtained through its service to outsiders except a substantiated narrow analytics allowance.",
       "exceptions": [
         "atom-a05b21d8462b4d31a64b354128c6e8ed"
       ],
@@ -34132,7 +34068,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-c3e33eff995b4db5ac06ee436244228b"
+        "req-c3e33eff995b4db5ac06ee436244228b",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -34144,7 +34081,7 @@
       "apple_ref": "5.5",
       "applicability": {
         "distribution": "App Store; check Notarization only where Apple marks this passage applicable.",
-        "feature_condition": "App offers MDM service and processes managed data.",
+        "feature_condition": "App offers MDM service and processes managed data. Also applies to an app offering configuration profiles, even without MDM service.",
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "MDM privacy policy commits to the data restrictions.",
@@ -34156,7 +34093,8 @@
       ],
       "primary_route": null,
       "related": [
-        "req-c3e33eff995b4db5ac06ee436244228b"
+        "req-c3e33eff995b4db5ac06ee436244228b",
+        "atom-1f300eb9147146dcb1af6ce08da28a72"
       ],
       "retired_from": [],
       "routes": [],
@@ -36026,7 +35964,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-c44cce19b9104b2ca5f658e0dd2a93a5"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -36493,7 +36433,7 @@
         "context": "App Store distribution",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Assess externally supplied SDKs, ads, analytics, and services before integration and retain responsibility for their app behavior.",
+      "criterion": "Assess externally supplied SDKs, ads, analytics, and services before integration, monitor them while distributed, and retain responsibility for their guideline compliance.",
       "exceptions": [],
       "id": "atom-f65a3e371c2c49229e0449753fef6859",
       "kind": "obligation",
@@ -37110,7 +37050,7 @@
         "context": "Applicable submitted or released app and review process",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Supply or arrange the devices, sample data, codes, or other external resources necessary to review submitted features.",
+      "criterion": "Arrange access to specialized hardware, sample data, codes, or other resources needed for review; an accepted demonstration video may establish a difficult hardware case, subject to later reviewer requests.",
       "exceptions": [],
       "id": "atom-e7ac52bbed6742cea1216b232bf01b1a",
       "kind": "obligation",
@@ -37194,10 +37134,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
       "apple_ref": "before-you-submit",
       "applicability": {
+        "condition": "A feature is not reasonably discoverable or its behavior is unclear to a reviewer.",
         "context": "Applicable submitted or released app and review process",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Explain hard-to-discover features in review notes with the steps and supporting material needed to exercise them.",
+      "criterion": "Explain features whose behavior or review steps are difficult to find, understand, or exercise; provide navigation and supporting material when needed.",
       "exceptions": [],
       "id": "atom-f9a98fc9b0544658a3b9a4b0152a160e",
       "kind": "obligation",
@@ -37222,11 +37163,11 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
       "apple_ref": "before-you-submit",
       "applicability": {
-        "condition": "A purchase path or delivered benefit is not obvious to a reviewer.",
+        "condition": "A purchase path or delivered benefit is difficult to find, understand, or exercise.",
         "context": "Applicable submitted or released app and review process",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Explain hard-to-discover purchases in the review channel, including how to reach and verify what they deliver.",
+      "criterion": "Explain purchases whose access, behavior, fulfillment, or verification would not be clear to a reviewer from the app alone.",
       "exceptions": [],
       "id": "atom-89ba978493b44f34a8ed0f9e9d4b9bb1",
       "kind": "obligation",
@@ -37426,7 +37367,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-f7d015611dde4efda35fcf052340c2f6"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -37830,7 +37773,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-fb4cb3107c0940c49cb5b9268e624813"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -37876,12 +37821,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
       "apple_ref": "after-you-submit",
       "applicability": {
-        "condition": "Rejected update qualifies for the bug-fix path and developer elects to request it.",
+        "condition": "A previously distributed app update qualifies for the maintenance bug-fix path, no legal or safety issue is involved, and the developer elects to request it.",
         "context": "Applicable submitted or released app and review process",
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "When seeking the eligible bug-fix path after rejection, tell App Review through App Store Connect and commit to resolving the issue in a later submission.",
-      "exceptions": [],
+      "exceptions": [
+        "req-fb3bf8d317c44b1383032c7a55cf047d"
+      ],
       "id": "atom-fb4cb3107c0940c49cb5b9268e624813",
       "kind": "obligation",
       "platforms": [
@@ -38080,19 +38027,27 @@
         "feature_condition": "A distributed app with customer experience and support history.",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Maintain a functioning, dependable customer experience; investigate sustained complaint and refund patterns as potential quality evidence.",
+      "criterion": "High complaint and refund levels are review signals for sustained quality concerns; investigation records may help assess the overall customer experience.",
       "exceptions": [],
       "id": "atom-272cc4613bd9fafd09e58bcf425d944e",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-4f1bbf1c338c4437b1d2f8c11b6fba12"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "Discretionary quality signal, not a fixed app-level duty.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "5",
       "text_sha256": "97889aa92546c815a102f2d467acbcf44ff6ef9627644d6636e3690007b10780"
     }

@@ -421,7 +421,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-c44cce19b9104b2ca5f658e0dd2a93a5"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -1477,7 +1479,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-f7d015611dde4efda35fcf052340c2f6"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -1857,7 +1861,9 @@
         "all_apple_platforms"
       ],
       "primary_route": "not_app_checkable",
-      "related": [],
+      "related": [
+        "atom-fb4cb3107c0940c49cb5b9268e624813"
+      ],
       "retired_from": [],
       "routes": [
         {
@@ -2075,7 +2081,7 @@
         "unknown": "NEEDS_REVIEW",
         "condition": "External components or services are integrated."
       },
-      "criterion": "Assess externally supplied SDKs, ads, analytics, and services before integration and retain responsibility for their app behavior.",
+      "criterion": "Assess externally supplied SDKs, ads, analytics, and services before integration, monitor them while distributed, and retain responsibility for their guideline compliance.",
       "exceptions": [],
       "id": "atom-f65a3e371c2c49229e0449753fef6859",
       "kind": "obligation",
@@ -2190,7 +2196,7 @@
         "unknown": "NEEDS_REVIEW",
         "condition": "Review requires hardware or a resource beyond ordinary app access."
       },
-      "criterion": "Supply or arrange the devices, sample data, codes, or other external resources necessary to review submitted features.",
+      "criterion": "Arrange access to specialized hardware, sample data, codes, or other resources needed for review; an accepted demonstration video may establish a difficult hardware case, subject to later reviewer requests.",
       "exceptions": [],
       "id": "atom-e7ac52bbed6742cea1216b232bf01b1a",
       "kind": "obligation",
@@ -2216,9 +2222,10 @@
       "apple_ref": "before-you-submit",
       "applicability": {
         "context": "Applicable submitted or released app and review process",
-        "unknown": "NEEDS_REVIEW"
+        "unknown": "NEEDS_REVIEW",
+        "condition": "A feature is not reasonably discoverable or its behavior is unclear to a reviewer."
       },
-      "criterion": "Explain hard-to-discover features in review notes with the steps and supporting material needed to exercise them.",
+      "criterion": "Explain features whose behavior or review steps are difficult to find, understand, or exercise; provide navigation and supporting material when needed.",
       "exceptions": [],
       "id": "atom-f9a98fc9b0544658a3b9a4b0152a160e",
       "kind": "obligation",
@@ -2245,9 +2252,9 @@
       "applicability": {
         "context": "Applicable submitted or released app and review process",
         "unknown": "NEEDS_REVIEW",
-        "condition": "A purchase path or delivered benefit is not obvious to a reviewer."
+        "condition": "A purchase path or delivered benefit is difficult to find, understand, or exercise."
       },
-      "criterion": "Explain hard-to-discover purchases in the review channel, including how to reach and verify what they deliver.",
+      "criterion": "Explain purchases whose access, behavior, fulfillment, or verification would not be clear to a reviewer from the app alone.",
       "exceptions": [],
       "id": "atom-89ba978493b44f34a8ed0f9e9d4b9bb1",
       "kind": "obligation",
@@ -2328,10 +2335,12 @@
       "applicability": {
         "context": "Applicable submitted or released app and review process",
         "unknown": "NEEDS_REVIEW",
-        "condition": "Rejected update qualifies for the bug-fix path and developer elects to request it."
+        "condition": "A previously distributed app update qualifies for the maintenance bug-fix path, no legal or safety issue is involved, and the developer elects to request it."
       },
       "criterion": "When seeking the eligible bug-fix path after rejection, tell App Review through App Store Connect and commit to resolving the issue in a later submission.",
-      "exceptions": [],
+      "exceptions": [
+        "req-fb3bf8d317c44b1383032c7a55cf047d"
+      ],
       "id": "atom-fb4cb3107c0940c49cb5b9268e624813",
       "kind": "obligation",
       "platforms": [
