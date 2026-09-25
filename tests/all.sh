@@ -50,6 +50,7 @@ SUITE=(
   "test-coverage.sh"   # obligation schema, registry, and route coverage
   "test-copyright-boundary.sh" # source-text and npm package boundary
   "test-default-golden.sh" # default scan text pinned to main baseline
+  "test-build-run.sh" # isolated opt-in build plans and source immutability
 )
 
 failed=()

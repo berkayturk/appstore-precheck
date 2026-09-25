@@ -5,7 +5,10 @@ build_project() { # root framework -> prints relative .xcworkspace/.xcodeproj or
   local root="$1" fw="$2" base found
   base="$root"
   [[ "$fw" == kmp ]] && base="$root/iosApp"
-  found="$(find "$base" -maxdepth 4 -type d -name '*.xcworkspace' -not -path '*/Pods/*' -print -quit 2>/dev/null)"
+  # Every .xcodeproj contains an internal project.xcworkspace. That is not a
+  # top-level CocoaPods workspace and must not shadow the project itself.
+  found="$(find "$base" -maxdepth 4 -type d -name '*.xcworkspace' \
+    -not -path '*/Pods/*' -not -path '*.xcodeproj/*' -print -quit 2>/dev/null)"
   [[ -n "$found" ]] || found="$(find "$base" -maxdepth 4 -type d -name '*.xcodeproj' -print -quit 2>/dev/null)"
   if [[ -z "$found" && -f "$root/Package.swift" ]]; then found="$root/Package.swift"; fi
   [[ -n "$found" ]] || return 1

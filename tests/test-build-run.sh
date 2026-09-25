@@ -45,6 +45,10 @@ assert_contains "$out" '-derivedDataPath' "derived data isolated"
 assert_contains "$out" 'CODE_SIGNING_ALLOWED=NO build' "signing disabled"
 assert_absent "$out" 'npm ci' "native plan has no JS install"
 assert_eq "$(hash_tree "$TMP/native")" "$before" "dry run leaves source untouched"
+mkdir -p "$TMP/native/ios/App.xcodeproj/project.xcworkspace"
+out="$(bash "$RUN" --repo "$TMP/native" --dry-run)"
+assert_contains "$out" '-project ios/App.xcodeproj' "internal project workspace does not shadow Xcode project"
+assert_absent "$out" '-workspace ios/App.xcodeproj/project.xcworkspace' "nested workspace not selected"
 
 section "React Native bare and lockfile installers"
 mkproject rn
