@@ -7,7 +7,7 @@ This counts available routes, not checks that ran for an app. Routes can overlap
 | Obligations | 558 | 100% |
 | Routed | 220 | 39.4% |
 | Without route | 338 | 60.6% |
-| Potential automatic decision | 184 | 33.0% |
+| Potential automatic decision | 0 | 0.0% |
 | Semantic route | 140 | 25.1% |
 | Attestation only | 0 | 0.0% |
 

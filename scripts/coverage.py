@@ -89,7 +89,7 @@ def report(catalog, checks):
         route_counts.update(routes)
         if not routes:
             gaps.append(item['id'])
-        if routes & AUTO:
+        if any(r['route'] in AUTO and r['decides'] == 'full' for r in item['routes']):
             automatic += 1
         if 'semantic' in routes:
             semantic += 1

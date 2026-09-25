@@ -1,6 +1,6 @@
 {
   "attestation_only": 0,
-  "automatic_possible": 184,
+  "automatic_possible": 0,
   "obligations_without_route": 338,
   "registered_checks": 106,
   "routed_obligations": 220,
