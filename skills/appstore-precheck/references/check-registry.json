@@ -94,6 +94,96 @@
         "tests/test-evidence.sh"
       ]
     },
+    "artifact-ats": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_ats",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-debug": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_debug",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-embedded-sdk": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_frameworks",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-entitlements": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_entitlements",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-executable-loading": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_loading",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-private-api": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_private",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-reason-api": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_reasons",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-sdk": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_sdk",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
+    "artifact-url-schemes": {
+      "evidence_class": "artifact",
+      "implementation": "skills/appstore-precheck/scripts/lib/artifact-review.py",
+      "line_prefix": "ARTIFACT-",
+      "route": "artifact",
+      "symbol": "review_schemes",
+      "tests": [
+        "tests/test-artifact-review.sh"
+      ]
+    },
     "ats-arbitrary-loads": {
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/scan.sh",

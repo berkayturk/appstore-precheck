@@ -2,7 +2,7 @@
   "attestation_only": 0,
   "automatic_possible": 0,
   "obligations_without_route": 414,
-  "registered_checks": 106,
+  "registered_checks": 115,
   "routed_obligations": 158,
   "routes": {
     "artifact": 0,
