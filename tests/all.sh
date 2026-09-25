@@ -47,6 +47,8 @@ SUITE=(
   "test-rag-run-guard.sh" # eval/run.sh --rag mismatch guard (RAG eval, no network)
   "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
   "test-typesafe.sh"   # optional typed semantic review, transport/cache failures, gate isolation
+  "test-coverage.sh"   # obligation schema, registry, and route coverage
+  "test-copyright-boundary.sh" # source-text and npm package boundary
 )
 
 failed=()

@@ -1,0 +1,1135 @@
+{
+  "checks": {
+    "S1": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/screenshot-vision-review.md",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "S1",
+      "tests": [
+        "tests/test-coverage.sh"
+      ]
+    },
+    "S2": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/screenshot-vision-review.md",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "S2",
+      "tests": [
+        "tests/test-coverage.sh"
+      ]
+    },
+    "S3": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/screenshot-vision-review.md",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "S3",
+      "tests": [
+        "tests/test-coverage.sh"
+      ]
+    },
+    "S4": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/screenshot-vision-review.md",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "S4",
+      "tests": [
+        "tests/test-coverage.sh"
+      ]
+    },
+    "S5": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/screenshot-vision-review.md",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "S5",
+      "tests": [
+        "tests/test-coverage.sh"
+      ]
+    },
+    "account-no-delete": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "account-no-delete",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "ai-provider-consent": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "ai-provider-consent",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "analytics-privacyinfo-mismatch": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "analytics-privacyinfo-mismatch",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "applepay-recurring-disclosure": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "applepay-recurring-disclosure",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "ats-arbitrary-loads": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "ats-arbitrary-loads",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "att-usage": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "att-usage",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "autorenew-disclosure": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "autorenew-disclosure",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "background-modes-unused": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "background-modes-unused",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "beta-language": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "beta-language",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "brand-use": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "brand-use",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "category-differentiation": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "category-differentiation",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "category-fit": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "category-fit",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "claims-code": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "claims-code",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "competitor-mentions": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "competitor-mentions",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "contest-rules": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "contest-rules",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "crypto-wallet-mining": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "crypto-wallet-mining",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "custom-review-prompt": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "custom-review-prompt",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "demo-account": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "demo-account",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "design-quality": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "design-quality",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "developer-identity": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "developer-identity",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "dyn-dark-mode": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-dark-mode",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-demo-login": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-demo-login",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-dynamic-type": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-dynamic-type",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-first-screen": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-first-screen",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-hosts-contacted": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-hosts-contacted",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-install": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-install",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-ipad-layout": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-ipad-layout",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-launch": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-launch",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-paywall-visible": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-paywall-visible",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-permission-prompt": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-permission-prompt",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-restore-tap": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-restore-tap",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-screenshot-parity": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-screenshot-parity",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-shipped-bundle": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-shipped-bundle",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-shipped-links": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-shipped-links",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "dyn-shipped-sdk": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "line_prefix": "DYNAMIC-",
+      "route": "runtime",
+      "symbol": "dyn-shipped-sdk",
+      "tests": [
+        "tests/test-dynamic-reconcile.sh",
+        "tests/test-dynamic-run.sh"
+      ]
+    },
+    "entitlement-purpose": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "entitlement-purpose",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "executable-code-download": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "executable-code-download",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "export-compliance": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "export-compliance",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "external-purchase": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "external-purchase",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "external-purchase-link": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "external-purchase-link",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "forced-login": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "forced-login",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "generic-purpose-string": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "generic-purpose-string",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "health-claims": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "health-claims",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "health-data-use": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "health-data-use",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "health-icloud-sync": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "health-icloud-sync",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "ipv4-literal": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "ipv4-literal",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "keyboard-full-access": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "keyboard-full-access",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "kids-ads-analytics": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "kids-ads-analytics",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "kids-wording": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "kids-wording",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "locale-metadata-parity": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "locale-metadata-parity",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "locale-parity": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "locale-parity",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "login-parity": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "login-parity",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "mdm": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "mdm",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "metadata-char-limits": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "metadata-char-limits",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "metadata-pricing-language": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "metadata-pricing-language",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "min-functionality-nav": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "min-functionality-nav",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "minimum-functionality": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "minimum-functionality",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "misleading-marketing": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "misleading-marketing",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "parental-gates": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "parental-gates",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "paywall-trial-emphasis": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "paywall-trial-emphasis",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "paywall-urgency": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "paywall-urgency",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "permission-denial": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "permission-denial",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "permission-priming": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "permission-priming",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "permission-priming-cta": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "permission-priming-cta",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "permission-proportionality": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "permission-proportionality",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "placeholder-metadata": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "placeholder-metadata",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "preview-consistency": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "preview-consistency",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "pricing-consistency": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "pricing-consistency",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "privacy-consistency": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "privacy-consistency",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "privacy-manifest-parity": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "privacy-manifest-parity",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "private-api": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "private-api",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "purpose-strings": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "purpose-strings",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "push-marketing-optout": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "push-marketing-optout",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "rating-manipulation": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "rating-manipulation",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "rating-sentiment-gate": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "rating-sentiment-gate",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "realmoney-gambling": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "realmoney-gambling",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "remote-desktop": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "remote-desktop",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "review-incentives": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "review-incentives",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "review-notes": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "review-notes",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "safari-extension": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "safari-extension",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "saturated-category": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "saturated-category",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "screenshot-consistency": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "screenshot-consistency",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "screenshot-dimensions": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "screenshot-dimensions",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "screenshots-per-locale": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "screenshots-per-locale",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "screentime-justification": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "screentime-justification",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "siwa-parity": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "siwa-parity",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "subscription-disclosure": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "subscription-disclosure",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "subscription-eula-metadata": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "subscription-eula-metadata",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "subscription-links-restore": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "subscription-links-restore",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "support-privacy-url": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "support-privacy-url",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "thirdparty-payment-sdk": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "thirdparty-payment-sdk",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "tracking-consistency": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "tracking-consistency",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "tracking-sdk-no-att": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "tracking-sdk-no-att",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "trial-disclosure": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "trial-disclosure",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "ugc-moderation": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "ugc-moderation",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "ugc-no-moderation": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "ugc-no-moderation",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "usage-description-crosscheck": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "usage-description-crosscheck",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "vpn-disclosure": {
+      "evidence_class": "semantic",
+      "implementation": "skills/appstore-precheck/references/review-catalog.json",
+      "line_prefix": "REVIEW-",
+      "route": "semantic",
+      "symbol": "vpn-disclosure",
+      "tests": [
+        "tests/test-typesafe.py"
+      ]
+    },
+    "vpn-networkextension": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "vpn-networkextension",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "webview-wrapper": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "webview-wrapper",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    },
+    "xcode-sdk-requirement": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/scan.sh",
+      "line_prefix": "FAIL:/WARN:/PASS:",
+      "route": "static",
+      "symbol": "xcode-sdk-requirement",
+      "tests": [
+        "tests/run.sh",
+        "tests/test-evidence.sh"
+      ]
+    }
+  },
+  "schema_version": 1
+}
