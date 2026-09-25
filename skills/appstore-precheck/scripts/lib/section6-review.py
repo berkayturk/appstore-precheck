@@ -6,6 +6,7 @@ of a signal never establishes that a submitted app satisfies these duties.
 """
 import argparse
 import json
+import os
 import pathlib
 import re
 import sys
@@ -41,12 +42,17 @@ def eligible(root, path):
 
 def files(root, predicate):
     found = 0
-    for path in sorted(root.rglob("*")):
-        if predicate(path) and eligible(root, path):
-            yield path
-            found += 1
-            if found >= MAX_FILES:
-                break
+    for current, dirs, names in os.walk(str(root), followlinks=False):
+        dirs[:] = sorted(name for name in dirs if name not in EXCLUDED and
+                         not name.startswith(".") and
+                         not (pathlib.Path(current) / name).is_symlink())
+        for name in sorted(names):
+            path = pathlib.Path(current) / name
+            if predicate(path) and eligible(root, path):
+                yield path
+                found += 1
+                if found >= MAX_FILES:
+                    return
 
 
 def relative(root, path):
