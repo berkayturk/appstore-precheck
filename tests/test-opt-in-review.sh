@@ -81,5 +81,13 @@ checks = {}
 runner.import_dynamic(checks, 'DYNAMIC-PASS: 5.1.1 [dyn-shipped-bundle:NSCameraUsageDescription] — purpose string present', '/tmp/clean-transcript.txt')
 assert checks['dyn-shipped-bundle']['status'] == 'PASS'
 engine.validate_run_results({'checks':checks}, registry)
+checks = {}
+runner.record(checks, 'dyn-launch', 'SKIP', reason='x' * 900 + '\nsecond line ' + 'y' * 200)
+assert len(checks['dyn-launch']['reason']) <= 500 and '\n' not in checks['dyn-launch']['reason']
+engine.validate_run_results({'checks': checks}, registry)
+checks = {}
+runner.import_records(checks, [{'check_id': 'dyn-account-deletion', 'status': 'NEEDS_REVIEW', 'reason': 'r'}], 'inv.json')
+assert checks['dyn-account-deletion']['status'] == 'REVIEW_REQUIRED'
+assert engine.validate_run_results({'checks': {'dyn-launch': {'status': 'NEEDS_REVIEW', 'reason': 'alias'}}}, registry)['dyn-launch']['status'] == 'REVIEW_REQUIRED'
 print('dynamic subcheck aggregation and registry validation: OK')
 PY

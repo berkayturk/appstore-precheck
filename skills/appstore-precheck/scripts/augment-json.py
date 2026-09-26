@@ -4,11 +4,14 @@
 import argparse
 import importlib.util
 import json
+import re
 import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REF = HERE.parent / "references"
+SILENT_STATIC_REASON = ("Static rule ran in this scan; it emits no line when no applicable signal "
+                        "exists in the project")
 
 
 def load_attestation_engine():
@@ -43,6 +46,33 @@ def normalize_static(findings, registry):
     return normalized
 
 
+def static_rule_catalogue():
+    """Rule slugs the default scanner always evaluates (findings.sh rule_slug)."""
+    text = (HERE / "findings.sh").read_text(errors="replace")
+    return set(re.findall(r"[0-9]+\)\s+echo\s+([a-z0-9-]+)\s*;;", text))
+
+
+def mark_silent_static(checks, registry):
+    """Routed static rules that ran but wrote no line are not 'never invoked'."""
+    marked = dict(checks)
+    for check_id in static_rule_catalogue():
+        entry = registry.get("checks", {}).get(check_id)
+        if entry and entry.get("route") == "static" and check_id not in marked:
+            marked[check_id] = {"status": "NOT_RUN", "reason": SILENT_STATIC_REASON}
+    return marked
+
+
+def accept_run_results(raw, registry, engine, errors):
+    """Validate each observed check on its own so one bad record cannot erase the tier."""
+    accepted = {}
+    for check_id, result in raw.items():
+        try:
+            accepted.update(engine.validate_run_results({"checks": {check_id: result}}, registry))
+        except (ValueError, KeyError, TypeError) as exc:
+            errors.append("Optional check result dropped: " + str(exc))
+    return accepted
+
+
 def route_run_counts(report):
     counts = {}
     for row in report["obligations"]:
@@ -75,10 +105,13 @@ def main():
         except (OSError, ValueError, json.JSONDecodeError):
             config = {}
             errors.append("Attestation config could not be read; answers were not applied")
-        checks = normalize_static(envelope.get("findings", []), registry)
+        checks = mark_silent_static(normalize_static(envelope.get("findings", []), registry), registry)
         if args.run_results and args.run_results.is_file():
             try:
-                checks.update(engine.read_object(args.run_results).get("checks", {}))
+                observed = engine.read_object(args.run_results).get("checks", {})
+                if not isinstance(observed, dict):
+                    raise ValueError("run results checks must be an object")
+                checks.update(accept_run_results(observed, registry, engine, errors))
             except (OSError, ValueError, json.JSONDecodeError):
                 errors.append("Optional check results could not be read")
         try:

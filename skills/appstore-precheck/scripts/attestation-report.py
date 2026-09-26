@@ -18,6 +18,8 @@ REF = HERE.parent.parent / 'references'
 AUTO_ROUTES = {'static', 'artifact', 'runtime', 'metadata'}
 DECISIVE = {'PASS', 'FINDING'}
 RUN_STATUSES = DECISIVE | {'WARN', 'SKIP', 'NOT_RUN', 'REVIEW_REQUIRED'}
+# Route checks emit NEEDS_REVIEW; the report vocabulary spells it REVIEW_REQUIRED.
+STATUS_ALIASES = {'NEEDS_REVIEW': 'REVIEW_REQUIRED'}
 ANSWERS = {'yes', 'no', 'unknown'}
 
 
@@ -43,6 +45,9 @@ def validate_run_results(run_results, registry):
     unknown = set(checks) - set(registry.get('checks', {}))
     if unknown:
         raise ValueError('run results contain unregistered check: ' + sorted(unknown)[0])
+    checks = {check_id: (dict(result, status=STATUS_ALIASES.get(result.get('status'), result.get('status')))
+                         if isinstance(result, dict) else result)
+              for check_id, result in checks.items()}
     for check_id, result in checks.items():
         if not isinstance(result, dict) or result.get('status') not in RUN_STATUSES:
             raise ValueError(f'{check_id}: invalid run status')

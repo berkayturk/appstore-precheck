@@ -33,17 +33,26 @@ def skip_reason(process, fallback):
     return fallback
 
 
+MAX_POINTER = 500
+
+
+def single_line(value, fallback):
+    """Collapse a free-text reason to one line within the report pointer limit."""
+    text = " ".join(str(value or "").split())
+    return (text or fallback)[:MAX_POINTER]
+
+
 def record(checks, check_id, status, reason="", evidence=""):
     result = {"status": status}
     if status in {"PASS", "FINDING", "WARN"}:
-        result["evidence"] = evidence or "review:" + check_id
+        result["evidence"] = single_line(evidence, "review:" + check_id)
     elif status in {"SKIP", "NOT_RUN", "REVIEW_REQUIRED"}:
-        result["reason"] = reason or "Evidence was insufficient"
+        result["reason"] = single_line(reason, "Evidence was insufficient")
     checks[check_id] = result
 
 
 def normalize(status):
-    return {"NEEDS_REVIEW": "REVIEW_REQUIRED", "WARN": "WARN"}.get(status, status)
+    return {"NEEDS_REVIEW": "REVIEW_REQUIRED"}.get(status, status)
 
 
 def import_records(checks, rows, evidence):
