@@ -1,36 +1,44 @@
 {
   "checks": {
-    "section5-contact-select-all": {
-      "route": "static",
-      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
-      "symbol": "review_contact_select_all",
-      "tests": ["tests/test-section5-review.sh"],
-      "line_prefix": "SECTION5-",
-      "evidence_class": "source"
-    },
     "section5-contact-preselect": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
       "symbol": "review_contact_preselect",
-      "tests": ["tests/test-section5-review.sh"],
-      "line_prefix": "SECTION5-",
-      "evidence_class": "source"
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
     },
-    "section5-safari-obscure": {
-      "route": "static",
+    "section5-contact-select-all": {
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
-      "symbol": "review_safari_obscure",
-      "tests": ["tests/test-section5-review.sh"],
       "line_prefix": "SECTION5-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_contact_select_all",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
     },
     "section5-privacy-entry": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
-      "symbol": "review_privacy_entry",
-      "tests": ["tests/test-section5-review.sh"],
       "line_prefix": "SECTION5-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_privacy_entry",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-safari-obscure": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_safari_obscure",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
     }
   }
 }

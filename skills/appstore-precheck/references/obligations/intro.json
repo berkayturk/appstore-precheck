@@ -18,10 +18,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -45,10 +45,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -72,10 +72,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -99,10 +99,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -126,10 +126,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -153,10 +153,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -180,10 +180,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -207,10 +207,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -234,10 +234,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -261,10 +261,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -288,10 +288,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -317,10 +317,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-aa8284569e164afb823d07720c3ca324.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -344,10 +344,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -371,10 +371,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -398,10 +398,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -427,10 +427,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-c44cce19b9104b2ca5f658e0dd2a93a5.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -456,10 +456,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-c44cce19b9104b2ca5f658e0dd2a93a5.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -483,10 +483,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -510,10 +510,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -537,10 +537,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -564,10 +564,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -594,10 +594,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-a386ca273c58478cb0f5608babab9a81, atom-240f52a443aa466f840ab6ee91f0811d.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -621,10 +621,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -648,10 +648,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -675,10 +675,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -702,10 +702,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -731,10 +731,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f7d015611dde4efda35fcf052340c2f6.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -760,10 +760,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f65a3e371c2c49229e0449753fef6859.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -787,10 +787,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -814,10 +814,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -841,10 +841,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -868,10 +868,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -895,10 +895,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -922,10 +922,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -949,10 +949,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -976,10 +976,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1003,10 +1003,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1030,10 +1030,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1060,10 +1060,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-7660b11f2dad457fbefdac9a83a74d99, atom-aa8284569e164afb823d07720c3ca324.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1087,10 +1087,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1114,10 +1114,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1143,10 +1143,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-3c95a205dfc5469d86927977e0e7c636.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1173,10 +1173,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-da5c1a8b088e415799ddc357c2f628fa, atom-edd8489e47804bd6abc3972fd96b18f0.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1202,10 +1202,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-21008b99be694b86ac628de503f46e07.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1231,10 +1231,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-884097dadb564c018667d7c730d75f61.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1262,10 +1262,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-e575151c903d4c8fb72cede56c55c136, atom-98d454c351724f8b83bd56473cb39b85, atom-e7ac52bbed6742cea1216b232bf01b1a.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1291,10 +1291,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-b2f36389d4ea4b93a7c399473abdefba.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1321,10 +1321,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f9a98fc9b0544658a3b9a4b0152a160e, atom-89ba978493b44f34a8ed0f9e9d4b9bb1.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1348,10 +1348,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1375,10 +1375,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "before-you-submit definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1402,10 +1402,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1429,10 +1429,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1456,10 +1456,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1485,10 +1485,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f7d015611dde4efda35fcf052340c2f6.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1512,10 +1512,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1539,10 +1539,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1566,10 +1566,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1595,10 +1595,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-a9c3f3d5e7344174860729bd57ddfa21.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1622,10 +1622,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1649,10 +1649,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1676,10 +1676,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1703,10 +1703,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1730,10 +1730,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1757,10 +1757,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1784,10 +1784,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1811,10 +1811,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1838,10 +1838,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1867,10 +1867,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-fb4cb3107c0940c49cb5b9268e624813.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1896,10 +1896,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-fb4cb3107c0940c49cb5b9268e624813.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1923,10 +1923,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Process context, scope, permission, or an alias to a separately identified duty."
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -1958,16 +1958,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
-        },
-        {
-          "route": "runtime",
-          "check_id": "dyn-launch",
-          "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "intro",
@@ -1977,9 +1971,9 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
       "apple_ref": "introduction",
       "applicability": {
+        "condition": "Children or teens can access the app.",
         "context": "App Store distribution",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "Children or teens can access the app."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Ensure app content and flows available to children or teens suit their age and maturity.",
       "exceptions": [],
@@ -2000,10 +1994,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "intro",
@@ -2035,10 +2029,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "intro",
@@ -2065,33 +2059,46 @@
       ],
       "primary_route": "attestation",
       "related": [
-        "req-1f2c02e380d74260b717cd62a1db4c72"
+        "req-1f2c02e380d74260b717cd62a1db4c72",
+        "req-f1a90bcb1c6f4c9e89a27c7cf7da261e"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "semantic",
           "check_id": "design-quality",
           "decides": "partial",
-          "evidence_class": "semantic"
+          "evidence_class": "semantic",
+          "route": "semantic"
         },
         {
-          "route": "semantic",
           "check_id": "minimum-functionality",
           "decides": "partial",
-          "evidence_class": "semantic"
+          "evidence_class": "semantic",
+          "route": "semantic"
         },
         {
-          "route": "runtime",
-          "check_id": "dyn-launch",
+          "check_id": "dyn-dark-mode",
           "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "dyn-dynamic-type",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "dyn-layout-review",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "intro",
@@ -2123,16 +2130,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "semantic",
           "check_id": "rating-manipulation",
           "decides": "partial",
-          "evidence_class": "semantic"
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "intro",
@@ -2142,9 +2149,9 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
       "apple_ref": "introduction",
       "applicability": {
+        "condition": "External components or services are integrated.",
         "context": "App Store distribution",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "External components or services are integrated."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Assess externally supplied SDKs, ads, analytics, and services before integration, monitor them while distributed, and retain responsibility for their guideline compliance.",
       "exceptions": [],
@@ -2165,16 +2172,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section6-external-components",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "intro",
@@ -2201,10 +2208,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Describes capability or points to external documents; concrete duties are elsewhere."
+          "reason": "introduction informational: Describes capability or points to external documents; concrete duties are elsewhere.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -2220,7 +2227,7 @@
       "criterion": "Continue supporting a released App Store app so its promised functionality remains available.",
       "exceptions": [],
       "id": "atom-7660b11f2dad457fbefdac9a83a74d99",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "iOS",
         "iPadOS",
@@ -2229,23 +2236,18 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "not_app_checkable",
       "related": [
-        "req-3f67da2598b44452a1f9d9f34bf6d928"
+        "req-3f67da2598b44452a1f9d9f34bf6d928",
+        "atom-aa8284569e164afb823d07720c3ca324"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
-          "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
-        },
-        {
-          "route": "runtime",
-          "check_id": "dyn-launch",
-          "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Before-You-Submit restatement of the introduction maintenance duty; evaluated on the linked atom. Linked records: atom-aa8284569e164afb823d07720c3ca324.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -2261,7 +2263,7 @@
       "criterion": "Give reviewers a working path to every submitted feature and content item, including any developer-controlled access gate.",
       "exceptions": [],
       "id": "atom-884097dadb564c018667d7c730d75f61",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "iOS",
         "iPadOS",
@@ -2270,29 +2272,18 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "not_app_checkable",
       "related": [
-        "req-c59656dacdd949e2881338f05fc6cdc9"
+        "req-c59656dacdd949e2881338f05fc6cdc9",
+        "atom-e575151c903d4c8fb72cede56c55c136"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
-          "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
-        },
-        {
-          "route": "metadata",
-          "check_id": "meta-demo-account",
-          "decides": "partial",
-          "evidence_class": "metadata"
-        },
-        {
-          "route": "runtime",
-          "check_id": "dyn-demo-login",
-          "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Before-You-Submit alias of the 2.1(a) demo-access duty; evaluated on the linked atom. Linked records: atom-e575151c903d4c8fb72cede56c55c136.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -2302,9 +2293,9 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
       "apple_ref": "before-you-submit",
       "applicability": {
+        "condition": "Review requires hardware or a resource beyond ordinary app access.",
         "context": "Applicable submitted or released app and review process",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "Review requires hardware or a resource beyond ordinary app access."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Arrange access to specialized hardware, sample data, codes, or other resources needed for review; an accepted demonstration video may establish a difficult hardware case, subject to later reviewer requests.",
       "exceptions": [],
@@ -2325,16 +2316,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section6-special-hardware",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "intro",
@@ -2344,9 +2335,9 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
       "apple_ref": "before-you-submit",
       "applicability": {
+        "condition": "A feature is not reasonably discoverable or its behavior is unclear to a reviewer.",
         "context": "Applicable submitted or released app and review process",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "A feature is not reasonably discoverable or its behavior is unclear to a reviewer."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Explain features whose behavior or review steps are difficult to find, understand, or exercise; provide navigation and supporting material when needed.",
       "exceptions": [],
@@ -2367,22 +2358,28 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "metadata",
           "check_id": "meta-review-notes",
           "decides": "partial",
-          "evidence_class": "metadata"
+          "evidence_class": "metadata",
+          "route": "metadata"
         },
         {
-          "route": "semantic",
           "check_id": "review-notes",
           "decides": "partial",
-          "evidence_class": "semantic"
+          "evidence_class": "semantic",
+          "route": "semantic"
+        },
+        {
+          "check_id": "screentime-justification",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "intro",
@@ -2392,14 +2389,14 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
       "apple_ref": "before-you-submit",
       "applicability": {
+        "condition": "A purchase path or delivered benefit is difficult to find, understand, or exercise.",
         "context": "Applicable submitted or released app and review process",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "A purchase path or delivered benefit is difficult to find, understand, or exercise."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Explain purchases whose access, behavior, fulfillment, or verification would not be clear to a reviewer from the app alone.",
       "exceptions": [],
       "id": "atom-89ba978493b44f34a8ed0f9e9d4b9bb1",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "iOS",
         "iPadOS",
@@ -2408,23 +2405,18 @@
         "watchOS",
         "visionOS"
       ],
-      "primary_route": "attestation",
+      "primary_route": "not_app_checkable",
       "related": [
-        "req-ba63a06dfa084f0880eb3d789ff26cdb"
+        "req-ba63a06dfa084f0880eb3d789ff26cdb",
+        "atom-26cf6458c05541869843bb236e088a76"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
-          "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
-        },
-        {
-          "route": "metadata",
-          "check_id": "meta-iap-review-notes",
-          "decides": "partial",
-          "evidence_class": "metadata"
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Before-You-Submit alias of the 2.1(b) in-app purchase review-notes duty; evaluated on the linked atom. Linked records: atom-26cf6458c05541869843bb236e088a76.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -2451,10 +2443,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Describes capability or points to external documents; concrete duties are elsewhere."
+          "reason": "before-you-submit informational: Describes capability or points to external documents; concrete duties are elsewhere.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -2464,28 +2456,28 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
       "apple_ref": "after-you-submit",
       "applicability": {
+        "condition": "Developer requests expedited review.",
         "context": "Applicable submitted or released app and review process",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "Developer requests expedited review."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Request expedited review only when a concrete critical timing need exists.",
       "exceptions": [],
       "id": "atom-a9c3f3d5e7344174860729bd57ddfa21",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e1235dc007a9401dbae80e6567f8a969"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
-          "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: After-You-Submit conduct for requesting expedited review; an App Review process step, not a property of the submitted app.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",
@@ -2495,30 +2487,29 @@
       "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
       "apple_ref": "after-you-submit",
       "applicability": {
+        "condition": "A previously distributed app update qualifies for the maintenance bug-fix path, no legal or safety issue is involved, and the developer elects to request it.",
         "context": "Applicable submitted or released app and review process",
-        "unknown": "NEEDS_REVIEW",
-        "condition": "A previously distributed app update qualifies for the maintenance bug-fix path, no legal or safety issue is involved, and the developer elects to request it."
+        "unknown": "NEEDS_REVIEW"
       },
       "criterion": "When seeking the eligible bug-fix path after rejection, tell App Review through App Store Connect and commit to resolving the issue in a later submission.",
-      "exceptions": [
-        "req-fb3bf8d317c44b1383032c7a55cf047d"
-      ],
+      "exceptions": [],
       "id": "atom-fb4cb3107c0940c49cb5b9268e624813",
-      "kind": "obligation",
+      "kind": "informational",
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "attestation",
+      "primary_route": "not_app_checkable",
       "related": [
-        "req-8338b41405c243e0ae666cfc5d2181d8"
+        "req-8338b41405c243e0ae666cfc5d2181d8",
+        "req-fb3bf8d317c44b1383032c7a55cf047d"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
-          "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: After-You-Submit conduct for the post-rejection bug-fix path; an App Review process step, not a property of the submitted app.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "intro",

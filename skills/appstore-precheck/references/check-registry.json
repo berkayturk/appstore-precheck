@@ -395,13 +395,14 @@
     },
     "dyn-demo-login": {
       "evidence_class": "runtime",
-      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-demo-login.py",
       "line_prefix": "DYNAMIC-",
       "route": "runtime",
-      "symbol": "dyn-demo-login",
+      "symbol": "main",
       "tests": [
         "tests/test-dynamic-reconcile.sh",
-        "tests/test-dynamic-run.sh"
+        "tests/test-dynamic-run.sh",
+        "tests/test-runtime-review.sh"
       ]
     },
     "dyn-dynamic-type": {
@@ -531,8 +532,8 @@
       ]
     },
     "dyn-paywall-visible": {
-      "evidence_class": "runtime",
-      "implementation": "skills/appstore-precheck/scripts/dynamic.sh",
+      "evidence_class": "agent-runtime",
+      "implementation": "skills/appstore-precheck/references/simulator-dynamic-review.md",
       "line_prefix": "DYNAMIC-",
       "route": "runtime",
       "symbol": "dyn-paywall-visible",
@@ -1312,7 +1313,7 @@
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
       "line_prefix": "SECTION1-",
-      "route": "semantic",
+      "route": "static",
       "symbol": "review_safety",
       "tests": [
         "tests/test-section1-review.sh"
@@ -1352,7 +1353,7 @@
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
       "line_prefix": "SECTION2-",
-      "route": "semantic",
+      "route": "static",
       "symbol": "review_screenshots",
       "tests": [
         "tests/test-section2-review.sh"
@@ -1392,7 +1393,7 @@
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
       "line_prefix": "SECTION3-",
-      "route": "semantic",
+      "route": "static",
       "symbol": "review_loan",
       "tests": [
         "tests/test-section3-review.sh"
@@ -1412,7 +1413,7 @@
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
       "line_prefix": "SECTION3-",
-      "route": "semantic",
+      "route": "static",
       "symbol": "review_random",
       "tests": [
         "tests/test-section3-review.sh"
@@ -1422,7 +1423,7 @@
       "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
       "line_prefix": "SECTION3-",
-      "route": "semantic",
+      "route": "static",
       "symbol": "review_offer",
       "tests": [
         "tests/test-section3-review.sh"

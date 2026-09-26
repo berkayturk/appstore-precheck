@@ -1,39 +1,74 @@
 {
   "checks": {
-    "section3-payment-mechanisms": {
-      "route": "static", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_payment", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
-    },
-    "section3-license-unlock": {
-      "route": "static", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_license", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
-    },
-    "section3-subscription-offer": {
-      "route": "semantic", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_offer", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
-    },
     "section3-external-entitlement": {
-      "route": "static", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_entitlement", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_entitlement",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
     },
     "section3-iap-catalog": {
-      "route": "static", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_catalog", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_catalog",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
     },
-    "section3-random-item-odds": {
-      "route": "semantic", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_random", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
+    "section3-license-unlock": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_license",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
     },
     "section3-loan-terms": {
-      "route": "semantic", "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
-      "symbol": "review_loan", "tests": ["tests/test-section3-review.sh"],
-      "line_prefix": "SECTION3-", "evidence_class": "source"
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_loan",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-payment-mechanisms": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_payment",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-random-item-odds": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_random",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
+    },
+    "section3-subscription-offer": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section3-review.py",
+      "line_prefix": "SECTION3-",
+      "route": "static",
+      "symbol": "review_offer",
+      "tests": [
+        "tests/test-section3-review.sh"
+      ]
     }
   }
 }

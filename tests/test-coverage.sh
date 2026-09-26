@@ -13,6 +13,7 @@ assert report['routed_obligations'] == report['total_obligations']
 assert report['routes']['static'] > 0
 assert report['routes']['runtime'] > 0
 assert report['routes']['semantic'] > 0
+assert report['unrouted_checks'] == [], report['unrouted_checks']
 PY
 python3 - <<'PY'
 import importlib.util,json
@@ -34,6 +35,33 @@ else:
     raise AssertionError('unknown check must fail validation')
 first['routes']=old
 tool.validate(catalog,registry)
+# an exceptions[] link must point at an exception-kind record
+bad=next(x for x in catalog['obligations'] if x['kind']=='obligation' and x['id']!=first['id'])
+first['exceptions']=[bad['id']]
+try:
+    tool.validate(catalog,registry)
+except ValueError:
+    pass
+else:
+    raise AssertionError('exception link to an obligation must fail validation')
+first['exceptions']=[]
+# a non-obligation record must carry a justified route
+info=next(x for x in catalog['obligations'] if x['kind']!='obligation')
+saved=info['routes']
+info['routes']=[]
+try:
+    tool.validate(catalog,registry)
+except ValueError:
+    pass
+else:
+    raise AssertionError('non-obligation without a route must fail validation')
+info['routes']=saved
+tool.validate(catalog,registry)
+# a registered check that no obligation routes to is reported and fails --require-complete
+registry['checks']['orphan-check']=dict(registry['checks']['att-usage'])
+summary=tool.report(catalog,tool.validate(catalog,registry))
+assert summary['unrouted_checks']==['orphan-check'], summary['unrouted_checks']
+del registry['checks']['orphan-check']
 PY
 python3 scripts/coverage.py --require-complete --output "$tmp/strict.json" --markdown "$tmp/strict.md" >/dev/null
 echo 'coverage schema and registry: OK'

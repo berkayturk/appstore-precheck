@@ -1,44 +1,54 @@
 {
   "checks": {
-    "section4-extension-commerce": {
-      "route": "static",
+    "section4-apple-branding": {
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
-      "symbol": "review_commerce",
-      "tests": ["tests/test-section4-review.sh"],
       "line_prefix": "SECTION4-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_brand",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-extension-commerce": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_commerce",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
     },
     "section4-keyboard-navigation": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
       "symbol": "review_keyboard",
-      "tests": ["tests/test-section4-review.sh"],
-      "line_prefix": "SECTION4-",
-      "evidence_class": "source"
-    },
-    "section4-safari-access": {
-      "route": "static",
-      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
-      "symbol": "review_safari",
-      "tests": ["tests/test-section4-review.sh"],
-      "line_prefix": "SECTION4-",
-      "evidence_class": "source"
-    },
-    "section4-apple-branding": {
-      "route": "static",
-      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
-      "symbol": "review_brand",
-      "tests": ["tests/test-section4-review.sh"],
-      "line_prefix": "SECTION4-",
-      "evidence_class": "source"
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
     },
     "section4-placeholder-copy": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
-      "symbol": "review_placeholder",
-      "tests": ["tests/test-section4-review.sh"],
       "line_prefix": "SECTION4-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_placeholder",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-safari-access": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_safari",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
     }
   }
 }

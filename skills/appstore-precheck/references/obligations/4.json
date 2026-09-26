@@ -21,7 +21,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.0 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -49,7 +49,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "4.0 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -77,7 +77,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.0 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -107,7 +107,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.0 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-dfcc064ab24e4795a0ac3d266337032c.",
           "route": "not_app_checkable"
         }
       ],
@@ -134,11 +134,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.0 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -165,7 +165,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.1(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -193,7 +193,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.1(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -224,7 +224,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.1(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-91ef4a8ef9524e4caba9432c1d056179, atom-3efadb4870674cbd9a976c627abb6d95.",
           "route": "not_app_checkable"
         }
       ],
@@ -251,10 +251,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -280,10 +280,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -310,7 +310,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.1(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -341,7 +341,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.1(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-eacb9f7c1602497890620dc60bacd562, atom-f4737f8ea58147b9912d1a860f4f2605.",
           "route": "not_app_checkable"
         }
       ],
@@ -368,10 +368,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -397,11 +397,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.1(b) informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -433,7 +433,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.1(c) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-ac7d46f547ea4b6b8d278dcc51494420, atom-7226bc48bdc744bda367b8d3cda612ea, atom-6b47b98f42ff4f178ff08b3db7131dec, atom-6a3d01e460344818b802fe7534986bd8.",
           "route": "not_app_checkable"
         }
       ],
@@ -462,10 +462,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -493,22 +493,22 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-apple-branding",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         },
         {
-          "route": "semantic",
           "check_id": "brand-use",
           "decides": "partial",
-          "evidence_class": "semantic"
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "4",
@@ -536,16 +536,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "semantic",
           "check_id": "brand-use",
           "decides": "partial",
-          "evidence_class": "semantic"
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "4",
@@ -574,11 +574,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.1(c) exception: Exception is evaluated with its related obligation. Linked records: atom-ac7d46f547ea4b6b8d278dcc51494420, atom-7226bc48bdc744bda367b8d3cda612ea, atom-6b47b98f42ff4f178ff08b3db7131dec.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -607,7 +607,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-075db43990d749b081414b9872859dd1.",
           "route": "not_app_checkable"
         }
       ],
@@ -646,16 +646,22 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-placeholder-copy",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "min-functionality-nav",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -684,7 +690,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-a4161143437d4c50b7ce2f621caaec6f.",
           "route": "not_app_checkable"
         }
       ],
@@ -711,11 +717,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.2 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -744,7 +750,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-fe493a53fc804fd88c068fee756d88b4.",
           "route": "not_app_checkable"
         }
       ],
@@ -777,16 +783,16 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-placeholder-copy",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -815,7 +821,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-5f4bebf5f0a74666b56a59333a1dded6.",
           "route": "not_app_checkable"
         }
       ],
@@ -842,10 +848,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -874,7 +880,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-61f625798f274ef2ba5d46a6588e69ba.",
           "route": "not_app_checkable"
         }
       ],
@@ -901,10 +907,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -933,7 +939,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-1868742025354677afbcfe25351860cc.",
           "route": "not_app_checkable"
         }
       ],
@@ -960,10 +966,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -990,7 +996,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -1021,7 +1027,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-9066ba7bb29244b3a6d162314cbf2f48, atom-d77400e52c724af5b2e79183ae963a8c.",
           "route": "not_app_checkable"
         }
       ],
@@ -1056,10 +1062,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1086,11 +1092,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.2.2 exception: Exception is evaluated with its related obligation. Linked records: atom-9066ba7bb29244b3a6d162314cbf2f48.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -1119,7 +1125,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.3(i) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-cef8a9b87e1b4153814bb9832fa39557.",
           "route": "not_app_checkable"
         }
       ],
@@ -1146,10 +1152,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1179,7 +1185,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.3(ii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-4d8625d340b04ca89df9c09e85536ffe, atom-22d8f2ed0bf34f9d9a4cc7f9e0a59516.",
           "route": "not_app_checkable"
         }
       ],
@@ -1206,10 +1212,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1235,10 +1241,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1268,7 +1274,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.6 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-571ea61296c44520bcf2d352c6b7258c, atom-3305c0c0d18b411084ea52b87ddf4549.",
           "route": "not_app_checkable"
         }
       ],
@@ -1297,10 +1303,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1326,11 +1332,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.2.6 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -1360,7 +1366,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.6 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-0f3dad5bca96441087dba6280914f3e1, atom-2eafcc549fa34aa49ab5c66ede354584.",
           "route": "not_app_checkable"
         }
       ],
@@ -1389,10 +1395,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1418,10 +1424,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1451,7 +1457,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.6 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-4ba39c0360d94a6c8d755907aa61b0c5, atom-7cf03168242e46eca53c4b9107482b08.",
           "route": "not_app_checkable"
         }
       ],
@@ -1480,11 +1486,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.2.6 exception: Exception is evaluated with its related obligation. Linked records: atom-571ea61296c44520bcf2d352c6b7258c, atom-0f3dad5bca96441087dba6280914f3e1.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -1510,11 +1516,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.2.6 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -1543,7 +1549,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-1cd8a0a339534436b4218f1864516e6c.",
           "route": "not_app_checkable"
         }
       ],
@@ -1570,11 +1576,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.2.7 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -1605,7 +1611,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-43f3fac4df96422cb0464d76837fd9bf, atom-c1e5a01ecec24a48bae2b840b899cee8, atom-ac6b8fbef89e4bc2940be15482483253.",
           "route": "not_app_checkable"
         }
       ],
@@ -1632,10 +1638,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "remote-desktop",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -1661,10 +1673,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1690,10 +1702,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1724,7 +1736,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-c3f30bf439ab4bf7bab25b1464f43f9a, atom-3173324d3c4640f3b4899edbfe4ec07a, atom-d60945af298c431fae4736243ed83d9b.",
           "route": "not_app_checkable"
         }
       ],
@@ -1751,10 +1763,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1780,10 +1792,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1809,10 +1821,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1841,7 +1853,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7(c) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-fc0cbe63158d4d87b0e15111ccb60c0e.",
           "route": "not_app_checkable"
         }
       ],
@@ -1868,10 +1880,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1902,7 +1914,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7(d) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-485b3d0f67174dfa91c3e38665be0bde, atom-bb5db11a64c442ed8c7d1c757c6bae6d, atom-6dbde25a19fe40f1b5d37e92616b1de1.",
           "route": "not_app_checkable"
         }
       ],
@@ -1929,10 +1941,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1958,10 +1970,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -1987,10 +1999,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2020,7 +2032,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7(d) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-ce0ef87e6f5c40c6ae24083839137ffc, atom-ff35aee8d382427b8420956496fe80fb.",
           "route": "not_app_checkable"
         }
       ],
@@ -2048,11 +2060,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.2.7(d) exception: Exception is evaluated with its related obligation. Linked records: atom-997058a40b3344e99d8bdee763e77f8b.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -2078,11 +2090,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.2.7(d) informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -2111,7 +2123,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.2.7(e) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-7e063c8db4674d2580970f3502fe8c05.",
           "route": "not_app_checkable"
         }
       ],
@@ -2138,10 +2150,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2170,7 +2182,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-cdc698f5a38544a192ea0296bc37e1fc.",
           "route": "not_app_checkable"
         }
       ],
@@ -2197,10 +2209,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2227,7 +2239,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2255,7 +2267,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(a) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2285,7 +2297,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-50eecf6e15f04b2db421de1994162175.",
           "route": "not_app_checkable"
         }
       ],
@@ -2312,10 +2324,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2342,7 +2354,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2373,7 +2385,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-a256e54515614170824bfdc561017990, atom-c8ab5ddd3e4b46068dc0f51f036b75f3.",
           "route": "not_app_checkable"
         }
       ],
@@ -2406,10 +2418,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2435,11 +2447,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.3(b) informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -2468,7 +2480,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-0e2bf2b65c2f4e189995d2aadcb65e7b.",
           "route": "not_app_checkable"
         }
       ],
@@ -2495,11 +2507,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.3(b) informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -2526,7 +2538,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -2556,7 +2568,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.3(b) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-f9b68ba772d343148f6b276bc267fa11.",
           "route": "not_app_checkable"
         }
       ],
@@ -2583,11 +2595,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.3(b) informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -2617,7 +2629,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-aaafc08b9579440b8fa49684043cbe04, atom-32e5b23ed6f749e6b67ca38184aa4fba.",
           "route": "not_app_checkable"
         }
       ],
@@ -2644,10 +2656,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2673,10 +2685,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2708,7 +2720,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-040b4f344e2a48798706832bb71ecbaf, atom-fd2c644f97b34398ad0d88dadb904e33, atom-594295e698124ecb868b7ed2e13ce3ed, atom-ccf6410b7f2e40f69727f00eb0ee2fc2.",
           "route": "not_app_checkable"
         }
       ],
@@ -2735,10 +2747,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2764,10 +2776,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2793,16 +2805,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-extension-commerce",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -2828,16 +2840,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-extension-commerce",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -2864,7 +2876,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "4.4.1 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -2892,7 +2904,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "4.4.1 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -2922,7 +2934,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-0bbe4775c5c74d30aa392855e1b5a95b.",
           "route": "not_app_checkable"
         }
       ],
@@ -2949,10 +2961,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -2982,7 +2994,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-e5ac4e44356f4044a7b93f52c9538ca3, atom-ebd702775528481c8bf6cc47f9cb0956.",
           "route": "not_app_checkable"
         }
       ],
@@ -3009,10 +3021,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3038,11 +3050,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.4.1 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -3071,7 +3083,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-ff52aa5fd3964b6794a25afe4266c124.",
           "route": "not_app_checkable"
         }
       ],
@@ -3098,16 +3110,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-keyboard-navigation",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -3137,7 +3149,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-85676598717d41d9932bf58e4cc1ed2f, atom-8a14647281bc4eb98c50b74df8eaa32f.",
           "route": "not_app_checkable"
         }
       ],
@@ -3164,10 +3176,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3199,10 +3211,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3231,7 +3243,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-1a37dc947e1a4c09b78dc649f90861db.",
           "route": "not_app_checkable"
         }
       ],
@@ -3258,10 +3270,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3290,7 +3302,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-7408ffab15ac40a1956049e440a8665e.",
           "route": "not_app_checkable"
         }
       ],
@@ -3317,10 +3329,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3347,7 +3359,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3377,7 +3389,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-6f5cf1036bb6444e91e7e880dee98dc2.",
           "route": "not_app_checkable"
         }
       ],
@@ -3404,10 +3416,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3436,7 +3448,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-f2a6619e8dd44de2bb7f23e570527f8a.",
           "route": "not_app_checkable"
         }
       ],
@@ -3463,10 +3475,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "safari-extension",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -3497,7 +3515,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-32eea0fe94264d1e8abf7fa4ccc2943f, atom-f318928d9cd44a78aacd41e9770747fe, atom-1e9b7daba76645a999792eb2e324e9e7.",
           "route": "not_app_checkable"
         }
       ],
@@ -3524,10 +3542,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3553,10 +3571,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3582,10 +3600,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3612,7 +3630,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3642,7 +3660,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.4.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-0ddc92636653494299a5386150c8b9bf.",
           "route": "not_app_checkable"
         }
       ],
@@ -3669,16 +3687,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "static",
           "check_id": "section4-safari-access",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "4",
@@ -3709,7 +3727,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-6373c0202be34e0ba90bd8948283c332, atom-d5429e6aa0b14c9da0fab53a0a821415, atom-218085b57ed7404fbd7277dbb662eeca.",
           "route": "not_app_checkable"
         }
       ],
@@ -3736,11 +3754,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.5.1 exception: Exception is evaluated with its related obligation.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -3768,10 +3786,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3797,10 +3815,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -3827,7 +3845,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "4.5.2 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -3855,7 +3873,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(i) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -3886,7 +3904,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(i) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-47384283c67145a0ae60eca295ab8a43, atom-1351ed5d43184bf58e337279512d3c2f.",
           "route": "not_app_checkable"
         }
       ],
@@ -3913,11 +3931,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.5.2(i) exception: Exception is evaluated with its related obligation.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -3943,11 +3961,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.5.2(i) informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -3979,7 +3997,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(i) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-2c11eb4e666c4036bec7f84d85356185, atom-8040c00964ee4b078c2a2cd12ba27fbc, atom-4d4dcded01ff42879e31d65779442d59, atom-715ec1b4db554d688d27584d68a05493.",
           "route": "not_app_checkable"
         }
       ],
@@ -4006,10 +4024,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4035,10 +4053,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4064,10 +4082,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4093,10 +4111,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4128,7 +4146,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(i) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-bccea28625044678a61f12bb0caec086, atom-fde2b694f3c8446a94b9571769e19443, atom-581110bae9594bee87f173927142d9da, atom-ea23e1a8b5be49b0b7ef17b9226a67db.",
           "route": "not_app_checkable"
         }
       ],
@@ -4157,10 +4175,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4188,10 +4206,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4219,10 +4237,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4251,11 +4269,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.5.2(i) exception: Exception is evaluated with its related obligation. Linked records: atom-bccea28625044678a61f12bb0caec086, atom-fde2b694f3c8446a94b9571769e19443, atom-581110bae9594bee87f173927142d9da.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -4284,7 +4302,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(ii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-012fc7a56b904148be5bee6fdb1e4cf7.",
           "route": "not_app_checkable"
         }
       ],
@@ -4311,10 +4329,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4341,7 +4359,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(ii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -4373,7 +4391,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(ii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-1eab217a6dc44a9dbf44ae4ce476b12c, atom-177f8cb4e4aa4635b7e9e3aedf9b2000, atom-b7815f6bf4d445fdbb577a65a79c161e.",
           "route": "not_app_checkable"
         }
       ],
@@ -4400,10 +4418,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4431,10 +4449,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4461,11 +4479,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.5.2(ii) exception: Exception is evaluated with its related obligation. Linked records: atom-177f8cb4e4aa4635b7e9e3aedf9b2000.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -4494,7 +4512,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(ii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-9bffc375db2e43a983370fa37b0dfaa0.",
           "route": "not_app_checkable"
         }
       ],
@@ -4521,10 +4539,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4553,7 +4571,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(iii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-d6e0985d310c44fd899a77160eae579c.",
           "route": "not_app_checkable"
         }
       ],
@@ -4580,10 +4598,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4612,7 +4630,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(iii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-45b1a1f740bd4c4098035e8381fbc606.",
           "route": "not_app_checkable"
         }
       ],
@@ -4639,10 +4657,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4672,7 +4690,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.2(iii) informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-781dd8b7d32e44ff9cd50351bd7af6b7, atom-c5d23911647e4577a92e25b2aaf74ae6.",
           "route": "not_app_checkable"
         }
       ],
@@ -4699,10 +4717,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4728,10 +4746,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4762,7 +4780,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.3 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-d9bb49e55b0d475db29b41f1b6646173, atom-e90fcaa886e34e3aa890743f9b2ac524, atom-d27dca883f214f1ab8cbde7e94a30dcc.",
           "route": "not_app_checkable"
         }
       ],
@@ -4789,10 +4807,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4818,10 +4836,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4847,11 +4865,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.5.3 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -4881,7 +4899,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-0ea43ac08bbe45ee8142fb83bec4f49d, atom-23977ffa0128474aa82267c1d967db43.",
           "route": "not_app_checkable"
         }
       ],
@@ -4908,10 +4926,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4937,10 +4955,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -4970,7 +4988,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-c094d84bc7bf46a2a1ed6451b1744b22, atom-e42b345e654d4c68936720c7bb96ffbf.",
           "route": "not_app_checkable"
         }
       ],
@@ -4997,10 +5015,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5032,10 +5050,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5062,7 +5080,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -5094,7 +5112,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.5 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-585a71d359ce4a07a7c8df351b0da39a, atom-652c375c2c5340e4bba332ec1d37fc0f, atom-a76a8f96217b4eaa938e947152a9be0a.",
           "route": "not_app_checkable"
         }
       ],
@@ -5121,10 +5139,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5150,10 +5168,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5179,10 +5197,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5211,7 +5229,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.6 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-21372f8cddc54f328372b8fbe38fb0ce.",
           "route": "not_app_checkable"
         }
       ],
@@ -5238,11 +5256,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.5.6 exception: Exception is evaluated with its related obligation.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -5272,7 +5290,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.5.6 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-f9a75981f1664ada908c7d91b6e9081b, atom-61e0a7fff6b4439ab5b47909b0ef7be7.",
           "route": "not_app_checkable"
         }
       ],
@@ -5299,10 +5317,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5328,10 +5346,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5355,11 +5373,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.7 exception: Exception is evaluated with its related obligation.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -5383,11 +5401,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.7 exception: Exception is evaluated with its related obligation.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -5416,7 +5434,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-364236cc9fd5406b82119942b6b07c9e.",
           "route": "not_app_checkable"
         }
       ],
@@ -5443,10 +5461,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5473,7 +5491,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -5503,7 +5521,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-ad0b4201bfa4431fb18b3f5136d0a504.",
           "route": "not_app_checkable"
         }
       ],
@@ -5530,11 +5548,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.7 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -5561,7 +5579,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -5589,7 +5607,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "4.7.1 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5620,7 +5638,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-0240079f67444a71852d78744708b87c, atom-61d63b96e47649e3b75576a7a549d513.",
           "route": "not_app_checkable"
         }
       ],
@@ -5647,11 +5665,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.7.1 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -5677,10 +5695,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5711,7 +5729,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-709d3d5132d5453aab70eef8eb84f50c, atom-1cf1c65d615e4afda04bbe94b25cfa06, atom-a793a07557994f63819fa767b554ffa7.",
           "route": "not_app_checkable"
         }
       ],
@@ -5738,10 +5756,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5767,10 +5785,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5796,10 +5814,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5826,7 +5844,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -5857,7 +5875,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.1 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-2ac415de5d034d93a375609da22d072b, atom-d771a66bcb6148c2a9ddb04872efe2d9.",
           "route": "not_app_checkable"
         }
       ],
@@ -5884,11 +5902,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.7.1 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -5914,10 +5932,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -5946,7 +5964,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.2 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-e55f90814f264da8af6fdd40ca3f9a58.",
           "route": "not_app_checkable"
         }
       ],
@@ -5973,10 +5991,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6005,7 +6023,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.3 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-575bc6fc52584f87ab3e1cf72a82ffa8.",
           "route": "not_app_checkable"
         }
       ],
@@ -6032,10 +6050,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6064,7 +6082,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-208c77ee42f64ca19c1b9dda226b7dd0.",
           "route": "not_app_checkable"
         }
       ],
@@ -6091,10 +6109,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6123,7 +6141,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.4 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-5883c3b5e7f94ea1bf7e1bc838ac1126.",
           "route": "not_app_checkable"
         }
       ],
@@ -6150,10 +6168,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6183,7 +6201,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.7.5 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-39bf00b84967456c84aa561e239e79d4, atom-d5728942b0084df8bb28b6bdd3368266.",
           "route": "not_app_checkable"
         }
       ],
@@ -6210,10 +6228,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6239,10 +6257,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6272,7 +6290,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-d5340126eb1e44d1bc17f2d2d40daaeb, atom-d42c1a5494474323b764bacd9cbf6fe7.",
           "route": "not_app_checkable"
         }
       ],
@@ -6317,16 +6335,16 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         },
         {
-          "route": "runtime",
           "check_id": "dyn-siwa-parity",
           "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "4",
@@ -6352,11 +6370,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.8 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -6383,7 +6401,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "4.8 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -6413,7 +6431,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-d0280e2be689410ab9ee1b606d8bd1b4.",
           "route": "not_app_checkable"
         }
       ],
@@ -6452,10 +6470,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6484,7 +6502,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-239d3f04fa454852bd326b2388f6994d.",
           "route": "not_app_checkable"
         }
       ],
@@ -6523,10 +6541,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6553,7 +6571,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty.",
           "route": "not_app_checkable"
         }
       ],
@@ -6583,7 +6601,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-57af4e2c851143f0a5fe5a1421dcb808.",
           "route": "not_app_checkable"
         }
       ],
@@ -6622,10 +6640,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -6654,7 +6672,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4.",
           "route": "not_app_checkable"
         }
       ],
@@ -6682,11 +6700,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.8 exception: Exception is evaluated with its related obligation. Linked records: atom-d5340126eb1e44d1bc17f2d2d40daaeb.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -6715,7 +6733,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-759453879ab7403f8d55ed04024b7cb8.",
           "route": "not_app_checkable"
         }
       ],
@@ -6743,11 +6761,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.8 exception: Exception is evaluated with its related obligation. Linked records: atom-d5340126eb1e44d1bc17f2d2d40daaeb.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -6776,7 +6794,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-8db964265c8745ec9966ac1aa0577cda.",
           "route": "not_app_checkable"
         }
       ],
@@ -6804,11 +6822,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.8 exception: Exception is evaluated with its related obligation. Linked records: atom-d5340126eb1e44d1bc17f2d2d40daaeb.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -6837,7 +6855,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-aa57c772c1ea4b8b977a0903b21c8ea5.",
           "route": "not_app_checkable"
         }
       ],
@@ -6865,11 +6883,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.8 exception: Exception is evaluated with its related obligation. Linked records: atom-d5340126eb1e44d1bc17f2d2d40daaeb.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -6898,7 +6916,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.8 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-e9b930721d8e41d9bd4e12d4ef8f0008.",
           "route": "not_app_checkable"
         }
       ],
@@ -6926,11 +6944,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Exception is evaluated with its related obligation."
+          "reason": "4.8 exception: Exception is evaluated with its related obligation. Linked records: atom-d5340126eb1e44d1bc17f2d2d40daaeb.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -6960,7 +6978,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.9 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-1abe4f651e6e4fd4b64ceeada46e5806, atom-54ed20a61aa74eeead50ac2f7960ccd9.",
           "route": "not_app_checkable"
         }
       ],
@@ -6987,10 +7005,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7016,10 +7034,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7048,7 +7066,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.9 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-36895284a26c459c964ada1a3654cdc2.",
           "route": "not_app_checkable"
         }
       ],
@@ -7075,11 +7093,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Applicability context or Apple process; not an independent app duty."
+          "reason": "4.9 informational: Applicability context or Apple process; not an independent app duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "4",
@@ -7109,7 +7127,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.9 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-aa6c01edb35e43569a11f1b41e4690d7, atom-9b272894718d4541a2321d28988bf40f.",
           "route": "not_app_checkable"
         }
       ],
@@ -7142,10 +7160,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7177,10 +7195,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7209,7 +7227,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.9 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-acd85c93f1014df6944971a3de4b2ed9.",
           "route": "not_app_checkable"
         }
       ],
@@ -7242,10 +7260,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7274,7 +7292,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.9 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-2ef99e00cf4b4e0a855d214cd2f621b9.",
           "route": "not_app_checkable"
         }
       ],
@@ -7307,10 +7325,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7339,7 +7357,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.9 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-a3cc3a777b7d4e3aab18809947760cfc.",
           "route": "not_app_checkable"
         }
       ],
@@ -7372,10 +7390,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7404,7 +7422,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.10 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-53ab44d76c4e40c5b4d24b2febe80814.",
           "route": "not_app_checkable"
         }
       ],
@@ -7431,10 +7449,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",
@@ -7463,7 +7481,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Context, example, or Apple enforcement process rather than a separately decidable app duty.",
+          "reason": "4.10 informational: Context, example, or Apple enforcement process rather than a separately decidable app duty. Linked records: atom-c38322d596c14993add7e247e19cea65.",
           "route": "not_app_checkable"
         }
       ],
@@ -7490,10 +7508,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "4",

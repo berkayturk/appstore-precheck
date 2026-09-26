@@ -50,11 +50,17 @@ def validate(catalog, registry):
         if not check.get('line_prefix') or not check.get('evidence_class'):
             fail('incomplete registry entry: ' + check_id)
     ids = set()
+    kinds = {item['id']: item['kind'] for item in catalog['obligations']}
     for item in catalog['obligations']:
         ident = item['id']
         if ident in ids:
             fail('duplicate obligation id: ' + ident)
         ids.add(ident)
+        for linked in item['exceptions']:
+            if kinds.get(linked) != 'exception':
+                fail('exceptions[] must reference exception-kind records: ' + ident + ' -> ' + str(linked))
+        if not item['routes'] and item['kind'] != 'obligation':
+            fail('non-obligation record without a justified route: ' + ident)
         if item['kind'] not in {'obligation', 'exception', 'informational', 'definition'}:
             fail('invalid kind: ' + ident)
         if any(key not in item for key in ('apple_ref', 'anchor', 'text_sha256', 'criterion',
@@ -95,8 +101,11 @@ def report(catalog, checks):
             semantic += 1
         if routes == {'attestation'}:
             attestation_only += 1
+    routed_checks = {r.get('check_id') for item in catalog['obligations'] for r in item['routes'] if r.get('check_id')}
+    unrouted_checks = sorted(check for check in checks if check not in routed_checks)
     return {
         'schema_version': 1, 'source': catalog['source'],
+        'unrouted_checks': unrouted_checks,
         'total_obligations': len(obligations), 'routed_obligations': len(obligations) - len(gaps),
         'obligations_without_route': len(gaps), 'unrouted_ids': gaps,
         'routes': {route: route_counts[route] for route in sorted(ROUTES)},
@@ -155,7 +164,10 @@ def main():
     args.output.write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
     args.markdown.write_text(markdown(summary))
     print('coverage: {}/{} routed; {} gaps'.format(summary['routed_obligations'], summary['total_obligations'], summary['obligations_without_route']))
-    return 1 if args.require_complete and summary['obligations_without_route'] else 0
+    incomplete = summary['obligations_without_route'] or summary['unrouted_checks']
+    if args.require_complete and summary['unrouted_checks']:
+        print('coverage: registered checks without an obligation route: ' + ', '.join(summary['unrouted_checks']), file=sys.stderr)
+    return 1 if args.require_complete and incomplete else 0
 
 
 if __name__ == '__main__':

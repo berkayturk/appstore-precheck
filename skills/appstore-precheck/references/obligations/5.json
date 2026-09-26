@@ -24,7 +24,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.0 informational: Classification or supporting source fragment; review required. Linked records: atom-7e03867476aa4cc18bae2fca15c601af.",
           "route": "not_app_checkable"
         }
       ],
@@ -53,10 +53,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -84,7 +84,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.0 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -115,7 +115,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.0 informational: Classification or supporting source fragment; review required. Linked records: atom-eeabb9f540ca4925878c50301cab752f.",
           "route": "not_app_checkable"
         }
       ],
@@ -144,10 +144,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -175,7 +175,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.0 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -206,7 +206,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1 informational: Classification or supporting source fragment; review required. Linked records: atom-2c756096856640f1b443cd86603a140b.",
           "route": "not_app_checkable"
         }
       ],
@@ -238,7 +238,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -267,7 +267,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -299,7 +299,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(i) informational: Classification or supporting source fragment; review required. Linked records: atom-7c3a1d48c7c44c369365c34823ac0b75, atom-99e6360448f44c4eb98c1d6666b10b6d.",
           "route": "not_app_checkable"
         }
       ],
@@ -328,10 +328,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "metadata",
           "check_id": "meta-privacy-url",
           "decides": "partial",
-          "evidence_class": "metadata"
+          "evidence_class": "metadata",
+          "route": "metadata"
         },
         {
           "check_id": "support-privacy-url",
@@ -340,10 +340,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -371,16 +371,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "static",
           "check_id": "section5-privacy-entry",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -408,7 +408,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(i) definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -441,7 +441,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(i) informational: Classification or supporting source fragment; review required. Linked records: atom-cf99fa885dc941cb8914b66ae0c1de10, atom-e472c4ced01341a888fa3f4bfcb7711d, atom-b9e1a9d248f247449043f9804c5245a8.",
           "route": "not_app_checkable"
         }
       ],
@@ -476,10 +476,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -513,10 +513,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -550,10 +550,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -583,7 +583,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(i) informational: Classification or supporting source fragment; review required. Linked records: atom-6a6a051a216f4e198f41cf9a174c2b4a.",
           "route": "not_app_checkable"
         }
       ],
@@ -605,23 +605,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-c118133533af4b1cb3250c3f9219f0c5"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "privacy-consistency",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -653,7 +647,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(i) informational: Classification or supporting source fragment; review required. Linked records: atom-5c1bfff78fad42089216aa5804eef3f8, atom-2d03210ed10a4683a534124bc3dba841, atom-f6fd801bf60d49129d6b2f617b936e3f.",
           "route": "not_app_checkable"
         }
       ],
@@ -675,23 +669,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-f333edcd56a1419f9433f30d1e248f2b"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "privacy-consistency",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -712,23 +700,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-f333edcd56a1419f9433f30d1e248f2b"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "privacy-consistency",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -749,23 +731,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-f333edcd56a1419f9433f30d1e248f2b"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "privacy-consistency",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -795,7 +771,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ii) informational: Classification or supporting source fragment; review required. Linked records: atom-e3c314310e024e5298cd8539cc8ee3c8.",
           "route": "not_app_checkable"
         }
       ],
@@ -819,23 +795,29 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "runtime",
+      "primary_route": "attestation",
       "related": [
         "req-2ed8f6c0f15e48ccb859311cf79b2af9"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "dyn-permission-prompt",
-          "decides": "partial",
-          "evidence_class": "runtime",
-          "route": "runtime"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "analytics-privacyinfo-mismatch",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "tracking-sdk-no-att",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -865,7 +847,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ii) informational: Classification or supporting source fragment; review required. Linked records: atom-8acd67995bb540da8799affe1d0ce235.",
           "route": "not_app_checkable"
         }
       ],
@@ -894,10 +876,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -927,7 +909,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ii) informational: Classification or supporting source fragment; review required. Linked records: atom-bb20ccdb409842d0adbfcf265851b93a.",
           "route": "not_app_checkable"
         }
       ],
@@ -956,10 +938,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -989,7 +971,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ii) informational: Classification or supporting source fragment; review required. Linked records: atom-f7a7c71c1a104caf984416ddb4884fb1.",
           "route": "not_app_checkable"
         }
       ],
@@ -1030,10 +1012,28 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-permission-purpose",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "usage-description-crosscheck",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "dyn-shipped-bundle",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "5",
@@ -1064,7 +1064,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ii) exception: Classification or supporting source fragment; review required. Linked records: atom-ce94405f21d247f8855d6a6dbe2869a3, atom-ce94405f21d247f8855d6a6dbe2869a3.",
           "route": "not_app_checkable"
         }
       ],
@@ -1093,10 +1093,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1124,7 +1124,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ii) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -1156,7 +1156,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-6596613782e34c80b3b12081cf2f1987, atom-50ccc96eb7e946409c29ea52c7807bc0.",
           "route": "not_app_checkable"
         }
       ],
@@ -1191,10 +1191,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1228,10 +1228,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1261,7 +1261,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-1c38b7731e334ee0b08fda1225157696.",
           "route": "not_app_checkable"
         }
       ],
@@ -1296,10 +1296,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1330,7 +1330,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(iv) informational: Classification or supporting source fragment; review required. Linked records: atom-e51fabf6b62242cf8af9136d0fe2ad5e, atom-585b807296fa48bf9b5af6e76eec42d5.",
           "route": "not_app_checkable"
         }
       ],
@@ -1365,10 +1365,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1408,10 +1408,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1439,7 +1439,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(iv) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -1470,7 +1470,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(iv) informational: Classification or supporting source fragment; review required. Linked records: atom-d7d9b93e8df348b29d31b357b8ff4362.",
           "route": "not_app_checkable"
         }
       ],
@@ -1505,10 +1505,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1536,7 +1536,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(iv) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -1567,7 +1567,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-33f7f603828646a49f165d4595d8bf6b.",
           "route": "not_app_checkable"
         }
       ],
@@ -1602,10 +1602,16 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-login-wall",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "5",
@@ -1635,7 +1641,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-b4005c96bb174688aded4ff4228cd36f.",
           "route": "not_app_checkable"
         }
       ],
@@ -1670,10 +1676,16 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-account-deletion",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "5",
@@ -1704,7 +1716,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-772324aedc8748a0b372895fb000d55e, atom-80b2b5c6efd543a38635830396948c48.",
           "route": "not_app_checkable"
         }
       ],
@@ -1735,10 +1747,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1770,7 +1782,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.1(v) exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-772324aedc8748a0b372895fb000d55e.",
           "route": "not_app_checkable"
         }
       ],
@@ -1801,7 +1813,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-97d112fa95e74e209e31bf4ab46b2917.",
           "route": "not_app_checkable"
         }
       ],
@@ -1823,23 +1835,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "static",
+      "primary_route": "attestation",
       "related": [
         "req-6d8fdfff366d4a4b83fb1f6524570bb1"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "forced-login",
-          "decides": "partial",
-          "evidence_class": "source",
-          "route": "static"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1869,7 +1875,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-97d112fa95e74e209e31bf4ab46b2917.",
           "route": "not_app_checkable"
         }
       ],
@@ -1900,7 +1906,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-8b1c9735bb4b42f5b0edcb8aa1b8b2cc.",
           "route": "not_app_checkable"
         }
       ],
@@ -1929,10 +1935,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -1963,7 +1969,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(v) informational: Classification or supporting source fragment; review required. Linked records: atom-247787870da948778d03304e00f03c69, atom-a5d47e7b7cd64ff6aebc51096764bf2b.",
           "route": "not_app_checkable"
         }
       ],
@@ -1992,10 +1998,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2023,10 +2029,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2056,7 +2062,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(vi) informational: Classification or supporting source fragment; review required. Linked records: atom-567fcfe399664139bc470039a64ca7c3.",
           "route": "not_app_checkable"
         }
       ],
@@ -2085,10 +2091,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2118,7 +2124,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(vii) informational: Classification or supporting source fragment; review required. Linked records: atom-d92f120867574355af6017dbf32a1942.",
           "route": "not_app_checkable"
         }
       ],
@@ -2147,10 +2153,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2180,7 +2186,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(vii) informational: Classification or supporting source fragment; review required. Linked records: atom-f42158db06de4196a0aaa0f39193cfe5.",
           "route": "not_app_checkable"
         }
       ],
@@ -2209,16 +2215,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "static",
           "check_id": "section5-safari-obscure",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2248,7 +2254,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(vii) informational: Classification or supporting source fragment; review required. Linked records: atom-24f8d7b97d144e308987cdc80ae3ed1c.",
           "route": "not_app_checkable"
         }
       ],
@@ -2277,10 +2283,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2310,7 +2316,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(viii) informational: Classification or supporting source fragment; review required. Linked records: atom-7cb28983fd1b400a97da56fdf9f7c6da.",
           "route": "not_app_checkable"
         }
       ],
@@ -2339,10 +2345,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2372,7 +2378,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ix) informational: Classification or supporting source fragment; review required. Linked records: atom-70d35afde54d41ba86a5ef3c35eec61b.",
           "route": "not_app_checkable"
         }
       ],
@@ -2401,10 +2407,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2434,7 +2440,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(ix) informational: Classification or supporting source fragment; review required. Linked records: atom-f410a13ed4c3466d9e11459c1b650f0a.",
           "route": "not_app_checkable"
         }
       ],
@@ -2463,10 +2469,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2498,7 +2504,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.1(x) informational: Classification or supporting source fragment; review required. Linked records: atom-ba721daeb5b543bc8488e50734fd0dcc, atom-ab1d520652654d109e2d31be463c1d44, atom-13fb51b0ab0a4bd6b24b5540313e144a.",
           "route": "not_app_checkable"
         }
       ],
@@ -2527,10 +2533,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2558,10 +2564,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2592,7 +2598,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.1(x) definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -2626,7 +2632,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required. Linked records: atom-e3f3c55abc10411d9d9d920ac373e4e2, atom-7df23b628e4c4db1915e7502b8873319, atom-11e76e5edaae4ce6b23b847674e46853, atom-03f3efa3386d4457875a12d817bab361.",
           "route": "not_app_checkable"
         }
       ],
@@ -2657,10 +2663,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2690,10 +2696,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2723,10 +2729,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2760,7 +2766,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.2(i) exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-e3f3c55abc10411d9d9d920ac373e4e2, atom-7df23b628e4c4db1915e7502b8873319, atom-11e76e5edaae4ce6b23b847674e46853.",
           "route": "not_app_checkable"
         }
       ],
@@ -2792,7 +2798,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required. Linked records: atom-79c635c3c990448e94377af84bf555bb, atom-677ed971d76d47f9acc3043b6d9317fe.",
           "route": "not_app_checkable"
         }
       ],
@@ -2821,10 +2827,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2852,10 +2858,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2886,7 +2892,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required. Linked records: atom-763e3c7f07d841b3897947cd2581a7f4, atom-79c28004b073491190a26f75da72e24a.",
           "route": "not_app_checkable"
         }
       ],
@@ -2915,10 +2921,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "runtime",
           "check_id": "dyn-hosts-contacted",
           "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "runtime",
+          "route": "runtime"
         },
         {
           "check_id": "ai-provider-consent",
@@ -2927,10 +2933,40 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-host-privacy",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "privacy-manifest-parity",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "artifact-reason-api",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
+        {
+          "check_id": "artifact-embedded-sdk",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
+        },
+        {
+          "check_id": "dyn-shipped-links",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "5",
@@ -2964,10 +3000,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -2997,7 +3033,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required. Linked records: atom-1bc7e5b4546c4c45ab14f701114dc5cc.",
           "route": "not_app_checkable"
         }
       ],
@@ -3026,10 +3062,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3059,7 +3095,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required. Linked records: atom-00204211686c46b09e24f3191affb97c.",
           "route": "not_app_checkable"
         }
       ],
@@ -3088,10 +3124,28 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "att-usage",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "tracking-sdk-no-att",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "tracking-consistency",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
         }
       ],
       "section": "5",
@@ -3119,7 +3173,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -3151,7 +3205,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required. Linked records: atom-8fd93bdceb6444498609324b7c61e3d8, atom-520e10834c0a4530824bcbc2a64747df.",
           "route": "not_app_checkable"
         }
       ],
@@ -3180,10 +3234,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3211,10 +3265,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3242,7 +3296,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(i) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -3274,7 +3328,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(ii) informational: Classification or supporting source fragment; review required. Linked records: atom-9a95aa0d44d54296922ecee0f77b6bdc, atom-d4c9e25b67d54ccb942cd9bf4353f232.",
           "route": "not_app_checkable"
         }
       ],
@@ -3305,10 +3359,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3340,7 +3394,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.2(ii) exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-9a95aa0d44d54296922ecee0f77b6bdc.",
           "route": "not_app_checkable"
         }
       ],
@@ -3372,7 +3426,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-763515db4a4c47959997735cab09c052, atom-a977ae61367344ee9bc7f051b747a19f.",
           "route": "not_app_checkable"
         }
       ],
@@ -3401,10 +3455,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3432,10 +3486,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3466,7 +3520,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(iv) informational: Classification or supporting source fragment; review required. Linked records: atom-014698fe8c1847f8862cf769b30ca51e, atom-c65ebb9d7f7244b7a38c4ddbb3e64fff.",
           "route": "not_app_checkable"
         }
       ],
@@ -3495,10 +3549,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3526,10 +3580,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3560,7 +3614,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(v) informational: Classification or supporting source fragment; review required. Linked records: atom-0c7f040146054195b3bc6d0930acf17a, atom-82ae9f06ca364a8cba5e90da09447ad9.",
           "route": "not_app_checkable"
         }
       ],
@@ -3589,10 +3643,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3623,7 +3677,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.2(v) exception: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -3655,7 +3709,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(v) informational: Classification or supporting source fragment; review required. Linked records: atom-65dfb80eab8a41aaa181d00193cea796, atom-fdf16daf58bd4bafa2113eec8e4e0c5f.",
           "route": "not_app_checkable"
         }
       ],
@@ -3684,16 +3738,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "static",
           "check_id": "section5-contact-select-all",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3721,16 +3775,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "static",
           "check_id": "section5-contact-preselect",
           "decides": "partial",
-          "evidence_class": "source"
+          "evidence_class": "source",
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3760,7 +3814,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(v) informational: Classification or supporting source fragment; review required. Linked records: atom-ff59fd94cf244bcb93683f762aef55c9.",
           "route": "not_app_checkable"
         }
       ],
@@ -3789,10 +3843,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3820,7 +3874,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(v) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -3851,7 +3905,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(vi) informational: Classification or supporting source fragment; review required. Linked records: atom-7bf8c37054064b7dad74dc80aee26117.",
           "route": "not_app_checkable"
         }
       ],
@@ -3880,10 +3934,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -3911,7 +3965,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(vi) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -3942,7 +3996,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.2(vii) informational: Classification or supporting source fragment; review required. Linked records: atom-3a537a6bfc9a4cada31f0e71a523dfbb.",
           "route": "not_app_checkable"
         }
       ],
@@ -3971,10 +4025,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4002,7 +4056,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -4034,7 +4088,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(i) informational: Classification or supporting source fragment; review required. Linked records: atom-53f072dd50e24c20934e49cff3aaf7c6, atom-9c54fdda9a8648c89571410c6994afbb.",
           "route": "not_app_checkable"
         }
       ],
@@ -4071,10 +4125,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4106,7 +4160,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.3(i) exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-53f072dd50e24c20934e49cff3aaf7c6.",
           "route": "not_app_checkable"
         }
       ],
@@ -4139,7 +4193,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(i) informational: Classification or supporting source fragment; review required. Linked records: atom-11db63a9d44443c6ab6e0a88e3eacfc3, atom-5428457075704d9380e0b77dd56e167d, atom-8dab1547f1934f7fa816c63312c62158.",
           "route": "not_app_checkable"
         }
       ],
@@ -4173,7 +4227,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.3(i) exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-5428457075704d9380e0b77dd56e167d, atom-8dab1547f1934f7fa816c63312c62158.",
           "route": "not_app_checkable"
         }
       ],
@@ -4203,10 +4257,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4235,10 +4289,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4268,7 +4322,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(i) informational: Classification or supporting source fragment; review required. Linked records: atom-d875a1253d2340e8aa057da79530157f.",
           "route": "not_app_checkable"
         }
       ],
@@ -4290,23 +4344,29 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-dc2194b8cdc741d188fa35de5c8b7a46"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "health-data-use",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "usage-description-crosscheck",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "artifact-entitlements",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
         }
       ],
       "section": "5",
@@ -4337,7 +4397,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(ii) informational: Classification or supporting source fragment; review required. Linked records: atom-ab5fede520524d80a3cc78a7f60fba2b, atom-7b04cb06802a460bbb0a1c08156fce9e.",
           "route": "not_app_checkable"
         }
       ],
@@ -4366,10 +4426,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4403,10 +4463,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4436,7 +4496,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-5345fc39e3384d7d877bbc3ab4690564.",
           "route": "not_app_checkable"
         }
       ],
@@ -4465,10 +4525,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4498,7 +4558,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-17d9787fe0d6421c8d75312e2e90b399.",
           "route": "not_app_checkable"
         }
       ],
@@ -4527,10 +4587,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4560,7 +4620,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-961ef578802a49a49644105cea490520.",
           "route": "not_app_checkable"
         }
       ],
@@ -4589,10 +4649,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4622,7 +4682,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-cb20c1aeb8664768a562a997a5637d0e.",
           "route": "not_app_checkable"
         }
       ],
@@ -4651,10 +4711,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4684,7 +4744,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-6a3b78e8f9fb44ee898de3187f91ba88.",
           "route": "not_app_checkable"
         }
       ],
@@ -4713,10 +4773,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4746,7 +4806,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iii) informational: Classification or supporting source fragment; review required. Linked records: atom-ca3179bd26c14413bba212bbebf6d6a9.",
           "route": "not_app_checkable"
         }
       ],
@@ -4775,10 +4835,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4808,7 +4868,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iv) informational: Classification or supporting source fragment; review required. Linked records: atom-45f00d84ec5d429e9c09b6420254ba9c.",
           "route": "not_app_checkable"
         }
       ],
@@ -4837,10 +4897,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4870,7 +4930,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.3(iv) informational: Classification or supporting source fragment; review required. Linked records: atom-aff1d3b887b74dc0bf870a020d0b7e5c.",
           "route": "not_app_checkable"
         }
       ],
@@ -4899,10 +4959,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -4930,7 +4990,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(a) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -4962,7 +5022,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(a) informational: Classification or supporting source fragment; review required. Linked records: atom-52e7a8b0d58746329256d94a7cf4d08b, atom-c75ba14519584289821143d84f4ce260.",
           "route": "not_app_checkable"
         }
       ],
@@ -4991,10 +5051,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5022,10 +5082,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5056,7 +5116,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(a) informational: Classification or supporting source fragment; review required. Linked records: atom-17970632211d46b690515a03c100a3a8, atom-0f27633791cf4eecba0ba3d066755670.",
           "route": "not_app_checkable"
         }
       ],
@@ -5087,10 +5147,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "kids-ads-analytics",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -5120,10 +5186,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "kids-ads-analytics",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -5151,7 +5223,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(a) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5183,7 +5255,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(b) informational: Classification or supporting source fragment; review required. Linked records: atom-8a158d3207504a33a05ce703c75110eb, atom-5cf1323080df40b3ab7ddaa355bfd672.",
           "route": "not_app_checkable"
         }
       ],
@@ -5217,7 +5289,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.4(b) exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-17970632211d46b690515a03c100a3a8, atom-0f27633791cf4eecba0ba3d066755670.",
           "route": "not_app_checkable"
         }
       ],
@@ -5249,7 +5321,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.4(b) definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -5281,7 +5353,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(b) informational: Classification or supporting source fragment; review required. Linked records: atom-53c8b3b3413c4572800a4bfd560679a4, atom-925e6d2605574764808aef786bcf60f1.",
           "route": "not_app_checkable"
         }
       ],
@@ -5313,7 +5385,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.4(b) definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -5342,10 +5414,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5373,7 +5445,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(b) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5402,7 +5474,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(b) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5433,7 +5505,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.4(b) informational: Classification or supporting source fragment; review required. Linked records: atom-6c7298fe0e60432aa202d451d5d91095.",
           "route": "not_app_checkable"
         }
       ],
@@ -5462,10 +5534,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "kids-wording",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -5495,7 +5573,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.5 informational: Classification or supporting source fragment; review required. Linked records: atom-fbb93f8e7fbd419dbcf8198a6e4f745c.",
           "route": "not_app_checkable"
         }
       ],
@@ -5524,10 +5602,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5561,7 +5639,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.5 informational: Classification or supporting source fragment; review required. Linked records: atom-f6af4b2b516f455da08e1216c4c00397, atom-f6d778971eed4d17958fb4135ef91319, atom-c2b2d4e338b945f8970c4c8916b7c0ee, atom-c556fa0944be4a9083d1edf566eff01c.",
           "route": "not_app_checkable"
         }
       ],
@@ -5590,10 +5668,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5623,10 +5701,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5658,7 +5736,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.1.5 exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-f6d778971eed4d17958fb4135ef91319.",
           "route": "not_app_checkable"
         }
       ],
@@ -5687,16 +5765,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "runtime",
           "check_id": "dyn-permission-prompt",
           "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "runtime",
+          "route": "runtime"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5724,16 +5802,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "runtime",
           "check_id": "dyn-permission-prompt",
           "decides": "partial",
-          "evidence_class": "runtime"
+          "evidence_class": "runtime",
+          "route": "runtime"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5763,7 +5841,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.5 informational: Classification or supporting source fragment; review required. Linked records: atom-e439b234d8054804b4f719c288748a7c.",
           "route": "not_app_checkable"
         }
       ],
@@ -5792,10 +5870,22 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-permission-purpose",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "usage-description-crosscheck",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -5823,7 +5913,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.1.5 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5854,7 +5944,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2 informational: Classification or supporting source fragment; review required. Linked records: atom-add39d454b9d4973b5438574d37eedb2.",
           "route": "not_app_checkable"
         }
       ],
@@ -5883,10 +5973,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -5914,7 +6004,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5943,7 +6033,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -5972,7 +6062,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2 exception: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -6001,7 +6091,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -6033,7 +6123,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.1 informational: Classification or supporting source fragment; review required. Linked records: atom-a39d097d031a469ba8008128f565b142, atom-e26d54fe675a4711bf70fd80957730c2.",
           "route": "not_app_checkable"
         }
       ],
@@ -6068,10 +6158,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6105,10 +6195,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6138,7 +6228,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.1 informational: Classification or supporting source fragment; review required. Linked records: atom-41c5d2552e854bf68481269e574babdd.",
           "route": "not_app_checkable"
         }
       ],
@@ -6167,10 +6257,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6201,7 +6291,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.2 informational: Classification or supporting source fragment; review required. Linked records: atom-f8413a429d6349c7b7e8068accabdc6a, atom-5b22e14eeb3f4a6babc545a485387628.",
           "route": "not_app_checkable"
         }
       ],
@@ -6233,7 +6323,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.2 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -6262,10 +6352,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6296,7 +6386,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.2 informational: Classification or supporting source fragment; review required. Linked records: atom-e1b1e558df604eeaadff6c78fce48880, atom-2f14eed6c5574d76811dbe25ce3af0b5.",
           "route": "not_app_checkable"
         }
       ],
@@ -6328,7 +6418,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.2 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -6357,10 +6447,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6391,7 +6481,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.3 informational: Classification or supporting source fragment; review required. Linked records: atom-74090a65c8674858ae889e161dfac187, atom-12c2449b917d4e8184e852a24fc58f00.",
           "route": "not_app_checkable"
         }
       ],
@@ -6420,10 +6510,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6451,10 +6541,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6484,7 +6574,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.3 informational: Classification or supporting source fragment; review required. Linked records: atom-d530657ef0a2442ba124619cd7d331e0.",
           "route": "not_app_checkable"
         }
       ],
@@ -6516,7 +6606,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.3 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -6548,7 +6638,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.3 informational: Classification or supporting source fragment; review required. Linked records: atom-02663b2a41d34a7e94d733713db05cbc, atom-cab0d99ae5fd4afe9d4aa4caa42e3188.",
           "route": "not_app_checkable"
         }
       ],
@@ -6580,7 +6670,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.3 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -6609,10 +6699,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6642,7 +6732,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.4(a) informational: Classification or supporting source fragment; review required. Linked records: atom-d1942b8d72664e62977a447e35bc033d.",
           "route": "not_app_checkable"
         }
       ],
@@ -6671,10 +6761,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6702,7 +6792,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.4(b) informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -6733,7 +6823,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required. Linked records: atom-2ba643771a144366a3edd3d22f2b2821.",
           "route": "not_app_checkable"
         }
       ],
@@ -6762,10 +6852,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6795,7 +6885,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required. Linked records: atom-ab7c53b3e758410ba76e7b4860efb4e6.",
           "route": "not_app_checkable"
         }
       ],
@@ -6824,10 +6914,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6858,7 +6948,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required. Linked records: atom-927a016218a04932b6fae3d8e1990011, atom-dea5dcf0c1924c22ad9f808954e562d9.",
           "route": "not_app_checkable"
         }
       ],
@@ -6890,7 +6980,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.5 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -6919,10 +7009,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -6953,7 +7043,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required. Linked records: atom-194cf46c68844e209dd822befc63eaf7, atom-fc3bf099d5e640739bddbd4d682eee85.",
           "route": "not_app_checkable"
         }
       ],
@@ -6985,7 +7075,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.5 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -7014,10 +7104,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7048,7 +7138,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required. Linked records: atom-b72f4959872b41f3bfab1230f34d1392, atom-082c9313d6334971a66bb09f9b9a4c2a.",
           "route": "not_app_checkable"
         }
       ],
@@ -7080,7 +7170,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.5 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -7109,10 +7199,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7140,7 +7230,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -7172,7 +7262,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.2.5 informational: Classification or supporting source fragment; review required. Linked records: atom-88ae18c00b3c46219cef96fe8ae7e1d1, atom-b615317e82294f26950c88c94b100f57.",
           "route": "not_app_checkable"
         }
       ],
@@ -7204,7 +7294,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.2.5 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -7233,10 +7323,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7264,7 +7354,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -7295,7 +7385,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3 informational: Classification or supporting source fragment; review required. Linked records: atom-012fd83424324b45b0bb8ae62b355585.",
           "route": "not_app_checkable"
         }
       ],
@@ -7324,10 +7414,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7355,7 +7445,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3 definition: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -7386,7 +7476,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3.1 informational: Classification or supporting source fragment; review required. Linked records: atom-513210e04a3c40ecab8c93cc9f83c824.",
           "route": "not_app_checkable"
         }
       ],
@@ -7408,23 +7498,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-a7c4e020d2d04c6cb6eb0f4fa2ca8e81"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "contest-rules",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7455,7 +7539,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3.2 informational: Classification or supporting source fragment; review required. Linked records: atom-2e51a4c561b94198a56c9d87e73e05f4, atom-851bdaa68019471d82aa05d20a1c7595.",
           "route": "not_app_checkable"
         }
       ],
@@ -7490,10 +7574,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7527,10 +7611,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7560,7 +7644,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3.3 informational: Classification or supporting source fragment; review required. Linked records: atom-9cee242a020143f9bdbe68a1861f3e2b.",
           "route": "not_app_checkable"
         }
       ],
@@ -7589,10 +7673,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7624,7 +7708,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3.4 informational: Classification or supporting source fragment; review required. Linked records: atom-bf59fd54e04c4661a6a4dcbb248357af, atom-9b377905684f459fbbf35cef4a81a4b1, atom-2a8d143171424611a2ad06c9912de8c1.",
           "route": "not_app_checkable"
         }
       ],
@@ -7653,10 +7737,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "realmoney-gambling",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -7684,10 +7774,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "realmoney-gambling",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -7715,10 +7811,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7748,7 +7844,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3.4 informational: Classification or supporting source fragment; review required. Linked records: atom-9c54d5fd9e0547e3b0591c744198766a.",
           "route": "not_app_checkable"
         }
       ],
@@ -7777,10 +7873,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7812,7 +7908,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.3.4 informational: Classification or supporting source fragment; review required. Linked records: atom-d4e0b637d3684d8db3ab8e803d6be810, atom-f48da7fed9d84582a76a058d068a0f43, atom-cf5b8329d8674d7ba0887cd89036a335.",
           "route": "not_app_checkable"
         }
       ],
@@ -7841,10 +7937,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7872,10 +7968,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7903,10 +7999,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -7937,7 +8033,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.4 informational: Classification or supporting source fragment; review required. Linked records: atom-d341dea350b64fdd89c02583f75dad70, atom-78f312ec6cf04db4913d28c197c363b8.",
           "route": "not_app_checkable"
         }
       ],
@@ -7972,10 +8068,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8003,10 +8099,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8036,7 +8132,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.4 informational: Classification or supporting source fragment; review required. Linked records: atom-96f6defe0324418eb96981dfc081c5b6.",
           "route": "not_app_checkable"
         }
       ],
@@ -8071,10 +8167,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8107,7 +8203,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.4 informational: Classification or supporting source fragment; review required. Linked records: atom-fa591b0a5a0a46c7b4065a857dc24730, atom-c2e46b4ee9a24f2494b96b9e2657ddbc, atom-f1e2d49b361e4aa2bd28d71508586fd8, atom-5e4cc0b4b10043cc9386ff4f94884b49.",
           "route": "not_app_checkable"
         }
       ],
@@ -8136,10 +8232,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8167,10 +8263,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8198,10 +8294,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8222,23 +8318,17 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "attestation",
       "related": [
         "req-a0cab9ce192146e99d118c6da1a767f2"
       ],
       "retired_from": [],
       "routes": [
         {
-          "check_id": "vpn-disclosure",
-          "decides": "partial",
-          "evidence_class": "semantic",
-          "route": "semantic"
-        },
-        {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8269,7 +8359,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.4 informational: Classification or supporting source fragment; review required. Linked records: atom-8116e55d49224629bc42c51e4b953b1f, atom-5dbfbb56b2f24dc68e899b34ad4f7f9b.",
           "route": "not_app_checkable"
         }
       ],
@@ -8298,10 +8388,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8329,10 +8419,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8363,7 +8453,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.4 informational: Classification or supporting source fragment; review required. Linked records: atom-a5f71d4d7a374e21b35fe129c991d627, atom-360bc115960e400fbeac4a595cc37b6e.",
           "route": "not_app_checkable"
         }
       ],
@@ -8395,7 +8485,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.4 exception: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -8427,7 +8517,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.4 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -8456,7 +8546,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.4 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -8487,7 +8577,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-05ddad1ca9ff409f92c7a87ae64473a1.",
           "route": "not_app_checkable"
         }
       ],
@@ -8517,10 +8607,16 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "mdm",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
         }
       ],
       "section": "5",
@@ -8551,7 +8647,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-c04cdf6675c044958452daefd7a8b545, atom-41c18cc519fa43f8b5ba78d65daa888f.",
           "route": "not_app_checkable"
         }
       ],
@@ -8583,10 +8679,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8618,7 +8714,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.5 exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-c04cdf6675c044958452daefd7a8b545.",
           "route": "not_app_checkable"
         }
       ],
@@ -8649,7 +8745,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-b480b51d141242809e25a1049c9e423d.",
           "route": "not_app_checkable"
         }
       ],
@@ -8679,10 +8775,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8712,7 +8808,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-4d1e304f75454effa650679c9bfba5f3.",
           "route": "not_app_checkable"
         }
       ],
@@ -8742,10 +8838,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8778,7 +8874,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-1c570ec994cd459facac23fe6583a1a2, atom-0d5d7c64c4a9440994be9ba845e06ac0, atom-d0d728497c3a44908d4742c6c793e704, atom-b42c3f70b6bc4e89a92a90c6b4be0369.",
           "route": "not_app_checkable"
         }
       ],
@@ -8808,10 +8904,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8840,10 +8936,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8874,10 +8970,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8906,10 +9002,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -8940,7 +9036,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-a05b21d8462b4d31a64b354128c6e8ed, atom-153ffe1b40f94ff5afe9184bce21a9e8.",
           "route": "not_app_checkable"
         }
       ],
@@ -8973,7 +9069,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.5 exception: This is a predicate, permission, or exception; evaluate it with linked obligations. Linked records: atom-d0d728497c3a44908d4742c6c793e704.",
           "route": "not_app_checkable"
         }
       ],
@@ -9005,7 +9101,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.5 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -9036,7 +9132,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required. Linked records: atom-1f300eb9147146dcb1af6ce08da28a72.",
           "route": "not_app_checkable"
         }
       ],
@@ -9068,7 +9164,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This is a predicate, permission, or exception; evaluate it with linked obligations.",
+          "reason": "5.5 definition: This is a predicate, permission, or exception; evaluate it with linked obligations.",
           "route": "not_app_checkable"
         }
       ],
@@ -9097,7 +9193,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.5 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9128,7 +9224,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required. Linked records: atom-400b2c4ef57c4a4c92bc6730ee42c447.",
           "route": "not_app_checkable"
         }
       ],
@@ -9157,10 +9253,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9194,7 +9290,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required. Linked records: atom-088ba6e7e73842f8acc25c1b7bd96745, atom-7f7d9a21d98241ebac3fecba43cfe19a, atom-977d672e184a48bc82db0e1bf061d484, atom-d6ab20800d2149738191c9fbf1df906c.",
           "route": "not_app_checkable"
         }
       ],
@@ -9223,10 +9319,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9254,10 +9350,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9285,10 +9381,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9316,10 +9412,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9347,10 +9443,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9378,7 +9474,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9407,7 +9503,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9443,7 +9539,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required. Linked records: atom-4f82ed2750de4cea9b57cf6ae7c20cd3, atom-0131dc175ab54b7f808d5b0b5337c458, atom-646f22c0e861405db627da967ec103a7, atom-80d54627ed054880b813c856b194e878.",
           "route": "not_app_checkable"
         }
       ],
@@ -9472,10 +9568,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9503,10 +9599,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9534,10 +9630,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9565,10 +9661,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9596,10 +9692,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9627,10 +9723,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9658,7 +9754,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9687,7 +9783,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 exception: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9716,7 +9812,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9745,7 +9841,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.1 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -9779,7 +9875,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.1 informational: Classification or supporting source fragment; review required. Linked records: atom-6bf9ff4149434d63b5552995ca167862, atom-25326c8d8ae6494b94b14df8d84aeece, atom-558161f2c5594db5a429a533f418ad9c, atom-8073a2a06fae4fd5a2177ddd2060f5d0.",
           "route": "not_app_checkable"
         }
       ],
@@ -9808,10 +9904,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9839,10 +9935,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9870,10 +9966,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9901,10 +9997,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -9934,7 +10030,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.1 informational: Classification or supporting source fragment; review required. Linked records: atom-08a9705edd9b4a4db4e5d687ddc08791.",
           "route": "not_app_checkable"
         }
       ],
@@ -9969,10 +10065,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -10002,7 +10098,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.1 informational: Classification or supporting source fragment; review required. Linked records: atom-02798393eb594e5886018dbcdad87bbf.",
           "route": "not_app_checkable"
         }
       ],
@@ -10037,10 +10133,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -10068,7 +10164,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.2 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -10099,7 +10195,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.2 informational: Classification or supporting source fragment; review required. Linked records: atom-b33855689bc84830bee0ab55b04a9200.",
           "route": "not_app_checkable"
         }
       ],
@@ -10134,10 +10230,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -10169,7 +10265,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.2 informational: Classification or supporting source fragment; review required. Linked records: atom-bf341fe1decf4aa3b8e1d39018f3a8d6, atom-3e8bdd038b5848c9bb7aec5173894d5d, atom-21008b99be694b86ac628de503f46e07.",
           "route": "not_app_checkable"
         }
       ],
@@ -10204,10 +10300,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -10241,10 +10337,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -10272,7 +10368,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.3 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -10303,7 +10399,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.3 informational: Classification or supporting source fragment; review required. Linked records: atom-96ff0b008e484547870ce15385132857.",
           "route": "not_app_checkable"
         }
       ],
@@ -10344,10 +10440,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",
@@ -10377,7 +10473,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.4 informational: Classification or supporting source fragment; review required. Linked records: atom-272cc4613bd9fafd09e58bcf425d944e.",
           "route": "not_app_checkable"
         }
       ],
@@ -10406,7 +10502,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.4 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -10435,7 +10531,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Classification or supporting source fragment; review required.",
+          "reason": "5.6.4 informational: Classification or supporting source fragment; review required.",
           "route": "not_app_checkable"
         }
       ],
@@ -10463,11 +10559,11 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "not_app_checkable",
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Discretionary quality signal, not a fixed app-level duty."
+          "reason": "5.6.4 informational: Discretionary quality signal, not a fixed app-level duty.",
+          "route": "not_app_checkable"
         }
       ],
       "section": "5",
@@ -10505,10 +10601,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "5",

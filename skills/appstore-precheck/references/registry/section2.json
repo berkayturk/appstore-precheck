@@ -1,28 +1,34 @@
 {
   "checks": {
     "section2-completeness-signals": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
-      "symbol": "review_completeness",
-      "tests": ["tests/test-section2-review.sh"],
       "line_prefix": "SECTION2-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_completeness",
+      "tests": [
+        "tests/test-section2-review.sh"
+      ]
     },
     "section2-review-access-signals": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
-      "symbol": "review_access",
-      "tests": ["tests/test-section2-review.sh"],
       "line_prefix": "SECTION2-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_access",
+      "tests": [
+        "tests/test-section2-review.sh"
+      ]
     },
     "section2-screenshot-packet": {
-      "route": "semantic",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section2-review.py",
-      "symbol": "review_screenshots",
-      "tests": ["tests/test-section2-review.sh"],
       "line_prefix": "SECTION2-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_screenshots",
+      "tests": [
+        "tests/test-section2-review.sh"
+      ]
     }
   }
 }

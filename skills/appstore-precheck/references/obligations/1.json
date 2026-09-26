@@ -22,7 +22,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.0 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -51,7 +51,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.0 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -80,7 +80,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.0 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -111,7 +111,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-6a9ccd921f234306b5c47b9eb2cfc16b.",
           "route": "not_app_checkable"
         }
       ],
@@ -140,7 +140,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.1 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -171,7 +171,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-a4f2adc1120b4379883ed7055ffc2a8f.",
           "route": "not_app_checkable"
         }
       ],
@@ -202,7 +202,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.1 exception: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d5b89600bc7a4d759c84e7b75a11a2c3.",
           "route": "not_app_checkable"
         }
       ],
@@ -234,7 +234,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-54af33f29d8f46dfadc64688752cfba3, atom-40fe49bd689740b4a9de179221c187e6.",
           "route": "not_app_checkable"
         }
       ],
@@ -265,7 +265,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-058d7ffef5fa4358b935b69aa1ef6e15.",
           "route": "not_app_checkable"
         }
       ],
@@ -297,7 +297,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-2fcd0b8878af4175b4809085a400c4d6, atom-a97b9a857f9149958f63e5c1ea5bb7d4.",
           "route": "not_app_checkable"
         }
       ],
@@ -329,7 +329,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.4 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-e1e5dd4351284c3cb362052ede106689, atom-a406cb745b2647ebab05e63c34564938.",
           "route": "not_app_checkable"
         }
       ],
@@ -361,7 +361,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.5 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-4d0fbfc8ac274eb6b65f5ca81789322b, atom-abc7a5dcc4ea4dd39e530b5efdc6ef4c.",
           "route": "not_app_checkable"
         }
       ],
@@ -392,7 +392,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.6 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d21d8f8c5f4244f19324b26d9d109c57.",
           "route": "not_app_checkable"
         }
       ],
@@ -423,7 +423,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.6 exception: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-30d30275ccba4cc8bf26fadf986b1e82.",
           "route": "not_app_checkable"
         }
       ],
@@ -454,7 +454,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.6 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-a2a5e40a2f5946c7bfd103f3e7a02ad2.",
           "route": "not_app_checkable"
         }
       ],
@@ -485,7 +485,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.1.7 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-9209336ae03545949fabe472e53b563f.",
           "route": "not_app_checkable"
         }
       ],
@@ -514,7 +514,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -546,7 +546,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-2a92c4d60f464b529e653ebb1c419035, atom-e90ce97c6e7d4632b40f9f6fefe9c4d0.",
           "route": "not_app_checkable"
         }
       ],
@@ -578,7 +578,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 exception: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d4fce7eecff7444d9bb83f193f54adaf, atom-4cef1aaf5be14dbfa4bc141618e5f661.",
           "route": "not_app_checkable"
         }
       ],
@@ -609,7 +609,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-e728e9764730455ab83bcf4a37e92384.",
           "route": "not_app_checkable"
         }
       ],
@@ -641,7 +641,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d0568df1354349a5a5446da302da12eb, atom-0dc300f5137a4c7e9833c5f4cca8bc24.",
           "route": "not_app_checkable"
         }
       ],
@@ -670,7 +670,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -699,7 +699,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -730,7 +730,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-a9b4a1952d944e24a795730819986b70.",
           "route": "not_app_checkable"
         }
       ],
@@ -762,7 +762,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-b159c69f4a294eb68d1bc7aa7ebb98a8, atom-3695711bedf344469b8442714d23fca5.",
           "route": "not_app_checkable"
         }
       ],
@@ -793,7 +793,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-8a14301460114ce3bca499a40882c0d6.",
           "route": "not_app_checkable"
         }
       ],
@@ -824,7 +824,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-dc2caed931c44f58abc0fc8807b00cfc.",
           "route": "not_app_checkable"
         }
       ],
@@ -853,7 +853,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2.1 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -882,7 +882,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2.1 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -911,7 +911,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2.1 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -942,7 +942,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-5f9ba791c2b746daa65864befd7bc7f9.",
           "route": "not_app_checkable"
         }
       ],
@@ -973,7 +973,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2.1 definition: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d33efe4394b14a1bbfa18a587a6d4045.",
           "route": "not_app_checkable"
         }
       ],
@@ -1002,7 +1002,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.2.1 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1033,7 +1033,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2.1 definition: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d4805f00c9ed4f1d9a65aff0d3470881.",
           "route": "not_app_checkable"
         }
       ],
@@ -1064,7 +1064,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-3d7e6af4e0984c4daeab01f0b2f02244.",
           "route": "not_app_checkable"
         }
       ],
@@ -1096,7 +1096,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.2.1(a) informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-3deb247ab0e740c9afb2f58c46fd852a, atom-57e208a826334b3792bb5b8484e236a2.",
           "route": "not_app_checkable"
         }
       ],
@@ -1125,7 +1125,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.3 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1156,7 +1156,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-557e5451c175420c8b8992d746b49a07.",
           "route": "not_app_checkable"
         }
       ],
@@ -1190,7 +1190,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-21a6b7b46d434be090a65751650f807d, atom-0108bfecf9ea4c2e8b1cf69d5d17662e, atom-32b3120b994f415c8d70ba45c88225c7, atom-f85a03d0854e432995003cbc11227d67.",
           "route": "not_app_checkable"
         }
       ],
@@ -1221,7 +1221,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-9c53e07611ad4df3b1fda0d14b0ab465.",
           "route": "not_app_checkable"
         }
       ],
@@ -1250,7 +1250,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.3 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1281,7 +1281,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-bb3fb63adabe4a5dbb7b9f569018a8c2.",
           "route": "not_app_checkable"
         }
       ],
@@ -1310,7 +1310,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.3 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1342,7 +1342,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-6186554d692347f783bbb47b9052e065, atom-3e0f0c34543d434ba957cd1d634af137.",
           "route": "not_app_checkable"
         }
       ],
@@ -1374,7 +1374,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-46e109a06fef4a9999003e29a29d7c4a, atom-ad8d2c491c07479395c8bfa313dda1d3.",
           "route": "not_app_checkable"
         }
       ],
@@ -1403,7 +1403,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.3 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1438,7 +1438,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 exception: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-7edb6d5616cf4d89a20015609eb960fd, atom-8cbd095633d1484b8078e38487ff555b, atom-7fa8977b538f4c52b4e139328f0d9b09, atom-a27dc53d09e647b0ba9a37a28aa9567d.",
           "route": "not_app_checkable"
         }
       ],
@@ -1469,7 +1469,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 exception: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-46e0f4763f6c4bfd98c4510c37bcc469.",
           "route": "not_app_checkable"
         }
       ],
@@ -1502,7 +1502,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.3 exception: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-a60d137ff0f34744aa62bac5ca2d0b15, atom-543cef8ec19743e09df55246cf779485, atom-ec5d383477bc4334966d626c815327f1.",
           "route": "not_app_checkable"
         }
       ],
@@ -1533,7 +1533,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-5f0e9701e9e84c24a76a30ecac3b7379.",
           "route": "not_app_checkable"
         }
       ],
@@ -1562,7 +1562,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.4 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1591,7 +1591,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.4.1 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -1622,7 +1622,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-51aba889f71c499eb7faca3ed514d66b.",
           "route": "not_app_checkable"
         }
       ],
@@ -1654,7 +1654,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-cf0dd5a70e5a47c8bd3ecd533d4c9c0d, atom-9b4aa004dae84a22a66c46f674f29272.",
           "route": "not_app_checkable"
         }
       ],
@@ -1685,7 +1685,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-00797e38ee51476aafe57e41aa87b9d2.",
           "route": "not_app_checkable"
         }
       ],
@@ -1716,7 +1716,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.1 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-b6bfe635e6cf49b3bdc8650244d8b675.",
           "route": "not_app_checkable"
         }
       ],
@@ -1747,7 +1747,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-a7348ccb4c63425ca0384e3ee4c9e339.",
           "route": "not_app_checkable"
         }
       ],
@@ -1778,7 +1778,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.2 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-55729f8061e341b694c5caac2a81bc92.",
           "route": "not_app_checkable"
         }
       ],
@@ -1811,7 +1811,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-98d88ec86acc4741b25278e5405454bb, atom-e8f1053816464b5d9cc0200dac37129f, atom-e96ea933c0be4bafada64388114da3e5.",
           "route": "not_app_checkable"
         }
       ],
@@ -1842,7 +1842,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-5cfe6efad6b0475fa06cbfd8233f675b.",
           "route": "not_app_checkable"
         }
       ],
@@ -1875,7 +1875,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.3 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-1120cf24fc3e431b87ba3e7bf5583dd5, atom-a11ad225300a477d8bdef0b539f52389, atom-49e33ae2dae14a4f84b7a46ddd09d1ef.",
           "route": "not_app_checkable"
         }
       ],
@@ -1907,7 +1907,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.4 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-2cfda6d6703b4610aac220d3f6bfafc9, atom-98dd49825df5474bb71c4d416caf00b8.",
           "route": "not_app_checkable"
         }
       ],
@@ -1939,7 +1939,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.4.5 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-8e828e3910c64410ba6ef42c1155a17b, atom-7c7546436ef84b0c99c309a7bde451bc.",
           "route": "not_app_checkable"
         }
       ],
@@ -1968,7 +1968,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.5 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -2000,7 +2000,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.5 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d188d94683794eb6a1e3977400195292, atom-cb980266eda4426cb44c7d30b2a00ca1.",
           "route": "not_app_checkable"
         }
       ],
@@ -2029,7 +2029,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
+          "reason": "1.5 informational: This source context does not impose a distinct developer action beyond the neighboring atomic rules.",
           "route": "not_app_checkable"
         }
       ],
@@ -2060,7 +2060,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.5 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-aee38865f5f34a8e8d3d9b67bba99c53.",
           "route": "not_app_checkable"
         }
       ],
@@ -2092,7 +2092,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.5 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-d1a35f3c93ba453fb776bf0a5b2a9612, atom-564c86e5c2b44721aacf6d633eec6024.",
           "route": "not_app_checkable"
         }
       ],
@@ -2124,7 +2124,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.6 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-5185983edd3c4ce6b703a88850a08ad3, atom-a49d95a973f54ac3894ad3168f6e7559.",
           "route": "not_app_checkable"
         }
       ],
@@ -2156,7 +2156,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty.",
+          "reason": "1.7 informational: Source occurrence is represented by its linked atomic rules; this carrier adds no separate app duty. Linked records: atom-07be96c43fdd40c9a9a80c9dad4e5094, atom-e3de8c3eed2c43fca45d753b8816164e.",
           "route": "not_app_checkable"
         }
       ],
@@ -2185,10 +2185,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2218,10 +2218,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2252,7 +2252,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.1.1 exception: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2267,7 +2267,7 @@
         "feature_condition": "Objectionable Content",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Exclude prolonged, intense, or sadistic realistic portrayals of killing, maiming, torture, or abuse of people or animals; review borderline depictions in context.",
+      "criterion": "Exclude realistic depictions of lethal or serious physical harm to people or animals; borderline or context-dependent scenes need human review rather than automatic clearance.",
       "exceptions": [],
       "id": "atom-54af33f29d8f46dfadc64688752cfba3",
       "kind": "obligation",
@@ -2281,10 +2281,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2312,10 +2312,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2343,10 +2343,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2374,10 +2374,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2398,7 +2398,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-5ece3bde2fe9413899476f3aea9d3a4a"
       ],
@@ -2408,13 +2408,13 @@
           "check_id": "section1-safety-signals",
           "decides": "partial",
           "evidence_class": "source",
-          "route": "semantic"
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2442,10 +2442,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2473,10 +2473,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2504,10 +2504,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2535,10 +2535,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2553,9 +2553,7 @@
         "unknown": "NEEDS_REVIEW"
       },
       "criterion": "Do not present false information as real, including inaccurate readings attributed to a device.",
-      "exceptions": [
-        "atom-30d30275ccba4cc8bf26fadf986b1e82"
-      ],
+      "exceptions": [],
       "id": "atom-d21d8f8c5f4244f19324b26d9d109c57",
       "kind": "obligation",
       "platforms": [
@@ -2563,15 +2561,16 @@
       ],
       "primary_route": "attestation",
       "related": [
-        "req-827af714e7584b39bd97968f9d91d220"
+        "req-827af714e7584b39bd97968f9d91d220",
+        "atom-30d30275ccba4cc8bf26fadf986b1e82"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2588,7 +2587,7 @@
       "criterion": "An entertainment disclaimer does not excuse deceptive information or features.",
       "exceptions": [],
       "id": "atom-30d30275ccba4cc8bf26fadf986b1e82",
-      "kind": "exception",
+      "kind": "definition",
       "platforms": [
         "all_apple_platforms"
       ],
@@ -2602,7 +2601,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.1.6 definition: 1.1.6 clarification: an entertainment disclaimer does not excuse deception; it removes a defence and is evaluated with the linked deception obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2624,7 +2623,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-24aea17e273c43949a9b934d73033f31"
       ],
@@ -2634,13 +2633,13 @@
           "check_id": "section1-safety-signals",
           "decides": "partial",
           "evidence_class": "source",
-          "route": "semantic"
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2668,10 +2667,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2702,7 +2701,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.2 definition: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2719,9 +2718,7 @@
       },
       "criterion": "Do not operate a service chiefly used for pornography, random or anonymous chat, objectifying people, threats, or bullying.",
       "exceptions": [
-        "atom-d4fce7eecff7444d9bb83f193f54adaf",
-        "atom-4cef1aaf5be14dbfa4bc141618e5f661",
-        "atom-958acc1e293ff59d2c168434a84f98b5"
+        "atom-d4fce7eecff7444d9bb83f193f54adaf"
       ],
       "id": "atom-e90ce97c6e7d4632b40f9f6fefe9c4d0",
       "kind": "obligation",
@@ -2730,15 +2727,17 @@
       ],
       "primary_route": "attestation",
       "related": [
-        "req-c0517d39c8e24f7d94f1272b87f7e028"
+        "req-c0517d39c8e24f7d94f1272b87f7e028",
+        "atom-4cef1aaf5be14dbfa4bc141618e5f661",
+        "atom-958acc1e293ff59d2c168434a84f98b5"
       ],
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2769,7 +2768,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.2 exception: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2801,7 +2800,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.2 exception: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2830,10 +2829,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2864,7 +2863,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.2 definition: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -2893,10 +2892,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -2942,10 +2941,16 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-ugc-safety",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "1",
@@ -2991,10 +2996,16 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-ugc-safety",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "1",
@@ -3022,10 +3033,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3071,10 +3082,16 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "dyn-ugc-safety",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
         }
       ],
       "section": "1",
@@ -3102,10 +3119,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3133,10 +3150,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3167,7 +3184,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.2.1 definition: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -3199,7 +3216,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.2.1 definition: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -3228,10 +3245,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3259,10 +3276,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3290,10 +3307,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3321,10 +3338,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3360,10 +3377,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3399,10 +3416,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3438,10 +3455,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3472,7 +3489,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.3 exception: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -3501,10 +3518,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3532,10 +3549,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3550,7 +3567,7 @@
         "interpretation_status": "linked_kids_guidance_conflict_needs_review",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Do not send a child's personally identifying information from a Kids Category app to a third party; reconcile the linked Kids guidance before final assessment.",
+      "criterion": "Do not send a child's personally identifying information from a Kids Category app to a third party.",
       "exceptions": [],
       "id": "atom-6186554d692347f783bbb47b9052e065",
       "kind": "obligation",
@@ -3564,10 +3581,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3582,7 +3599,7 @@
         "interpretation_status": "linked_kids_guidance_conflict_needs_review",
         "unknown": "NEEDS_REVIEW"
       },
-      "criterion": "Do not send device information from a Kids Category app to a third party; reconcile the linked Kids guidance before final assessment.",
+      "criterion": "Do not send device information from a Kids Category app to a third party.",
       "exceptions": [],
       "id": "atom-3e0f0c34543d434ba957cd1d634af137",
       "kind": "obligation",
@@ -3596,10 +3613,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3646,10 +3663,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3693,10 +3710,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3717,12 +3734,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3741,12 +3766,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3765,12 +3798,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3789,12 +3830,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3813,12 +3862,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e2c6de7bfda5499f875b2a7692312e23"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "0443623df375d1c8bc21bbd5f23c9501d90ea03ed7a6ca43faf25f3cbcd71d39"
     },
@@ -3837,12 +3894,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-e556507afcfe4b0a9f3ecc2e89955c72"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "6bd560d2a42fb057fa902921dd335b1ac3c9d10af2cbedcaf5eb2127845e5f9a"
     },
@@ -3861,12 +3926,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-748d0f4a65f4417383488a4768117e1e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "28f809a9787a7b1b79532fc65c2f68b12b88116e6932d19cfe07a670199bb4b6"
     },
@@ -3885,12 +3958,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-748d0f4a65f4417383488a4768117e1e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "28f809a9787a7b1b79532fc65c2f68b12b88116e6932d19cfe07a670199bb4b6"
     },
@@ -3909,12 +3990,20 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "req-748d0f4a65f4417383488a4768117e1e"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.3 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "28f809a9787a7b1b79532fc65c2f68b12b88116e6932d19cfe07a670199bb4b6"
     },
@@ -3940,10 +4029,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -3971,10 +4060,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4002,10 +4091,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4033,10 +4122,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4067,7 +4156,7 @@
           "check_id": "section1-safety-signals",
           "decides": "partial",
           "evidence_class": "source",
-          "route": "semantic"
+          "route": "static"
         },
         {
           "check_id": "health-claims",
@@ -4076,10 +4165,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4113,10 +4202,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4144,10 +4233,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4175,10 +4264,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4206,10 +4295,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4237,10 +4326,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4268,10 +4357,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4299,10 +4388,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4325,7 +4414,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-93680e1020fa40668a94bddee4f1451c"
       ],
@@ -4335,13 +4424,13 @@
           "check_id": "section1-safety-signals",
           "decides": "partial",
           "evidence_class": "source",
-          "route": "semantic"
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4362,7 +4451,7 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": "semantic",
+      "primary_route": "static",
       "related": [
         "req-93680e1020fa40668a94bddee4f1451c"
       ],
@@ -4372,13 +4461,13 @@
           "check_id": "section1-safety-signals",
           "decides": "partial",
           "evidence_class": "source",
-          "route": "semantic"
+          "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4409,7 +4498,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
+          "reason": "1.4.3 exception: This ID states an exception, permission, or applicability qualifier; assess it with its linked obligation.",
           "route": "not_app_checkable"
         }
       ],
@@ -4438,10 +4527,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4469,10 +4558,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4500,10 +4589,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4531,10 +4620,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4563,10 +4652,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4600,10 +4689,10 @@
           "route": "static"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4637,10 +4726,10 @@
           "route": "semantic"
         },
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4668,10 +4757,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4699,10 +4788,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4732,10 +4821,22 @@
       ],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "ats-arbitrary-loads",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        },
+        {
+          "check_id": "artifact-ats",
+          "decides": "partial",
+          "evidence_class": "artifact",
+          "route": "artifact"
         }
       ],
       "section": "1",
@@ -4766,7 +4867,7 @@
           "check_id": null,
           "decides": "full",
           "evidence_class": "source-classification",
-          "reason": "Historical candidate merged into the linked security obligation after section review.",
+          "reason": "1.6 informational: Historical candidate merged into the linked security obligation after section review. Linked records: atom-5185983edd3c4ce6b703a88850a08ad3.",
           "route": "not_app_checkable"
         }
       ],
@@ -4795,10 +4896,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4826,10 +4927,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4858,10 +4959,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4890,10 +4991,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4914,13 +5015,21 @@
       "platforms": [
         "all_apple_platforms"
       ],
-      "primary_route": null,
+      "primary_route": "not_app_checkable",
       "related": [
         "atom-4cef1aaf5be14dbfa4bc141618e5f661",
         "req-9b7c4b913dd04405814a767804222984"
       ],
       "retired_from": [],
-      "routes": [],
+      "routes": [
+        {
+          "check_id": null,
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "1.2 exception: Allowance condition; it does not stand alone and is assessed with the obligation that links it. Linked records: atom-4cef1aaf5be14dbfa4bc141618e5f661.",
+          "route": "not_app_checkable"
+        }
+      ],
       "section": "1",
       "text_sha256": "f61c4aebd24079e1dccbfdb42df49e362beac1696681f7c31c19c0bca8cf3b80"
     },
@@ -4947,10 +5056,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -4979,10 +5088,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",
@@ -5011,10 +5120,10 @@
       "retired_from": [],
       "routes": [
         {
-          "route": "attestation",
           "check_id": "attestation-generic",
           "decides": "full",
-          "evidence_class": "developer-attestation"
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
         }
       ],
       "section": "1",

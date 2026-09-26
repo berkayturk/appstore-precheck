@@ -1,28 +1,34 @@
 {
   "checks": {
-    "section1-ugc-controls": {
-      "route": "static",
-      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
-      "symbol": "review_ugc",
-      "tests": ["tests/test-section1-review.sh"],
-      "line_prefix": "SECTION1-",
-      "evidence_class": "source"
-    },
     "section1-kids-dependencies": {
-      "route": "static",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
-      "symbol": "review_kids",
-      "tests": ["tests/test-section1-review.sh"],
       "line_prefix": "SECTION1-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_kids",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
     },
     "section1-safety-signals": {
-      "route": "semantic",
+      "evidence_class": "source",
       "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
-      "symbol": "review_safety",
-      "tests": ["tests/test-section1-review.sh"],
       "line_prefix": "SECTION1-",
-      "evidence_class": "source"
+      "route": "static",
+      "symbol": "review_safety",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
+    },
+    "section1-ugc-controls": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "static",
+      "symbol": "review_ugc",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
     }
   }
 }

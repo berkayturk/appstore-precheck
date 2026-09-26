@@ -1,25 +1,26 @@
 {
-  "attestation_only": 430,
+  "attestation_only": 425,
   "automatic_possible": 0,
   "obligations_without_route": 0,
   "registered_checks": 164,
-  "routed_obligations": 585,
+  "routed_obligations": 580,
   "routes": {
-    "artifact": 7,
-    "attestation": 585,
+    "artifact": 10,
+    "attestation": 580,
     "metadata": 12,
     "not_app_checkable": 0,
-    "runtime": 16,
-    "semantic": 86,
-    "static": 78
+    "runtime": 28,
+    "semantic": 66,
+    "static": 106
   },
   "schema_version": 1,
-  "semantic_possible": 86,
+  "semantic_possible": 66,
   "source": {
     "apple_updated": "June 8, 2026",
     "snapshot_sha256": "c533b971f44f463af01ed5b8c0f4e5c44a2b0ee71919883d12350232cd93453f",
     "url": "https://developer.apple.com/app-store/review/guidelines/"
   },
-  "total_obligations": 585,
+  "total_obligations": 580,
+  "unrouted_checks": [],
   "unrouted_ids": []
 }
