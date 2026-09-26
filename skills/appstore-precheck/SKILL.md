@@ -439,6 +439,12 @@ from, and leave it `unknown` if you do not know.
 - **Token location:** `.precheck-pass` at the repo root; the guard tests it with an `mmin -60` filter.
 - **Local-only:** designed for manual, local runs; keep it out of CI to avoid false signals.
 
+## Evidence-bound verification
+
+See [`references/guideline-verification.md`](references/guideline-verification.md) for
+versioned external profiles, scoped evidence, and a readiness decision separate from GREEN.
+Attestations alone never establish verified compliance; do not infer absent features from missing signals.
+
 ## Known limits
 
 - The default flow is static analysis only. Runtime crash/behavior testing is available as an

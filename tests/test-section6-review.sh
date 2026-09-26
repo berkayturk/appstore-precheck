@@ -68,9 +68,16 @@ metadata_links = {
     'meta-review-notes': 'atom-f9a98fc9b0544658a3b9a4b0152a160e',
     'meta-iap-review-notes': 'atom-89ba978493b44f34a8ed0f9e9d4b9bb1',
 }
+catalog = json.loads((ref / 'guideline-obligations.json').read_text())['obligations']
+by_id = {x['id']: x for x in catalog}
 for check_id, ident in metadata_links.items():
-    item = next(x for x in items if x['id'] == ident)
-    route = next(r for r in item['routes'] if r.get('check_id') == check_id)
-    assert route['route'] == 'metadata' and route['decides'] == 'partial'
+    item = by_id[ident]
+    # Intro aliases retain lineage; the actual duty and its route live on the
+    # linked canonical obligation after the reviewed catalog correction.
+    candidates = [item] if item['kind'] == 'obligation' else [by_id[k] for k in item['related']]
+    routes = [r for x in candidates if x['kind'] == 'obligation'
+              for r in x['routes'] if r.get('check_id') == check_id]
+    assert routes, (check_id, ident)
+    assert all(r['route'] == 'metadata' and r['decides'] == 'partial' for r in routes)
 PY
 printf 'section 6 review fixtures passed\n'

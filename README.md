@@ -39,7 +39,7 @@ also run it by hand or wire it into CI.
 Your verdict is delivered by **Pierre**, a French critic who has seen ten thousand rejections and is
 impressed by none of them. He reviews your build harder than Apple would, in private — first with a
 fast static scan, then with **31 deep semantic checks** (23 confident + 8 heuristic). A GREEN from
-Pierre means Apple will wave you through.
+Pierre means the configured static gate found no blocker; it does not establish App Store approval.
 
 - 🔴 **RED**: *"Non. Restore Purchases, absent. Guideline 3.1.2. Suivant."*
 - 🟡 **YELLOW**: *"A few small uglinesses. I would not reject. But I noticed."*
