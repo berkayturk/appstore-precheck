@@ -56,14 +56,25 @@ def normalize(status):
 
 
 def import_records(checks, rows, evidence):
+    errors = []
+    if not isinstance(rows, list):
+        return ["Optional result collection must be a list"]
+    rank = {"NOT_RUN": 0, "SKIP": 1, "PASS": 2, "REVIEW_REQUIRED": 3, "WARN": 4, "FINDING": 5}
     for row in rows:
-        check_id = row.get("check_id")
-        if not check_id:
+        if not isinstance(row, dict) or not isinstance(row.get("check_id"), str) or not row["check_id"]:
+            errors.append("Malformed optional result ignored")
             continue
-        status = normalize(row.get("status"))
-        if status not in {"PASS", "FINDING", "WARN", "SKIP", "NOT_RUN", "REVIEW_REQUIRED"}:
+        check_id = row["check_id"]
+        raw_status = row.get("status")
+        status = normalize(raw_status) if isinstance(raw_status, str) else None
+        if status not in rank:
+            errors.append("Invalid optional result status ignored")
+            continue
+        previous = checks.get(check_id)
+        if previous and rank.get(previous["status"], -1) > rank[status]:
             continue
         record(checks, check_id, status, row.get("reason", ""), evidence + "#" + check_id)
+    return errors
 
 
 def import_dynamic(checks, content, evidence):
@@ -91,6 +102,10 @@ def main():
     parser.add_argument("--build", action="store_true")
     parser.add_argument("--app", type=Path)
     parser.add_argument("--metadata", action="store_true")
+    parser.add_argument("--no-runtime", action="store_true", help="Inspect/build without launching the app")
+    parser.add_argument("--demo-login", action="store_true", help="Opt in to environment-configured test login")
+    parser.add_argument("--asc-version-id")
+    parser.add_argument("--asc-info-id")
     parser.add_argument("--asc-app-id")
     parser.add_argument("--check-urls", action="store_true")
     parser.add_argument("--dynamic-blocking", action="store_true")
@@ -102,6 +117,10 @@ def main():
         parser.error("--dynamic-blocking requires --build or --app")
     if (args.asc_app_id or args.check_urls) and not args.metadata:
         parser.error("ASC and URL checks require --metadata")
+    if args.no_runtime and (args.demo_login or args.dynamic_blocking):
+        parser.error("--no-runtime conflicts with demo login or dynamic blocking")
+    if args.demo_login and not (args.build or args.app):
+        parser.error("--demo-login requires --build or --app")
     repo = args.repo.resolve()
     if not repo.is_dir():
         parser.error("--repo must be a directory")
@@ -109,7 +128,7 @@ def main():
     if out == repo or repo in out.parents:
         parser.error("--out-dir must be outside the user project")
     out.mkdir(parents=True, exist_ok=True)
-    checks, tiers, blocking = {}, {}, []
+    checks, tiers, blocking, input_errors = {}, {}, [], []
     app = args.app.resolve() if args.app else None
 
     for section in range(1, 7):
@@ -123,7 +142,7 @@ def main():
                 payload = json.loads(process.stdout)
                 output = out / (label + ".json")
                 output.write_text(json.dumps(payload, indent=2) + "\n")
-                import_records(checks, payload.get("checks", []), str(output))
+                input_errors.extend(import_records(checks, payload.get("checks", []), str(output)))
                 tiers[label] = "RAN"
             except (ValueError, TypeError):
                 tiers[label] = "SKIP: unreadable source review results"
@@ -155,7 +174,7 @@ def main():
             payload = json.loads(process.stdout)
             artifact_output = out / "artifact-review.json"
             artifact_output.write_text(json.dumps(payload, indent=2) + "\n")
-            import_records(checks, payload.get("checks", []), str(artifact_output))
+            input_errors.extend(import_records(checks, payload.get("checks", []), str(artifact_output)))
             tiers["artifact"] = "RAN" if app and not args.dry_run else "NOT_RUN"
         except (ValueError, TypeError):
             tiers["artifact"] = "SKIP: unreadable artifact results"
@@ -164,12 +183,14 @@ def main():
     for check_id in ARTIFACT_IDS:
         checks.setdefault(check_id, {"status": "NOT_RUN", "reason": "No inspectable app artifact"})
 
-    if app and not args.dry_run:
+    if app and not args.dry_run and not args.no_runtime:
         cmd = ["bash", str(HERE / "dynamic-run.sh"), "--app", str(app),
                "--repo", str(repo), "--repeats", "3", "--explore",
                "--out", str(out / "runtime")]
         if args.dynamic_blocking:
             cmd.append("--dynamic-blocking")
+        if args.demo_login:
+            cmd.append("--demo-login")
         process = run(cmd, 900)
         if process is None:
             tiers["runtime"] = "SKIP: simulator driver or deadline unavailable"
@@ -182,7 +203,7 @@ def main():
             inventory = out / "runtime" / "screen-inventory.json"
             if inventory.is_file():
                 try:
-                    import_records(checks, json.loads(inventory.read_text()).get("checks", []), str(inventory))
+                    input_errors.extend(import_records(checks, json.loads(inventory.read_text()).get("checks", []), str(inventory)))
                 except (OSError, ValueError, TypeError):
                     tiers["explore"] = "SKIP: screen inventory unreadable"
     else:
@@ -194,13 +215,17 @@ def main():
             cmd += ["--asc-app-id", args.asc_app_id]
         if args.check_urls:
             cmd.append("--check-urls")
+        if args.asc_version_id:
+            cmd += ["--asc-version-id", args.asc_version_id]
+        if args.asc_info_id:
+            cmd += ["--asc-info-id", args.asc_info_id]
         process = run(cmd, 120)
         if process and process.returncode == 0:
             try:
                 payload = json.loads(process.stdout)
                 metadata_output = out / "metadata-review.json"
                 metadata_output.write_text(json.dumps(payload, indent=2) + "\n")
-                import_records(checks, payload.get("results", []), str(metadata_output))
+                input_errors.extend(import_records(checks, payload.get("results", []), str(metadata_output)))
                 tiers["metadata"] = "RAN"
             except (ValueError, TypeError):
                 tiers["metadata"] = "SKIP: unreadable metadata results"
@@ -211,7 +236,7 @@ def main():
 
     (out / "run-results.json").write_text(json.dumps({"checks": checks}, indent=2) + "\n")
     summary = {"schema_version": 1, "tiers": tiers, "blocking": blocking,
-               "run_results": str(out / "run-results.json")}
+               "run_results": str(out / "run-results.json"), "input_errors": input_errors}
     (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     json.dump(summary, sys.stdout)
     sys.stdout.write("\n")

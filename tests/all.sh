@@ -48,6 +48,8 @@ SUITE=(
   "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
   "test-typesafe.sh"   # optional typed semantic review, transport/cache failures, gate isolation
   "test-source-snapshot.sh" # private source content binding
+  "test-verification-orchestration.sh" # opt-in runtime boundaries and selector forwarding
+  "test-verification-policy.sh" # implemented condition capability, independent of route labels
   "test-verification-contract.sh" # versioned evidence and decision invariants
   "test-coverage.sh"   # obligation schema, registry, and route coverage
   "test-copyright-boundary.sh" # source-text and npm package boundary

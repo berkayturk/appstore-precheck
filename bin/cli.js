@@ -44,6 +44,10 @@ function printHelp() {
     `  --build             Build a simulator app in a temporary project copy\n` +
     `  --app <path>        Inspect and run an existing simulator .app\n` +
     `  --metadata          Review local fastlane metadata\n` +
+    `  --no-runtime        Build/inspect without launching the app\n` +
+    `  --demo-login        Opt in to env-configured test login (three fresh attempts)\n` +
+    `  --asc-version-id <id> Select the intended App Store version\n` +
+    `  --asc-info-id <id>  Select the intended App Store app info\n` +
     `  --asc-app-id <id>   Opt in to read-only App Store Connect metadata\n` +
     `  --check-urls        Opt in to public support/privacy URL HEAD checks\n` +
     `  --dynamic-blocking  Block only unanimous launch/demo-login failures\n` +
@@ -68,7 +72,7 @@ function fail(message, code) {
 function parseArgs(argv) {
   const opts = { dir: process.cwd(), failOn: 'RED', format: 'text', build: false,
     app: null, metadata: false, ascAppId: null, checkUrls: false,
-    dynamicBlocking: false, out: null, dryRun: false };
+    dynamicBlocking: false, out: null, dryRun: false, noRuntime: false, demoLogin: false, ascVersionId: null, ascInfoId: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') { printHelp(); process.exit(0); }
@@ -99,6 +103,15 @@ function parseArgs(argv) {
       else opts.out = value;
       continue;
     }
+    if (a === '--no-runtime') { opts.noRuntime = true; continue; }
+    if (a === '--demo-login') { opts.demoLogin = true; continue; }
+    if (a === '--asc-version-id' || a === '--asc-info-id') {
+      const value = argv[++i];
+      if (!value) fail(`${a} requires an ID`, 64);
+      if (a === '--asc-version-id') opts.ascVersionId = value;
+      else opts.ascInfoId = value;
+      continue;
+    }
     if (a === '--metadata') { opts.metadata = true; continue; }
     if (a === '--check-urls') { opts.checkUrls = true; opts.metadata = true; continue; }
     if (a === '--dynamic-blocking') { opts.dynamicBlocking = true; continue; }
@@ -119,6 +132,7 @@ function main() {
   const opts = parseArgs(process.argv.slice(dynamic ? 3 : 2));
   if (dynamic && !opts.build && !opts.app) fail('dynamic requires --build or --app', 64);
   if (opts.build && opts.app) fail('use --build or --app', 64);
+  if (opts.noRuntime && (opts.demoLogin || opts.dynamicBlocking)) fail('--no-runtime conflicts with demo login or dynamic blocking', 64);
 
   if (!fs.existsSync(SCAN) || !fs.existsSync(VERDICT)) {
     fail('bundled scanner scripts are missing from the package', 70);
@@ -140,6 +154,10 @@ function main() {
   if (opts.dynamicBlocking) scanArgs.push('--dynamic-blocking');
   if (opts.out) scanArgs.push('--out', opts.out);
   if (opts.dryRun) scanArgs.push('--dry-run');
+  if (opts.noRuntime) scanArgs.push('--no-runtime');
+  if (opts.demoLogin) scanArgs.push('--demo-login');
+  if (opts.ascVersionId) scanArgs.push('--asc-version-id', opts.ascVersionId);
+  if (opts.ascInfoId) scanArgs.push('--asc-info-id', opts.ascInfoId);
   const scan = spawnSync('bash', scanArgs, {
     cwd: opts.dir,
     encoding: 'utf8',
@@ -150,6 +168,8 @@ function main() {
   }
   if (scan.error) fail(`failed to run the scanner: ${scan.error.message}`, 70);
   if (scan.signal) fail(`scanner was killed by signal ${scan.signal}`, 70);
+  // A usage/setup failure must not become GREEN from an empty transcript.
+  if (scan.status !== 0) fail(`scanner failed (exit ${scan.status})`, scan.status || 70);
 
   const scanOut = scan.stdout || '';
   process.stdout.write(scanOut);

@@ -15,6 +15,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 FORMAT="text"
 SCAN_DIR=""
+OPT_NO_RUNTIME=0 OPT_DEMO=0 OPT_ASC_VERSION="" OPT_ASC_INFO=""
 OPT_BUILD=0 OPT_APP="" OPT_METADATA=0 OPT_ASC="" OPT_URLS=0 OPT_DYN_BLOCK=0 OPT_DRY=0 OPT_OUT="" OPT_TEMP=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -31,6 +32,12 @@ while [[ $# -gt 0 ]]; do
       if [[ $# -lt 2 ]]; then echo "scan.sh: --app needs a path" >&2; exit 64; fi
       OPT_APP="$2"; shift 2 ;;
     --metadata) OPT_METADATA=1; shift ;;
+    --no-runtime) OPT_NO_RUNTIME=1; shift ;;
+    --demo-login) OPT_DEMO=1; shift ;;
+    --asc-version-id|--asc-info-id)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: $1 needs an ID" >&2; exit 64; fi
+      if [[ "$1" == --asc-version-id ]]; then OPT_ASC_VERSION="$2"; else OPT_ASC_INFO="$2"; fi
+      shift 2 ;;
     --asc-app-id)
       if [[ $# -lt 2 ]]; then echo "scan.sh: --asc-app-id needs an ID" >&2; exit 64; fi
       OPT_ASC="$2"; OPT_METADATA=1; shift 2 ;;
@@ -90,6 +97,9 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   echo "false"
 }
 if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then OPT_BUILD=1; fi
+if [[ "$(cfg_bool '.dynamic.demoLogin')" == true ]]; then OPT_DEMO=1; fi
+if [[ "$OPT_NO_RUNTIME" == 1 && ( "$OPT_DEMO" == 1 || "$OPT_DYN_BLOCK" == 1 ) ]]; then echo "scan.sh: --no-runtime conflicts with --demo-login or --dynamic-blocking" >&2; exit 64; fi
+if [[ "$OPT_DEMO" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --demo-login needs --build or --app" >&2; exit 64; fi
 if [[ "$OPT_DYN_BLOCK" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --dynamic-blocking needs --build or --app" >&2; exit 64; fi
 
 _LAST_SUPPRESSED=0
@@ -1667,6 +1677,10 @@ if [[ "$OPT_BUILD" == 1 || -n "$OPT_APP" || "$OPT_METADATA" == 1 ]]; then
     [[ "$OPT_URLS" == 1 ]] && OPT_ARGS+=( --check-urls )
     [[ "$OPT_DYN_BLOCK" == 1 ]] && OPT_ARGS+=( --dynamic-blocking )
     [[ "$OPT_DRY" == 1 ]] && OPT_ARGS+=( --dry-run )
+    [[ "$OPT_NO_RUNTIME" == 1 ]] && OPT_ARGS+=( --no-runtime )
+    [[ "$OPT_DEMO" == 1 ]] && OPT_ARGS+=( --demo-login )
+    [[ -n "$OPT_ASC_VERSION" ]] && OPT_ARGS+=( --asc-version-id "$OPT_ASC_VERSION" )
+    [[ -n "$OPT_ASC_INFO" ]] && OPT_ARGS+=( --asc-info-id "$OPT_ASC_INFO" )
     if python3 "$SCRIPT_DIR/opt-in-review.py" "${OPT_ARGS[@]}" >/dev/null; then
       if [[ "$FORMAT" == text ]]; then
         python3 - "$OPT_OUT/summary.json" <<'PY'
