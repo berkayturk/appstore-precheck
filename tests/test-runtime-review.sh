@@ -38,6 +38,26 @@ assert not any(x['safe_to_tap'] for x in risky['screens'][0]['actions'] if x['la
 assert clean['screen_budget']==25 and clean['time_budget_seconds']==360
 PY
 
+# Replay the recorded provider screen with an unfamiliar identity provider and
+# local credentials. Provider recognition must not depend on a brand allowlist.
+mkdir "$TMP/provider" "$TMP/local-login"
+python3 - "$FIX/risky/home.json" "$TMP" <<'PY'
+import pathlib, sys
+recorded = pathlib.Path(sys.argv[1]).read_text()
+root = pathlib.Path(sys.argv[2])
+(root/'provider/home.json').write_text(recorded.replace('Sign in with Google', 'Sign in with Example'))
+(root/'local-login/home.json').write_text(recorded.replace('Sign in with Google', 'Sign in with email'))
+PY
+bash "$REVIEW" --screens "$TMP/provider" --out "$TMP/provider-out" > "$TMP/provider.json"
+bash "$REVIEW" --screens "$TMP/local-login" --out "$TMP/local-out" > "$TMP/local-login.json"
+python3 - "$TMP" <<'PY'
+import json, pathlib, sys
+root = pathlib.Path(sys.argv[1])
+for name, expected in [('provider', 'NEEDS_REVIEW'), ('local-login', 'SKIP')]:
+    checks = {c['check_id']: c for c in json.loads((root/(name+'.json')).read_text())['checks']}
+    assert checks['dyn-siwa-parity']['status'] == expected
+PY
+
 printf 'api.example.invalid\n' > "$TMP/hosts.txt"
 printf '%s\n' '{}' > "$TMP/PrivacyInfo.xcprivacy"
 mkdir "$TMP/installed.app" "$TMP/source.app"

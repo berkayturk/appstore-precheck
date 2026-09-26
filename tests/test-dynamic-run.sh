@@ -128,6 +128,7 @@ assert_eq "$(count 'maestro')" "$(grep -c 'hierarchy' "$FAKE_CALLS")" "every Mae
 assert_eq "debug" "$(jq -r .build_config "$OUT1/run.json")" "run.json: build_config from the directory name"
 assert_eq "true" "$(jq -r .device.created_by_this_run "$OUT1/run.json")" "run.json: device ownership"
 assert_eq "3" "$(jq -r .launch.pass "$OUT1/run.json")" "run.json: launch tally"
+assert_eq "3" "$(jq -r '.d1_d2_seconds | length' "$OUT1/run.json")" "run.json: D1+D2 durations recorded per repeat"
 assert_contains "$(jq -r .next "$OUT1/run.json")" "--build-config debug" "run.json: the dynamic.sh command carries the config"
 assert_eq "$(grep -c '^DYNAMIC-' "$OUT1/transcript.txt")" "$(grep -c '^DYNAMIC-' <<<"$tx")" "transcript file mirrors stdout"
 

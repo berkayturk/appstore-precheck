@@ -35,7 +35,7 @@ def skip_reason(process, fallback):
 
 def record(checks, check_id, status, reason="", evidence=""):
     result = {"status": status}
-    if status in {"PASS", "FINDING"}:
+    if status in {"PASS", "FINDING", "WARN"}:
         result["evidence"] = evidence or "review:" + check_id
     elif status in {"SKIP", "NOT_RUN", "REVIEW_REQUIRED"}:
         result["reason"] = reason or "Evidence was insufficient"
@@ -55,6 +55,24 @@ def import_records(checks, rows, evidence):
         if status not in {"PASS", "FINDING", "WARN", "SKIP", "NOT_RUN", "REVIEW_REQUIRED"}:
             continue
         record(checks, check_id, status, row.get("reason", ""), evidence + "#" + check_id)
+
+
+def import_dynamic(checks, content, evidence):
+    # Bundle subchecks include a plist key suffix. Aggregate under the registered
+    # parent ID, retaining an advisory defect over a later bundle summary PASS.
+    rank = {"SKIP": 0, "PASS": 1, "WARN": 2, "FINDING": 3}
+    for line in content.splitlines():
+        match = DYNAMIC.match(line)
+        if not match:
+            continue
+        state, raw_id, reason = match.groups()
+        check_id = raw_id.split(":", 1)[0]
+        if state == "FINDING" and "quorum 3/3" not in reason:
+            state = "WARN"
+        previous = checks.get(check_id)
+        if previous and rank.get(previous["status"], -1) > rank[state]:
+            continue
+        record(checks, check_id, state, reason, evidence + "#" + raw_id)
 
 
 def main():
@@ -148,15 +166,9 @@ def main():
             tiers["runtime"] = "SKIP: simulator driver or deadline unavailable"
         else:
             tiers["runtime"] = "RAN" if process.returncode == 0 else "SKIP: simulator setup unavailable"
+            import_dynamic(checks, process.stdout, str(out / "runtime" / "transcript.txt"))
             for line in process.stdout.splitlines():
-                match = DYNAMIC.match(line)
-                if match:
-                    state, check_id, reason = match.groups()
-                    if state == "FINDING" and "quorum 3/3" not in reason:
-                        state = "WARN"
-                    record(checks, check_id, state, reason,
-                           str(out / "runtime" / "transcript.txt") + "#" + check_id)
-                elif line.startswith("FAIL: ") and args.dynamic_blocking:
+                if line.startswith("FAIL: ") and args.dynamic_blocking:
                     blocking.append(line)
             inventory = out / "runtime" / "screen-inventory.json"
             if inventory.is_file():

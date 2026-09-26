@@ -103,9 +103,10 @@ cat > "$TMP/bin/xcodebuild" <<'SH'
 #!/usr/bin/env bash
 if [[ " $* " == *" -list -json "* ]]; then
   printf 'simulator diagnostic {not-json} before scheme output\n'
-  printf '{"project":{"schemes":["App"]}}\n'
+  printf '{"project":{"name":"App","schemes":["A-Library","App"]}}\n'
   exit 0
 fi
+if [[ " $* " != *" -scheme App "* ]]; then exit 98; fi
 if [[ -e .env || -e .appstore-precheck.json || -e dev-asc-key-1.json || -e .git/sentinel || -e node_modules/sentinel || -e Pods/sentinel || -e build/sentinel || -e DerivedData/sentinel ]]; then exit 98; fi
 printf 'never-print-this-secret\n'
 if [[ -f "$(dirname "$0")/missing-sdk" ]]; then printf 'SDK iphonesimulator not found\n'; exit 65; fi
@@ -175,5 +176,18 @@ ln -s "$TMP/native" "$TMP/native/node_modules"
 out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
 assert_eq "$st" 0 "excluded node_modules symlink is ignored"
 rm "$TMP/native/node_modules"
+
+section "isolated build can use caller-provided CocoaPods gem path"
+cat > "$TMP/bin/gem-probe" <<'SH'
+#!/bin/sh
+case "$GEM_PATH:$LC_ALL" in */gems:C.UTF-8) exit 0 ;; *) exit 9 ;; esac
+SH
+chmod +x "$TMP/bin/gem-probe"
+mkdir -p "$TMP/probe-home" "$TMP/probe-tmp"
+out="$(GEM_PATH="$TMP/gems" python3 "$ROOT/skills/appstore-precheck/scripts/lib/build-exec.py" \
+  --step gem-probe --cwd "$TMP" --timeout 10 --log "$TMP/probe-events.jsonl" \
+  --home "$TMP/probe-home" --temp "$TMP/probe-tmp" -- "$TMP/bin/gem-probe")"; st=$?
+assert_eq "$st" 0 "temporary CocoaPods gem path and UTF-8 locale reach the child tool"
+assert_contains "$out" 'STATUS=OK' "gem path probe completes"
 
 exit "$fails"

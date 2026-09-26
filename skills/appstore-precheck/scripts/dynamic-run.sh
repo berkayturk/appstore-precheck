@@ -197,7 +197,7 @@ elif (( PKTAP )); then
 fi
 
 # --- D1 / D2: N launch repeats ----------------------------------------------------------------------
-L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 D_PASS=0 D_FIND=0 D_SKIP=0
+L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 D_PASS=0 D_FIND=0 D_SKIP=0 D1_D2_SECONDS=""
 LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP" FRESH=1
 if (( METRO_SKIP )); then
   emit "$(dyn_line SKIP 2.1 dyn-launch "Metro bundler not running on 127.0.0.1:8081 and $APP_LABEL embeds no main.jsbundle; a React Native Debug build cannot load its JavaScript, so a launch would fail for a reason that is not the app's — start Metro or supply a release bundle")"
@@ -205,6 +205,7 @@ if (( METRO_SKIP )); then
 else
   i=1
   while (( i <= REPEATS )); do
+    repeat_started=$SECONDS
     if (( i > 1 || DYN_BLOCKING || DYN_DEMO )) && [[ -n "$CREATED_UDID" ]]; then
       dyn_device_erase "$UDID" || FRESH=0
       dyn_device_boot "$UDID"; dyn_device_prepare "$UDID"
@@ -223,6 +224,7 @@ else
     if [[ "$shot" == varied && "$proc" == alive ]]; then S_PASS=$((S_PASS+1))
     elif [[ "$shot" == uniform || "$proc" == dead ]]; then S_FIND=$((S_FIND+1))
     else S_SKIP=$((S_SKIP+1)); fi
+    D1_D2_SECONDS="${D1_D2_SECONDS}${D1_D2_SECONDS:+,}$((SECONDS-repeat_started))"
     i=$((i+1))
   done
   q="$(dyn_quorum "$L_PASS" "$L_FIND" "$L_SKIP")"; LAUNCH_KIND="$(cut -f1 <<<"$q")"
@@ -357,10 +359,12 @@ jq -n --arg app "${APP:-}" --arg bid "$BID" --arg cfg "$BUILD_CONFIG" --arg fw "
       --argjson created "$([[ -n "$CREATED_UDID" ]] && echo true || echo false)" \
       --argjson metro "$([[ "$METRO_SKIP" == 1 ]] && echo true || echo false)" \
       --argjson dry "$([[ "$DYN_DRY_RUN" == 1 ]] && echo true || echo false)" \
-      --argjson lp "$L_PASS" --argjson lf "$L_FIND" --argjson ls "$L_SKIP" '
+      --argjson lp "$L_PASS" --argjson lf "$L_FIND" --argjson ls "$L_SKIP" \
+      --arg durations "$D1_D2_SECONDS" '
   {app:(if $app=="" then null else $app end), bundle_id:$bid, build_config:$cfg, framework:$fw,
    device:{udid:$udid, name:$name, type:$type, runtime:$rt, created_by_this_run:$created},
-   repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls}, metro_skipped:$metro,
+   repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls},
+   d1_d2_seconds:($durations | if . == "" then [] else split(",") | map(tonumber) end), metro_skipped:$metro,
    dry_run:$dry, out:$out, transcript:($out + "/transcript.txt"),
    next:("dynamic.sh --transcript " + $out + "/transcript.txt --findings <scan.json> --target simulator --build-config " + $cfg)}' > "$OUT/run.json"
 # Teardown now (the EXIT trap becomes a no-op) so the transcript and the plan are complete.

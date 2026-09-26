@@ -345,6 +345,8 @@ bash skills/appstore-precheck/scripts/dynamic-run.sh --app <path>.app --repo /pa
 
 `tests/local/run-dynamic.sh` chains discovery → confirmation → runner → `dynamic.sh` on macOS; it is
 not part of `tests/all.sh`.
+`run.json` records `d1_d2_seconds` for each launch/first-screen repeat. Later repeats include
+device erase, boot, and reinstall time; the median describes this local workflow, not app startup.
 
 ## Feeding the transcript to dynamic.sh
 

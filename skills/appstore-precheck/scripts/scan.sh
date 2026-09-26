@@ -45,7 +45,6 @@ while [[ $# -gt 0 ]]; do
 done
 [[ "$FORMAT" == json || "$FORMAT" == text || "$FORMAT" == sarif ]] || { echo "scan.sh: --format must be text|json|sarif" >&2; exit 64; }
 if [[ "$OPT_BUILD" == 1 && -n "$OPT_APP" ]]; then echo "scan.sh: use --build or --app" >&2; exit 64; fi
-if [[ "$OPT_DYN_BLOCK" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --dynamic-blocking needs --build or --app" >&2; exit 64; fi
 
 # An explicit --dir is authoritative: scan exactly that directory. Without it,
 # snap to the enclosing git toplevel (monorepo subdirs need --dir to opt out).
@@ -91,6 +90,7 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   echo "false"
 }
 if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then OPT_BUILD=1; fi
+if [[ "$OPT_DYN_BLOCK" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --dynamic-blocking needs --build or --app" >&2; exit 64; fi
 
 _LAST_SUPPRESSED=0
 

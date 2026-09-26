@@ -55,13 +55,15 @@ def main():
         "HOME": a.home,
         "TMPDIR": a.temp,
         "LANG": "C.UTF-8",
-        "LC_ALL": "C",
+        "LC_ALL": "C.UTF-8",
         "CI": "1",
         "COCOAPODS_DISABLE_STATS": "1",
         "EXPO_NO_TELEMETRY": "1",
     }
     if os.environ.get("DEVELOPER_DIR"):
         env["DEVELOPER_DIR"] = os.environ["DEVELOPER_DIR"]
+    if os.environ.get("GEM_PATH"):
+        env["GEM_PATH"] = os.environ["GEM_PATH"]
     start = time.monotonic()
     status = "OK"
     result = bytearray()
@@ -111,6 +113,7 @@ def main():
             # those diagnostics can themselves contain braces. Keep the last
             # valid project/workspace object instead of trusting the first '{'.
             schemes = []
+            preferred = []
             decoder = json.JSONDecoder()
             for pos, char in enumerate(raw):
                 if char != "{":
@@ -122,14 +125,18 @@ def main():
                 if not isinstance(data, dict):
                     continue
                 found = []
+                found_preferred = []
                 for value in data.values():
                     if isinstance(value, dict) and isinstance(value.get("schemes"), list):
                         found.extend(value["schemes"])
+                        if value.get("name") in value["schemes"]:
+                            found_preferred.append(value["name"])
                 if found:
                     schemes = found
+                    preferred = found_preferred
             schemes = sorted(s for s in schemes if isinstance(s, str) and s)
             if schemes:
-                print("SCHEME=" + schemes[0])
+                print("SCHEME=" + (sorted(set(preferred))[0] if preferred else schemes[0]))
             else:
                 status = "NO_SCHEME"
         except (ValueError, UnicodeError, AttributeError):

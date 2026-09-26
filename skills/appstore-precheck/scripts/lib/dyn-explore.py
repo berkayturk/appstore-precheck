@@ -145,7 +145,7 @@ def evaluate(screens, context):
         skip("dyn-account-deletion", "No authenticated account screen was observed")
     if seen(r"sign in with apple|continue with apple"):
         review("dyn-siwa-parity", "Apple sign-in control observed; compare terms with other identity providers")
-    elif seen(r"sign in with google|continue with google|sign in with facebook"):
+    elif seen(r"(?:sign in|continue) with (?!apple\b|email\b|password\b|passkey\b|phone\b|your\b)[\w-]+"):
         review("dyn-siwa-parity", "Third-party sign-in observed without Apple control on captured screens; assess entitlement exceptions")
     else:
         skip("dyn-siwa-parity", "No third-party sign-in choice was observed")

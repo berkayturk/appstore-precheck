@@ -47,3 +47,39 @@ PY
 [[ -f "$auto_out/run-results.json" ]] || { echo 'automatic report path disappeared'; exit 1; }
 rm -rf "$auto_out"
 echo 'automatic opt-in evidence retained: OK'
+printf '{"dynamic":{"build":true}}\n' > "$repo/.appstore-precheck.json"
+bash "$ROOT/skills/appstore-precheck/scripts/scan.sh" --dir "$repo" --dry-run \
+  --dynamic-blocking --out "$tmp/config-report" --format json > "$tmp/config.json"
+python3 - "$tmp/config.json" <<'PY'
+import json,sys
+assert json.load(open(sys.argv[1]))['opt_in']['tiers']['build'] == 'PLAN'
+PY
+echo 'config build opt-in permits dynamic blocking: OK'
+
+python3 - "$ROOT" <<'PY'
+import importlib.util, json, pathlib, sys
+root = pathlib.Path(sys.argv[1])
+scripts = root/'skills/appstore-precheck/scripts'
+def module(name):
+    spec = importlib.util.spec_from_file_location(name, scripts/(name+'.py'))
+    result = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(result)
+    return result
+runner = module('opt-in-review')
+engine = module('attestation-report')
+registry = json.loads((scripts.parent/'references/check-registry.json').read_text())
+checks = {}
+runner.import_dynamic(checks, '''DYNAMIC-FINDING: 5.1.1 [dyn-shipped-bundle:NSLocationWhenInUseUsageDescription] — purpose string is empty
+DYNAMIC-PASS: 5.1.1 [dyn-shipped-bundle] — installed bundle has 12 keys
+DYNAMIC-FINDING: 2.1 [dyn-launch] — quorum 1/3: not unanimous
+''', '/tmp/recorded-transcript.txt')
+assert checks['dyn-shipped-bundle']['status'] == 'WARN'
+assert checks['dyn-shipped-bundle']['evidence'].endswith('#dyn-shipped-bundle:NSLocationWhenInUseUsageDescription')
+assert checks['dyn-launch']['status'] == 'WARN'
+assert engine.validate_run_results({'checks':checks}, registry) == checks
+checks = {}
+runner.import_dynamic(checks, 'DYNAMIC-PASS: 5.1.1 [dyn-shipped-bundle:NSCameraUsageDescription] — purpose string present', '/tmp/clean-transcript.txt')
+assert checks['dyn-shipped-bundle']['status'] == 'PASS'
+engine.validate_run_results({'checks':checks}, registry)
+print('dynamic subcheck aggregation and registry validation: OK')
+PY
