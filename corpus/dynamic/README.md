@@ -9,7 +9,7 @@ implement a production account service, purchase restoration, or moderation back
 | --- | --- | --- |
 | SwiftUI | Checked-in XcodeGen project and Swift sources | Deterministic launch crash |
 | React Native bare | Official Community CLI template in temporary storage; checked-in `App.js` replaces its screen | Missing account deletion, third-party sign-in without Apple parity, inert Restore, missing UGC report |
-| Expo | Official `create-expo-app` blank template in temporary storage; checked-in screen and app config replace the defaults | Placeholder, inert Restore, missing UGC report, absent camera purpose text in config |
+| Expo | Official `create-expo-app` blank template in temporary storage; checked-in screen and app config replace the defaults | Placeholder, inert Restore, missing UGC report, absent camera purpose text in shipped bundle |
 | Flutter | `flutter create` iOS host in temporary storage; checked-in Dart screen replaces the default | Placeholder, missing account deletion and UGC report |
 | KMP | Checked-in XcodeGen iOS host plus Kotlin shared framework source; Gradle builds the framework inside the build copy | Placeholder, missing account deletion and UGC report, extra HealthKit entitlement |
 
@@ -39,6 +39,10 @@ checks with the broken variants. A missing tool, registry access, framework
 dependency, simulator runtime, or usable accessibility tree is recorded as
 `SKIP` or `NOT_RUN` rather than a successful observation. Flutter and KMP
 interactive checks may remain `SKIP` when accessibility semantics are unavailable.
+
+The manifest's `expected_bundle` fields also compare Info.plist seed expectations
+(`absent` or `nonempty`). These are corpus integrity checks, not App Store verdicts;
+they catch generation defaults that accidentally repair a broken fixture.
 
 RN and Expo templates are fetched at run time; the current compatible packages
 and generated lockfile are temporary. To reproduce an exact third-party build,

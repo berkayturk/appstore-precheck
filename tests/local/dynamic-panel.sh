@@ -76,7 +76,7 @@ for fw in swiftui rn-bare expo flutter kmp; do
 done
 
 python3 - "$CORPUS/manifest.json" "$OUT" <<'PY'
-import json, os, re, sys
+import json, os, plistlib, re, sys
 from pathlib import Path
 
 manifest = json.loads(Path(sys.argv[1]).read_text())
@@ -117,6 +117,21 @@ for case in manifest['cases']:
                    else None)
         for check_id, wanted in expected_checks.items()
     }
+    expected_bundle = case.get('expected_bundle', {})
+    bundle_matches = {key: None for key in expected_bundle}
+    build_log = d / 'build.txt'
+    if state == 'RAN' and expected_bundle and build_log.exists():
+        app_paths = re.findall(r'^app_path=(.*)$', build_log.read_text(), re.M)
+        if app_paths:
+            try:
+                info = plistlib.loads((Path(app_paths[-1]) / 'Info.plist').read_bytes())
+                bundle_matches = {
+                    key: (key not in info if wanted == 'absent'
+                          else isinstance(info.get(key), str) and bool(info[key].strip()))
+                    for key, wanted in expected_bundle.items()
+                }
+            except (OSError, ValueError, plistlib.InvalidFileException):
+                pass
     reason = ''
     if state != 'RAN':
         for log in (d / 'build.txt', d / 'runtime.txt'):
@@ -133,16 +148,19 @@ for case in manifest['cases']:
                  'targeted_defects': case['defects'], 'observations': records,
                  'expected_checks': expected_checks, 'observed_checks': observed_checks,
                  'check_matches': check_matches,
+                 'expected_bundle': expected_bundle, 'bundle_matches': bundle_matches,
                  'reason': reason})
 (out / 'panel.json').write_text(json.dumps({'schema_version': 1, 'cases': rows}, indent=2) + '\n')
 with (out / 'panel.tsv').open('w') as f:
-    f.write('framework\tvariant\tstate\texpected_launch\tobserved_launch\tlaunch_matched\tcheck_matches\treason\n')
+    f.write('framework\tvariant\tstate\texpected_launch\tobserved_launch\tlaunch_matched\tcheck_matches\tbundle_matches\treason\n')
     for r in rows:
         values = [r['framework'], r['variant'], r['state'], r['expected_launch'],
                   r['observed_launch'], str(r['launch_matched']),
                   str(sum(v is True for v in r['check_matches'].values())) + '/' +
                   str(sum(v is not None for v in r['check_matches'].values())) +
                   ' of ' + str(len(r['check_matches'])),
+                  str(sum(v is True for v in r['bundle_matches'].values())) + '/' +
+                  str(len(r['bundle_matches'])),
                   r['reason'].replace('\t', ' ')]
         f.write('\t'.join(values) + '\n')
 print((out / 'panel.tsv').read_text(), end='')

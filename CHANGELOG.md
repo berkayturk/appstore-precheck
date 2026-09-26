@@ -11,6 +11,12 @@ All notable changes to this project are documented here. Versioning follows
 - A five-framework clean/broken simulator corpus and local scorecard runner. Runtime blocking is opt-in and limited to repeated launch or demo-login failure.
 
 ### Fixed
+- Select application schemes in workspaces with dependency schemes, and use a UTF-8
+  CocoaPods environment with an explicitly supplied gem path for isolated builds.
+- Aggregate runtime bundle subchecks under registered IDs without hiding advisory
+  defects behind a later summary PASS; recognize unfamiliar sign-in providers.
+- Verify corpus bundle seeds after Expo generation so default permission text cannot
+  silently replace the intentionally missing purpose string.
 - Correct scanner and Pierre guideline references, and require storefront/exception
   context before drawing conclusions from payment SDK signals.
 - Keep missing evidence, unsupported inspection and unexecuted checks separate from
