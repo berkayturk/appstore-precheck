@@ -1,6 +1,6 @@
 # Independent guideline source review
 
-Six reviewers compared separate section files with the live Apple guideline page and the private source inventory on 2026-09-25–26. Each reviewer worked outside the section author's worktree. Their quote-free reports are in `docs/independent-review/` after integration. This log records the decisions applied to the public catalog.
+Six reviewers compared separate section files with the live Apple guideline page and the private source inventory on 2026-09-25–26. Each reviewer worked outside the section author's worktree. This log records the decisions applied to the public catalog.
 
 | Section | Independent findings | Resolution |
 |---|---|---|

@@ -4,6 +4,7 @@ cd "$(dirname "$0")/.."
 python3 - <<'PY'
 import hashlib
 import json
+import os
 import re
 from pathlib import Path
 import importlib.util
@@ -53,7 +54,7 @@ merged['obligations'] = [by_id.get(x['id'], x) for x in base['obligations']]
 coverage.validate(merged, {'schema_version': 1, 'checks': registry})
 
 # Optional local provenance and copyright checks; CI omits the private source catalog.
-private = Path('/Users/bt/claude/appstore-precheck/.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json')
+private = Path(os.environ.get('APPSTORE_PRECHECK_PRIVATE_CATALOG') or str(root / '.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json'))
 if private.is_file():
     catalog = json.loads(private.read_text())
     source = {x['id']: x for x in catalog['requirements'] if x['apple_ref'].startswith('2')}

@@ -4,13 +4,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PUBLIC="$ROOT/skills/appstore-precheck/references/obligations/5.json"
 REGISTRY="$ROOT/skills/appstore-precheck/references/check-registry.json"
-NOTES="$ROOT/wip/s5/PATCH-NOTES.md"
-PRIVATE="$ROOT/.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json"
-if [[ ! -f "$PRIVATE" ]]; then
-  PRIVATE=/Users/bt/claude/appstore-precheck/.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json
-fi
+PRIVATE="${APPSTORE_PRECHECK_PRIVATE_CATALOG:-$ROOT/.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json}"
 
-python3 - "$PUBLIC" "$REGISTRY" "$PRIVATE" "$NOTES" <<'PY'
+python3 - "$PUBLIC" "$REGISTRY" "$PRIVATE" <<'PY'
 import collections
 import json
 import pathlib
@@ -60,9 +56,6 @@ if private.is_file():
         for value in material:
             tokens = words(value)
             assert not any(tuple(tokens[i:i + 8]) in source_grams for i in range(len(tokens) - 7)), '8-word source overlap: ' + record['id']
-    notes = pathlib.Path(sys.argv[4]).read_text()
-    note_words = words(notes)
-    assert not any(tuple(note_words[i:i + 8]) in source_grams for i in range(len(note_words) - 7)), '8-word source overlap in patch notes'
     print('test-obligations-5: source and copyright checks passed')
 else:
     print('test-obligations-5: private source comparison SKIP')

@@ -3,6 +3,7 @@ set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 python3 - "$ROOT" <<'PY'
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -35,7 +36,7 @@ for item in part:
     else:
         assert all(r['route'] == 'not_app_checkable' for r in item['routes'])
 
-private = Path('/Users/bt/claude/appstore-precheck/.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json')
+private = Path(os.environ.get('APPSTORE_PRECHECK_PRIVATE_CATALOG') or str(root / '.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json'))
 if private.is_file():
     catalog = json.loads(private.read_text())
     fragments = [x for x in catalog['requirements'] if x['apple_ref'].startswith('4.')]

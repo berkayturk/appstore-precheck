@@ -38,7 +38,7 @@ for entry in section:
         assert entry['kind'] != 'informational', entry['id']
         assert entry['primary_route'] is None or entry['primary_route'] in {r['route'] for r in entry['routes']}, entry['id']
 
-private_path = os.environ.get('PRIVATE_CATALOG_PATH')
+private_path = os.environ.get('APPSTORE_PRECHECK_PRIVATE_CATALOG')
 if not private_path:
     private_path = str(root / '.planning/opus-work/skills/appstore-precheck/references/requirement-catalog.json')
 private = Path(private_path)
