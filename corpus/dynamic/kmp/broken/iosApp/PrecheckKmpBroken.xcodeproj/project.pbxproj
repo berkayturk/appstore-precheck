@@ -108,7 +108,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/..\" && export GRADLE_USER_HOME=\"$PWD/.gradle-home\" && ./gradlew :shared:link${CONFIGURATION}FrameworkIosSimulatorArm64";
+			shellScript = "test -n \"$TEMP_DIR\" && cd \"$SRCROOT/..\" && export GRADLE_USER_HOME=\"$TEMP_DIR/gradle-home\" && ./gradlew --project-cache-dir \"$TEMP_DIR/gradle-project-cache\" :shared:link${CONFIGURATION}FrameworkIosSimulatorArm64";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -197,6 +197,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "$(inherited) -framework Shared";
+				"ARCHS[sdk=iphonesimulator*]" = arm64;
 				PRODUCT_BUNDLE_IDENTIFIER = org.appstoreprecheck.corpus.kmp.broken;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -283,6 +284,7 @@
 					"@executable_path/Frameworks",
 				);
 				OTHER_LDFLAGS = "$(inherited) -framework Shared";
+				"ARCHS[sdk=iphonesimulator*]" = arm64;
 				PRODUCT_BUNDLE_IDENTIFIER = org.appstoreprecheck.corpus.kmp.broken;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

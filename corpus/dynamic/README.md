@@ -67,3 +67,13 @@ For the historical speed comparison run SwiftUI clean with `--repeats 10 --windo
 observation timing cannot satisfy the 60-second gate. Other repeat/window settings
 are reported but do not evaluate that historical gate. No dependency or artifact
 cache is reused by the checked-in panel.
+
+### KMP simulator scope
+
+The checked-in KMP fixtures target ARM64 iOS simulators (`iosSimulatorArm64`).
+The Xcode simulator architecture matches that target, and Shared is linked as a
+static framework so the app does not need an unembedded dynamic framework. Gradle
+user and project caches stay under the Xcode temporary build directory, outside
+the copied source snapshot. The HealthKit entitlement declaration in the broken
+fixture is a source seed only: an unsigned simulator build cannot verify a signed
+distribution entitlement, and its presence alone does not prove it is unused.

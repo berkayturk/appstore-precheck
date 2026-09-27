@@ -12,9 +12,10 @@ targets:
     sources: [Sources]
     preBuildScripts:
       - name: Build shared Kotlin framework
-        script: cd "$SRCROOT/.." && export GRADLE_USER_HOME="$PWD/.gradle-home" && ./gradlew :shared:link${CONFIGURATION}FrameworkIosSimulatorArm64
+        script: test -n "$TEMP_DIR" && cd "$SRCROOT/.." && export GRADLE_USER_HOME="$TEMP_DIR/gradle-home" && ./gradlew --project-cache-dir "$TEMP_DIR/gradle-project-cache" :shared:link${CONFIGURATION}FrameworkIosSimulatorArm64
     settings:
       base:
+        "ARCHS[sdk=iphonesimulator*]": arm64
         PRODUCT_BUNDLE_IDENTIFIER: org.appstoreprecheck.corpus.kmp.clean
         INFOPLIST_FILE: Info.plist
         GENERATE_INFOPLIST_FILE: NO

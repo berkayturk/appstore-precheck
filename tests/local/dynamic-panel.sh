@@ -31,6 +31,17 @@ command -v xcrun >/dev/null 2>&1 || { echo "SKIP: Xcode command line tools unava
 mkdir -p "$OUT" || usage "cannot create output directory"
 OUT="$(cd "$OUT" && pwd -P)"
 echo "dynamic panel artifacts: $OUT"
+# Never mix a previous app/runtime transcript with a new failed attempt.
+for fw in swiftui rn-bare expo flutter kmp; do
+  [[ -z "$FILTER_FW" || "$FILTER_FW" == "$fw" ]] || continue
+  for variant in clean broken; do
+    [[ -z "$FILTER_VARIANT" || "$FILTER_VARIANT" == "$variant" ]] || continue
+    prior="$OUT/$fw/$variant"
+    if [[ -d "$prior" && -n "$(find "$prior" -mindepth 1 -print -quit)" ]]; then
+      usage "$fw/$variant output is not empty; choose a fresh --out directory"
+    fi
+  done
+done
 python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$OUT/integrity.json" before
 xcrun simctl list devices --json > "$OUT/simulators-before.json" 2>/dev/null || :
 
@@ -41,6 +52,7 @@ for fw in swiftui rn-bare expo flutter kmp; do
     [[ -z "$FILTER_VARIANT" || "$FILTER_VARIANT" == "$variant" ]] || continue
     case_dir="$OUT/$fw/$variant"
     mkdir -p "$case_dir/artifact" "$case_dir/runtime"
+    python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" before
     echo "== $fw/$variant =="
     bash "$CORPUS/$fw/build.sh" "$variant" --out "$case_dir/artifact" --timeout "$BUILD_TIMEOUT" > "$case_dir/build.txt" 2>&1
     build_status=$?
@@ -48,12 +60,14 @@ for fw in swiftui rn-bare expo flutter kmp; do
       if [[ "$build_status" -eq 3 ]]; then state=SKIP; else state=ERROR; fi
       printf '%s\n' "$state" > "$case_dir/state"
       sed -n '/^SKIP:/p' "$case_dir/build.txt" | tail -1
+      python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
       continue
     fi
     app="$(sed -n 's/^app_path=//p' "$case_dir/build.txt" | tail -1)"
     if [[ -z "$app" || ! -f "$app/Info.plist" ]]; then
       printf '%s\n' ERROR > "$case_dir/state"
       echo "ERROR: build exported no simulator app"
+      python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
       continue
     fi
     case "$fw" in swiftui) runtime_fw=native ;; rn-bare|expo) runtime_fw=rn ;; *) runtime_fw="$fw" ;; esac
@@ -77,6 +91,8 @@ for fw in swiftui rn-bare expo flutter kmp; do
     else
       printf '%s\n' ERROR > "$case_dir/state"
     fi
+    python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
+    xcrun simctl list devices --json > "$case_dir/simulators-after.json" 2>/dev/null || :
   done
 done
 
