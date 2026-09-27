@@ -226,6 +226,17 @@ bash "$RUN" --udid X >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "--udid withou
 bash "$RUN" --app "$T/nonexistent.app" >/dev/null 2>&1; st=$?; assert_eq "66" "$st" "missing .app is exit 66"
 bash "$RUN" --app "$APP" --framework cordova >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "unknown framework rejected"
 
+section "live observation-only exploration works without a navigation authorization file"
+reset_calls
+bash "$RUN" --app "$APP" --repeats 1 --window 1 --explore --explore-seconds 1 \
+  --out "$T/observe-only" > "$T/observe-only.txt" 2> "$T/observe-only.err"
+st=$?
+assert_eq "0" "$st" "empty optional navigation array works under Bash nounset"
+[[ -f "$T/observe-only/run.json" ]] || { echo "  FAIL: observation-only run metadata missing"; fails=$((fails+1)); }
+[[ -f "$T/observe-only/screen-inventory.json" ]] || { echo "  FAIL: observation-only screen inventory missing"; fails=$((fails+1)); }
+assert_absent "$(cat "$T/observe-only.err")" "unbound variable" "no Bash 3.2 empty-array expansion error"
+kill_fakes
+
 section "deadline and cancellation clean the owned simulator"
 reset_calls
 PRECHECK_RUNTIME_DEADLINE_SECONDS=3 bash "$RUN" --app "$APP" --window 60 --out "$T/deadline" > "$T/deadline.txt" 2>/dev/null

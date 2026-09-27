@@ -363,7 +363,7 @@ if (( EXPLORE )); then
     navigation_args=()
     [[ -z "$NAVIGATION_AUTH" ]] || navigation_args=(--authorized-navigation "$NAVIGATION_AUTH")
     python3 "$HERE/lib/dyn-explore.py" --udid "$UDID" --bundle-id "$BID" --out "$OUT" \
-      --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" "${navigation_args[@]}" \
+      --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" ${navigation_args[@]+"${navigation_args[@]}"} \
       ${HOSTS:+--hosts "$HOSTS"} ${PRIV:+--privacy-manifest "$PRIV"} \
       ${INSTALLED:+--installed-bundle "$INSTALLED"} ${APP:+--source-bundle "$APP"} \
       > "$OUT/explore.json" || note "explore SKIP: Maestro exploration failed or timed out"
