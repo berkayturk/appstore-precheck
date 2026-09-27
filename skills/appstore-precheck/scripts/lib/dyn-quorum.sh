@@ -68,6 +68,22 @@ dyn_launch_verdict() {
   printf 'PASS\t%s\n' "$detail"
 }
 
+# dyn_selector_scope <framework> <maximum observed tree node count | unread>
+# A toolkit label cannot establish whether a concrete build exposes accessibility.
+# This describes why dedicated checks remain unexecuted, never their outcomes.
+dyn_selector_scope() {
+  local framework="$1" nodes="${2:-unread}"
+  if [[ "$nodes" =~ ^[0-9]+$ ]]; then
+    if (( nodes <= 3 )); then
+      printf '%s accessibility tree observed with at most %s nodes (degenerate); dedicated selector flows were not executed; no failure inferred\n' "$framework" "$nodes"
+    else
+      printf '%s accessibility tree observed with up to %s nodes; dedicated selector flows were not executed; node count alone does not prove flow completion\n' "$framework" "$nodes"
+    fi
+  else
+    printf '%s accessibility capability was not measured; dedicated selector flows were not executed\n' "$framework"
+  fi
+}
+
 # dyn_quorum <pass> <finding> <skip> — fold N repeat verdicts into one.
 # -> "<PASS|FINDING|SKIP><TAB><detail>". FINDING only when every readable repeat
 # failed AND at least the full N failed; a mixed result is a FINDING with its ratio

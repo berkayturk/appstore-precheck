@@ -18,7 +18,7 @@
 #   D11 dyn-hosts-contacted hosts from CFNetwork diagnostics (opt-in --pktap adds DNS)
 # The selector-based checks (D3 paywall, D3b Restore tap, D4 prompts, D5 demo login,
 # D6 screenshot parity) stay with the agent + Maestro MCP; on Flutter / KMP they are
-# SKIPped up front here because those toolkits expose no semantics to Maestro.
+# recorded as unexecuted here; measured accessibility may still support exploration.
 #
 # WHAT IT NEVER DOES: xcodebuild / flutter / gradle; touch a device it did not create
 # (a --udid device is launched on, never erased, reset or deleted); write under the repo.
@@ -216,7 +216,7 @@ fi
 
 # --- D1 / D2: N launch repeats ----------------------------------------------------------------------
 L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 D_PASS=0 D_FIND=0 D_SKIP=0 D1_D2_SECONDS="" OBSERVATION_SECONDS=""
-LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP" FRESH=1
+LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP" FRESH=1 TREE_MAX=-1
 if (( METRO_SKIP )); then
   emit "$(dyn_line SKIP 2.1 dyn-launch "Metro bundler not running on 127.0.0.1:8081 and $APP_LABEL embeds no main.jsbundle; a React Native Debug build cannot load its JavaScript, so a launch would fail for a reason that is not the app's — start Metro or supply a release bundle")"
   emit "$(dyn_line SKIP 2.1 dyn-first-screen "launch skipped (Metro not running)")"
@@ -233,6 +233,8 @@ else
     r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "$i")"
     OBSERVATION_SECONDS="${OBSERVATION_SECONDS}${OBSERVATION_SECONDS:+,}$((SECONDS-observation_started))"
     kind="$(cut -f1 <<<"$r")"; LAST_DETAIL="$(cut -f2 <<<"$r")"; LAST_SIGNALS="$(cut -f3 <<<"$r")"
+    tree_nodes="${LAST_SIGNALS##*,}"
+    if [[ "$tree_nodes" =~ ^[0-9]+$ ]] && (( tree_nodes > TREE_MAX )); then TREE_MAX="$tree_nodes"; fi
     case "$kind" in PASS) L_PASS=$((L_PASS+1)) ;; FINDING) L_FIND=$((L_FIND+1)) ;; *) L_SKIP=$((L_SKIP+1)) ;; esac
     if (( DYN_DEMO )) && [[ "$DYN_DRY_RUN" != 1 ]]; then
       demo="$(python3 "$HERE/lib/dyn-demo-login.py" "$UDID" "$BID")"
@@ -368,12 +370,12 @@ if (( EXPLORE )); then
   fi
 fi
 
-# --- Selector-based checks: pre-SKIP on toolkits without semantics, else left to the agent ----------------
+# --- Dedicated selector checks: report what ran and measured accessibility scope ----------------
 case "$FRAMEWORK" in
   flutter|kmp)
-    why="not driveable on $FRAMEWORK: the accessibility tree exposes no semantics to Maestro (empty or single-node on a healthy screen), so selector-based steps cannot find controls; judge by screenshot"
+    why="$(dyn_selector_scope "$FRAMEWORK" "$TREE_MAX")"
     emit "$(dyn_line SKIP 3.1.2 dyn-restore-tap "$why")"
-    emit "$(dyn_line SKIP 2.1 dyn-demo-login "$why")"
+    (( DYN_DEMO )) || emit "$(dyn_line SKIP 2.1 dyn-demo-login "$why")"
     emit "$(dyn_line SKIP '5.1.1(ii)' dyn-permission-prompt "$why (trigger half); the OS prompt itself is native and visible in a screenshot")"
     note "agent: D3 paywall, D6 screenshot parity remain observation-based and can still be judged from screenshots" ;;
   *)

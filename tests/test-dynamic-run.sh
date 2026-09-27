@@ -176,14 +176,15 @@ tx="$(FAKE_APP="$T/Release-iphonesimulator/Installed.app" bash "$RUN" --app "$T/
 assert_eq "2" "$(count 'simctl launch')" "with main.jsbundle the launches happen (and --repeats 2 is honoured)"
 assert_eq "release" "$(jq -r .build_config "$T/out5/run.json")" "Release-iphonesimulator -> release"
 
-section "Flutter: selector-based checks are SKIPped up front"
+section "Flutter: unexecuted selector checks retain measured accessibility scope"
 reset_calls
 FL="$T/fl"; cp -R "$FX/flutter-app" "$FL"
 tx="$(bash "$RUN" --app "$APP" --repo "$FL" --repeats 1 --window 1 --out "$T/out6" 2>/dev/null)"; kill_fakes
-assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — not driveable on flutter" "D3b pre-SKIP"
+assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — flutter accessibility tree observed" "D3b scoped SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-demo-login]" "D5 pre-SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 5.1.1(ii) [dyn-permission-prompt]" "D4 trigger half pre-SKIP"
-assert_contains "$tx" "no semantics to Maestro" "…with the reason"
+assert_contains "$tx" "dedicated selector flows were not executed" "…with the actual flow limitation"
+assert_absent "$tx" "not driveable on flutter" "healthy tree is not labeled undriveable"
 assert_contains "$tx" "DYNAMIC-PASS: 2.1 [dyn-launch]" "observation-based D1 still runs"
 assert_contains "$tx" "Dart HttpClient bypasses CFNetwork" "empty host list on Flutter names the CFNetwork blind spot"
 assert_contains "$tx" "--pktap" "…and the opt-in remedy"
