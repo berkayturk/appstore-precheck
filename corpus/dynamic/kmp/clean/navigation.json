@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "authorized": true,
+  "environment": "sandbox",
+  "scope": {
+    "synthetic": true,
+    "backend": "local-state-only"
+  },
+  "selectors": [
+    "Delete Account",
+    "Restore Purchases",
+    "Report Content"
+  ],
+  "transitions": {
+    "Delete Account": {
+      "flow": "account-deletion",
+      "start": "KMP Clean",
+      "success": "Account deleted",
+      "failure": "Unexpected fixture error"
+    },
+    "Restore Purchases": {
+      "flow": "restore",
+      "start": "KMP Clean",
+      "success": "Restore request completed",
+      "failure": "Unexpected fixture error"
+    },
+    "Report Content": {
+      "flow": "ugc-report",
+      "start": "KMP Clean",
+      "success": "Report submitted",
+      "failure": "Unexpected fixture error"
+    }
+  }
+}
