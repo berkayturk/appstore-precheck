@@ -56,7 +56,7 @@ assert dry['timing']['legacy_60_second_gate']=='NOT_EVALUATED', dry
 run=json.loads((d/'runtime/run.json').read_text());run['dry_run']=False;write(d/'runtime/run.json',run)
 subprocess.run(['python3',str(root/'tests/local/dynamic-panel-report.py'),str(out/'manifest.json'),str(out)],check=True,stdout=subprocess.DEVNULL)
 assert json.loads((out/'panel.json').read_text())['cases'][-1]['timing']['legacy_60_second_gate']=='NOT_EVALUATED'
-write(d/'integrity.json',{'unchanged':True})
+write(d/'integrity.json',{'unchanged':True,'before':None,'after':None})
 subprocess.run(['python3',str(root/'tests/local/dynamic-panel-report.py'),str(out/'manifest.json'),str(out)],check=True,stdout=subprocess.DEVNULL)
 assert json.loads((out/'panel.json').read_text())['cases'][-1]['timing']['legacy_60_second_gate']=='NOT_EVALUATED'
 write(d/'integrity.json',{'unchanged':True,'before':{'sha256':'a'*64,'stable_read':True},'after':{'sha256':'a'*64,'stable_read':True}})
