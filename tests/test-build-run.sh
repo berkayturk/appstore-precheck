@@ -284,4 +284,39 @@ sleep 2
 [[ ! -f "$TMP/probe-home/escaped-child" ]] || { echo '  FAIL: timed out child survived'; fails=$((fails+1)); }
 assert_contains "$out" 'TIMEOUT' "descendant timeout classified"
 
+section "Flutter generated configuration is prepared before the compilation snapshot"
+cat > "$TMP/bin/flutter" <<'SH'
+#!/usr/bin/env bash
+if [[ "$1 $2" == 'pub get' ]]; then exit 0; fi
+if [[ "$1 $2" != 'build ios' ]]; then exit 9; fi
+mkdir -p ios/Flutter/ephemeral
+for f in ios/Flutter/Generated.xcconfig ios/Flutter/ephemeral/flutter_native_integration.env ios/Flutter/flutter_export_environment.sh; do
+  printf 'generated simulator configuration\n' > "$f"
+done
+if [[ " $* " == *' --config-only '* ]]; then exit 0; fi
+if [[ -f "$(dirname "$0")/mutate-flutter-config" ]]; then printf 'compiler mutated configuration\n' >> ios/Flutter/Generated.xcconfig; fi
+mkdir -p build/ios/iphonesimulator/Runner.app
+printf '<?xml version="1.0"?><plist><dict><key>CFBundleIdentifier</key><string>test.flutter</string></dict></plist>\n' > build/ios/iphonesimulator/Runner.app/Info.plist
+SH
+chmod +x "$TMP/bin/flutter"
+before="$(hash_tree "$TMP/flutter")"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/flutter" --framework flutter --out "$TMP/flutter-artifact" --timeout 20)"; st=$?
+assert_eq "$st" 0 "Flutter prepared configuration leaves compiler snapshot unchanged"
+assert_eq "$(hash_tree "$TMP/flutter")" "$before" "Flutter preparation never writes to original source"
+report="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+python3 - "$report" <<'PYTEST'
+import json, pathlib, sys
+p=pathlib.Path(sys.argv[1]);r=json.loads(p.read_text())
+assert r['source_binding_eligible'] is True
+assert r['source_integrity']['copy']['unchanged'] is True
+assert set(r['preparation']['changed_paths']) == {'ios/Flutter/Generated.xcconfig','ios/Flutter/ephemeral/flutter_native_integration.env','ios/Flutter/flutter_export_environment.sh'}
+steps=[json.loads(line)['step'] for line in (p.parent/'build-events.jsonl').read_text().splitlines()]
+assert steps==['flutter-pub','flutter-config','flutter-build']
+PYTEST
+assert_eq "$?" 0 "Flutter provenance distinguishes generated preparation from compilation"
+: > "$TMP/bin/mutate-flutter-config"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/flutter" --framework flutter --out "$TMP/flutter-artifact" --timeout 20)"; st=$?
+assert_eq "$st" 3 "Flutter compiler-time source mutation still rejects binding"
+assert_contains "$out" 'provenance binding unavailable' "Flutter generated files were not excluded from integrity checks"
+
 exit "$fails"
