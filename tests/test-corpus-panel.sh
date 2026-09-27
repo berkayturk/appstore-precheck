@@ -15,7 +15,7 @@ for name,expected,actual,votes in [('clean','PASS','FINDING',{'pass':0,'finding'
  cases.append({'framework':'fixture','variant':name,'expected_launch':expected,'defects':[], 'expected_checks':{'dyn-example':'NEEDS_REVIEW'}})
  d=out/'fixture'/name;d.mkdir(parents=True);(d/'state').write_text('RAN')
  (d/'runtime').mkdir();(d/'runtime/transcript.txt').write_text('DYNAMIC-'+actual+': 2.1 [dyn-launch] observed\n')
- write(d/'runtime/run.json',{'launch':votes,'repeats':10,'window_seconds':5,'d1_d2_seconds':[70,71],'timing':{'observation_seconds':[20,21]}})
+ write(d/'runtime/run.json',{'launch':votes,'repeats':10,'window_seconds':5,'d1_d2_seconds':[70,71]*5,'device':{'created_by_this_run':True},'timing':{'observation_seconds':[20,21]}})
  write(d/'runtime/screen-inventory.json',{'checks':[{'check_id':'dyn-example','status':'SKIP'}]})
 write(out/'manifest.json',{'cases':cases})
 subprocess.run(['python3',str(root/'tests/local/dynamic-panel-report.py'),str(out/'manifest.json'),str(out)],check=True,stdout=subprocess.DEVNULL)

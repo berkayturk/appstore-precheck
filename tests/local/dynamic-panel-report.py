@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Summarize actual corpus observations without treating gaps as success."""
-import hashlib, json, os, plistlib, re, statistics, sys
+import json, math, plistlib, re, statistics, sys
 from pathlib import Path
 
 manifest = json.loads(Path(sys.argv[1]).read_text())
@@ -9,7 +9,8 @@ rows = []
 
 def load(path, default):
     try:
-        return json.loads(path.read_text())
+        value = json.loads(path.read_text())
+        return value if isinstance(value, type(default)) else default
     except (OSError, ValueError, TypeError):
         return default
 
@@ -20,13 +21,19 @@ def comparison(observed, wanted):
     return observed == wanted
 
 def timings(run):
-    lifecycle = run.get('d1_d2_seconds', [])
-    pure = run.get('timing', {}).get('observation_seconds', [])
+    def samples(value):
+        return [n for n in value if type(n) in (int, float) and n >= 0 and math.isfinite(n)] if isinstance(value, list) else []
+    lifecycle = samples(run.get('d1_d2_seconds', []))
+    timing = run.get('timing') if isinstance(run.get('timing'), dict) else {}
+    pure = samples(timing.get('observation_seconds', []))
+    comparable = (len(lifecycle) == 10 and run.get('repeats') == 10 and
+                  run.get('window_seconds') == 5 and
+                  isinstance(run.get('device'), dict) and run['device'].get('created_by_this_run') is True)
     return {'lifecycle_seconds': lifecycle, 'observation_seconds': pure,
             'lifecycle_median_seconds': statistics.median(lifecycle) if lifecycle else None,
             'observation_median_seconds': statistics.median(pure) if pure else None,
-            'legacy_60_second_gate': ('PASS' if statistics.median(lifecycle) < 60 else 'FAIL')
-                if lifecycle and run.get('repeats') == 10 and run.get('window_seconds') == 5
+            'legacy_60_second_gate': ('PASS' if statistics.median(lifecycle) <= 60 else 'FAIL')
+                if comparable
                 else 'NOT_EVALUATED',
             'method': 'Lifecycle includes per-repeat erase/boot/install where performed, plus D1/D2. Observation excludes lifecycle; it cannot satisfy the legacy gate.'}
 
