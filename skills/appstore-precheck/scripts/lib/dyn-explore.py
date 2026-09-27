@@ -7,6 +7,7 @@ Live mode only operates on a simulator owned by the caller; it never erases or d
 import argparse
 import collections
 import hashlib
+import importlib.util
 import json
 import os
 import pathlib
@@ -48,6 +49,9 @@ ACTION_WORDS = re.compile(
     r"\b(open|show|view|continue|next|settings|profile|account|login|log in|sign in|restore|menu|more|help|report|block)\b",
     re.I,
 )
+_spec = importlib.util.spec_from_file_location("dyn_process", pathlib.Path(__file__).with_name("dyn-process.py"))
+_process = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_process)
 SECRET_WORDS = re.compile(r"password|token|secret|credential|api.?key", re.I)
 
 
@@ -102,7 +106,7 @@ def summarize(tree, name, screenshot=None, timestamp=None):
     for a in nodes:
         value = label(a)
         if value and (a.get("clickable") is True or ACTION_WORDS.search(value)):
-            interactive.append({"label": safe_label(value), "safe_to_tap": not bool(DESTRUCTIVE.search(value))})
+            interactive.append({"label": safe_label(value), "safe_to_tap": False})
     return {
         "screen": name,
         "title": safe_label(labels[0]) if labels else "",
@@ -192,40 +196,83 @@ def evaluate(screens, context):
 
 
 def command(argv, timeout, cwd=None):
-    return subprocess.run(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                          timeout=timeout, check=True, cwd=cwd).stdout
+    result = _process.run(argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                          timeout=timeout, cwd=cwd)
+    if result.returncode:
+        raise subprocess.CalledProcessError(result.returncode, argv)
+    return result.stdout
 
 
-def live_explore(udid, bundle_id, out, max_screens, seconds):
+def live_explore(udid, bundle_id, out, max_screens, seconds, authorization=None):
     """Conservative BFS: relaunch from root for each path, never persist app state."""
     if not udid or not bundle_id:
         raise ValueError("--udid and --bundle-id are required for live exploration")
+    allowed = set()
+    if authorization is not None:
+        if (not isinstance(authorization, dict) or authorization.get("schema_version") != 1 or
+                authorization.get("environment") not in ("sandbox", "test") or
+                authorization.get("authorized") is not True or
+                not isinstance(authorization.get("selectors"), list) or
+                any(not isinstance(x, str) or not x for x in authorization["selectors"])):
+            raise ValueError("Navigation requires explicit test/sandbox authorization and exact selectors")
+        allowed = set(authorization["selectors"])
     deadline = time.monotonic() + seconds
     todo = collections.deque([()])
     visited = set()
     screens = []
+    transitions = {"schema_version": 1, "scope": (authorization or {}).get("scope", {}), "flows": []}
+    def save_evidence(name, value):
+        raw = json.dumps(scrub_tree(value), sort_keys=True).encode()
+        (out / name).write_bytes(raw)
+        return {"path": name, "sha256": hashlib.sha256(raw).hexdigest()}
     while todo and len(screens) < max_screens and time.monotonic() < deadline:
         path = todo.popleft()
         try:
             # Maestro performs the entire navigation path in one flow/call.
             flow = out / "navigation-flow.yaml"
-            flow.write_text("appId: " + json.dumps(bundle_id) + "\n---\n- launchApp:\n    clearState: true\n" +
-                            "\n".join("- tapOn:\n    text: " + json.dumps(x) for x in path) + "\n")
-            command(["maestro", "--device", udid, "test", str(flow)],
-                    min(45, max(1, int(deadline-time.monotonic()))), cwd=out)
+            attempt = None
+            if path:
+                # Navigate to the start, capture it, then execute one action. A
+                # discovered button alone never creates a completed transition.
+                prefix = "appId: " + json.dumps(bundle_id) + "\n---\n"
+                flow.write_text(prefix + "- launchApp:\n    clearState: true\n" +
+                                "\n".join("- tapOn:\n    text: " + json.dumps("^" + re.escape(x) + "$") for x in path[:-1]) + "\n")
+                command(["maestro", "--device", udid, "test", str(flow)],
+                        min(45, max(0.01, deadline-time.monotonic())), cwd=out)
+                before = json.loads(command(["maestro", "--device", udid, "hierarchy"],
+                                   min(45, max(0.01, deadline-time.monotonic())), cwd=out))
+                index = len(transitions["flows"])
+                config = (authorization or {}).get("transitions", {}).get(path[-1], {})
+                attempt = {"id": "attempt-%d" % index, "environment_id": udid, "fresh": False,
+                           "driver_status": "incomplete", "start": {"selector": config.get("start"),
+                           "evidence": save_evidence("transition-%d-start.json" % index, before)},
+                           "action": {"type": "tap", "selector": path[-1]},
+                           "expected": {"success": config.get("success"), "failure": config.get("failure")}}
+                transitions["flows"].append({"id": "transition-%d" % index, "flow": config.get("flow", "navigation"),
+                                              "attempts": [attempt]})
+                flow.write_text(prefix + "- tapOn:\n    text: " + json.dumps("^" + re.escape(path[-1]) + "$") + "\n")
+                command(["maestro", "--device", udid, "test", str(flow)],
+                        min(45, max(0.01, deadline-time.monotonic())), cwd=out)
+                attempt["action"]["evidence"] = save_evidence("transition-%d-action.json" % index,
+                    {"events": [{"action": "tap", "selector": path[-1], "result": "completed"}]})
+                attempt["driver_status"] = "completed"
             name = "screen-%03d" % len(screens)
             raw = command(["maestro", "--device", udid, "hierarchy"],
-                          min(45, max(1, int(deadline-time.monotonic()))), cwd=out)
+                          min(45, max(0.01, deadline-time.monotonic())), cwd=out)
             tree = scrub_tree(json.loads(raw))
+            if attempt is not None:
+                attempt["postcondition"] = {"evidence": save_evidence("transition-%d-post.json" % index, tree)}
             sig = hashlib.sha256(json.dumps(tree, sort_keys=True).encode()).hexdigest()
             if sig in visited:
                 continue
             visited.add(sig)
             (out / (name + ".json")).write_text(json.dumps(tree, indent=2))
             png = name + ".png"
-            command(["xcrun", "simctl", "io", udid, "screenshot", "--type=png", str(out / png)], 15, cwd=out)
+            command(["xcrun", "simctl", "io", udid, "screenshot", "--type=png", str(out / png)], min(15, max(0.01, deadline-time.monotonic())), cwd=out)
             screen = summarize(tree, name, png, time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
             screen["path"] = list(path)
+            for action in screen["actions"]:
+                action["safe_to_tap"] = action["label"] in allowed and not DESTRUCTIVE.search(action["label"])
             screens.append(screen)
             if len(path) < 4:
                 for action in screen["actions"]:
@@ -236,12 +283,14 @@ def live_explore(udid, bundle_id, out, max_screens, seconds):
             continue
         finally:
             (out / "navigation-flow.yaml").unlink(missing_ok=True)
+            (out / "transition-evidence.json").write_text(json.dumps(transitions, indent=2) + "\n")
     return screens
 
 
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--screens", type=pathlib.Path)
+    p.add_argument("--authorized-navigation", type=pathlib.Path, help="Explicit test/sandbox exact-selector allowlist")
     p.add_argument("--udid")
     p.add_argument("--bundle-id")
     p.add_argument("--out", required=True, type=pathlib.Path)
@@ -268,7 +317,8 @@ def main():
             except (OSError, ValueError):
                 continue
     else:
-        screens = live_explore(a.udid, a.bundle_id, a.out, a.max_screens, a.seconds)
+        authorization = json.loads(a.authorized_navigation.read_text()) if a.authorized_navigation else None
+        screens = live_explore(a.udid, a.bundle_id, a.out, a.max_screens, a.seconds, authorization)
     context = {"hosts": bool(a.hosts and a.hosts.exists() and a.hosts.stat().st_size), "privacy_manifest": bool(a.privacy_manifest and a.privacy_manifest.exists()),
                "installed_bundle": bool(a.installed_bundle and a.installed_bundle.exists()),
                "source_bundle": bool(a.source_bundle and a.source_bundle.exists())}

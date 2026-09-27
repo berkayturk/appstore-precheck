@@ -36,6 +36,12 @@
 
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# A process-group supervisor gives traps time to remove this run's devices on
+# cancellation/deadline. No caller-owned simulator is ever deleted.
+if [[ "${PRECHECK_RUNTIME_SUPERVISED:-0}" != 1 ]]; then
+  export PRECHECK_RUNTIME_SUPERVISED=1
+  exec python3 "$HERE/lib/dyn-process.py" --timeout "${PRECHECK_RUNTIME_DEADLINE_SECONDS:-1800}" -- bash "$0" "$@"
+fi
 # shellcheck source=framework-detect.sh
 . "$HERE/framework-detect.sh"
 # shellcheck source=lib/dyn-quorum.sh
@@ -53,7 +59,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- Arguments --------------------------------------------------------------------
 APP="" UDID="" BID="" REPO="" FRAMEWORK="" REPO_PLIST="" REPEATS=3 WINDOW=10
-DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0 EXPLORE=0 EXPLORE_SECONDS=360 EXPLORE_SCREENS=25 DYN_BLOCKING=0 DYN_DEMO=0
+DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0 EXPLORE=0 EXPLORE_SECONDS=360 EXPLORE_SCREENS=25 DYN_BLOCKING=0 DYN_DEMO=0 NAVIGATION_AUTH=""
 usage_err() { echo "dynamic-run.sh: $1" >&2; exit 64; }
 need() { [[ $# -ge 2 ]] || usage_err "$1 needs a value"; }
 while [[ $# -gt 0 ]]; do
@@ -75,6 +81,7 @@ while [[ $# -gt 0 ]]; do
     --explore)     EXPLORE=1; shift ;;
     --explore-seconds) need "$@"; EXPLORE_SECONDS="$2"; shift 2 ;;
     --explore-screens) need "$@"; EXPLORE_SCREENS="$2"; shift 2 ;;
+    --authorized-navigation) need "$@"; NAVIGATION_AUTH="$2"; shift 2 ;;
     --demo-login)  DYN_DEMO=1; shift ;;
     --dynamic-blocking) DYN_BLOCKING=1; shift ;;
     *) usage_err "unknown option '$1'" ;;
@@ -144,11 +151,21 @@ CREATED_UDID="" CREATED_IPAD="" PKTAP_PID=""
 cleanup() {
   dyn_log_stop
   [[ -n "$PKTAP_PID" ]] && { sudo kill "$PKTAP_PID" 2>/dev/null || kill "$PKTAP_PID" 2>/dev/null; PKTAP_PID=""; }
-  dyn_device_teardown "$CREATED_UDID"; CREATED_UDID=""
-  dyn_device_teardown "$CREATED_IPAD"; CREATED_IPAD=""
+  local owned
+  for owned in "$CREATED_UDID" "$CREATED_IPAD"; do
+    [[ -n "$owned" ]] || continue
+    if dyn_device_teardown "$owned"; then
+      printf '%s\n' "$owned" >> "$OUT/deleted-simulators.txt"
+    else
+      printf '%s\n' "$owned" >> "$OUT/cleanup-failures.txt"
+    fi
+  done
+  CREATED_UDID="" CREATED_IPAD=""
   return 0
 }
 trap cleanup EXIT
+trap 'exit 143' TERM
+trap 'exit 130' INT
 
 # --- D0: device + install -------------------------------------------------------------------
 [[ -n "$RUNTIME" ]] || RUNTIME="$(dyn_pick_runtime)"
@@ -158,6 +175,7 @@ if [[ -n "$APP" ]]; then
   [[ -n "$RUNTIME" && -n "$DEVTYPE" ]] || { emit "$(dyn_line SKIP setup dyn-install "no available iOS runtime / iPhone device type to create a simulator from")"; skip_all "setup failed: no runtime"; exit 3; }
   CREATED_UDID="$(dyn_device_create "$DEV_NAME" "$DEVTYPE" "$RUNTIME")"
   [[ -n "$CREATED_UDID" ]] || { emit "$(dyn_line SKIP setup dyn-install "simctl create failed for $DEVTYPE on $RUNTIME")"; skip_all "setup failed: simctl create"; exit 3; }
+  printf '%s\n' "$CREATED_UDID" >> "$OUT/owned-simulators.txt"
   UDID="$CREATED_UDID"
   dyn_device_boot "$UDID"
   dyn_device_prepare "$UDID"
@@ -197,7 +215,7 @@ elif (( PKTAP )); then
 fi
 
 # --- D1 / D2: N launch repeats ----------------------------------------------------------------------
-L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 D_PASS=0 D_FIND=0 D_SKIP=0 D1_D2_SECONDS=""
+L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 D_PASS=0 D_FIND=0 D_SKIP=0 D1_D2_SECONDS="" OBSERVATION_SECONDS=""
 LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP" FRESH=1
 if (( METRO_SKIP )); then
   emit "$(dyn_line SKIP 2.1 dyn-launch "Metro bundler not running on 127.0.0.1:8081 and $APP_LABEL embeds no main.jsbundle; a React Native Debug build cannot load its JavaScript, so a launch would fail for a reason that is not the app's — start Metro or supply a release bundle")"
@@ -211,7 +229,9 @@ else
       dyn_device_boot "$UDID"; dyn_device_prepare "$UDID"
       dyn_device_install "$UDID" "$APP" >/dev/null 2>&1 || FRESH=0
     fi
+    observation_started=$SECONDS
     r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "$i")"
+    OBSERVATION_SECONDS="${OBSERVATION_SECONDS}${OBSERVATION_SECONDS:+,}$((SECONDS-observation_started))"
     kind="$(cut -f1 <<<"$r")"; LAST_DETAIL="$(cut -f2 <<<"$r")"; LAST_SIGNALS="$(cut -f3 <<<"$r")"
     case "$kind" in PASS) L_PASS=$((L_PASS+1)) ;; FINDING) L_FIND=$((L_FIND+1)) ;; *) L_SKIP=$((L_SKIP+1)) ;; esac
     if (( DYN_DEMO )) && [[ "$DYN_DRY_RUN" != 1 ]]; then
@@ -263,7 +283,10 @@ geometry_pass() { # geometry_pass <rule-id> <guideline> <label> <tag>
   [[ "$tree" == unread ]] && { emit "$(dyn_line SKIP "$g" "$id" "$label: accessibility tree could not be read (Maestro missing or timed out); screenshot $png for a human eye")"; return 0; }
   emit "$(dyn_geometry_line "$(dyn_geometry_report "$hier" 0 0)" "$g" "$id" "$label" "$png")"
 }
-if (( METRO_SKIP )) || [[ "$LAUNCH_KIND" != PASS && "$L_PASS" -eq 0 ]]; then
+if (( DYN_DEMO )); then
+  emit "$(dyn_line SKIP 4.0 dyn-dark-mode "demo credentials entered; persistent screenshots suppressed")"
+  emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "demo credentials entered; persistent screenshots suppressed")"
+elif (( METRO_SKIP )) || [[ "$LAUNCH_KIND" != PASS && "$L_PASS" -eq 0 ]]; then
   emit "$(dyn_line SKIP 4.0 dyn-dark-mode "app did not stay up on any launch; layout not judged")"
   emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "app did not stay up on any launch; layout not judged")"
 else
@@ -287,6 +310,7 @@ if (( IPAD )); then
     if [[ -z "$CREATED_IPAD" ]]; then
       emit "$(dyn_line SKIP 2.4.1 dyn-ipad-layout "simctl create failed for $IPAD_TYPE")"
     else
+      printf '%s\n' "$CREATED_IPAD" >> "$OUT/owned-simulators.txt"
       dyn_device_boot "$CREATED_IPAD"; dyn_device_prepare "$CREATED_IPAD"
       if dyn_device_install "$CREATED_IPAD" "${APP:-}" >/dev/null 2>&1; then
         saved="$UDID"; UDID="$CREATED_IPAD"
@@ -327,13 +351,17 @@ emit "$(dyn_hosts_line "$(dyn_hosts_parity "$HOSTS" "$PRIV")" "$HOST_NOTE")"
 if (( EXPLORE )); then
   if [[ "$DYN_DRY_RUN" == 1 ]]; then
     note "explore dry run: no screens observed"
+  elif (( DYN_DEMO )); then
+    note "explore SKIP: demo credentials entered; persistent screen capture suppressed"
   elif [[ "$LAUNCH_KIND" != PASS || -z "$CREATED_UDID" ]]; then
     note "explore SKIP: requires a successful launch on this run's created simulator"
   elif ! command -v maestro >/dev/null 2>&1; then
     note "explore SKIP: Maestro unavailable (install Maestro to capture accessibility screens)"
   else
+    navigation_args=()
+    [[ -z "$NAVIGATION_AUTH" ]] || navigation_args=(--authorized-navigation "$NAVIGATION_AUTH")
     python3 "$HERE/lib/dyn-explore.py" --udid "$UDID" --bundle-id "$BID" --out "$OUT" \
-      --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" \
+      --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" "${navigation_args[@]}" \
       ${HOSTS:+--hosts "$HOSTS"} ${PRIV:+--privacy-manifest "$PRIV"} \
       ${INSTALLED:+--installed-bundle "$INSTALLED"} ${APP:+--source-bundle "$APP"} \
       > "$OUT/explore.json" || note "explore SKIP: Maestro exploration failed or timed out"
@@ -360,11 +388,14 @@ jq -n --arg app "${APP:-}" --arg bid "$BID" --arg cfg "$BUILD_CONFIG" --arg fw "
       --argjson metro "$([[ "$METRO_SKIP" == 1 ]] && echo true || echo false)" \
       --argjson dry "$([[ "$DYN_DRY_RUN" == 1 ]] && echo true || echo false)" \
       --argjson lp "$L_PASS" --argjson lf "$L_FIND" --argjson ls "$L_SKIP" \
-      --arg durations "$D1_D2_SECONDS" '
+      --arg durations "$D1_D2_SECONDS" --arg observations "$OBSERVATION_SECONDS" '
   {app:(if $app=="" then null else $app end), bundle_id:$bid, build_config:$cfg, framework:$fw,
    device:{udid:$udid, name:$name, type:$type, runtime:$rt, created_by_this_run:$created},
    repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls},
    d1_d2_seconds:($durations | if . == "" then [] else split(",") | map(tonumber) end), metro_skipped:$metro,
+   timing:{legacy_d1_d2_definition:"per repeat reset/boot/install when performed plus D1+D2; unchanged",
+           observation_definition:"launch and full observation window plus four signal collection, excluding lifecycle and demo",
+           observation_seconds:($observations | if . == "" then [] else split(",") | map(tonumber) end)},
    dry_run:$dry, out:$out, transcript:($out + "/transcript.txt"),
    next:("dynamic.sh --transcript " + $out + "/transcript.txt --findings <scan.json> --target simulator --build-config " + $cfg)}' > "$OUT/run.json"
 # Teardown now (the EXIT trap becomes a no-op) so the transcript and the plan are complete.

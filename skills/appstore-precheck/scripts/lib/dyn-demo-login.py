@@ -1,11 +1,41 @@
 #!/usr/bin/env python3
 """Run one opt-in demo login attempt without writing credentials to reports."""
+import importlib.util
 import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 import tempfile
+
+
+_spec = importlib.util.spec_from_file_location("dyn_process", pathlib.Path(__file__).with_name("dyn-process.py"))
+_process = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_process)
+
+
+def hierarchy(udid, dirname, env):
+    result = _process.run(["maestro", "--device", udid, "hierarchy"],
+                          stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                          timeout=45, cwd=dirname, env=env)
+    if result.returncode:
+        raise ValueError("Hierarchy unavailable")
+    tree = json.loads(result.stdout.decode("utf-8", "replace"))
+    values = set()
+    def visit(obj):
+        if isinstance(obj, dict):
+            attrs = obj.get("attributes", {})
+            if isinstance(attrs, dict):
+                values.update(v.strip() for k, v in attrs.items()
+                              if k in ("text", "accessibilityText") and isinstance(v, str))
+            for child in obj.get("children", []):
+                visit(child)
+        elif isinstance(obj, list):
+            for child in obj:
+                visit(child)
+    visit(tree)
+    return values
 
 
 def main():
@@ -21,43 +51,41 @@ def main():
     submit = os.getenv("PRECHECK_DEMO_SUBMIT", "Sign In")
     if not all((user, password, success, failure)):
         return "SKIP\tdemo credentials or success/failure selectors unavailable"
+    if (os.getenv("PRECHECK_DEMO_AUTHORIZED_TEST") != "1" or
+            os.getenv("PRECHECK_DEMO_ENVIRONMENT") not in ("test", "sandbox")):
+        return "SKIP\tdemo login requires explicit authorized test/sandbox environment"
     flow = ("appId: " + json.dumps(bundle) + "\n---\n" +
-            "- tapOn: " + json.dumps(user_field) + "\n" +
+            "- tapOn: " + json.dumps("^" + re.escape(user_field) + "$") + "\n" +
             "- inputText: " + json.dumps(user) + "\n" +
-            "- tapOn: " + json.dumps(password_field) + "\n" +
+            "- tapOn: " + json.dumps("^" + re.escape(password_field) + "$") + "\n" +
             "- inputText: " + json.dumps(password) + "\n" +
-            "- tapOn: " + json.dumps(submit) + "\n")
+            "- tapOn: " + json.dumps("^" + re.escape(submit) + "$") + "\n")
     try:
         with tempfile.TemporaryDirectory(prefix="appstore-demo-") as dirname:
             path = pathlib.Path(dirname) / "login.yaml"
             path.write_text(flow)
-            run = subprocess.run(["maestro", "--device", udid, "test", str(path)],
+            path.chmod(0o600)
+            env = dict(os.environ, MAESTRO_CLI_NO_ANALYTICS="1")
+            # Every driver artifact containing typed values remains disposable.
+            debug = pathlib.Path(dirname) / "debug"
+            output = pathlib.Path(dirname) / "output"
+            before = hierarchy(udid, dirname, env)
+            if (len(before) < 4 or not {user_field, password_field, submit}.issubset(before) or
+                    success in before or success == failure):
+                return "SKIP\tlogin start state/selectors are ambiguous or unavailable"
+            run = _process.run(["maestro", "--device", udid, "test",
+                                "--debug-output", str(debug), "--test-output-dir", str(output), str(path)],
                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                                 timeout=45, check=False, cwd=dirname)
+                                 timeout=45, cwd=dirname, env=env)
             if run.returncode:
                 return "SKIP\tMaestro could not drive demo login; selectors or driver may be unavailable"
-            raw = subprocess.run(["maestro", "--device", udid, "hierarchy"],
-                                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                                 timeout=45, check=True, cwd=dirname).stdout.decode("utf-8", "replace")
-            tree = json.loads(raw)
-            values = []
-            def visit(obj):
-                if isinstance(obj, dict):
-                    a = obj.get("attributes", {})
-                    if isinstance(a, dict):
-                        values.extend(str(v) for k, v in a.items() if k in ("text", "accessibilityText") and isinstance(v, str))
-                    for child in obj.get("children", []):
-                        visit(child)
-                elif isinstance(obj, list):
-                    for child in obj:
-                        visit(child)
-            visit(tree)
-            if any(success.casefold() in x.casefold() for x in values):
-                return "PASS\tdemo success selector observed"
-            if any(failure.casefold() in x.casefold() for x in values):
-                if os.getenv("PRECHECK_DEMO_BACKEND_READY") == "1":
-                    return "FINDING\texplicit login rejection observed with backend health asserted"
-                return "SKIP\tlogin rejection observed but backend health was not established"
+            values = hierarchy(udid, dirname, env)
+            if len(values) < 4 or (success in values and failure in values):
+                return "SKIP\tlogin postcondition is ambiguous or accessibility evidence is insufficient"
+            if success in values:
+                return "PASS\tdemo start/action/new success selector observed; backend session scope requires review"
+            if failure in values:
+                return "SKIP\tlogin rejection observed; backend and account validity require independent evidence"
             return "SKIP\tneither success nor explicit failure selector observed"
     except (OSError, subprocess.TimeoutExpired, subprocess.CalledProcessError, ValueError):
         return "SKIP\tdemo driver timed out or hierarchy was unreadable"
