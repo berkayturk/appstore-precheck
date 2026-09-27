@@ -7,6 +7,8 @@ source "$HERE/_assert.sh"
 RUN="$ROOT/skills/appstore-precheck/scripts/build-run.sh"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
+mkdir -p "$TMP/build-temp"
+export TMPDIR="$TMP/build-temp"
 
 hash_tree() {
   python3 - "$1" <<'PY'
@@ -111,7 +113,10 @@ if [[ -e .env || -e .appstore-precheck.json || -e dev-asc-key-1.json || -e .git/
 printf 'never-print-this-secret\n'
 if [[ -f "$(dirname "$0")/missing-sdk" ]]; then printf 'SDK iphonesimulator not found\n'; exit 65; fi
 if [[ -f "$(dirname "$0")/sleep-build" ]]; then sleep 2; fi
-printf 'tool ran\n' > tool-wrote-here
+mkdir -p build
+printf 'tool ran\n' > build/tool-wrote-here
+if [[ -f "$(dirname "$0")/mutate-copy" ]]; then printf 'changed\n' >> ios/App/App.swift; fi
+if [[ -f "$(dirname "$0")/mutate-original" ]]; then printf 'concurrent fixture change\n' >> "$(cat "$(dirname "$0")/mutate-original")"; fi
 dd=''; cfg=''
 while [[ $# -gt 0 ]]; do
   case "$1" in -derivedDataPath) dd="$2"; shift 2;; -configuration) cfg="$2"; shift 2;; *) shift;; esac
@@ -143,8 +148,40 @@ assert_eq "$st" 0 "--keep-build succeeds"
 workspace="$(printf '%s\n' "$out" | sed -n 's/^build_workspace=//p')"
 [[ -d "$workspace/project" ]] || { echo '  FAIL: --keep-build retained copy'; fails=$((fails+1)); }
 [[ -e "$workspace/project/.env" || -e "$workspace/project/.appstore-precheck.json" ]] && { echo '  FAIL: secret file copied'; fails=$((fails+1)); }
-assert_absent "$(cat "$workspace/build-events.jsonl")" 'never-print-this-secret' "persistent event log contains no credential"
+assert_absent "$(cat "$(printf '%s\n' "$out" | sed -n 's/^event_log=//p')")" 'never-print-this-secret' "persistent event log contains no credential"
 rm -rf "$workspace"
+
+section "copied source mutation prevents proof binding"
+: > "$TMP/bin/mutate-copy"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "copied input mutation is SKIP"
+assert_contains "$out" 'provenance binding unavailable' "copy mutation is an evidence gap"
+report="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+python3 - "$report" <<'PYTEST'
+import json, sys
+r=json.load(open(sys.argv[1]))
+assert r['source_integrity']['source']['unchanged']
+assert not r['source_integrity']['copy']['unchanged']
+assert not r['source_binding_eligible']
+PYTEST
+assert_eq "$?" 0 "mutation report preserves original integrity and rejects binding"
+rm "$TMP/bin/mutate-copy"
+
+section "concurrent original source change is an evidence gap"
+printf '%s\n' "$TMP/native/ios/App/App.swift" > "$TMP/bin/mutate-original"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "external source change exits SKIP"
+report="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+python3 - "$report" <<'PYTEST'
+import json, sys
+r=json.load(open(sys.argv[1]))
+assert not r['source_integrity']['source']['unchanged']
+assert r['source_integrity']['copy']['unchanged']
+assert not r['source_binding_eligible']
+assert any('External source change' in x for x in r['limitations'])
+PYTEST
+assert_eq "$?" 0 "external change does not become an app finding"
+rm "$TMP/bin/mutate-original"
 
 section "failure classes and deadlines stay SKIP"
 rm -f "$TMP/bin/fail-release"
@@ -189,5 +226,38 @@ out="$(GEM_PATH="$TMP/gems" python3 "$ROOT/skills/appstore-precheck/scripts/lib/
   --home "$TMP/probe-home" --temp "$TMP/probe-tmp" -- "$TMP/bin/gem-probe")"; st=$?
 assert_eq "$st" 0 "temporary CocoaPods gem path and UTF-8 locale reach the child tool"
 assert_contains "$out" 'STATUS=OK' "gem path probe completes"
+
+section "retained provenance and cleanup after success, error and timeout"
+python3 - "$TMP/output" <<'PYTEST'
+import json, pathlib, sys
+root=pathlib.Path(sys.argv[1])
+reports=[json.loads(p.read_text()) for p in root.glob('build-evidence.*/build-provenance.json')]
+assert reports and any(r['source_binding_eligible'] for r in reports)
+assert any(r['build_exit_status']==3 for r in reports)
+for r in reports:
+    assert r['distribution']=='simulator'
+    assert r['signed_distribution_verified'] is False
+    assert r['physical_device_verified'] is False
+for p in root.glob('build-evidence.*/build-events.jsonl'):
+    assert 'never-print-this-secret' not in p.read_text()
+PYTEST
+assert_eq "$?" 0 "all build outcomes retain sanitized evidence and limited scope"
+remaining="$(find "$TMP/build-temp" -maxdepth 1 -type d -name 'appstore-precheck-build.*' -print)"
+assert_eq "$remaining" '' "owned build workspaces cleaned on success, error and timeout"
+
+section "runner deadline kills descendants and retains no raw output"
+cat > "$TMP/bin/child-probe" <<'SH'
+#!/bin/sh
+(sleep 2; touch "$HOME/escaped-child") &
+sleep 5
+SH
+chmod +x "$TMP/bin/child-probe"
+out="$(python3 "$ROOT/skills/appstore-precheck/scripts/lib/build-exec.py" \
+  --step child-probe --cwd "$TMP" --timeout 1 --log "$TMP/probe-events.jsonl" \
+  --home "$TMP/probe-home" --temp "$TMP/probe-tmp" -- "$TMP/bin/child-probe")"; st=$?
+assert_eq "$st" 3 "descendant deadline returns SKIP"
+sleep 2
+[[ ! -f "$TMP/probe-home/escaped-child" ]] || { echo '  FAIL: timed out child survived'; fails=$((fails+1)); }
+assert_contains "$out" 'TIMEOUT' "descendant timeout classified"
 
 exit "$fails"

@@ -36,6 +36,14 @@ def kill_group(proc):
         pass
 
 
+class BuildCancelled(Exception):
+    pass
+
+
+def cancelled(signum, frame):
+    raise BuildCancelled()
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--step", required=True)
@@ -53,6 +61,11 @@ def main():
     env = {
         "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
         "HOME": a.home,
+        "CFFIXED_USER_HOME": a.home,
+        "XDG_CACHE_HOME": os.path.join(a.home, '.cache'),
+        "npm_config_cache": os.path.join(a.home, '.npm'),
+        "GRADLE_USER_HOME": os.path.join(a.home, '.gradle'),
+        "PUB_CACHE": os.path.join(a.home, '.pub-cache'),
         "TMPDIR": a.temp,
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
@@ -64,6 +77,8 @@ def main():
         env["DEVELOPER_DIR"] = os.environ["DEVELOPER_DIR"]
     if os.environ.get("GEM_PATH"):
         env["GEM_PATH"] = os.environ["GEM_PATH"]
+    for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
+        signal.signal(sig, cancelled)
     start = time.monotonic()
     status = "OK"
     result = bytearray()
@@ -102,6 +117,11 @@ def main():
                 status = "TIMEOUT"
         if status == "OK" and proc.returncode:
             status = classify(result.decode("utf-8", "replace"))
+    except BuildCancelled:
+        if proc is not None:
+            kill_group(proc)
+            proc.wait()
+        status = 'CANCELLED'
     except FileNotFoundError:
         status = "MISSING_TOOL"
     except OSError:
