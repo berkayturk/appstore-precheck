@@ -120,4 +120,99 @@ python3 - "$TMP/unsafe.json" <<'PY'
 import json, sys
 assert all(c['status']=='NOT_RUN' for c in json.load(open(sys.argv[1]))['checks'])
 PY
+# Extensions must declare their own observed APIs; parent reasons cannot hide gaps.
+python3 - "$TMP" <<'PYTEST'
+import pathlib, plistlib, shutil, sys
+p=pathlib.Path(sys.argv[1])
+for name in ('extension', 'unsigned', 'invalid'):
+    shutil.copytree(p/'clean.app', p/(name+'.app'))
+ext=p/'extension.app/PlugIns/Widget.appex'
+ext.mkdir(parents=True)
+(ext/'Info.plist').write_bytes(plistlib.dumps({'CFBundleExecutable':'Widget','CFBundleIdentifier':'org.example.sample.widget'}))
+(ext/'Widget').write_bytes(b'widget')
+(p/'extension.app/PrivacyInfo.xcprivacy').write_bytes(plistlib.dumps({'NSPrivacyAccessedAPITypes':[{'NSPrivacyAccessedAPIType':'NSPrivacyAccessedAPICategoryUserDefaults','NSPrivacyAccessedAPITypeReasons':['CA92.1']}]}))
+info=plistlib.loads((p/'unsigned.app/Info.plist').read_bytes())
+info['DTSDKName']='iphonesimulator18.0'
+(p/'unsigned.app/Info.plist').write_bytes(plistlib.dumps(info))
+PYTEST
+cat > "$TMP/tools/codesign" <<'SH'
+#!/bin/sh
+case "$*" in
+ *unsigned*) exit 1;;
+ *--verify*invalid*) exit 1;;
+ *--entitlements*) printf '%s\n' '<?xml version="1.0"?><plist><dict></dict></plist>';;
+ *) exit 0;;
+esac
+SH
+cat > "$TMP/tools/nm" <<'SH'
+#!/bin/sh
+case "$*" in *Widget.appex*) printf '%s\n' ' U _OBJC_CLASS_$_NSUserDefaults';; esac
+SH
+for name in extension unsigned invalid; do
+  PATH="$TMP/tools:$PATH" bash "$REVIEW" --app "$TMP/$name.app" --expected-bundle wrong.bundle --format json > "$TMP/$name.json"
+done
+python3 - "$TMP" <<'PYTEST'
+import hashlib, json, pathlib, sys
+p=pathlib.Path(sys.argv[1])
+def report(name): return json.loads((p/(name+'.json')).read_text())
+e,u,i=map(report, ('extension','unsigned','invalid'))
+assert next(x for x in e['checks'] if x['check_id']=='artifact-reason-api')['status']=='NEEDS_REVIEW'
+assert any('PlugIns/Widget.appex' in x for x in next(x for x in e['checks'] if x['check_id']=='artifact-reason-api')['evidence'])
+assert u['scope']['evidence_kind']=='simulator_app'
+assert u['scope']['signing'][0]['signature_status']=='UNSIGNED'
+assert i['scope']['signing'][0]['signature_status']=='INVALID'
+for r in (e,u,i):
+    assert r['scope']['identity_mismatches']==['bundle_id']
+    assert r['scope']['distribution_status']=='NOT_VERIFIED'
+    assert r['scope']['physical_device_status']=='NOT_RUN'
+    assert r['scope']['identity']['binary_sha256']==hashlib.sha256(b'ordinary binary').hexdigest()
+for r in (u,i):
+    assert next(x for x in r['checks'] if x['check_id']=='artifact-entitlements')['status']=='SKIP'
+PYTEST
+# A wrong-category or empty reason does not satisfy observed UserDefaults usage.
+python3 - "$TMP" <<'PYTEST'
+import pathlib, plistlib, sys
+p=pathlib.Path(sys.argv[1])/'extension.app/PlugIns/Widget.appex/PrivacyInfo.xcprivacy'
+p.write_bytes(plistlib.dumps({'NSPrivacyAccessedAPITypes':[{'NSPrivacyAccessedAPIType':'NSPrivacyAccessedAPICategoryUserDefaults','NSPrivacyAccessedAPITypeReasons':['C617.1']}]}))
+PYTEST
+PATH="$TMP/tools:$PATH" bash "$REVIEW" --app "$TMP/extension.app" --format json > "$TMP/wrong-reason.json"
+python3 - "$TMP/wrong-reason.json" <<'PYTEST'
+import json, sys
+r=json.load(open(sys.argv[1]))
+c=next(x for x in r['checks'] if x['check_id']=='artifact-reason-api')
+assert c['status']=='NEEDS_REVIEW'
+assert any('unrecognized reason identifier' in x for x in c['evidence'])
+PYTEST
+# Provisioning consistency includes extensions; an embedded profile is not a debug artifact.
+python3 - "$TMP" <<'PYTEST'
+import datetime, pathlib, plistlib, shutil, sys
+p=pathlib.Path(sys.argv[1])
+shutil.copytree(p/'clean.app', p/'provisioned.app')
+profile={'ExpirationDate':datetime.datetime(2099,1,1),'Entitlements':{'application-identifier':'TEAM.org.example.*','get-task-allow':False}}
+(p/'profile.plist').write_bytes(plistlib.dumps(profile))
+(p/'provisioned.app/embedded.mobileprovision').write_text('fixture cms payload')
+PYTEST
+cat > "$TMP/tools/security" <<'SH'
+#!/bin/sh
+cat "$(dirname "$0")/../profile.plist"
+SH
+chmod +x "$TMP/tools/security"
+cat > "$TMP/tools/codesign" <<'SH'
+#!/bin/sh
+case "$*" in
+ *--entitlements*) printf '%s\n' '<?xml version="1.0"?><plist><dict><key>application-identifier</key><string>TEAM.wrong.bundle</string><key>get-task-allow</key><false/></dict></plist>';;
+ *) exit 0;;
+esac
+SH
+PATH="$TMP/tools:$PATH" bash "$REVIEW" --app "$TMP/provisioned.app" --format json > "$TMP/provisioned.json"
+python3 - "$TMP/provisioned.json" <<'PYTEST'
+import json, sys
+r=json.load(open(sys.argv[1]))
+s=r['scope']['signing'][0]
+assert s['signature_status']=='VERIFIED'
+assert any('does not match bundle' in x for x in s['profile_issues'])
+assert any('not authorized' in x for x in s['profile_issues'])
+assert next(x for x in r['checks'] if x['check_id']=='artifact-debug')['status']=='PASS'
+assert r['scope']['distribution_status']=='NOT_VERIFIED'
+PYTEST
 printf 'artifact review fixtures passed\n'

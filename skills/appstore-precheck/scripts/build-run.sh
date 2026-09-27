@@ -56,11 +56,25 @@ PY
   build_check_symlinks "$REPO" || skip "project contains a symlink; remove it from the build input to preserve source isolation"
 fi
 
-WORK="" COPY="" LOG=""
+WORK="" COPY="" LOG="" EVIDENCE="" EXPORTED_APP="" BUILD_CONFIG=unknown
 cleanup() {
+  local status=$? integrity=0
+  trap - EXIT HUP INT TERM
+  if [[ -n "$EVIDENCE" ]]; then
+    python3 "$HERE/lib/build-evidence.py" --repo "$REPO" --copy "$COPY" --evidence "$EVIDENCE" \
+      --status "$status" --app "$EXPORTED_APP" --configuration "$BUILD_CONFIG" || integrity=$?
+    echo "build_evidence=$EVIDENCE/build-provenance.json"
+    echo "event_log=$LOG"
+    if [[ "$status" -eq 0 && "$integrity" -ne 0 ]]; then
+      echo 'SKIP: build source identity changed or could not be verified; provenance binding unavailable'
+      status=3
+    fi
+  fi
   if [[ -n "$WORK" && -d "$WORK" && "$KEEP" -eq 0 ]]; then rm -rf -- "$WORK"; fi
+  exit "$status"
 }
-trap cleanup EXIT HUP INT TERM
+trap cleanup EXIT
+trap 'exit 130' HUP INT TERM
 if (( DRY )); then
   WORK='${TMPDIR}/appstore-precheck-build.XXXXXX'
   COPY="$WORK/project"
@@ -69,14 +83,23 @@ else
   WORK="$(mktemp -d "${TMPDIR:-/tmp}/appstore-precheck-build.XXXXXX")" || skip "cannot create temporary build directory"
   COPY="$WORK/project"
   mkdir -p "$COPY" "$WORK/home" "$WORK/tmp" || skip "cannot prepare temporary build directory"
-  LOG="$WORK/build-events.jsonl"
+  if [[ -z "$OUT" ]]; then
+    OUT="$(mktemp -d "${TMPDIR:-/tmp}/appstore-precheck-artifact.XXXXXX")" || skip "cannot create artifact directory"
+  else
+    mkdir -p "$OUT" || skip "cannot create artifact directory"
+  fi
+  EVIDENCE="$(mktemp -d "$OUT/build-evidence.XXXXXX")" || skip "cannot create evidence directory"
+  LOG="$EVIDENCE/build-events.jsonl"
   : > "$LOG"
+  python3 "$HERE/source-snapshot.py" --repo "$REPO" --out "$EVIDENCE/source-before.json" || skip "source snapshot is unstable"
+
   rsync -a --exclude='.git/' --exclude='node_modules/' --exclude='Pods/' \
-    --exclude='build/' --exclude='DerivedData/' --exclude='.env' --exclude='.env.*' \
+    --exclude='build/' --exclude='DerivedData/' --exclude='.build/' --exclude='.dart_tool/' --exclude='__pycache__/' --exclude='.env' --exclude='.env.*' \
     --exclude='.appstore-precheck.json' --exclude='*asc-key*.json' \
     --exclude='*.p8' --exclude='*.p12' --exclude='*.mobileprovision' \
     -- "$REPO/" "$COPY/" >/dev/null 2>&1 || skip "rsync could not copy project (check permissions and disk space)"
   chmod -R u+w "$COPY" >/dev/null 2>&1 || :
+  python3 "$HERE/source-snapshot.py" --repo "$COPY" --out "$EVIDENCE/copy-initial.json" || skip "copied source snapshot is unstable"
 fi
 echo "build-run: framework=$FRAMEWORK"
 (( DRY )) && echo "PLAN source=$REPO copy=$COPY (rsync excludes .git, node_modules, Pods, build, DerivedData, .env*, credentials)"
@@ -105,6 +128,10 @@ run_step() {
   [[ "$RUN_OUT" == SCHEME=* ]] && RUN_CLASS=OK
   return "$status"
 }
+prepare_snapshot() {
+  (( DRY )) && return 0
+  python3 "$HERE/source-snapshot.py" --repo "$COPY" --out "$EVIDENCE/copy-before.json" || skip "prepared source snapshot is unstable"
+}
 step_or_skip() {
   local name="$1" cwd="$2" tool="$3"; shift 3
   run_step "$name" "$cwd" "$tool" no "$@" || {
@@ -130,6 +157,7 @@ fi
 
 if [[ "$FRAMEWORK" == flutter ]]; then
   step_or_skip flutter-pub "$COPY" flutter pub get
+  prepare_snapshot
   step_or_skip flutter-build "$COPY" flutter build ios --simulator
   BUILD_CONFIG=debug
 else
@@ -152,6 +180,7 @@ else
     skip "Xcode scheme discovery: $RUN_CLASS"
   }
   if (( DRY )); then SCHEME='<auto-discovered-scheme>'; else SCHEME="${RUN_OUT#SCHEME=}"; fi
+  prepare_snapshot
   run_step xcode-release "$COPY" xcodebuild no "${flags[@]}" -scheme "$SCHEME" -sdk iphonesimulator -configuration Release -derivedDataPath "$WORK/dd" CODE_SIGNING_ALLOWED=NO build
   if [[ "$RUN_CLASS" == OK ]]; then
     BUILD_CONFIG=release
@@ -192,8 +221,10 @@ if [[ "$FRAMEWORK" == flutter ]]; then CFG_DIR=Debug-iphonesimulator; else
   if [[ "$BUILD_CONFIG" == release ]]; then CFG_DIR=Release-iphonesimulator; else CFG_DIR=Debug-iphonesimulator; fi
 fi
 mkdir -p "$OUT/precheck/Build/Products/$CFG_DIR" || skip "cannot create artifact configuration directory"
-rsync -a -- "$APP" "$OUT/precheck/Build/Products/$CFG_DIR/" >/dev/null 2>&1 || skip "cannot export simulator .app"
-echo "app_path=$OUT/precheck/Build/Products/$CFG_DIR/$(basename "$APP")"
+EXPORTED_APP="$OUT/precheck/Build/Products/$CFG_DIR/$(basename "$APP")"
+mkdir -p "$EXPORTED_APP" || skip "cannot create exported bundle directory"
+rsync -a --delete -- "$APP/" "$EXPORTED_APP/" >/dev/null 2>&1 || skip "cannot export simulator .app"
+echo "app_path=$EXPORTED_APP"
 echo "artifact_dir=$OUT"
-if (( KEEP )); then echo "build_workspace=$WORK"; echo "event_log=$LOG"; fi
+if (( KEEP )); then echo "build_workspace=$WORK"; fi
 exit 0
