@@ -12,8 +12,10 @@
 #     Phase 3 blocking channel, which reads the ratio.
 #   * A driver timeout or an unreadable run is a SKIP for that repeat, never a
 #     FINDING. If every repeat was a SKIP, the check is a SKIP.
-#   * Launch health is a CONJUNCTION of four signals: process alive, screenshot not
-#     uniform, no crash in the log stream, accessibility tree size. A signal that
+#   * Launch health combines process, screenshot, crash log and accessibility tree.
+#     A PASS needs at least one positive app signal, with no failure signal; a
+#     readable log containing no crash does not itself prove a successful launch.
+#     A signal that
 #     could not be read is named in the line. A degenerate tree (Flutter / Compose)
 #     is never a failure on its own.
 
@@ -25,9 +27,9 @@
 # -> "<PASS|FINDING|SKIP><TAB><detail>"
 dyn_launch_verdict() {
   local proc="${1:-unread}" shot="${2:-unread}" log="${3:-unread}" tree="${4:-unread}"
-  local unread="" fail="" ok="" degenerate=""
+  local unread="" fail="" ok="" degenerate="" positive=0
   case "$proc" in
-    alive) ok="process alive" ;;
+    alive) ok="process alive"; positive=1 ;;
     dead)  fail="process gone" ;;
     *)     unread="process state" ;;
   esac
@@ -37,14 +39,15 @@ dyn_launch_verdict() {
     *)     unread="${unread:+$unread, }log stream" ;;
   esac
   case "$shot" in
-    varied)  ok="${ok:+$ok, }screenshot not uniform" ;;
+    varied)  ok="${ok:+$ok, }screenshot not uniform"; positive=1 ;;
     uniform) fail="${fail:+$fail, }screenshot is a single flat colour" ;;
     *)       unread="${unread:+$unread, }screenshot" ;;
   esac
   case "$tree" in
     unread|"") unread="${unread:+$unread, }accessibility tree" ;;
-    *) if [[ "$tree" =~ ^[0-9]+$ ]] && (( tree <= 3 )); then degenerate="accessibility tree has $tree node(s) (degenerate: Flutter/Compose expose no semantics; not a failure on its own)"
-       else ok="${ok:+$ok, }accessibility tree $tree nodes"; fi ;;
+    *) if [[ ! "$tree" =~ ^[0-9]+$ ]]; then unread="${unread:+$unread, }accessibility tree"
+       elif (( tree <= 3 )); then degenerate="accessibility tree has $tree node(s) (degenerate: Flutter/Compose expose no semantics; not a failure on its own)"
+       else ok="${ok:+$ok, }accessibility tree $tree nodes"; positive=1; fi ;;
   esac
   local detail=""
   if [[ -n "$fail" ]]; then
@@ -53,8 +56,10 @@ dyn_launch_verdict() {
     [[ -n "$unread" ]] && detail="$detail ($unread could not be read)"
     printf 'FINDING\t%s\n' "$detail"; return 0
   fi
-  if [[ -z "$ok" ]]; then
-    detail="no signal could be read${unread:+: $unread}"
+  if (( positive == 0 )); then
+    detail="no positive app launch signal${ok:+; $ok}"
+    [[ -n "$degenerate" ]] && detail="$detail; $degenerate"
+    [[ -n "$unread" ]] && detail="$detail ($unread could not be read)"
     printf 'SKIP\t%s\n' "$detail"; return 0
   fi
   detail="$ok"
