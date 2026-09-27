@@ -31,3 +31,25 @@ assert a['timing']['observation_median_seconds']==20.5
 assert a['owned_simulator_deleted'] is None
 print('PASS: corpus panel preserves misses, mixed votes, gaps and legacy timing')
 PY
+# Template generators must not receive the user's HOME or demo credentials.
+STAGE="$WORK/bootstrap"
+mkdir -p "$STAGE/project"
+cat > "$STAGE/probe" <<'PROBE'
+#!/usr/bin/env python3
+import json, os
+from pathlib import Path
+Path('probe.json').write_text(json.dumps({'home':os.environ['HOME'], 'cwd':os.getcwd(), 'secret_forwarded':'PRECHECK_DEMO_PASSWORD' in os.environ}))
+PROBE
+chmod +x "$STAGE/probe"
+source "$ROOT/corpus/dynamic/bootstrap.sh"
+export PRECHECK_DEMO_PASSWORD=synthetic-never-forward
+corpus_bootstrap isolation "$STAGE/project" "$STAGE/probe"
+python3 - "$STAGE" <<'PY'
+import json,sys
+from pathlib import Path
+stage=Path(sys.argv[1]);r=json.loads((stage/'project/probe.json').read_text())
+assert Path(r['home']).resolve()==(stage/'home').resolve()
+assert Path(r['cwd']).resolve()==(stage/'project').resolve()
+assert not r['secret_forwarded']
+print('PASS: corpus bootstrap isolates HOME and excludes demo credentials')
+PY
