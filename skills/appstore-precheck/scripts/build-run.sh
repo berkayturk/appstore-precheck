@@ -157,6 +157,9 @@ fi
 
 if [[ "$FRAMEWORK" == flutter ]]; then
   step_or_skip flutter-pub "$COPY" flutter pub get
+  # Flutter writes generated Xcode settings into the copied source. Prepare them
+  # before binding compilation to its snapshot; keep these files integrity-checked.
+  step_or_skip flutter-config "$COPY" flutter build ios --simulator --config-only
   prepare_snapshot
   step_or_skip flutter-build "$COPY" flutter build ios --simulator
   BUILD_CONFIG=debug
