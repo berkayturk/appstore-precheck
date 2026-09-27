@@ -28,4 +28,7 @@ fi
 command -v python3 >/dev/null 2>&1 || {
   echo 'runtime-review: Python 3.8+ is required' >&2; exit 69;
 }
+if [[ "${1:-}" == "--transitions" ]]; then
+  exec python3 "$HERE/lib/dyn-transitions.py" "$@"
+fi
 exec python3 "$HERE/lib/dyn-explore.py" "$@"

@@ -129,6 +129,8 @@ assert_eq "debug" "$(jq -r .build_config "$OUT1/run.json")" "run.json: build_con
 assert_eq "true" "$(jq -r .device.created_by_this_run "$OUT1/run.json")" "run.json: device ownership"
 assert_eq "3" "$(jq -r .launch.pass "$OUT1/run.json")" "run.json: launch tally"
 assert_eq "3" "$(jq -r '.d1_d2_seconds | length' "$OUT1/run.json")" "run.json: D1+D2 durations recorded per repeat"
+assert_eq "3" "$(jq -r '.timing.observation_seconds | length' "$OUT1/run.json")" "run.json: separate pure observation durations recorded"
+assert_eq "true" "$(jq '[range(0;3) as $i | .d1_d2_seconds[$i] >= .timing.observation_seconds[$i]] | all' "$OUT1/run.json")" "legacy duration retains lifecycle overhead"
 assert_contains "$(jq -r .next "$OUT1/run.json")" "--build-config debug" "run.json: the dynamic.sh command carries the config"
 assert_eq "$(grep -c '^DYNAMIC-' "$OUT1/transcript.txt")" "$(grep -c '^DYNAMIC-' <<<"$tx")" "transcript file mirrors stdout"
 
@@ -222,6 +224,26 @@ bash "$RUN" >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "no --app / --udid reje
 bash "$RUN" --udid X >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "--udid without --bundle-id rejected"
 bash "$RUN" --app "$T/nonexistent.app" >/dev/null 2>&1; st=$?; assert_eq "66" "$st" "missing .app is exit 66"
 bash "$RUN" --app "$APP" --framework cordova >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "unknown framework rejected"
+
+section "deadline and cancellation clean the owned simulator"
+reset_calls
+PRECHECK_RUNTIME_DEADLINE_SECONDS=3 bash "$RUN" --app "$APP" --window 60 --out "$T/deadline" > "$T/deadline.txt" 2>/dev/null
+st=$?
+assert_eq "124" "$st" "deadline has an explicit timeout status"
+assert_eq "1" "$(count 'simctl delete')" "deadline runs owned-device cleanup"
+assert_eq "$(cat "$T/deadline/owned-simulators.txt")" "$(cat "$T/deadline/deleted-simulators.txt")" "deadline ownership ledger matches successful deletion"
+kill_fakes
+reset_calls
+bash "$RUN" --app "$APP" --window 60 --out "$T/cancel" > "$T/cancel.txt" 2>/dev/null & runner_pid=$!
+for _ in {1..100}; do
+  [[ -s "$T/cancel/owned-simulators.txt" ]] && grep -q 'simctl launch' "$FAKE_CALLS" && break
+  sleep 0.05
+done
+kill -TERM "$runner_pid"
+wait "$runner_pid"; st=$?
+assert_eq "143" "$st" "cancel has an explicit cancellation status"
+assert_eq "1" "$(count 'simctl delete')" "cancel runs owned-device cleanup"
+kill_fakes
 
 section "the runner never contains a build invocation"
 assert_eq "0" "$(grep -vE '^\s*#' "$RUN" "$S"/lib/dyn-*.sh | grep -E '(^|[;&|] *|\$\()(xcodebuild|flutter build|gradle)' | grep -c . | tr -d ' ')" "no xcodebuild / flutter build / gradle command in the runner or its libs"
