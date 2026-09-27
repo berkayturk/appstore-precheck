@@ -16,8 +16,21 @@ import time
 
 
 def classify(output):
+    # Xcode prints configuration exports and successful task headings even when a
+    # later, unrelated step fails. Neither CodeSignContext nor a TLS certificate
+    # error is evidence of an application signing failure.
+    output = "\n".join(line for line in output.splitlines()
+                       if not re.match(r"^\s*(?:export\s+)?[A-Z][A-Z0-9_]*\\?=", line)
+                       and not re.search(r"\bwarning:", line, re.IGNORECASE))
+    signing = (
+        r"command\s+codesign\s+failed|errSecInternalComponent|"
+        r"(?:error|failed|failure)[^\n]*(?:code[ -]?sign(?:ing)?|provisioning profile|development team|signing certificate)|"
+        r"(?:code[ -]?signing|signing for|provisioning profile|development team)[^\n]*"
+        r"(?:requires|required|not found|missing|expired|doesn't|does not|invalid|failed)|"
+        r"no signing certificate|no profiles for[^\n]*(?:found|available)"
+    )
     patterns = (
-        ("SIGNING", r"(code sign|codesign|provisioning profile|development team|certificate)"),
+        ("SIGNING", signing),
         ("MISSING_POD", r"(no such module|unable to find a specification|pod install|pods/.*not found)"),
         ("MISSING_SDK", r"(sdk .*not found|unable to find a destination|iphoneos.*not found|iphonesimulator.*not found|xcode-select)"),
         ("MISSING_FRAMEWORK", r"(framework .* not found|could not find.*framework|no such module.*shared)"),

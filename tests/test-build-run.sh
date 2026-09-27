@@ -10,6 +10,30 @@ trap 'rm -rf "$TMP"' EXIT
 mkdir -p "$TMP/build-temp"
 export TMPDIR="$TMP/build-temp"
 
+section "failure classification ignores Xcode configuration chatter"
+python3 - "$ROOT" <<'PYTEST'
+import importlib.util, pathlib, sys
+sys.dont_write_bytecode=True
+path=pathlib.Path(sys.argv[1])/'skills/appstore-precheck/scripts/lib/build-exec.py'
+spec=importlib.util.spec_from_file_location('build_exec',path)
+m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+noise='    export CODE_SIGN_CONTEXT_CLASS\\=XCiPhoneSimulatorCodeSignContext\n'
+cases=[
+    (noise+'FAILURE: Build failed with an exception.\nExecution failed for task :shared:compileKotlin.', 'BUILD_FAILED'),
+    ('CodeSign /tmp/Example.app\nFAILURE: Gradle compilation failed.', 'BUILD_FAILED'),
+    ('certificate verify failed while fetching a Maven dependency', 'BUILD_FAILED'),
+    (noise+"ld: warning: framework 'OptionalKit' not found\nUndefined symbols for architecture x86_64", 'BUILD_FAILED'),
+    ('error: Signing for "Example" requires a development team.', 'SIGNING'),
+    ('Command CodeSign failed with a nonzero exit code', 'SIGNING'),
+    ('error: No signing certificate "iOS Distribution" found', 'SIGNING'),
+    ('SDK iphonesimulator not found', 'MISSING_SDK'),
+]
+for sample, expected in cases:
+    actual=m.classify(sample)
+    assert actual==expected, (expected,actual)
+PYTEST
+assert_eq "$?" 0 "environment, warnings and TLS errors are not code-signing failures"
+
 hash_tree() {
   python3 - "$1" <<'PY'
 import hashlib, os, sys
