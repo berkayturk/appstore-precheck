@@ -14,7 +14,7 @@
   ],
   "transitions": {
     "Delete Account": {
-      "flow": "account-deletion",
+      "flow": "deletion",
       "start": "Precheck RN Clean",
       "success": "Account deleted",
       "failure": "Unexpected fixture error"

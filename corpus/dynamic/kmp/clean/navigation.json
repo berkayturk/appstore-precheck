@@ -13,7 +13,7 @@
   ],
   "transitions": {
     "Delete Account": {
-      "flow": "account-deletion",
+      "flow": "deletion",
       "start": "KMP Clean",
       "success": "Account deleted",
       "failure": "Unexpected fixture error"

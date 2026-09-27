@@ -49,3 +49,21 @@ and generated lockfile are temporary. To reproduce an exact third-party build,
 retain the panel's exported `.app` and record the generated template/package
 versions externally. The panel runs app code and may contact package registries;
 it requires explicit invocation.
+
+Each variant's optional `navigation.json` authorizes exact selectors against this
+synthetic local-state fixture only. It does not authorize actions against an app
+being reviewed or a production backend. The runtime's destructive-action filter
+still applies; missing transitions remain gaps. A synthetic “Account deleted” or
+“Restore request completed” label is not backend/receipt evidence.
+
+The panel preserves live observations separately from any later replay. Version 2
+of `panel.json` records targeted-check misses and gaps, mixed launch votes, launch
+false positives, source/runner content hashes, owned simulator cleanup, observed
+seed labels and exported-bundle seed checks. Missing accessibility labels leave a
+seed unverified. Build failures never count as a clean corpus result.
+
+For the historical speed comparison run SwiftUI clean with `--repeats 10 --window 5`.
+`d1_d2_seconds` keeps the previous lifecycle-inclusive definition; the separate
+observation timing cannot satisfy the 60-second gate. Other repeat/window settings
+are reported but do not evaluate that historical gate. No dependency or artifact
+cache is reused by the checked-in panel.

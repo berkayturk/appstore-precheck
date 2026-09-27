@@ -56,6 +56,21 @@ for case in manifest['cases']:
                       for c in data.get('checks', []) if 'check_id' in c}
         except (OSError, ValueError, TypeError):
             pass
+    captured_labels = set()
+    for hierarchy in (d / 'runtime').glob('screen-*.json'):
+        raw = load(hierarchy, {})
+        def collect(value):
+            if isinstance(value, dict):
+                for key, item in value.items():
+                    if key in ('text', 'label', 'accessibilityText') and isinstance(item, str):
+                        captured_labels.add(item)
+                    collect(item)
+            elif isinstance(value, list):
+                for item in value:
+                    collect(item)
+        collect(raw)
+    runtime_seed_matches = {label: (label in captured_labels if captured_labels else None)
+                            for label in case.get('expected_runtime_labels', [])}
     expected_checks = case.get('expected_checks', {})
     observed_checks = {check_id: checks.get(check_id, 'NOT_RUN')
                        for check_id in expected_checks}
@@ -108,12 +123,13 @@ for case in manifest['cases']:
                  'expected_checks': expected_checks, 'observed_checks': observed_checks,
                  'check_matches': check_matches,
                  'expected_bundle': expected_bundle, 'bundle_matches': bundle_matches,
+                 'runtime_seed_matches': runtime_seed_matches,
                  'reason': reason, 'launch_votes': votes, 'mixed': mixed,
                  'false_positive': bool(expected == 'PASS' and observed == 'FINDING' and not mixed),
                  'miss': bool(expected == 'FINDING' and observed == 'PASS' and not mixed),
                  'check_misses': [k for k,v in check_matches.items() if v is False],
                  'check_gaps': [k for k,v in check_matches.items() if v is None],
-                 'integrity': inspection, 'owned_simulator_deleted': owned_deleted,
+                 'integrity': {'path': str(out / 'integrity.json'), 'unchanged': inspection.get('unchanged'), 'before_sha256': inspection.get('before', {}).get('sha256'), 'after_sha256': inspection.get('after', {}).get('sha256')}, 'owned_simulator_deleted': owned_deleted,
                  'timing': timings(run), 'flow_evidence': transitions,
                  'observation_kind': 'live' if state == 'RAN' else 'not_run'})
 (out / 'panel.json').write_text(json.dumps({'schema_version': 2, 'cases': rows, 'summary': {'false_positives': sum(r['false_positive'] for r in rows), 'misses': sum(r['miss'] for r in rows), 'mixed': sum(r['mixed'] for r in rows), 'skip_or_not_run': sum(r['observed_launch'] in ('SKIP','NOT_RUN') for r in rows), 'expected_check_misses': sum(len(r['check_misses']) for r in rows), 'expected_check_gaps': sum(len(r['check_gaps']) for r in rows)}}, indent=2) + '\n')
