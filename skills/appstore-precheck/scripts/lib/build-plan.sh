@@ -15,14 +15,6 @@ build_project() { # root framework -> prints relative .xcworkspace/.xcodeproj or
   printf '%s\n' "${found#"$root"/}"
 }
 
-build_project_flags() { # relative project -> print -workspace/-project + value, or nothing for Package.swift
-  case "$1" in
-    *.xcworkspace) printf '%s\n' '-workspace' "$1" ;;
-    *.xcodeproj) printf '%s\n' '-project' "$1" ;;
-    Package.swift) : ;;
-  esac
-}
-
 build_installer() { # root -> npm|yarn|pnpm; 3 when there is no reproducible lockfile
   if [[ -f "$1/pnpm-lock.yaml" ]]; then echo pnpm
   elif [[ -f "$1/yarn.lock" ]]; then echo yarn
@@ -44,15 +36,20 @@ PY
 }
 
 build_check_symlinks() { # reject links; a build script could otherwise follow one into the source
+  # Every entry is tested for islink BEFORE any name filtering: a link named Pods or
+  # build would otherwise be copied by rsync and written through by pod/flutter/npm.
+  # Only secret-named entries are exempt, because rsync never copies those.
   python3 - "$1" <<'PY'
 import fnmatch, os, sys
-excluded = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData', '.build', '.dart_tool', '__pycache__'}
+excluded = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData', '.build', '.dart_tool', '__pycache__',
+            '.gradle', '.kotlin', '.idea'}
+def secret(name):
+    return (name in ('.appstore-precheck.json', '.env') or name.startswith('.env.')
+            or fnmatch.fnmatch(name, '*asc-key*.json') or name.endswith(('.p8', '.p12', '.mobileprovision')))
 for base, dirs, files in os.walk(sys.argv[1], followlinks=False):
-    dirs[:] = [d for d in dirs if d not in excluded]
     for name in dirs + files:
-        if name in excluded or name == '.appstore-precheck.json' or name == '.env' or name.startswith('.env.') or fnmatch.fnmatch(name, '*asc-key*.json') or name.endswith(('.p8', '.p12', '.mobileprovision')):
-            continue
-        if os.path.islink(os.path.join(base, name)):
+        if not secret(name) and os.path.islink(os.path.join(base, name)):
             sys.exit(3)
+    dirs[:] = [d for d in dirs if d not in excluded and not secret(d)]
 PY
 }

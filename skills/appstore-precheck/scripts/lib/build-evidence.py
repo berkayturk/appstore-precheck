@@ -37,9 +37,12 @@ def artifact_manifest(root):
     return entries, stable
 
 
-def finish(repo, copy, evidence, status, app, configuration):
+def finish(repo, copy, evidence, status, app, configuration, interrupted=False):
     comparisons = {}
     for label, root in (('source', repo), ('copy', copy)):
+        if interrupted:
+            comparisons[label] = {'unchanged': False, 'reason': 'build interrupted before integrity verification'}
+            continue
         before_path = evidence / (label + '-before.json')
         if not before_path.exists():
             comparisons[label] = {'unchanged': False, 'reason': 'initial snapshot missing'}
@@ -107,8 +110,9 @@ def main():
     parser.add_argument('--status', type=int, required=True)
     parser.add_argument('--app', default='')
     parser.add_argument('--configuration', default='unknown')
+    parser.add_argument('--interrupted', action='store_true', help='skip tree hashing; the run was cancelled')
     args = parser.parse_args()
-    return finish(args.repo, args.copy, args.evidence, args.status, args.app, args.configuration)
+    return finish(args.repo, args.copy, args.evidence, args.status, args.app, args.configuration, args.interrupted)
 
 
 if __name__ == '__main__':
