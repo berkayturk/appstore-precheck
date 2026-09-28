@@ -32,10 +32,33 @@ INVENTORY = ("runtime", "screen-inventory.json")
 DYNAMIC = re.compile(r"^DYNAMIC-(PASS|FINDING|SKIP): \S+ \[([^]]+)\] — (.*)$")
 
 
-def run(command, timeout):
+class Budget(float):
+    """Outer wall-clock cap in seconds that also carries the TERM->KILL grace period
+    and any extra environment for the child. It is a plain float everywhere a timeout
+    is expected, so the two-argument ``run(command, timeout)`` seam stays stable."""
+
+    def __new__(cls, seconds, grace=_process.DEFAULT_GRACE, env=None):
+        value = super().__new__(cls, seconds)
+        value.grace = grace
+        value.env = dict(env or {})
+        return value
+
+
+# The inner deadline (build-run.sh --deadline / PRECHECK_RUNTIME_DEADLINE_SECONDS)
+# always fires first and cleans up; the outer cap only waits out its grace period.
+BUILD_DEADLINE = 2400
+BUILD_BUDGET = Budget(2700, grace=240)
+RUNTIME_DEADLINE = 1200
+RUNTIME_BUDGET = Budget(1380, grace=180, env={"PRECHECK_RUNTIME_DEADLINE_SECONDS": str(RUNTIME_DEADLINE)})
+
+
+def run(command, timeout, grace=None, env=None):
+    grace = getattr(timeout, "grace", _process.DEFAULT_GRACE) if grace is None else grace
+    extra = dict(getattr(timeout, "env", {}), **(env or {}))
+    kwargs = {"env": dict(os.environ, **extra)} if extra else {}
     try:
-        return _process.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                            text=True, timeout=timeout)
+        return _process.run(command, grace=grace, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            text=True, timeout=timeout, **kwargs)
     except InterruptedError:
         raise
     except (OSError, subprocess.TimeoutExpired):
@@ -206,10 +229,10 @@ def main():
 
     if args.build:
         cmd = ["bash", str(HERE / "build-run.sh"), "--repo", str(repo),
-               "--out", str(out / "artifact")]
+               "--out", str(out / "artifact"), "--deadline", str(BUILD_DEADLINE)]
         if args.dry_run:
             cmd.append("--dry-run")
-        process = run(cmd, 1250)
+        process = run(cmd, BUILD_BUDGET)
         if process is None:
             tiers["build"] = "SKIP: tool or deadline unavailable"
         elif process.returncode == 0:
@@ -246,7 +269,7 @@ def main():
             cmd.append("--dynamic-blocking")
         if args.demo_login:
             cmd.append("--demo-login")
-        process = run(cmd, 900)
+        process = run(cmd, RUNTIME_BUDGET)
         if process is None:
             tiers["runtime"] = "SKIP: simulator driver or deadline unavailable"
         else:

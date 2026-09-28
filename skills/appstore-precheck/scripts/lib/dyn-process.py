@@ -7,13 +7,17 @@ import subprocess
 import sys
 
 
-def stop(proc):
+DEFAULT_GRACE = 15
+
+
+def stop(proc, grace=DEFAULT_GRACE):
+    """TERM the whole group, wait ``grace`` seconds for cleanup, then KILL it."""
     try:
         os.killpg(proc.pid, signal.SIGTERM)
     except ProcessLookupError:
         return
     try:
-        proc.wait(timeout=15)
+        proc.wait(timeout=grace)
     except subprocess.TimeoutExpired:
         pass
     # The group leader may exit while its child ignores TERM.
@@ -24,7 +28,7 @@ def stop(proc):
     proc.wait()
 
 
-def run(argv, timeout, **kwargs):
+def run(argv, timeout, grace=DEFAULT_GRACE, **kwargs):
     proc = subprocess.Popen(argv, start_new_session=True, **kwargs)
     previous = {}
     def cancelled(signum, _frame):
@@ -38,7 +42,7 @@ def run(argv, timeout, **kwargs):
         # Do not let a second cancellation interrupt artifact/device cleanup.
         for sig in previous:
             signal.signal(sig, signal.SIG_IGN)
-        stop(proc)
+        stop(proc, grace)
         raise
     finally:
         for sig, handler in previous.items():
@@ -48,13 +52,15 @@ def run(argv, timeout, **kwargs):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--timeout', type=float, required=True)
+    parser.add_argument('--grace', type=float, default=DEFAULT_GRACE,
+                        help='seconds between TERM and KILL when the deadline expires')
     parser.add_argument('command', nargs=argparse.REMAINDER)
     args = parser.parse_args()
     argv = args.command[1:] if args.command[:1] == ['--'] else args.command
-    if args.timeout <= 0 or not argv:
-        parser.error('positive deadline and command required')
+    if args.timeout <= 0 or args.grace <= 0 or not argv:
+        parser.error('positive deadline, grace and command required')
     try:
-        return run(argv, args.timeout).returncode
+        return run(argv, args.timeout, args.grace).returncode
     except subprocess.TimeoutExpired:
         return 124
     except InterruptedError:

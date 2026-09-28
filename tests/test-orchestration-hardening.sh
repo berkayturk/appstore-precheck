@@ -297,4 +297,46 @@ assert not missing, 'listed verifier modules do not exist: ' + ', '.join(missing
 assert len(verifiers.extension_modules()) == len(verifiers.MODULES)
 print('verifier modules: OK')
 PY
+echo '== tier deadlines nest inside outer caps with a TERM grace =='
+py "$SCRIPTS" <<'PY'
+import contextlib, importlib.util, io, json, os, subprocess, sys, tempfile, time, types
+from pathlib import Path
+from unittest import mock
+scripts = Path(sys.argv[1])
+def load(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); return module
+runner = load('runner', scripts / 'opt-in-review.py')
+process = load('dyn_process', scripts / 'lib/dyn-process.py')
+calls = []
+state = {}
+def fake(argv, timeout, grace=15, **kwargs):
+    calls.append({'argv': argv, 'timeout': float(timeout), 'grace': grace, 'env': kwargs.get('env')})
+    if argv[1].endswith('build-run.sh'):
+        return types.SimpleNamespace(returncode=0, stdout='app_path=' + state['app'] + '\n', stderr='')
+    return types.SimpleNamespace(returncode=0, stdout=json.dumps({'checks': [], 'results': []}), stderr='')
+with tempfile.TemporaryDirectory() as d:
+    root = Path(d); repo = root / 'source'; repo.mkdir(); app = root / 'Sample.app'; app.mkdir()
+    state['app'] = str(app)
+    argv = ['runner', '--repo', str(repo), '--out-dir', str(root / 'report'), '--build']
+    with mock.patch.object(runner._process, 'run', fake), mock.patch.object(sys, 'argv', argv), \
+         contextlib.redirect_stdout(io.StringIO()):
+        assert runner.main() == 0
+build = next(c for c in calls if c['argv'][1].endswith('build-run.sh'))
+assert build['argv'][build['argv'].index('--deadline') + 1] == '2400', build
+assert build['timeout'] == 2700 and build['grace'] == 240, build
+runtime = next(c for c in calls if c['argv'][1].endswith('dynamic-run.sh'))
+assert runtime['env']['PRECHECK_RUNTIME_DEADLINE_SECONDS'] == '1200', runtime
+assert runtime['timeout'] == 1380 and runtime['grace'] == 180, runtime
+assert all(c['grace'] == 15 for c in calls if c is not build and c is not runtime)
+# The real driver honours a short grace: a TERM-ignoring child is killed after ~grace, not 15s.
+started = time.time()
+try:
+    process.run(['sh', '-c', 'trap "" TERM; sleep 30'], timeout=0.2, grace=1)
+    raise AssertionError('deadline did not expire')
+except subprocess.TimeoutExpired:
+    pass
+assert time.time() - started < 8, 'grace parameter ignored'
+print('deadlines 2400/1200 inside caps 2700/1380 with 240/180 grace: OK')
+PY
 exit "$fails"
