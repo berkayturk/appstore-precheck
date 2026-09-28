@@ -109,6 +109,10 @@ local presence cannot repair a failed remote request. Missing live credentials m
 A condition may add `required_positive_evidence_kinds`, a unique subset of its
 accepted evidence kinds. A PASS proof must actually cite substantive evidence of
 every mandatory kind. An uncited document elsewhere in the manifest is insufficient.
+`required_positive_evidence_groups` preserves qualifying alternatives: cite at least
+one kind from each nonempty group, in addition to every mandatory kind. For example,
+an eligible institutional authorization or regulatory approval can establish the
+qualification route for a dose calculator; a method inventory alone cannot.
 The rule applies to automatic and reviewed positives. It does not require someone
 to supply a missing license or approval before proving a FINDING. Accepted kinds
 otherwise remain alternatives, subject to the complete criterion and review scope.

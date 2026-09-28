@@ -65,6 +65,9 @@ observed, inferred and attested notes separately from verified results, includin
 scope-incomplete observations. Where a positive decision needs an actual approval,
 license or consent record, generic feature inventory and reviewer authority cannot
 replace that document. The packet never supplies a reviewer signature or owner approval.
+When the rule permits alternative qualifying documents, one kind from each required
+group satisfies that documentary prerequisite; the full criterion still needs review.
+An inventory alone cannot substitute for required authorization.
 
 ```sh
 node bin/cli.js review-packet --source-root /path/to/read-only-app \

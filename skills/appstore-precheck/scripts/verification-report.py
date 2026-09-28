@@ -126,7 +126,13 @@ def fallback(item):
                             'review_requirement': 'Independent criterion-specific evidence review'}]}
 
 
-def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, source_ids=None, allowed_kinds=None, required_kinds=None):
+def positive_evidence_sufficient(kinds, required_kinds=None, required_groups=None):
+    available = set(kinds)
+    return (set(required_kinds or []) <= available and
+            all(available.intersection(group) for group in (required_groups or [])))
+
+
+def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, source_ids=None, allowed_kinds=None, required_kinds=None, required_groups=None):
     """Review is explicit provenance, never inferred from a yes answer or file presence.
 
     Human authority documents remain supplied evidence, not cryptographic proof of
@@ -153,7 +159,8 @@ def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, 
             continue
         if allowed_kinds and not any(index[i]['kind'] in allowed_kinds for i in substantive):
             continue
-        if outcome == 'PASS' and not set(required_kinds or []) <= {index[i]['kind'] for i in substantive}:
+        if outcome == 'PASS' and not positive_evidence_sufficient(
+                (index[i]['kind'] for i in substantive), required_kinds, required_groups):
             continue
         observed = set()
         for observation in observations:
@@ -192,7 +199,8 @@ def evaluate_condition(condition, claims, index, profile, item, errors):
     result = {'condition_id': condition['id'], 'description': condition['description'],
               'status': 'UNKNOWN', 'mode': None, 'evidence_ids': [], 'reasons': [],
               'limitations': [], 'review_requirement': condition.get('review_requirement'),
-              'required_positive_evidence_kinds': condition.get('required_positive_evidence_kinds', [])}
+              'required_positive_evidence_kinds': condition.get('required_positive_evidence_kinds', []),
+              'required_positive_evidence_groups': condition.get('required_positive_evidence_groups', [])}
     outcomes = []
     claims = list(claims)
     # Evidence cannot be concealed by omitting its decision row or claiming PASS.
@@ -221,7 +229,8 @@ def evaluate_condition(condition, claims, index, profile, item, errors):
         if claim['mode'] == 'reviewed':
             proof = review_proof(ids, index, profile, item['id'], condition['id'], claim['status'], claim.get('reviewer'),
                                  allowed_kinds=condition.get('evidence_kinds'),
-                                 required_kinds=condition.get('required_positive_evidence_kinds'))
+                                 required_kinds=condition.get('required_positive_evidence_kinds'),
+                                 required_groups=condition.get('required_positive_evidence_groups'))
             if proof and substantive_rationale(claim.get('rationale')):
                 outcomes.append((claim['status'], 'reviewed', proof['evidence_ids']))
                 result['limitations'].append(proof['limitation'])
@@ -247,7 +256,9 @@ def evaluate_condition(condition, claims, index, profile, item, errors):
         supported = evaluated.get('evidence_ids', [])
         if (actual in ('PASS', 'FINDING') and capabilities[verifier].get(direction) is True and
                 verifier in condition.get(policy_key, []) and strings(supported) and set(supported) <= set(ids)):
-            if actual == 'PASS' and not set(condition.get('required_positive_evidence_kinds', [])) <= {index[i]['kind'] for i in supported}:
+            if actual == 'PASS' and not positive_evidence_sufficient(
+                    (index[i]['kind'] for i in supported), condition.get('required_positive_evidence_kinds'),
+                    condition.get('required_positive_evidence_groups')):
                 result['reasons'].append('Required positive evidence kinds are missing')
                 continue
             outcomes.append((actual, 'automatic', supported))

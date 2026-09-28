@@ -1072,7 +1072,13 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Establish the actual institutional source and authority: drug manufacturer, hospital, university, health insurer, pharmacy or another approved entity; alternatively verify applicable FDA or counterpart approval. Match documentation to the app, dose logic, indication and territory. A copied institutional logo, cited paper or developer profession does not prove institutional supply or regulatory approval."
+          "review_requirement": "Establish the actual institutional source and authority: drug manufacturer, hospital, university, health insurer, pharmacy or another approved entity; alternatively verify applicable FDA or counterpart approval. Match documentation to the app, dose logic, indication and territory. A copied institutional logo, cited paper or developer profession does not prove institutional supply or regulatory approval.",
+          "required_positive_evidence_groups": [
+            [
+              "institutional-authorization",
+              "regulatory-approval"
+            ]
+          ]
         }
       ]
     },
@@ -1468,7 +1474,13 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Verify the manifest and signature over actual issued pass bytes, certificate chain, validity and pass/team identifiers for each pass type. A certificate filename or unsigned pass template is insufficient."
+          "review_requirement": "Verify the manifest and signature over actual issued pass bytes, certificate chain, validity and pass/team identifiers for each pass type. A certificate filename or unsigned pass template is insufficient.",
+          "required_positive_evidence_groups": [
+            [
+              "issued-pass-artifact",
+              "pass-signature-verification"
+            ]
+          ]
         },
         {
           "id": "brand-certificate-assignment",
@@ -1480,7 +1492,13 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Match the signing identity and dedicated certificate to authenticated brand/trademark ownership and the issuing organization. A cryptographically valid signature alone cannot prove brand ownership or assignment; unresolved authority remains open."
+          "review_requirement": "Match the signing identity and dedicated certificate to authenticated brand/trademark ownership and the issuing organization. A cryptographically valid signature alone cannot prove brand ownership or assignment; unresolved authority remains open.",
+          "required_positive_evidence_groups": [
+            [
+              "certificate-assignment-record",
+              "issuer-authorization"
+            ]
+          ]
         }
       ]
     },

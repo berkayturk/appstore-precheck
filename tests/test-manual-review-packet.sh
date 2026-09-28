@@ -46,6 +46,14 @@ with tempfile.TemporaryDirectory() as temp:
     assert b['requests'][0]['reviewer'] is None
     assert 'Required for PASS: content-inventory' in m.markdown(p, b)
     assert condition['review_requirement'] in m.markdown(p, b)
+    alternatives = copy.deepcopy(policies)
+    alternatives['one']['conditions'][0]['required_positive_evidence_groups'] = [['content-inventory', 'content-review']]
+    grouped_packet, grouped_backlog = packet(ps=alternatives)
+    request = next(r for r in grouped_backlog['requests'][0]['requirements'] if r['obligation_id']=='one' and r['condition_id']=='inventory')
+    assert request['required_positive_evidence_groups'] == [['content-inventory', 'content-review']]
+    alternative_index = next(r for r in grouped_backlog['shared_evidence'] if r['kind']=='content-review')['mandatory_positive_alternatives']
+    assert alternative_index == [{'obligation_id':'one','condition_id':'inventory','one_of':['content-inventory','content-review']}]
+    assert 'content-inventory or content-review' in m.markdown(grouped_packet, grouped_backlog)
     assert all(c['result']['status'] == 'UNKNOWN' for r in p['obligations'] for c in r['conditions'])
     cfg = {'attestations': {'one': {'answer': 'yes', 'evidence': 'owner says yes', 'answered_on': today}}}
     p, b = packet(cfg=cfg)

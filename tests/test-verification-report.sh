@@ -84,6 +84,17 @@ with tempfile.TemporaryDirectory() as td:
  add('review-a-approved','review-record',with_doc)
  approved=copy.deepcopy(good);approved['conditions'][0]['evidence_ids']=['review-a-approved']
  assert status(report([approved],ps=mandatory))=='VERIFIED_PASS'
+ alternatives=copy.deepcopy(ps);alternatives['req-one']['conditions'][0]['evidence_kinds']+=['approval-document','institution-document'];alternatives['req-one']['conditions'][0]['required_positive_evidence_groups']=[['approval-document','institution-document']]
+ assert status(report([good],ps=alternatives))=='UNRESOLVED', 'inventory cannot replace either qualifying approval route'
+ assert status(report([approved],ps=alternatives))=='VERIFIED_PASS', 'one sufficient approval route must remain usable'
+ add('institution-document','institution-document',{'description':'Synthetic institutional qualification'})
+ alternative_doc=review_record('a','PASS');alternative_doc['evidence_ids'].append('institution-document');alternative_doc['observations'].append({'evidence_id':'institution-document','location':'description','observation':'Synthetic institution qualification inspected'})
+ add('review-a-institution','review-record',alternative_doc);alternative_claim=copy.deepcopy(good);alternative_claim['conditions'][0]['evidence_ids']=['review-a-institution']
+ assert status(report([alternative_claim],ps=alternatives))=='VERIFIED_PASS'
+ two_groups=copy.deepcopy(alternatives);two_groups['req-one']['conditions'][0]['required_positive_evidence_groups'].append(['approval-document'])
+ assert status(report([alternative_claim],ps=two_groups))=='UNRESOLVED', 'each independent evidence group is necessary'
+ finding_doc=review_record('a','FINDING');add('review-a-missing-approval','review-record',finding_doc);negative=copy.deepcopy(good);negative['conditions'][0].update(status='FINDING',evidence_ids=['review-a-missing-approval'])
+ assert status(report([negative],ps=alternatives))=='VERIFIED_FINDING', 'missing approval document must not prevent proof of a violation'
  unproven=copy.deepcopy(good);unproven['applicability']={'status':'APPLICABLE'}
  assert status(report([unproven],ps=ps))=='UNRESOLVED', 'applicability needs evidence too'
  assert report([good],ps=ps)['summary']['reviewed_decisions']==1

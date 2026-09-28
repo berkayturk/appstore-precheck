@@ -1167,7 +1167,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Map every depicted asset, brand, person and third-party material in icons/screenshots/previews to documented ownership, licenses or permissions covering distribution; confirm authority and scope with the rights owner. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+          "review_requirement": "Map every depicted asset, brand, person and third-party material in icons/screenshots/previews to documented ownership, licenses or permissions covering distribution; confirm authority and scope with the rights owner. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence.",
+          "required_positive_evidence_kinds": [
+            "rights-record"
+          ]
         }
       ]
     },
@@ -3130,7 +3133,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Inventory every non-Apple Matter component, version and running platform, then inspect CSA certificates covering those exact combinations; a vendor assertion or unrelated certificate does not close a gap. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+          "review_requirement": "Inventory every non-Apple Matter component, version and running platform, then inspect CSA certificates covering those exact combinations; a vendor assertion or unrelated certificate does not close a gap. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence.",
+          "required_positive_evidence_kinds": [
+            "certification-record"
+          ]
         }
       ]
     },

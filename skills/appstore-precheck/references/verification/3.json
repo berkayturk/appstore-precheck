@@ -1052,7 +1052,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Inspect authenticated prior Apple approval that covers the carrier, app, music/video subscription and new mobile data plan bundle. Match the approved scope with the actual bundle and sale date; a pending request or generic developer agreement is not approval. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Inspect authenticated prior Apple approval that covers the carrier, app, music/video subscription and new mobile data plan bundle. Match the approved scope with the actual bundle and sale date; a pending request or generic developer agreement is not approval. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "apple-bundle-approval"
+          ]
         }
       ]
     },
@@ -1079,7 +1082,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Authenticate prior approval for the exact carrier and bundle. Obtain prior Apple approval for the particular non-music/video carrier bundle with a new data plan and match its scope to the shipped offering. Independently demonstrate a usable in-app purchase option for customers, with product and transaction evidence; approval alone does not satisfy the IAP requirement. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Authenticate prior approval for the exact carrier and bundle. Obtain prior Apple approval for the particular non-music/video carrier bundle with a new data plan and match its scope to the shipped offering. Independently demonstrate a usable in-app purchase option for customers, with product and transaction evidence; approval alone does not satisfy the IAP requirement. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "apple-bundle-approval"
+          ]
         },
         {
           "id": "carrier-iap-availability",
@@ -1834,7 +1840,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Authenticate exchange identity and approval. Verify approval for each exchange used, identify the legal operator, and authenticate its current permissions in every country/region served. Compare licenses and product scope with distribution and actual service gating; device locale and a license in one country are insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Authenticate exchange identity and approval. Verify approval for each exchange used, identify the legal operator, and authenticate its current permissions in every country/region served. Compare licenses and product scope with distribution and actual service gating; device locale and a license in one country are insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
         },
         {
           "id": "exchange-local-permissions",
@@ -1848,7 +1857,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Match permission scope, dates and entity with service availability. Verify approval for each exchange used, identify the legal operator, and authenticate its current permissions in every country/region served. Compare licenses and product scope with distribution and actual service gating; device locale and a license in one country are insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Match permission scope, dates and entity with service availability. Verify approval for each exchange used, identify the legal operator, and authenticate its current permissions in every country/region served. Compare licenses and product scope with distribution and actual service gating; device locale and a license in one country are insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
         }
       ]
     },
@@ -2166,7 +2178,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Authenticate nonprofit approval for the organization using the in-app fundraising allowance and match its legal identity to the donation beneficiary. Tax-exempt status alone is not proof of the required approval; third-party hosting does not remove beneficiary approval requirements. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Authenticate nonprofit approval for the organization using the in-app fundraising allowance and match its legal identity to the donation beneficiary. Tax-exempt status alone is not proof of the required approval; third-party hosting does not remove beneficiary approval requirements. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "nonprofit-approval"
+          ]
         }
       ]
     },
@@ -2350,7 +2365,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Reconcile the complete active beneficiary directory, including remote additions, with authenticated approval records for every listed nonprofit. Inspect onboarding/removal controls and expired approvals; one approved platform operator does not establish beneficiary eligibility. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Reconcile the complete active beneficiary directory, including remote additions, with authenticated approval records for every listed nonprofit. Inspect onboarding/removal controls and expired approvals; one approved platform operator does not establish beneficiary eligibility. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "nonprofit-approval"
+          ]
         }
       ]
     },
@@ -2458,7 +2476,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Authenticate the operating institution's current licenses/permissions for each offered service and territory. Reconcile approved instruments and customer eligibility with App Store availability and backend restrictions; an unrestricted global release cannot be cleared by a single domestic license. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Authenticate the operating institution's current licenses/permissions for each offered service and territory. Reconcile approved instruments and customer eligibility with App Store availability and backend restrictions; an unrestricted global release cannot be cleared by a single domestic license. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
         }
       ]
     },
@@ -2485,7 +2506,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Match the submitting developer's legal identity to the financial institution actually performing trading, investing or money management. Review service contracts and operational responsibility; a white-label developer or referral agreement alone does not establish that identity. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Match the submitting developer's legal identity to the financial institution actually performing trading, investing or money management. Review service contracts and operational responsibility; a white-label developer or referral agreement alone does not establish that identity. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "institution-identity"
+          ]
         }
       ]
     },
@@ -2746,7 +2770,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Authenticate licenses for CFD, forex and other derivative services in every jurisdiction where the service is actually offered. Match entity, instrument, validity and availability controls; a cryptocurrency license or single-territory approval is not automatically sufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+          "review_requirement": "Authenticate licenses for CFD, forex and other derivative services in every jurisdiction where the service is actually offered. Match entity, instrument, validity and availability controls; a cryptocurrency license or single-territory approval is not automatically sufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
         }
       ]
     },
