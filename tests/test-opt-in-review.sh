@@ -126,3 +126,4 @@ assert checks['dyn-account-deletion']['status'] == 'REVIEW_REQUIRED'
 assert engine.validate_run_results({'checks': {'dyn-launch': {'status': 'NEEDS_REVIEW', 'reason': 'alias'}}}, registry)['dyn-launch']['status'] == 'REVIEW_REQUIRED'
 print('dynamic subcheck aggregation and registry validation: OK')
 PY
+bash "$ROOT/tests/test-orchestration-hardening.sh"

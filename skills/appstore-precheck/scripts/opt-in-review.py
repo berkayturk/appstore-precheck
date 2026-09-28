@@ -4,7 +4,9 @@
 import argparse
 import importlib.util
 import json
+import os
 import re
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -18,6 +20,12 @@ ARTIFACT_IDS = (
     "artifact-url-schemes", "artifact-ats", "artifact-sdk",
     "artifact-embedded-sdk", "artifact-executable-loading", "artifact-debug",
 )
+# Fixed-name files this runner (re)writes inside --out-dir. A reused report directory
+# may hold last run's copies; they are removed first so nothing stale can be imported
+# or reported as this run's evidence. Only these names are ever touched.
+OWN_OUTPUTS = ("summary.json", "run-results.json", "artifact-review.json", "metadata-review.json") + \
+    tuple("section{}.json".format(n) for n in range(1, 7))
+INVENTORY = ("runtime", "screen-inventory.json")
 DYNAMIC = re.compile(r"^DYNAMIC-(PASS|FINDING|SKIP): \S+ \[([^]]+)\] — (.*)$")
 
 
@@ -29,6 +37,20 @@ def run(command, timeout):
         raise
     except (OSError, subprocess.TimeoutExpired):
         return None
+
+
+def remove_stale_outputs(out):
+    """Unlink (never follow) this runner's own previous outputs; leave everything else."""
+    paths = [out / name for name in OWN_OUTPUTS]
+    if not (out / INVENTORY[0]).is_symlink():
+        paths.append(out.joinpath(*INVENTORY))
+    for path in paths:
+        try:
+            mode = os.lstat(str(path)).st_mode
+        except (FileNotFoundError, NotADirectoryError):
+            continue
+        if not stat.S_ISDIR(mode):
+            os.unlink(str(path))
 
 
 def skip_reason(process, fallback):
@@ -134,6 +156,7 @@ def main():
     if out == repo or repo in out.parents:
         parser.error("--out-dir must be outside the user project")
     out.mkdir(parents=True, exist_ok=True)
+    remove_stale_outputs(out)
     checks, tiers, blocking, input_errors = {}, {}, [], []
     app = args.app.resolve() if args.app else None
 
@@ -206,8 +229,9 @@ def main():
             for line in process.stdout.splitlines():
                 if line.startswith("FAIL: ") and args.dynamic_blocking:
                     blocking.append(line)
-            inventory = out / "runtime" / "screen-inventory.json"
-            if inventory.is_file():
+            inventory = out.joinpath(*INVENTORY)
+            # Anything here was written by this run: stale copies were removed at startup.
+            if inventory.is_file() and not inventory.is_symlink() and not inventory.parent.is_symlink():
                 try:
                     input_errors.extend(import_records(checks, json.loads(inventory.read_text()).get("checks", []), str(inventory)))
                 except (OSError, ValueError, TypeError):
