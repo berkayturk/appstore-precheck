@@ -34,8 +34,10 @@ The three output files are:
   Provide a reusable document once and identify the relevant locations for each
   mapped condition. Kinds are permitted alternatives subject to the complete review
   requirement; the index is not a demand to supply every alternative. Policies may
-  additionally specify `required_evidence_kinds`; these are mandatory and appear
-  separately in requests and in the shared index's `mandatory_for` mappings.
+  additionally specify `required_positive_evidence_kinds`; these are necessary for a positive PASS decision and appear
+  separately in requests and in the shared index's `mandatory_positive_for` mappings.
+  They do not require a missing license/approval to be supplied before a violation
+  can be established, and their presence does not guarantee authenticity.
 - `manual-review-packet.md`: the grouped questions and evidence requirements for
   reviewers. The JSON remains the complete condition/result record.
 

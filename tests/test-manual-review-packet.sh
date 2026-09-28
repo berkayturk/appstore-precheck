@@ -22,7 +22,7 @@ items = [{'id': 'one', 'kind': 'obligation', 'criterion': 'Inspect full content 
          {'id': 'two', 'kind': 'obligation', 'criterion': 'Verify contextual moderation.', 'section': '1', 'routes': [{'route': 'attestation'}, {'route': 'semantic'}], 'exceptions': []},
          {'id': 'context', 'kind': 'informational'}]
 catalog = {'obligations': items}
-condition = {'id': 'inventory', 'description': 'Inspect every offered content category.', 'review_requirement': 'Inspect locales, remote content and ongoing controls.', 'evidence_kinds': ['content-inventory', 'content-review'], 'required_evidence_kinds': ['content-inventory'], 'full_positive_verifiers': [], 'decisive_finding_verifiers': []}
+condition = {'id': 'inventory', 'description': 'Inspect every offered content category.', 'review_requirement': 'Inspect locales, remote content and ongoing controls.', 'evidence_kinds': ['content-inventory', 'content-review'], 'required_positive_evidence_kinds': ['content-inventory'], 'full_positive_verifiers': [], 'decisive_finding_verifiers': []}
 policies = {r['id']: {'obligation_id': r['id'], 'owner': 'content owner', 'document_group': 'content', 'applicability_evidence': ['feature-inventory'], 'conditions': [copy.deepcopy(condition)]} for r in items[:2]}
 empty_evidence = {'schema_version': 1, 'evidence': []}
 empty_decisions = {'schema_version': 1, 'decisions': []}
@@ -40,11 +40,11 @@ with tempfile.TemporaryDirectory() as temp:
     assert len(b['requests']) == 1 and set(b['requests'][0]['obligation_ids']) == {'one', 'two'}
     assert len(b['requests'][0]['requirements']) == 4
     assert len(b['shared_evidence']) == 3
-    assert next(r for r in b['shared_evidence'] if r['kind'] == 'content-inventory')['mandatory_for'] == [{'obligation_id': i, 'condition_id': 'inventory'} for i in ('one', 'two')]
-    assert p['obligations'][0]['conditions'][0]['required_evidence_kinds'] == ['content-inventory']
+    assert next(r for r in b['shared_evidence'] if r['kind'] == 'content-inventory')['mandatory_positive_for'] == [{'obligation_id': i, 'condition_id': 'inventory'} for i in ('one', 'two')]
+    assert p['obligations'][0]['conditions'][0]['required_positive_evidence_kinds'] == ['content-inventory']
     assert all(len(r['requirements']) == 2 for r in b['shared_evidence'])
     assert b['requests'][0]['reviewer'] is None
-    assert 'Required kinds: content-inventory' in m.markdown(p, b)
+    assert 'Required for PASS: content-inventory' in m.markdown(p, b)
     assert condition['review_requirement'] in m.markdown(p, b)
     assert all(c['result']['status'] == 'UNKNOWN' for r in p['obligations'] for c in r['conditions'])
     cfg = {'attestations': {'one': {'answer': 'yes', 'evidence': 'owner says yes', 'answered_on': today}}}

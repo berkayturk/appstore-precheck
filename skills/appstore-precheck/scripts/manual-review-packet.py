@@ -87,7 +87,7 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
                          'description': 'Establish criterion and exception applicability for this exact scope.',
                          'review_requirement': 'Provide scoped feature, territory and exception evidence; cite the criterion or an explicit related exception. Absence of source keywords is not absence of a feature.',
                          'evidence_kinds': policy['applicability_evidence'],
-                         'required_evidence_kinds': policy.get('applicability_required_evidence_kinds', []),
+                         'required_positive_evidence_kinds': [],
                          'needed': unresolved_app}]
         for condition, evaluated in zip(policy['conditions'], result['conditions']):
             needed = (result['status'] != 'NOT_APPLICABLE_VERIFIED' and
@@ -95,7 +95,7 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
             detail = {'condition_id': condition['id'], 'description': condition['description'],
                       'review_requirement': condition.get('review_requirement'),
                       'evidence_kinds': condition['evidence_kinds'],
-                      'required_evidence_kinds': condition.get('required_evidence_kinds', []),
+                      'required_positive_evidence_kinds': condition.get('required_positive_evidence_kinds', []),
                       'full_positive_verifiers': condition['full_positive_verifiers'],
                       'decisive_finding_verifiers': condition['decisive_finding_verifiers'],
                       'result': evaluated, 'needed': needed}
@@ -118,11 +118,11 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
             request['requirements'].append(dict(ref, description=requirement['description'],
                         required_review=requirement.get('review_requirement'),
                         accepted_evidence_kinds=requirement['evidence_kinds'],
-                        required_evidence_kinds=requirement.get('required_evidence_kinds', [])))
+                        required_positive_evidence_kinds=requirement.get('required_positive_evidence_kinds', [])))
             for kind in sorted(set(requirement['evidence_kinds'])):
-                common = shared.setdefault(kind, {'kind': kind, 'owners': set(), 'request_ids': set(), 'requirements': [], 'mandatory_for': []})
-                if kind in requirement.get('required_evidence_kinds', []):
-                    common['mandatory_for'].append(ref)
+                common = shared.setdefault(kind, {'kind': kind, 'owners': set(), 'request_ids': set(), 'requirements': [], 'mandatory_positive_for': []})
+                if kind in requirement.get('required_positive_evidence_kinds', []):
+                    common['mandatory_positive_for'].append(ref)
                 common['owners'].add(policy['owner'])
                 common['request_ids'].add(request_id)
                 common['requirements'].append(ref)
@@ -168,9 +168,9 @@ def markdown(packet, backlog):
     for request in backlog['requests']:
         lines += ['### ' + request['document_group'], '', 'Owner: ' + request['owner'], '', request['instruction'], '']
         for requirement in request['requirements']:
-            lines += ['- `{}` / `{}`: {} Accepted evidence: {}. Required kinds: {}. Review: {}'.format(
+            lines += ['- `{}` / `{}`: {} Accepted evidence: {}. Required for PASS: {}. Review: {}'.format(
                 requirement['obligation_id'], requirement['condition_id'], requirement['description'],
-                ', '.join(requirement['accepted_evidence_kinds']) or 'policy gap', ', '.join(requirement['required_evidence_kinds']) or 'see criterion review scope', requirement['required_review'])]
+                ', '.join(requirement['accepted_evidence_kinds']) or 'policy gap', ', '.join(requirement['required_positive_evidence_kinds']) or 'see criterion review scope', requirement['required_review'])]
         lines.append('')
     lines += ['## Review provenance', '', backlog['review_authority_request']['content'], '',
               'The JSON packet includes every obligation and all required conditions, evidence IDs, verified results, annotations and gaps. The JSON backlog deduplicates reusable evidence kinds without merging criterion-specific judgments.', '']
