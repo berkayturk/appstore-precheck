@@ -16,7 +16,9 @@ must not enter logs or report metadata. The tier states this before the first la
 `scripts/dynamic.sh`, which turns the transcript into findings, is a pure text transform and
 launches nothing. `scripts/app-discover.sh` only *reads* `~/Library/Developer/Xcode/DerivedData`
 and the repo's build output to list simulator apps you already built; it never builds or
-launches. An explicit `--build` or `dynamic.build: true` setting uses `build-run.sh` to
+launches. An explicit `--build` flag, or a `dynamic.build: true` config setting that the
+invoker trusts with `APPSTORE_PRECHECK_TRUST_CONFIG=1` (the config lives in the scanned
+repo, so on its own it never starts a build; the GitHub Action never trusts it), uses `build-run.sh` to
 copy the project with `rsync` into a temporary directory, excluding Git history,
 dependencies, build output, `.env*`, App Store Connect keys, provisioning profiles,
 and the precheck config. Xcode, package managers, CocoaPods, Flutter, and project build
