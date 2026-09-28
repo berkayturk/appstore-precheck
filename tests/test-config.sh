@@ -122,6 +122,15 @@ assert_contains "$out2" "WARN: 2.3.3 Screenshots — no folder for ru" \
 section "legitimate word containing 'changeme' is not placeholder copy"
 assert_absent   "$out2" "2.1 Metadata content" "French 'changement' does not trip the 2.1 placeholder check"
 
+section "config dynamic.build is never trusted inside the GitHub Action"
+# The Action scans a checkout that may be a fork PR; a repo-supplied config must not
+# be able to opt in to building project code, even if the runner sets the trust env.
+ACTION="$DIR/../action.yml"
+assert_eq "$(grep -cE 'bash "\$scan"' "$ACTION" | tr -d ' ')" "$(grep -cE 'env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "\$scan"' "$ACTION" | tr -d ' ')" \
+  "every action.yml scan.sh invocation clears APPSTORE_PRECHECK_TRUST_CONFIG"
+assert_eq "$(grep -cE 'env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "\$scan"' "$ACTION" | tr -d ' ')" "3" \
+  "scan, SARIF and annotation steps are all covered"
+
 rm -rf "$TMP2"
 echo
 if (( fails == 0 )); then echo "test-config: ALL PASSED"; else echo "test-config: $fails FAILED"; fi

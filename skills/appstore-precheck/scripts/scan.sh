@@ -96,8 +96,19 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   fi
   echo "false"
 }
-if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then OPT_BUILD=1; fi
-if [[ "$(cfg_bool '.dynamic.demoLogin')" == true ]]; then OPT_DEMO=1; fi
+# The config lives in the SCANNED repository, so it must never execute that
+# project's code on its own: dynamic.build is honoured only when the invoker vouches
+# for the config with APPSTORE_PRECHECK_TRUST_CONFIG=1 (or passes --build/--app).
+if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then
+  if [[ "${APPSTORE_PRECHECK_TRUST_CONFIG:-}" == 1 ]]; then
+    OPT_BUILD=1
+  else
+    echo "appstore-precheck: config requests dynamic.build; ignored (pass --build or set APPSTORE_PRECHECK_TRUST_CONFIG=1)" >&2
+  fi
+fi
+# dynamic.demoLogin is only a default for a run that is already active (flags or
+# trusted config) and launches the app; on its own it must never fail a scan.
+if [[ ( "$OPT_BUILD" == 1 || -n "$OPT_APP" ) && "$OPT_NO_RUNTIME" != 1 && "$(cfg_bool '.dynamic.demoLogin')" == true ]]; then OPT_DEMO=1; fi
 if [[ "$OPT_NO_RUNTIME" == 1 && ( "$OPT_DEMO" == 1 || "$OPT_DYN_BLOCK" == 1 ) ]]; then echo "scan.sh: --no-runtime conflicts with --demo-login or --dynamic-blocking" >&2; exit 64; fi
 if [[ "$OPT_DEMO" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --demo-login needs --build or --app" >&2; exit 64; fi
 if [[ "$OPT_DYN_BLOCK" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --dynamic-blocking needs --build or --app" >&2; exit 64; fi
