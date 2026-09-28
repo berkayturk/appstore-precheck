@@ -136,4 +136,44 @@ assert static('PASS', 'PASS')['status'] == 'PASS' and static('SKIP', 'SKIP')['st
 print('aggregation: PASS only when every sibling passed, defects dominate: OK')
 PY
 
+echo '== augment-json never loses the scanner JSON =='
+py "$SCRIPTS" "$tmp" <<'PY'
+import json, subprocess, sys
+from pathlib import Path
+scripts, tmp = Path(sys.argv[1]), Path(sys.argv[2])
+def augment(stdin, *args):
+    return subprocess.run([sys.executable, '-B', str(scripts / 'augment-json.py'), *args], input=stdin,
+                          capture_output=True, text=True)
+envelope = {'tool': 'appstore-precheck', 'version': 'x', 'verdict': 'GREEN', 'summary': {}, 'findings': 5}
+result = augment(json.dumps(envelope))
+assert result.returncode == 0, result.stderr
+out = json.loads(result.stdout)
+assert {k: v for k, v in out.items() if k != 'coverage_errors'} == envelope, out
+assert isinstance(out['coverage_errors'], list) and out['coverage_errors'], out
+envelope['findings'] = []
+(tmp / 'bad-summary.json').write_text('{not json')
+result = augment(json.dumps(envelope), '--opt-summary', str(tmp / 'bad-summary.json'))
+assert result.returncode == 0, result.stderr
+out = json.loads(result.stdout)
+assert out['tool'] == 'appstore-precheck' and out['coverage_errors'], out
+for raw in ('not json at all {', '[1, 2]', '', '"text"'):
+    result = augment(raw)
+    assert result.returncode == 0 and result.stdout == raw, (raw, result.returncode, result.stdout)
+result = augment(json.dumps(envelope))
+assert result.returncode == 0 and 'coverage_errors' not in json.loads(result.stdout)
+print('augment-json failure containment: OK')
+PY
+py "$SCRIPTS" <<'PY'
+import importlib.util, sys
+from pathlib import Path
+spec = importlib.util.spec_from_file_location('augment', Path(sys.argv[1]) / 'augment-json.py')
+augment = importlib.util.module_from_spec(spec); spec.loader.exec_module(augment)
+silent = augment.mark_silent_static({}, {'checks': {'ipv4-literal': {'route': 'static'}}})
+reasons = {v['reason'] for v in silent.values()}
+assert reasons, 'expected at least one silent static rule'
+for reason in reasons:
+    assert 'ran in this scan' not in reason and 'no applicable signal' in reason, reason
+print('silent static reason is not self-contradictory: OK')
+PY
+
 exit "$fails"
