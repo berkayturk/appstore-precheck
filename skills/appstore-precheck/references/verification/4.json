@@ -1,0 +1,2578 @@
+{
+  "schema_version": 1,
+  "section": "4",
+  "obligations": [
+    {
+      "obligation_id": "atom-91ef4a8ef9524e4caba9432c1d056179",
+      "owner": "product and brand owner / design reviewer",
+      "document_group": "originality",
+      "applicability_evidence": [
+        "identity-and-asset-inventory",
+        "comparison-app-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "substantive-originality",
+          "description": "App does not simply copy another popular App Store app.",
+          "evidence_kinds": [
+            "design-provenance",
+            "comparison-review",
+            "runtime-walkthrough"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare core workflows, layouts, content and presentation with identified similar apps and the design provenance. Explain substantive independent choices and inspect the shipped experience; different source code or a renamed project alone does not establish originality."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3efadb4870674cbd9a976c627abb6d95",
+      "owner": "product and brand owner / design reviewer",
+      "document_group": "originality",
+      "applicability_evidence": [
+        "identity-and-asset-inventory",
+        "comparison-app-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "more-than-cosmetic-variation",
+          "description": "App does not present minor name or UI changes to another app as its own original app.",
+          "evidence_kinds": [
+            "design-provenance",
+            "comparison-review",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare original and submitted names, screen structure and interactions side by side. Establish changes beyond superficial naming, colors or UI substitutions; a visual similarity score is only a lead."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-eacb9f7c1602497890620dc60bacd562",
+      "owner": "product and brand owner / design reviewer",
+      "document_group": "originality",
+      "applicability_evidence": [
+        "identity-and-asset-inventory",
+        "comparison-app-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "identity-without-impersonation",
+          "description": "Submitted app does not impersonate another app or service.",
+          "evidence_kinds": [
+            "identity-and-asset-inventory",
+            "runtime-walkthrough",
+            "metadata-snapshot",
+            "brand-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review icon, name, screenshots, onboarding, login destinations and developer identity together for false affiliation with an app or service. Check any claimed relationship against authorized records; a brand term alone cannot establish deception or permission."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ac7d46f547ea4b6b8d278dcc51494420",
+      "owner": "product and brand owner / design reviewer",
+      "document_group": "originality",
+      "applicability_evidence": [
+        "identity-and-asset-inventory",
+        "comparison-app-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "icon-authorization",
+          "description": "App icon does not use another developer’s icon without approval.",
+          "evidence_kinds": [
+            "asset-provenance",
+            "brand-authorization",
+            "shipped-icon-and-name",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace icon artwork to its owner and review the actual shipped and listing variants. If another developer owns the material, validate permission covering this specific use, distribution and current version under exception atom-6a3d01e460344818b802fe7534986bd8. A supplied claim, asset filename or generic trademark notice is insufficient; unresolved authorization remains open."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7226bc48bdc744bda367b8d3cda612ea",
+      "owner": "product and brand owner / design reviewer",
+      "document_group": "originality",
+      "applicability_evidence": [
+        "identity-and-asset-inventory",
+        "comparison-app-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "brand-authorization",
+          "description": "App icon or app name does not use another developer’s brand without approval.",
+          "evidence_kinds": [
+            "asset-provenance",
+            "brand-authorization",
+            "shipped-icon-and-name",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace brand identifiers in the icon or app name to its owner and review the actual shipped and listing variants. If another developer owns the material, validate permission covering this specific use, distribution and current version under exception atom-6a3d01e460344818b802fe7534986bd8. A supplied claim, asset filename or generic trademark notice is insufficient; unresolved authorization remains open."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6b47b98f42ff4f178ff08b3db7131dec",
+      "owner": "product and brand owner / design reviewer",
+      "document_group": "originality",
+      "applicability_evidence": [
+        "identity-and-asset-inventory",
+        "comparison-app-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "product-name-authorization",
+          "description": "App icon or app name does not use another developer’s product name without approval.",
+          "evidence_kinds": [
+            "asset-provenance",
+            "brand-authorization",
+            "shipped-icon-and-name",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace another developer's product name in the icon or app name to its owner and review the actual shipped and listing variants. If another developer owns the material, validate permission covering this specific use, distribution and current version under exception atom-6a3d01e460344818b802fe7534986bd8. A supplied claim, asset filename or generic trademark notice is insufficient; unresolved authorization remains open."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-075db43990d749b081414b9872859dd1",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "app-specific-functionality",
+          "description": "App provides features, content and UI that materially exceed a repackaged website.",
+          "evidence_kinds": [
+            "feature-to-web-comparison",
+            "runtime-walkthrough",
+            "content-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Walk through complete core user tasks and compare them with the related website, including content depth, app interactions and outcomes. Record the substantive added experience. Web-view API counts, native button presence or one attractive screen cannot establish minimum functionality."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fe493a53fc804fd88c068fee756d88b4",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "sustained-user-value",
+          "description": "App offers lasting entertainment value or adequate utility.",
+          "evidence_kinds": [
+            "intended-use-dossier",
+            "runtime-walkthrough",
+            "content-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Evaluate representative complete and repeat-use scenarios for the intended audience. Document practical utility or sustained entertainment, functional limits and content scope; absence of placeholder strings or successful launch does not establish lasting value."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5f4bebf5f0a74666b56a59333a1dded6",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "audio-video-product-classification",
+          "description": "An app that is simply a song or movie is submitted to the iTunes Store rather than App Store.",
+          "evidence_kinds": [
+            "content-inventory",
+            "runtime-walkthrough",
+            "distribution-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Determine whether the entire product is merely one song or movie rather than an app with substantive functionality. Review all offered content and tasks and the selected store channel; an audio/video framework reference does not establish this classification."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-61f625798f274ef2ba5d46a6588e69ba",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "book-guide-product-classification",
+          "description": "An app that is simply a book or game guide is submitted to the Apple Books Store rather than App Store.",
+          "evidence_kinds": [
+            "content-inventory",
+            "runtime-walkthrough",
+            "distribution-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Determine whether the product is merely a book or game guide, and if so verify its intended Apple Books distribution. Inspect the complete experience and content structure; book-related metadata alone is insufficient to classify a useful interactive app."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1868742025354677afbcfe25351860cc",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "integrated-ar-experience",
+          "description": "ARKit app delivers a rich and integrated augmented reality experience.",
+          "evidence_kinds": [
+            "ar-feature-design",
+            "physical-device-observation",
+            "runtime-walkthrough"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify actual ARKit use and demonstrate the supported physical-device AR tasks, interactions and integration into the product. Assess whether the experience exceeds placing a model or replaying an animation; an ARKit import or simulator view cannot establish this."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9066ba7bb29244b3a6d162314cbf2f48",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "primary-content-purpose",
+          "description": "App does not primarily consist of marketing, advertisements, web clippings, content aggregation or links.",
+          "evidence_kinds": [
+            "content-inventory",
+            "runtime-walkthrough",
+            "product-purpose-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the predominant experience across complete user tasks, advertising, links and aggregated material. Establish whether exception atom-d77400e52c724af5b2e79183ae963a8c applies to an actual catalog. Catalog eligibility does not waive the separate minimum-functionality duties; a web-view or link count alone is inconclusive."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cef8a9b87e1b4153814bb9832fa39557",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "standalone-functionality",
+          "description": "App works without installation of another app.",
+          "evidence_kinds": [
+            "dependency-inventory",
+            "fresh-install-runtime-transcript",
+            "feature-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise core tasks on a clean supported device with optional companion apps absent. Distinguish optional handoff from a required installation and verify fallback outcomes; merely detecting a URL scheme cannot establish a mandatory dependency."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4d8625d340b04ca89df9c09e85536ffe",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "initial-resource-size-disclosure",
+          "description": "App discloses the size of additional resources required at initial launch.",
+          "evidence_kinds": [
+            "initial-download-inventory",
+            "fresh-install-runtime-transcript",
+            "transfer-size-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify resources required for first-launch functionality and compare actual transfer requirements to the size displayed before download in each supported configuration. Include localized units and materially variable packages; a byte-count literal without sequence evidence is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-22d8f2ed0bf34f9d9a4cc7f9e0a59516",
+      "owner": "product owner / usability reviewer",
+      "document_group": "minimum-functionality",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "initial-resource-download-prompt",
+          "description": "App prompts the user before downloading those initial resources.",
+          "evidence_kinds": [
+            "initial-download-inventory",
+            "fresh-install-runtime-transcript",
+            "network-event-trace"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record first launch from clean storage through the resource prompt, consent or decline, and network transfer start. Establish that the required download waits for the user prompt and choice; an observed Download button without event ordering cannot prove the condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-571ea61296c44520bcf2d352c6b7258c",
+      "owner": "content provider / submission owner",
+      "document_group": "template-provenance",
+      "applicability_evidence": [
+        "template-provenance",
+        "provider-identity",
+        "submission-record"
+      ],
+      "conditions": [
+        {
+          "id": "content-provider-submission",
+          "description": "A commercial-template app is submitted directly by the content provider.",
+          "evidence_kinds": [
+            "template-provenance",
+            "provider-identity",
+            "submission-record",
+            "binary-client-content-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the legal/developer identity, content provider and selected submission to establish the submitting developer is the actual content provider. For exception atom-4ba39c0360d94a6c8d755907aa61b0c5, verify one binary hosts all client content through an aggregated picker experience rather than separate client submissions. Ownership assertions and a shared code template alone are insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0f3dad5bca96441087dba6280914f3e1",
+      "owner": "content provider / submission owner",
+      "document_group": "template-provenance",
+      "applicability_evidence": [
+        "template-provenance",
+        "provider-identity",
+        "submission-record"
+      ],
+      "conditions": [
+        {
+          "id": "no-template-proxy-submission",
+          "description": "Template service does not submit an app on a client’s behalf.",
+          "evidence_kinds": [
+            "template-provenance",
+            "provider-identity",
+            "submission-record",
+            "binary-client-content-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the legal/developer identity, content provider and selected submission to establish the template service is not submitting separate apps for its clients. For exception atom-4ba39c0360d94a6c8d755907aa61b0c5, verify one binary hosts all client content through an aggregated picker experience rather than separate client submissions. Ownership assertions and a shared code template alone are insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2eafcc549fa34aa49ab5c66ede354584",
+      "owner": "content provider / submission owner",
+      "document_group": "template-provenance",
+      "applicability_evidence": [
+        "template-provenance",
+        "provider-identity",
+        "submission-record"
+      ],
+      "conditions": [
+        {
+          "id": "customizable-distinct-experience",
+          "description": "Template service offers tools for client-customized innovative apps with unique customer experiences.",
+          "evidence_kinds": [
+            "template-tool-capabilities",
+            "client-customization-record",
+            "runtime-walkthrough",
+            "comparison-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the tools offered to clients and demonstrate a customized resulting app with substantive interaction or content differences. A branding-only configuration or template license cannot establish innovative customer experiences."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-43f3fac4df96422cb0464d76837fd9bf",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "user-owned-hosts",
+          "description": "Remote desktop client connects only to a user-owned host.",
+          "evidence_kinds": [
+            "host-ownership-record",
+            "connection-authorization-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect permitted connection targets and ownership evidence for supported configurations. Verify connection controls restrict the service to user-owned hosts; one local demonstration does not establish the full supported host scope. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c1e5a01ecec24a48bae2b840b899cee8",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "eligible-host-device",
+          "description": "The remote host is the customer’s own computer or dedicated console.",
+          "evidence_kinds": [
+            "host-device-inventory",
+            "host-ownership-record",
+            "architecture-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Check that every allowed host is the customer's own personal computer or dedicated console, including hosted and managed deployment variants. A server described as a personal machine requires substantive ownership/device evidence. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ac6b8fbef89e4bc2940be15482483253",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "local-network-connection",
+          "description": "Host and client connect over a local LAN-based network.",
+          "evidence_kinds": [
+            "network-topology",
+            "network-event-trace",
+            "connection-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review connection setup and attempt authorized off-LAN and relay scenarios. Confirm host and client remain on the local LAN; private IP literals alone do not exclude cloud relays or remote connections. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c3f30bf439ab4bf7bab25b1464f43f9a",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "host-side-execution",
+          "description": "Client-visible software and services execute entirely on the host.",
+          "evidence_kinds": [
+            "execution-architecture",
+            "host-client-runtime-trace",
+            "source-and-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace where each visible software/service operation executes, including plugins and hybrid code. Match host-side execution with the client data flow; a video stream does not rule out parallel client execution. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3173324d3c4640f3b4899edbfe4ec07a",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "host-screen-rendering",
+          "description": "Client-visible software and services are rendered on the host screen.",
+          "evidence_kinds": [
+            "host-client-screen-recording",
+            "rendering-architecture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare synchronized host and client captures across offered software to establish rendering on the host screen. A synthetic client UI or stream without corresponding host output does not prove this. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d60945af298c431fae4736243ed83d9b",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "streaming-only-platform-use",
+          "description": "Client does not use platform APIs/features beyond those required to stream the remote desktop.",
+          "evidence_kinds": [
+            "platform-api-inventory",
+            "source-and-artifact-review",
+            "execution-architecture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each client platform API and feature to the technical streaming function. Investigate native integrations used by streamed software; API absence from a narrow static scan does not prove the complete behavior. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fc0cbe63158d4d87b0e15111ccb60c0e",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "host-initiated-accounts",
+          "description": "All account creation and management start on the host device.",
+          "evidence_kinds": [
+            "account-flow-map",
+            "host-client-runtime-trace",
+            "backend-event-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise account creation and every management entry point, including links and web views, and verify initiation occurs on the host. A client sign-in label alone neither proves nor disproves account creation/management behavior. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-485b3d0f67174dfa91c3e38665be0bde",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "streamed-ui-distinction",
+          "description": "The streamed interface avoids mimicking native iOS screens or the App Store.",
+          "evidence_kinds": [
+            "host-client-screen-recording",
+            "design-comparison-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect streamed UI states and navigation against iOS system screens and App Store presentation. Review context and visual identity rather than deciding from words such as Store or Settings. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bb5db11a64c442ed8c7d1c757c6bae6d",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-client-storefront",
+          "description": "Client UI does not provide a store-like interface.",
+          "evidence_kinds": [
+            "client-navigation-inventory",
+            "runtime-walkthrough",
+            "remote-content-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Explore the entire client navigation and remotely supplied interface for storefront browsing and purchase affordances. Distinguish a store-like client UI from transactions inside legitimately mirrored host software. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6dbde25a19fe40f1b5d37e92616b1de1",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "owned-software-scope",
+          "description": "Client UI does not browse, select or purchase software the user does not already own or license.",
+          "evidence_kinds": [
+            "software-license-inventory",
+            "client-navigation-inventory",
+            "runtime-walkthrough",
+            "host-payment-flow"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Test browsing, selection and purchase against owned and unowned software. Validate licensing scope. Exception atom-ce0ef87e6f5c40c6ae24083839137ffc permits transactions processed on the host within mirrored software without IAP; it does not authorize a client storefront. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7e063c8db4674d2580970f3502fe8c05",
+      "owner": "remote desktop owner / architecture reviewer",
+      "document_group": "remote-desktop",
+      "applicability_evidence": [
+        "remote-desktop-classification",
+        "host-ownership-record",
+        "network-topology",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-cloud-thin-client",
+          "description": "Remote desktop submission is not a thin client for a cloud-based app.",
+          "evidence_kinds": [
+            "execution-architecture",
+            "deployment-inventory",
+            "network-event-trace"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify the actual execution host and service dependencies across deployments; distinguish user-owned host mirroring from a thin client for a cloud application. Marketing descriptions and local-looking addresses are insufficient. First classify whether this is a mirror of particular software/services or a generic host-device mirror; do not apply the subtype restrictions solely because streaming APIs are present. "
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cdc698f5a38544a192ea0296bc37e1fc",
+      "owner": "submission owner / product reviewer",
+      "document_group": "submission-portfolio",
+      "applicability_evidence": [
+        "submission-portfolio",
+        "category-comparison",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "single-app-identity",
+          "description": "Developer does not submit multiple Bundle IDs for the same app.",
+          "evidence_kinds": [
+            "submission-portfolio",
+            "bundle-product-map",
+            "runtime-comparison"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare all current and planned bundle IDs against content and functionality, including geographic/team/client variants. Explain substantive separate products or consolidate duplicates; extension IDs and platform targets are not automatically separate duplicate submissions."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-50eecf6e15f04b2db421de1994162175",
+      "owner": "submission owner / product reviewer",
+      "document_group": "submission-portfolio",
+      "applicability_evidence": [
+        "submission-portfolio",
+        "category-comparison",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "distinguishable-market-experience",
+          "description": "App is not indistinguishable from what is already widely available.",
+          "evidence_kinds": [
+            "category-comparison",
+            "runtime-walkthrough",
+            "feature-differentiation-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the shipped experience with representative widely available alternatives in its actual category. Document distinguishable user tasks, content or behavior; a new title, keyword absence or unsupported originality claim is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a256e54515614170824bfdc561017990",
+      "owner": "submission owner / product reviewer",
+      "document_group": "submission-portfolio",
+      "applicability_evidence": [
+        "submission-portfolio",
+        "category-comparison",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "meaningful-category-improvement",
+          "description": "Submission in an established category provides a meaningfully different or improved experience.",
+          "evidence_kinds": [
+            "category-comparison",
+            "feature-differentiation-review",
+            "runtime-walkthrough"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For the established category, demonstrate the specific improved or different customer experience through complete tasks and a dated comparison. A category keyword is only an applicability lead and cannot establish saturation or quality by itself."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-aaafc08b9579440b8fa49684043cbe04",
+      "owner": "extension owner / platform reviewer",
+      "document_group": "extensions",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "platform-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "extension-platform-contract",
+          "description": "Hosted extensions comply with the applicable Apple extension programming documentation.",
+          "evidence_kinds": [
+            "shipped-extension-inventory",
+            "extension-doc-conformance-review",
+            "platform-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For each shipped extension type and supported OS, map the applicable current Apple extension documentation to its lifecycle, resources, entitlements and behavior. Exercise relevant host contexts; a valid NSExtension plist alone cannot establish conformance."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-32e5b23ed6f749e6b67ca38184aa4fba",
+      "owner": "extension owner / platform reviewer",
+      "document_group": "extensions",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "platform-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "useful-containing-app",
+          "description": "Containing app includes useful functionality such as help or settings where possible.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "runtime-walkthrough",
+            "extension-design-rationale"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Demonstrate useful containing-app functionality such as help or settings in relation to the extension. If the where-possible qualification is relied on, document the concrete technical or product constraint for review; an empty launcher or assertion of impossibility is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-040b4f344e2a48798706832bb71ecbaf",
+      "owner": "extension owner / platform reviewer",
+      "document_group": "extensions",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "platform-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "accurate-extension-marketing",
+          "description": "App marketing text clearly and accurately discloses available extensions.",
+          "evidence_kinds": [
+            "shipped-extension-inventory",
+            "metadata-snapshot",
+            "runtime-walkthrough"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile each shipped extension and its functions with localized store marketing copy. Check clear disclosure without claims for missing capabilities; binary inventory alone cannot establish the listing communicates them accurately."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fd2c644f97b34398ad0d88dadb904e33",
+      "owner": "extension owner / platform reviewer",
+      "document_group": "extensions",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "platform-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "extension-marketing-content",
+          "description": "Extensions do not contain marketing content.",
+          "evidence_kinds": [
+            "extension-content-inventory",
+            "runtime-walkthrough",
+            "source-and-artifact-review",
+            "remote-content-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect each installed extension in its supported host states for marketing content, including remotely supplied surfaces and shared SDK paths. Separate containing-app functionality from extension behavior. A shared library import or commerce keyword is a lead; absence of that signal cannot clear unobserved behavior."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-594295e698124ecb868b7ed2e13ce3ed",
+      "owner": "extension owner / platform reviewer",
+      "document_group": "extensions",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "platform-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "extension-advertising",
+          "description": "Extensions do not contain advertising.",
+          "evidence_kinds": [
+            "extension-content-inventory",
+            "runtime-walkthrough",
+            "source-and-artifact-review",
+            "remote-content-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect each installed extension in its supported host states for advertisements, including remotely supplied surfaces and shared SDK paths. Separate containing-app functionality from extension behavior. A shared library import or commerce keyword is a lead; absence of that signal cannot clear unobserved behavior."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ccf6410b7f2e40f69727f00eb0ee2fc2",
+      "owner": "extension owner / platform reviewer",
+      "document_group": "extensions",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "platform-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "extension-purchases",
+          "description": "Extensions do not contain in-app purchases.",
+          "evidence_kinds": [
+            "extension-content-inventory",
+            "runtime-walkthrough",
+            "source-and-artifact-review",
+            "remote-content-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect each installed extension in its supported host states for in-app purchase flows, including remotely supplied surfaces and shared SDK paths. Separate containing-app functionality from extension behavior. A shared library import or commerce keyword is a lead; absence of that signal cannot clear unobserved behavior."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0bbe4775c5c74d30aa392855e1b5a95b",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "working-keyboard-input",
+          "description": "Keyboard extension provides keyboard input functionality.",
+          "evidence_kinds": [
+            "keyboard-runtime-transcript",
+            "host-app-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enter, edit and delete text using the installed keyboard in supported host contexts. Verify actual input reaches the host rather than relying on a keyboard-shaped screen."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e5ac4e44356f4044a7b93f52c9538ca3",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "keyboard-sticker-compliance",
+          "description": "Keyboard extension with images or emoji follows applicable Sticker guidelines.",
+          "evidence_kinds": [
+            "keyboard-content-inventory",
+            "sticker-guideline-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For keyboards offering images or emoji, map their content and behavior to the applicable Sticker requirements and verify the resulting review evidence. Establish non-applicability only from a complete content/feature inventory, not a missing source symbol."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ff52aa5fd3964b6794a25afe4266c124",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "next-keyboard-transition",
+          "description": "Keyboard extension provides a way to advance to the next keyboard.",
+          "evidence_kinds": [
+            "keyboard-runtime-transcript",
+            "host-app-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Activate the keyboard-switching control and record transition to the next installed keyboard in supported host contexts. A nextKeyboardButton or advanceToNextInputMode symbol, inaccessible control or single screenshot does not establish a working transition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-85676598717d41d9932bf58e4cc1ed2f",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "keyboard-without-network",
+          "description": "Keyboard extension remains functional without full network access.",
+          "evidence_kinds": [
+            "network-denial-runtime-transcript",
+            "keyboard-feature-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise actual typing and core keyboard behavior with networking unavailable on supported devices. Separate network-only enhancements from a nonfunctional keyboard and record outputs rather than trusting an offline label."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8a14647281bc4eb98c50b74df8eaa32f",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "keyboard-without-full-access",
+          "description": "Keyboard extension remains functional without requiring Full Access.",
+          "evidence_kinds": [
+            "permission-denial-runtime-transcript",
+            "keyboard-feature-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Install with Full Access disabled, exercise essential typing and navigation, and record results for supported configurations. Test this separately from offline behavior; a requestsOpenAccess declaration is not behavioral proof."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1a37dc947e1a4c09b78dc649f90861db",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "keyboard-activity-purpose",
+          "description": "Keyboard extension collects user activity only to enhance its on-device keyboard functionality.",
+          "evidence_kinds": [
+            "keyboard-data-inventory",
+            "data-flow-review",
+            "backend-control-review",
+            "network-event-trace"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace collected typing/activity data through SDKs, shared containers and backend use. Map every use to improving the on-device keyboard; a privacy statement or no observed traffic in a short test cannot rule out unrelated collection."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7408ffab15ac40a1956049e440a8665e",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "keyboard-launch-targets",
+          "description": "Keyboard extension does not launch apps other than Settings.",
+          "evidence_kinds": [
+            "keyboard-action-inventory",
+            "url-target-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enumerate keyboard launch/open actions, including hidden gestures, links and remote configuration, and verify every target is Settings. A URL scheme match alone does not establish a launched app or the absence of other paths."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6f5cf1036bb6444e91e7e880dee98dc2",
+      "owner": "keyboard owner / privacy and platform reviewer",
+      "document_group": "keyboard-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "keyboard-capability-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "keyboard-button-purpose",
+          "description": "Keyboard extension does not repurpose keyboard buttons for non-keyboard behaviors.",
+          "evidence_kinds": [
+            "keyboard-action-inventory",
+            "runtime-walkthrough",
+            "gesture-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise each keyboard button and gesture in relevant states; verify actions serve keyboard functionality. Inspect repurposed, promotional or hidden actions rather than inferring behavior from key labels."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f2a6619e8dd44de2bb7f23e570527f8a",
+      "owner": "Safari extension owner / platform and security reviewer",
+      "document_group": "safari-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "website-access-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "current-safari-function",
+          "description": "Safari extension works on the current Safari version of its relevant Apple operating system.",
+          "evidence_kinds": [
+            "safari-version-record",
+            "extension-runtime-transcript",
+            "platform-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record current supported OS/Safari versions and exercise installation, permission grant/deny and complete extension tasks in each. A build against an SDK or success on an obsolete browser does not establish current Safari operation."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-32eea0fe94264d1e8abf7fa4ccc2943f",
+      "owner": "Safari extension owner / platform and security reviewer",
+      "document_group": "safari-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "website-access-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "intact-browser-system-ui",
+          "description": "Safari add-ons leave the browser and operating-system interface intact.",
+          "evidence_kinds": [
+            "extension-runtime-transcript",
+            "browser-ui-comparison",
+            "source-and-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect effects on Safari and OS chrome, navigation and native controls across extension features. Distinguish intended page-content modification from interference with browser or system UI."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f318928d9cd44a78aacd41e9770747fe",
+      "owner": "Safari extension owner / platform and security reviewer",
+      "document_group": "safari-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "website-access-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-malicious-extension-code",
+          "description": "Safari extension contains no malicious content or code.",
+          "evidence_kinds": [
+            "extension-security-review",
+            "dependency-inventory",
+            "remote-code-inventory",
+            "source-and-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review shipped and fetched scripts, dependencies and behaviors for malicious purpose and execution. Bound the review to actual versions and remote update controls; a malware keyword scan or clean launch cannot clear the full extension."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1e9b7daba76645a999792eb2e324e9e7",
+      "owner": "Safari extension owner / platform and security reviewer",
+      "document_group": "safari-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "website-access-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-misleading-extension-behavior",
+          "description": "Safari extension contains no misleading content or code.",
+          "evidence_kinds": [
+            "feature-claim-map",
+            "runtime-walkthrough",
+            "content-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare declared functions and user expectations with page changes, injected content, destination URLs and actual results. Include remote updates and failure paths; metadata-only review cannot establish absence of deception."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0ddc92636653494299a5386150c8b9bf",
+      "owner": "Safari extension owner / platform and security reviewer",
+      "document_group": "safari-extension",
+      "applicability_evidence": [
+        "shipped-extension-inventory",
+        "website-access-inventory",
+        "platform-scope"
+      ],
+      "conditions": [
+        {
+          "id": "necessary-website-access",
+          "description": "Safari extension requests access to no more websites than strictly necessary for its function.",
+          "evidence_kinds": [
+            "website-access-inventory",
+            "extension-manifest",
+            "permission-runtime-transcript",
+            "feature-permission-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map requested, optional and dynamically granted website scopes to specific required features. Inspect host permissions, content-script matches and runtime requests. Broad access can be justified by function, while a narrow domain can still be unnecessary; wildcard detection alone cannot decide either direction."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d5429e6aa0b14c9da0fab53a0a821415",
+      "owner": "integration owner / data provenance reviewer",
+      "document_group": "apple-site-data",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-source-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "apple-data-source-permission",
+          "description": "App does not scrape information from Apple sites.",
+          "evidence_kinds": [
+            "data-source-inventory",
+            "network-and-backend-review",
+            "feed-approval-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace Apple-derived data to its acquisition method in app and backend. Distinguish scraping from an explicitly Apple-approved RSS feed under exception atom-6373c0202be34e0ba90bd8948283c332, validating feed approval and use scope. An apple.com URL alone is inconclusive."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-218085b57ed7404fbd7277dbb662eeca",
+      "owner": "integration owner / data provenance reviewer",
+      "document_group": "apple-site-data",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-source-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-apple-site-ranking",
+          "description": "App does not create rankings using information obtained from Apple sites.",
+          "evidence_kinds": [
+            "data-lineage-review",
+            "ranking-design",
+            "backend-control-review",
+            "runtime-walkthrough"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect rankings and their inputs, including scheduled backend ingestion, to establish whether they derive from Apple-site information. The approved RSS acquisition exception does not itself authorize creating rankings."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2c11eb4e666c4036bec7f84d85356185",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "user-initiated-music-playback",
+          "description": "Apple Music stream playback begins only at the user’s initiative.",
+          "evidence_kinds": [
+            "music-flow-map",
+            "runtime-transcript",
+            "playback-event-trace"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record playback entry from cold start, navigation and background restoration to establish explicit user initiation before Apple Music streaming. A visible Play button does not prove absence of automatic playback."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8040c00964ee4b078c2a2cd12ba27fbc",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "working-music-controls",
+          "description": "User can control Apple Music playback with standard play, pause and skip controls.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "playback-event-trace",
+            "music-flow-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise play, pause and skip for Apple Music playback and verify state/audio changes and accessibility of the standard controls. Screen labels or API presence alone do not establish control behavior."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4d4dcded01ff42879e31d65779442d59",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-fee-for-music-access",
+          "description": "App does not require payment for Apple Music service access.",
+          "evidence_kinds": [
+            "paid-feature-inventory",
+            "payment-flow-map",
+            "music-flow-map",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare free and paid states and identify exactly what the app sells. Confirm access to Apple Music itself is not behind an app payment; separate a legitimate value-added feature from service access rather than inferring from a subscription keyword."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-715ec1b4db554d688d27584d68a05493",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-indirect-music-access-charge",
+          "description": "App does not indirectly monetize Apple Music service access through advertising or demands for user information.",
+          "evidence_kinds": [
+            "music-flow-map",
+            "advertising-flow-map",
+            "data-collection-map",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect whether Apple Music access requires viewing advertising, supplying monetized user information or completing monetization gates. Trace actual onboarding and playback entry under refusal paths; a free price does not establish absence of indirect monetization."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bccea28625044678a61f12bb0caec086",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-file-download-permission",
+          "description": "App does not download MusicKit-sourced music files without documented permission.",
+          "evidence_kinds": [
+            "music-file-operation-map",
+            "source-and-backend-review",
+            "musickit-permission-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace each download operation and the origin of the file. For MusicKit-sourced music require current documentation explicitly allowing that operation under atom-ea23e1a8b5be49b0b7ef17b9226a67db; playlist/library management permission is not general file-download permission."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fde2b694f3c8446a94b9571769e19443",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-file-upload-permission",
+          "description": "App does not upload MusicKit-sourced music files without documented permission.",
+          "evidence_kinds": [
+            "music-file-operation-map",
+            "source-and-backend-review",
+            "musickit-permission-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace uploads from MusicKit-derived files and all destinations, including background/backend paths. Validate the exact operation against explicit current MusicKit permission under atom-ea23e1a8b5be49b0b7ef17b9226a67db; ordinary playback permission cannot clear uploads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-581110bae9594bee87f173927142d9da",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-file-sharing-permission",
+          "description": "App does not enable sharing of MusicKit-sourced music files without documented permission.",
+          "evidence_kinds": [
+            "music-file-operation-map",
+            "sharing-runtime-transcript",
+            "musickit-permission-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect share sheets, exports and server sharing for MusicKit-sourced music files. Distinguish permitted metadata/playlist links from file transfer and validate specific documentation permission under atom-ea23e1a8b5be49b0b7ef17b9226a67db."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-012fc7a56b904148be5bee6fdb1e4cf7",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "complex-music-use-rights",
+          "description": "App secures any required rights-holder licenses for its deeper or more complex music integration.",
+          "evidence_kinds": [
+            "music-integration-design",
+            "rights-holder-license",
+            "license-scope-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify deeper integration uses, rights holders and required licenses for each territory and content type. Match current authenticated licenses to actual use and distribution; MusicKit entitlement or a generic terms link cannot substitute for required rights."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1eab217a6dc44a9dbf44ae4ce476b12c",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-metadata-use-context",
+          "description": "Cover art and Apple Music metadata are used only with music playback or playlists, including truthful function screenshots.",
+          "evidence_kinds": [
+            "music-asset-inventory",
+            "runtime-walkthrough",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review every cover-art and music-metadata placement for association with playback or playlists, including truthful screenshots of functionality. Distinguish functional display from unrelated decorative or promotional reuse."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-177f8cb4e4aa4635b7e9e3aedf9b2000",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-marketing-authorization",
+          "description": "Marketing or advertising does not use cover art or metadata without specific rights-holder authorization.",
+          "evidence_kinds": [
+            "music-asset-inventory",
+            "marketing-inventory",
+            "rights-holder-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For cover art or metadata in marketing/advertising, validate specific rights-holder authorization under atom-b7815f6bf4d445fdbb577a65a79c161e for the medium, territory and period. A license for playback or an app screenshot does not automatically authorize unrelated campaign use."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9bffc375db2e43a983370fa37b0dfaa0",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-identity-conformance",
+          "description": "Apple Music integration follows the current Apple Music Identity Guidelines.",
+          "evidence_kinds": [
+            "music-branding-inventory",
+            "identity-guideline-review",
+            "runtime-capture",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare actual logos, wording, attribution and controls across app/listing surfaces with the current Apple Music Identity Guidelines, recording the reviewed revision. An approved SDK or correctly spelled brand name does not establish conformance."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d6e0985d310c44fd899a77160eae579c",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-data-purpose-disclosure",
+          "description": "Purpose string clearly discloses access to Apple Music user data.",
+          "evidence_kinds": [
+            "shipped-purpose-strings",
+            "music-data-inventory",
+            "permission-runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Read the shipped localized Apple Music purpose strings and the actual system prompt, then compare the stated purpose to collected data and use. Nonempty or plausible generic text does not establish a clear accurate disclosure."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-45b1a1f740bd4c4098035e8381fbc606",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-data-sharing-purpose",
+          "description": "App shares collected Apple Music user data with third parties only to support or improve the app experience.",
+          "evidence_kinds": [
+            "music-data-inventory",
+            "third-party-data-flow-map",
+            "provider-contracts",
+            "backend-control-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For every recipient of collected Apple Music data, substantiate a purpose supporting or improving the app experience and inspect enforced downstream use. A privacy-policy statement alone cannot establish actual recipient behavior."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-781dd8b7d32e44ff9cd50351bd7af6b7",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-data-not-identification",
+          "description": "App does not use Apple Music user data to identify a user or device.",
+          "evidence_kinds": [
+            "music-data-lineage",
+            "identity-join-review",
+            "backend-control-review",
+            "sdk-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace Apple Music user fields and derived values through user/device joins, fingerprints and identifiers. Review backend and SDK processing; omission of identifiers in one request does not establish absence of identity use."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c5d23911647e4577a92e25b2aaf74ae6",
+      "owner": "music integration owner / rights and privacy reviewer",
+      "document_group": "music-integration",
+      "applicability_evidence": [
+        "music-feature-inventory",
+        "music-data-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "music-data-not-ad-targeting",
+          "description": "App does not use Apple Music user data for advertising targeting.",
+          "evidence_kinds": [
+            "music-data-lineage",
+            "advertising-data-flow-map",
+            "backend-control-review",
+            "provider-contracts"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect advertising audiences, SDK events, profiling and downstream data exports to establish Apple Music data is not used for ad targeting. ATT consent does not waive this separate prohibition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d9bb49e55b0d475db29b41f1b6646173",
+      "owner": "service owner / privacy and operations reviewer",
+      "document_group": "apple-service-operations",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-use-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "permitted-service-messaging",
+          "description": "Apple service integrations are not used for unsolicited outreach, fraud, or mass messaging.",
+          "evidence_kinds": [
+            "service-message-inventory",
+            "recipient-consent-records",
+            "anti-abuse-controls",
+            "operations-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review Apple-service messaging triggers, recipients, volume, purpose and abuse controls, including backend campaigns. Verify solicitation/consent and legitimacy rather than accepting service API access as permission; a limited quiet runtime cannot clear operational misuse."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e90fcaa886e34e3aa890743f9b2ac524",
+      "owner": "service owner / privacy and operations reviewer",
+      "document_group": "apple-service-operations",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-use-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-game-center-profile-harvesting",
+          "description": "Game Center identifiers and profile details are not correlated, mined, or harvested.",
+          "evidence_kinds": [
+            "game-center-data-inventory",
+            "data-lineage-review",
+            "backend-control-review",
+            "sdk-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace Game Center identifiers and profiles across collection, storage, joins, mining and exports. Inspect automated and third-party processing; no visible profile screen or source keyword is insufficient to establish no harvesting."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0ea43ac08bbe45ee8142fb83bec4f49d",
+      "owner": "notification owner / privacy and runtime reviewer",
+      "document_group": "push-notifications",
+      "applicability_evidence": [
+        "notification-type-inventory",
+        "consent-flow-map",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "functionality-without-push",
+          "description": "App functionality does not require Push Notifications.",
+          "evidence_kinds": [
+            "notification-permission-runtime-transcript",
+            "feature-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Deny push permission on a fresh supported install and exercise complete core tasks. Distinguish loss of notification delivery from an unjustified app-functionality gate; inspect server enforcement and later settings changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-23977ffa0128474aa82267c1d967db43",
+      "owner": "notification owner / privacy and runtime reviewer",
+      "document_group": "push-notifications",
+      "applicability_evidence": [
+        "notification-type-inventory",
+        "consent-flow-map",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "push-payload-confidentiality",
+          "description": "Push Notifications do not carry sensitive personal or confidential information.",
+          "evidence_kinds": [
+            "notification-template-inventory",
+            "redacted-payload-samples",
+            "data-classification-review",
+            "backend-control-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review payload templates, interpolated fields and notification previews on locked devices for sensitive or confidential information. Inspect remote generation and localized variants; redacted samples must retain enough field semantics to evaluate exposure."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c094d84bc7bf46a2a1ed6451b1744b22",
+      "owner": "notification owner / privacy and runtime reviewer",
+      "document_group": "push-notifications",
+      "applicability_evidence": [
+        "notification-type-inventory",
+        "consent-flow-map",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "explicit-promotional-push-consent",
+          "description": "Marketing or promotional push is sent only after explicit opt-in through in-app consent language.",
+          "evidence_kinds": [
+            "notification-consent-ui",
+            "consent-event-record",
+            "notification-dispatch-controls",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify explicit in-app marketing consent language and affirmative choice precede any promotional dispatch. Cross-check account/token consent state with server controls and decline paths; the OS permission prompt alone does not establish marketing opt-in."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e42b345e654d4c68936720c7bb96ffbf",
+      "owner": "notification owner / privacy and runtime reviewer",
+      "document_group": "push-notifications",
+      "applicability_evidence": [
+        "notification-type-inventory",
+        "consent-flow-map",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "effective-promotional-push-optout",
+          "description": "App provides an in-app method to opt out of marketing or promotional push.",
+          "evidence_kinds": [
+            "notification-settings-runtime-transcript",
+            "consent-event-record",
+            "notification-dispatch-controls"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Locate and exercise the in-app promotional opt-out and verify corresponding dispatch suppression for the test account/token. A toggle screenshot or OS-wide notification settings link alone cannot prove a functioning in-app opt-out."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-585a71d359ce4a07a7c8df351b0da39a",
+      "owner": "service owner / privacy and operations reviewer",
+      "document_group": "apple-service-operations",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-use-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "game-center-id-authorized-use",
+          "description": "Game Center Player IDs are used only as approved by current Game Center terms.",
+          "evidence_kinds": [
+            "game-center-data-inventory",
+            "game-center-terms-review",
+            "data-lineage-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every use of Player IDs to the current Game Center terms, including storage and service-side operations. Record terms revision and permitted purpose for each use; successful authentication or framework presence does not establish contractual permission."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-652c375c2c5340e4bba332ec1d37fc0f",
+      "owner": "service owner / privacy and operations reviewer",
+      "document_group": "apple-service-operations",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-use-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-visible-player-id",
+          "description": "Game Center Player IDs are not displayed in the app.",
+          "evidence_kinds": [
+            "runtime-walkthrough",
+            "ui-and-log-surface-inventory",
+            "game-center-data-lineage"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect app screens, debugging/export surfaces and rendered remote content for Game Center Player IDs. Distinguish allowed player presentation names from identifiers; a single screenshot or absence of a literal cannot cover dynamic values."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a76a8f96217b4eaa938e947152a9be0a",
+      "owner": "service owner / privacy and operations reviewer",
+      "document_group": "apple-service-operations",
+      "applicability_evidence": [
+        "apple-service-inventory",
+        "data-use-inventory",
+        "backend-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-third-party-player-id-display",
+          "description": "Game Center Player IDs are not displayed to a third party.",
+          "evidence_kinds": [
+            "third-party-data-flow-map",
+            "provider-payload-review",
+            "game-center-data-lineage"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace identifier exposure in third-party dashboards, analytics, shared/exported content and service responses. Review the actual payload schema and recipients; internal redaction alone cannot establish third-party non-disclosure."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f9a75981f1664ada908c7d91b6e9081b",
+      "owner": "asset owner / platform reviewer",
+      "document_group": "emoji-assets",
+      "applicability_evidence": [
+        "asset-provenance",
+        "platform-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "emoji-platform-use",
+          "description": "Apple emoji artwork is not used on other platforms.",
+          "evidence_kinds": [
+            "asset-provenance",
+            "platform-asset-matrix",
+            "runtime-capture",
+            "marketing-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify artwork that is actually Apple emoji and review usage on every distributed platform. Distinguish platform-native Unicode rendering under atom-21372f8cddc54f328372b8fbe38fb0ce from exported Apple artwork on another platform; Unicode strings alone are not a violation."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-61e0a7fff6b4439ab5b47909b0ef7be7",
+      "owner": "asset owner / platform reviewer",
+      "document_group": "emoji-assets",
+      "applicability_evidence": [
+        "asset-provenance",
+        "platform-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-embedded-apple-emoji-art",
+          "description": "Apple emoji artwork is not embedded directly in the app binary.",
+          "evidence_kinds": [
+            "signed-artifact-asset-inventory",
+            "asset-provenance",
+            "asset-content-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect assets embedded in the submitted binary, including archives/fonts/generated images, for copied Apple emoji artwork. Preserve permitted Unicode rendering under atom-21372f8cddc54f328372b8fbe38fb0ce; an emoji character in source text is not embedded artwork, and a clean filename scan is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-364236cc9fd5406b82119942b6b07c9e",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "operator-software-assurance",
+          "description": "The app operator ensures all additional software complies with applicable Guidelines and laws.",
+          "evidence_kinds": [
+            "additional-software-inventory",
+            "module-compliance-matrix",
+            "legal-review",
+            "operator-review-controls"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Establish the actual additional-software type and applicable guideline/legal requirements for every offered module. Inspect operator admission, update and withdrawal controls and module-specific evidence; allowing this delivery model does not waive other duties. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-61d63b96e47649e3b75576a7a549d513",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-privacy-compliance",
+          "description": "That software follows applicable privacy rules, including 5.1 and sensitive child/health data requirements.",
+          "evidence_kinds": [
+            "module-data-inventory",
+            "module-privacy-review",
+            "consent-flow-map",
+            "backend-control-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each module's collection, sharing and use to applicable 5.1 duties, explicitly reviewing child and health data where present. A host privacy policy cannot clear undisclosed module data flows. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-709d3d5132d5453aab70eef8eb84f50c",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-content-filtering",
+          "description": "Additional software has objectionable-material filtering.",
+          "evidence_kinds": [
+            "module-content-inventory",
+            "filter-configuration",
+            "moderation-test-report",
+            "operator-review-controls"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Demonstrate filtering for representative objectionable input/content paths in hosted software and review coverage, updates and bypass handling. Presence of a moderation SDK or a clean sample is insufficient. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1cf1c65d615e4afda04bbe94b25cfa06",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-report-submission",
+          "description": "Users can submit module content concerns through a functioning report path.",
+          "evidence_kinds": [
+            "module-reporting-runtime-transcript",
+            "report-delivery-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For each module reporting path, submit an authorized synthetic abuse report and trace it to the operator queue with the content/user context needed for action. A Report button or local acknowledgement alone cannot prove delivery. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        },
+        {
+          "id": "timely-module-report-response",
+          "description": "The operator responds to reported module concerns in a timely manner.",
+          "evidence_kinds": [
+            "moderation-service-levels",
+            "redacted-moderation-case-records",
+            "operator-staffing-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare actual report receipt, triage, response and action timestamps with the stated response process and risk, including escalation and coverage. A delivered test report or written policy alone does not prove timely operational responses. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a793a07557994f63819fa767b554ffa7",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-abuser-blocking",
+          "description": "Users can block abusive users.",
+          "evidence_kinds": [
+            "module-social-feature-map",
+            "authorized-blocking-test",
+            "backend-enforcement-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise blocking from the user entry point through enforcement against the abusive account across affected communication/content paths. A Block label cannot prove the account is blocked. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d771a66bcb6148c2a9ddb04872efe2d9",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-payment-compliance",
+          "description": "The applicable 3.1 payment requirements are followed.",
+          "evidence_kinds": [
+            "module-product-inventory",
+            "storefront-payment-matrix",
+            "purchase-runtime-transcript",
+            "entitlement-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map module goods/services to applicable 3.1 requirements and supported storefront exceptions, then review actual payment paths and required permissions. Host StoreKit presence alone cannot establish module payment compliance; do not assume one region's alternative-payment rule applies globally. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e55f90814f264da8af6fdd40ca3f9a58",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-native-api-exposure",
+          "description": "Native platform APIs or technologies are not exposed or extended to additional software without prior Apple permission.",
+          "evidence_kinds": [
+            "module-bridge-inventory",
+            "source-and-artifact-review",
+            "apple-permission-record",
+            "module-runtime-trace"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enumerate native APIs/technologies exposed or extended to modules, including indirect bridges. Validate prior Apple permission for the exact access and scope where used. Ordinary platform entitlements or a JavaScript engine alone do not establish permission or prohibited exposure. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-575bc6fc52584f87ab3e1cf72a82ffa8",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "per-instance-module-consent",
+          "description": "Data or privacy permissions are shared with each additional software item only with explicit user consent on each instance.",
+          "evidence_kinds": [
+            "module-data-permission-map",
+            "module-consent-runtime-transcript",
+            "consent-event-record",
+            "backend-control-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For each module and each sharing instance, record explicit consent before host data or privacy permissions are shared, including denied, revoked and repeat-entry paths. A host-wide OS permission or blanket module acceptance cannot establish per-instance consent. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-208c77ee42f64ca19c1b9dda226b7dd0",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "complete-software-index",
+          "description": "The app provides an index of all offered additional software and metadata.",
+          "evidence_kinds": [
+            "additional-software-inventory",
+            "software-index-snapshot",
+            "module-metadata-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile every offered module and its metadata against the user-accessible index at the review snapshot. Include remote, region-specific and account-gated entries and update processes; counting only bundled files cannot prove completeness. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5883c3b5e7f94ea1bf7e1bc838ac1126",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-universal-link-routing",
+          "description": "The index contains working universal links to every offered software item.",
+          "evidence_kinds": [
+            "software-index-snapshot",
+            "universal-link-configuration",
+            "link-runtime-test-matrix"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Test the universal link for every offered software item on supported devices and verify resolution to the correct item, including routing/association configuration. An HTTPS URL, HTTP 200 or custom URL scheme alone does not establish working universal links. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-39bf00b84967456c84aa561e239e79d4",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "visible-module-age-suitability",
+          "description": "Users can identify additional software above the app age rating.",
+          "evidence_kinds": [
+            "module-age-assessment",
+            "app-age-rating-record",
+            "module-discovery-runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare each module's assessed age suitability with the submitted host rating and inspect how users can identify higher-rated software before access. A host rating or generic mature-content warning does not establish module-specific identification. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d5728942b0084df8bb28b6bdd3368266",
+      "owner": "platform operator / software compliance reviewer",
+      "document_group": "additional-software",
+      "applicability_evidence": [
+        "additional-software-inventory",
+        "delivery-architecture",
+        "platform-scope",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "module-age-access-enforcement",
+          "description": "Underage users are restricted using verified or declared age.",
+          "evidence_kinds": [
+            "module-age-assessment",
+            "age-assurance-design",
+            "age-boundary-test-matrix",
+            "backend-enforcement-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Test below-threshold, eligible and unknown-age users, using the actual verified or declared age mechanism and direct-link entry paths. Demonstrate access restriction across module delivery and backend gates; a displayed birthday field or warning alone cannot prove enforcement. Scope the review to all offered remote software, versions, storefronts and platforms, including eligible downloadable emulator games; lack of code in the installed binary does not establish absence. Re-review inventory or remote behavior changes."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d5340126eb1e44d1bc17f2d2d40daaeb",
+      "owner": "identity owner / privacy and authentication reviewer",
+      "document_group": "login-services",
+      "applicability_evidence": [
+        "login-provider-inventory",
+        "primary-account-flow-map",
+        "distribution-scope",
+        "login-exception-dossier"
+      ],
+      "conditions": [
+        {
+          "id": "equivalent-primary-account-login",
+          "description": "App using third-party or social login for the user’s primary account offers an equivalent alternative login service unless a listed exception is established.",
+          "evidence_kinds": [
+            "login-provider-inventory",
+            "authentication-runtime-transcript",
+            "account-capability-comparison",
+            "login-exception-dossier"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Complete new-account setup and returning-user authentication with each provider and the offered alternative, then compare access to primary-account features/services. Inspect discoverability, restrictions and failure/recovery paths. A Sign in with Apple button or entitlement cannot establish a working equivalent option. Establish third-party/social provider use for the primary app account, not optional sharing or mere SDK presence. Review every claimed exception separately: atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4 requires exclusively company-owned account systems; atom-759453879ab7403f8d55ed04024b7cb8 requires eligible marketplace distribution and marketplace login limited to account/download/commerce; atom-8db964265c8745ec9966ac1aa0577cda requires existing education/enterprise accounts; atom-aa57c772c1ea4b8b977a0903b21c8ea5 requires government/industry-backed citizen or electronic ID; atom-e9b930721d8e41d9bd4e12d4ef8f0008 requires a dedicated client authenticating directly to the underlying content service. A provider name or generic business label cannot prove an exception. An equivalent qualifying service need not be Apple-branded."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d0280e2be689410ab9ee1b606d8bd1b4",
+      "owner": "identity owner / privacy and authentication reviewer",
+      "document_group": "login-services",
+      "applicability_evidence": [
+        "login-provider-inventory",
+        "primary-account-flow-map",
+        "distribution-scope",
+        "login-exception-dossier"
+      ],
+      "conditions": [
+        {
+          "id": "alternative-login-data-minimization",
+          "description": "Equivalent login service limits collected data to the user’s name and email address.",
+          "evidence_kinds": [
+            "provider-data-contract",
+            "authentication-data-flow-review",
+            "backend-field-inventory",
+            "authentication-runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect requested scopes, collected identity fields, SDK events and backend/provider data use of the qualifying alternative. Establish that collection is limited to name and email; a consent screen showing two fields cannot rule out hidden collection. Establish third-party/social provider use for the primary app account, not optional sharing or mere SDK presence. Review every claimed exception separately: atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4 requires exclusively company-owned account systems; atom-759453879ab7403f8d55ed04024b7cb8 requires eligible marketplace distribution and marketplace login limited to account/download/commerce; atom-8db964265c8745ec9966ac1aa0577cda requires existing education/enterprise accounts; atom-aa57c772c1ea4b8b977a0903b21c8ea5 requires government/industry-backed citizen or electronic ID; atom-e9b930721d8e41d9bd4e12d4ef8f0008 requires a dedicated client authenticating directly to the underlying content service. A provider name or generic business label cannot prove an exception. An equivalent qualifying service need not be Apple-branded."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-239d3f04fa454852bd326b2388f6994d",
+      "owner": "identity owner / privacy and authentication reviewer",
+      "document_group": "login-services",
+      "applicability_evidence": [
+        "login-provider-inventory",
+        "primary-account-flow-map",
+        "distribution-scope",
+        "login-exception-dossier"
+      ],
+      "conditions": [
+        {
+          "id": "private-email-account-setup",
+          "description": "Equivalent login service lets users keep their email address private during account setup.",
+          "evidence_kinds": [
+            "authentication-runtime-transcript",
+            "identity-mapping-review",
+            "backend-account-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Complete alternative-provider account creation with email privacy selected and verify the account works without revealing the real email through later required fields or identity mapping. A Hide Email label alone is insufficient; use only authorized synthetic test accounts. Establish third-party/social provider use for the primary app account, not optional sharing or mere SDK presence. Review every claimed exception separately: atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4 requires exclusively company-owned account systems; atom-759453879ab7403f8d55ed04024b7cb8 requires eligible marketplace distribution and marketplace login limited to account/download/commerce; atom-8db964265c8745ec9966ac1aa0577cda requires existing education/enterprise accounts; atom-aa57c772c1ea4b8b977a0903b21c8ea5 requires government/industry-backed citizen or electronic ID; atom-e9b930721d8e41d9bd4e12d4ef8f0008 requires a dedicated client authenticating directly to the underlying content service. A provider name or generic business label cannot prove an exception. An equivalent qualifying service need not be Apple-branded."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-57af4e2c851143f0a5fe5a1421dcb808",
+      "owner": "identity owner / privacy and authentication reviewer",
+      "document_group": "login-services",
+      "applicability_evidence": [
+        "login-provider-inventory",
+        "primary-account-flow-map",
+        "distribution-scope",
+        "login-exception-dossier"
+      ],
+      "conditions": [
+        {
+          "id": "consent-before-login-advertising-data",
+          "description": "Equivalent login service does not collect app interactions for advertising without user consent.",
+          "evidence_kinds": [
+            "provider-data-contract",
+            "advertising-consent-transcript",
+            "authentication-data-flow-review",
+            "backend-control-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review whether the alternative service collects app interactions for advertising and, if so, verify informed consent precedes collection with deny/revoke enforcement. Distinguish authentication events needed for service operation from advertising collection; the absence of an ad SDK keyword cannot establish compliance. Establish third-party/social provider use for the primary app account, not optional sharing or mere SDK presence. Review every claimed exception separately: atom-67eb3b0fb8a94ccd9ac5d8a92bfc1cd4 requires exclusively company-owned account systems; atom-759453879ab7403f8d55ed04024b7cb8 requires eligible marketplace distribution and marketplace login limited to account/download/commerce; atom-8db964265c8745ec9966ac1aa0577cda requires existing education/enterprise accounts; atom-aa57c772c1ea4b8b977a0903b21c8ea5 requires government/industry-backed citizen or electronic ID; atom-e9b930721d8e41d9bd4e12d4ef8f0008 requires a dedicated client authenticating directly to the underlying content service. A provider name or generic business label cannot prove an exception. An equivalent qualifying service need not be Apple-branded."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1abe4f651e6e4fd4b64ceeada46e5806",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "material-information-before-sale",
+          "description": "Apple Pay flow shows all material purchase information before the sale.",
+          "evidence_kinds": [
+            "product-and-charge-inventory",
+            "apple-pay-runtime-transcript",
+            "merchant-terms",
+            "checkout-order-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare all material goods/service, seller, price, currency, charges and applicable conditions with what users can see before authorizing each Apple Pay transaction. Record the complete pre-sale sequence and country/product variants; a payment sheet alone may omit material conditions."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-54ed20a61aa74eeead50ac2f7960ccd9",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "apple-pay-brand-and-ui",
+          "description": "Apple Pay branding and UI follow current Apple Pay Marketing and Human Interface Guidelines.",
+          "evidence_kinds": [
+            "apple-pay-design-review",
+            "runtime-capture",
+            "marketing-inventory",
+            "brand-guideline-revision"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review actual Apple Pay marks, buttons, payment presentation and marketing against current Apple Pay Marketing and Human Interface Guidelines for supported devices. A PKPaymentRequest reference does not establish visual or interaction conformance."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-aa6c01edb35e43569a11f1b41e4690d7",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "renewal-period-disclosure",
+          "description": "Recurring Apple Pay terms disclose the renewal period length.",
+          "evidence_kinds": [
+            "recurring-product-inventory",
+            "apple-pay-runtime-transcript",
+            "merchant-terms",
+            "billing-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "First establish actual recurring Apple Pay use; one-time Apple Pay and unrelated StoreKit subscriptions do not establish applicability. Compare the renewal interval and length in localized pre-authorization terms with the merchant billing/cancellation configuration and authorized sandbox flow. A keyword in source or terms only shown after purchase cannot close this condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9b272894718d4541a2321d28988bf40f",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "continuing-renewal-disclosure",
+          "description": "Recurring Apple Pay terms disclose that renewal continues until canceled.",
+          "evidence_kinds": [
+            "recurring-product-inventory",
+            "apple-pay-runtime-transcript",
+            "merchant-terms",
+            "billing-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "First establish actual recurring Apple Pay use; one-time Apple Pay and unrelated StoreKit subscriptions do not establish applicability. Compare that recurring charges continue until the user cancels in localized pre-authorization terms with the merchant billing/cancellation configuration and authorized sandbox flow. A keyword in source or terms only shown after purchase cannot close this condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-acd85c93f1014df6944971a3de4b2ed9",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "period-benefit-disclosure",
+          "description": "Recurring Apple Pay terms disclose what the user receives in each period.",
+          "evidence_kinds": [
+            "recurring-product-inventory",
+            "apple-pay-runtime-transcript",
+            "merchant-terms",
+            "billing-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "First establish actual recurring Apple Pay use; one-time Apple Pay and unrelated StoreKit subscriptions do not establish applicability. Compare the goods, services or benefits delivered in each period in localized pre-authorization terms with the merchant billing/cancellation configuration and authorized sandbox flow. A keyword in source or terms only shown after purchase cannot close this condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2ef99e00cf4b4e0a855d214cd2f621b9",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "actual-recurring-charge-disclosure",
+          "description": "Recurring Apple Pay terms disclose the actual amount charged to the customer.",
+          "evidence_kinds": [
+            "recurring-product-inventory",
+            "apple-pay-runtime-transcript",
+            "merchant-terms",
+            "billing-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "First establish actual recurring Apple Pay use; one-time Apple Pay and unrelated StoreKit subscriptions do not establish applicability. Compare the actual amount and currency charged, including changing introductory periods or other applicable charges in localized pre-authorization terms with the merchant billing/cancellation configuration and authorized sandbox flow. A keyword in source or terms only shown after purchase cannot close this condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a3cc3a777b7d4e3aab18809947760cfc",
+      "owner": "merchant owner / payment and design reviewer",
+      "document_group": "apple-pay",
+      "applicability_evidence": [
+        "payment-method-inventory",
+        "recurring-product-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "cancellation-instructions",
+          "description": "Recurring Apple Pay terms explain how to cancel.",
+          "evidence_kinds": [
+            "recurring-product-inventory",
+            "apple-pay-runtime-transcript",
+            "merchant-terms",
+            "billing-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "First establish actual recurring Apple Pay use; one-time Apple Pay and unrelated StoreKit subscriptions do not establish applicability. Compare a usable description of how the user cancels recurring payments in localized pre-authorization terms with the merchant billing/cancellation configuration and authorized sandbox flow. A keyword in source or terms only shown after purchase cannot close this condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-53ab44d76c4e40c5b4d24b2febe80814",
+      "owner": "product and monetization owner / platform reviewer",
+      "document_group": "built-in-capabilities",
+      "applicability_evidence": [
+        "paid-feature-inventory",
+        "apple-capability-map",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "hardware-os-charge-purpose",
+          "description": "App does not monetize hardware or operating-system built-in capabilities such as push, camera or gyroscope.",
+          "evidence_kinds": [
+            "paid-feature-inventory",
+            "capability-entitlement-map",
+            "paywall-runtime-transcript",
+            "product-value-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every charged entitlement to the actual delivered functionality and inspect free/paid behavior around hardware and OS capabilities such as camera, push and gyroscope. Determine whether the charge sells the built-in capability itself rather than substantive app functionality using it; API-plus-paywall keywords cannot make that distinction."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c38322d596c14993add7e247e19cea65",
+      "owner": "product and monetization owner / platform reviewer",
+      "document_group": "built-in-capabilities",
+      "applicability_evidence": [
+        "paid-feature-inventory",
+        "apple-capability-map",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "apple-service-charge-purpose",
+          "description": "Access to Apple Music, iCloud storage, Screen Time, and comparable Apple features is not sold as a separate capability.",
+          "evidence_kinds": [
+            "paid-feature-inventory",
+            "capability-entitlement-map",
+            "paywall-runtime-transcript",
+            "product-value-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect products and gating around Apple Music access, iCloud storage, Screen Time and other Apple technologies, including physical-device flows for restricted capabilities. Establish exactly what paid value is supplied and whether access to the underlying Apple capability itself is sold. An entitlement, subscription or simulator Screen Time screen alone cannot decide this rule."
+        }
+      ]
+    }
+  ]
+}
