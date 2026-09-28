@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Validate obligation routes and derive public coverage reports (stdlib only)."""
 import argparse
+import importlib.util
 import json
 import sys
 from collections import Counter
@@ -85,10 +86,28 @@ def validate(catalog, registry):
     return checks
 
 
+def full_positive_capability(catalog):
+    """Count obligations whose every condition has an implemented positive verifier.
+
+    Derived by the condition-policy tool (scripts/verification-policy.py) so the
+    coverage headline can sit next to real automatic decision capability. Returns
+    None only when that tool is not present; invalid policies raise ValueError.
+    """
+    path = ROOT / 'scripts/verification-policy.py'
+    if not path.is_file():
+        return None
+    spec = importlib.util.spec_from_file_location('verification_policy', path)
+    policy = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(policy)
+    capabilities = policy.verifier_capabilities()
+    policies = policy.load_policies(REF / 'verification', catalog, capabilities)
+    return policy.report(catalog, policies, capabilities)['summary']['full_positive_capability']
+
+
 def report(catalog, checks):
     obligations = [x for x in catalog['obligations'] if x['kind'] == 'obligation']
     route_counts = Counter()
-    automatic = semantic = attestation_only = 0
+    automatic = semantic = attestation_only = non_attestation = automated = 0
     gaps = []
     for item in obligations:
         routes = {r['route'] for r in item['routes']}
@@ -97,6 +116,10 @@ def report(catalog, checks):
             gaps.append(item['id'])
         if any(r['route'] in AUTO and r['decides'] == 'full' for r in item['routes']):
             automatic += 1
+        if routes - {'attestation'}:
+            non_attestation += 1
+        if routes & AUTO:
+            automated += 1
         if 'semantic' in routes:
             semantic += 1
         if routes == {'attestation'}:
@@ -111,23 +134,38 @@ def report(catalog, checks):
         'routes': {route: route_counts[route] for route in sorted(ROUTES)},
         'automatic_possible': automatic, 'semantic_possible': semantic,
         'attestation_only': attestation_only, 'registered_checks': len(checks),
+        'non_attestation_route': non_attestation, 'automated_route': automated,
     }
+
+
+def share(count, total):
+    """Percentage with one decimal, or two when a nonzero share would round to 0.x."""
+    value = (100 * count / total) if total else 0
+    return '{:.2f}%'.format(value) if 0 < value < 1 else '{:.1f}%'.format(value)
 
 
 def markdown(summary):
     total = summary['total_obligations']
-    percent = lambda n: (100 * n / total) if total else 0
+    row = lambda label, count: '| {} | {} | {} |'.format(label, count, share(count, total))
     rows = ['# Guideline obligation coverage', '',
             'This counts available routes, not checks that ran for an app. Routes can overlap.', '',
+            'Every obligation carries the generic developer-attestation route, so the routed share is complete by construction. '
+            'It shows that each obligation has a documented way to be answered, not that the tool can decide it automatically. '
+            'This report does not certify App Store compliance.', '',
             'Condition-based executable capability is reported separately in [verification-capability.md](verification-capability.md). Legacy full-route labels do not establish evidence-bound readiness.', '',
             '| Measure | Count | Share |', '|---|---:|---:|',
             '| Obligations | {} | 100% |'.format(total),
-            '| Routed | {} | {:.1f}% |'.format(summary['routed_obligations'], percent(summary['routed_obligations'])),
-            '| Without route | {} | {:.1f}% |'.format(summary['obligations_without_route'], percent(summary['obligations_without_route'])),
-            '| Legacy full-route declarations | {} | {:.1f}% |'.format(summary['automatic_possible'], percent(summary['automatic_possible'])),
-            '| Semantic route | {} | {:.1f}% |'.format(summary['semantic_possible'], percent(summary['semantic_possible'])),
-            '| Attestation only | {} | {:.1f}% |'.format(summary['attestation_only'], percent(summary['attestation_only'])),
-            '', '## Route counts', '', '| Route | Obligations |', '|---|---:|']
+            row('Routed (including developer attestation)', summary['routed_obligations']),
+            row('Without route', summary['obligations_without_route']),
+            row('With a route other than attestation', summary['non_attestation_route']),
+            row('With an automated route (static, artifact, runtime or metadata)', summary['automated_route'])]
+    if summary.get('full_positive_automatic') is not None:
+        rows.append(row('Full positive automatic decision capability', summary['full_positive_automatic']))
+    rows += [row('Legacy full-route declarations', summary['automatic_possible']),
+             row('Semantic route', summary['semantic_possible']),
+             row('Attestation only (developer attestation or evidence)', summary['attestation_only']),
+             '', 'Automated and semantic routes are partial signals unless the capability row says otherwise.',
+             '', '## Route counts', '', '| Route | Obligations |', '|---|---:|']
     rows += ['| {} | {} |'.format(k, v) for k, v in summary['routes'].items()]
     rows += ['', 'Section classifications and atomic splits received an independent review; the route count is not an App Store approval guarantee.', '']
     return '\n'.join(rows)
@@ -156,7 +194,7 @@ def main():
             args.catalog.write_text(json.dumps(catalog, indent=2, ensure_ascii=False, sort_keys=True) + '\n')
             args.registry.write_text(json.dumps(registry, indent=2, ensure_ascii=False, sort_keys=True) + '\n')
         checks = validate(catalog, registry)
-        summary = report(catalog, checks)
+        summary = dict(report(catalog, checks), full_positive_automatic=full_positive_capability(catalog))
     except (OSError, ValueError, KeyError, TypeError) as exc:
         print('coverage: ' + str(exc), file=sys.stderr)
         return 2
