@@ -19,6 +19,11 @@ All notable changes to this project are documented here. Versioning follows
   lifecycle speed gate remains unmet (75-second median versus 60 seconds); UI transitions
   remain separate from verified backend, receipt and entitlement outcomes.
 - Public, reviewed guideline obligation records with route and fixture validation; generated coverage and per-run evidence reports separate available routes from checks that executed.
+  All 580 obligations are routed, but only because each carries the generic developer-attestation
+  route: 155 have another route, 117 an automated one, and only 1 of 580 has full automatic
+  decision capability; 425 depend on developer attestation or evidence alone. The coverage report
+  now labels its headline "Routed (including developer attestation)" and derives these rows. The
+  tool does not certify App Store compliance.
 - Explicit isolated simulator builds, artifact inspection, bounded runtime exploration, read-only metadata/App Store Connect review, and developer attestation. Default scans remain offline and read-only.
 - A five-framework clean/broken simulator corpus and local scorecard runner. Runtime blocking is opt-in and limited to repeated launch or demo-login failure.
 

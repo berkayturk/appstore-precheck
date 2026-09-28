@@ -568,7 +568,7 @@ Native / Flutter / Kotlin Multiplatform repo the static scan additionally carrie
 
 ### Guideline obligation coverage
 
-The generated [coverage report](../../../docs/guideline-coverage.md) counts reviewed obligations and implemented routes separately from checks that actually ran for a project. The [route guide](guideline-coverage.md) documents the opt-in build, artifact, runtime, metadata, source evidence, and attestation results. Every obligation has a route, but partial evidence and a developer attestation do not amount to automatic approval. The default scan remains offline and read-only.
+The generated [coverage report](../../../docs/guideline-coverage.md) counts reviewed obligations and implemented routes separately from checks that actually ran for a project. The [route guide](guideline-coverage.md) documents the opt-in build, artifact, runtime, metadata, source evidence, and attestation results. Every obligation has a route only because each carries the generic developer-attestation route; the report's narrower rows show how few have an automated route or full automatic decision capability. Partial evidence and a developer attestation do not amount to automatic approval or App Store compliance. The default scan remains offline and read-only.
 
 ---
 
