@@ -137,6 +137,7 @@ if [[ -e .env || -e .appstore-precheck.json || -e dev-asc-key-1.json || -e .git/
 printf 'never-print-this-secret\n'
 if [[ -f "$(dirname "$0")/missing-sdk" ]]; then printf 'SDK iphonesimulator not found\n'; exit 65; fi
 if [[ -f "$(dirname "$0")/sleep-build" ]]; then sleep 2; fi
+if [[ -f "$(dirname "$0")/sleep-long" ]]; then touch "$(dirname "$0")/started"; sleep 30; fi
 mkdir -p build
 printf 'tool ran\n' > build/tool-wrote-here
 if [[ -f "$(dirname "$0")/mutate-copy" ]]; then printf 'changed\n' >> ios/App/App.swift; fi
@@ -146,10 +147,24 @@ while [[ $# -gt 0 ]]; do
   case "$1" in -derivedDataPath) dd="$2"; shift 2;; -configuration) cfg="$2"; shift 2;; *) shift;; esac
 done
 if [[ "$cfg" == Release && -f "$(dirname "$0")/fail-release" ]]; then exit 65; fi
+if [[ -f "$(dirname "$0")/ide-state" ]]; then
+  mkdir -p .gradle .kotlin .idea ios/App.xcodeproj/xcuserdata
+  printf 'cache\n' > .gradle/cache.bin; printf 'k\n' > .kotlin/session; printf 'i\n' > .idea/workspace.xml
+  printf 'u\n' > ios/App.xcodeproj/xcuserdata/u.xcuserstate
+  orig="$(cat "$(dirname "$0")/ide-state")"
+  mkdir -p "$orig/.idea" "$orig/ios/App.xcodeproj/xcuserdata"
+  printf '%s\n' "$RANDOM" > "$orig/.idea/workspace.xml"
+  printf '%s\n' "$RANDOM" > "$orig/ios/App.xcodeproj/xcuserdata/u.xcuserstate"
+fi
 mkdir -p "$dd/Build/Products/$cfg-iphonesimulator/App.app"
 printf '<?xml version="1.0"?><plist><dict><key>CFBundleIdentifier</key><string>test.app</string></dict></plist>\n' > "$dd/Build/Products/$cfg-iphonesimulator/App.app/Info.plist"
+if [[ -f "$(dirname "$0")/two-apps" ]]; then
+  mkdir -p "$dd/Build/Products/$cfg-iphonesimulator/Clip.app"
+  cp "$dd/Build/Products/$cfg-iphonesimulator/App.app/Info.plist" "$dd/Build/Products/$cfg-iphonesimulator/Clip.app/Info.plist"
+fi
 SH
 chmod +x "$TMP/bin/xcodebuild"
+printf '#!/bin/sh\nexit 0\n' > "$TMP/bin/xcrun"; chmod +x "$TMP/bin/xcrun"
 before="$(hash_tree "$TMP/native")"
 out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
 assert_eq "$st" 0 "fake native build succeeds"
@@ -231,12 +246,13 @@ out="$(bash "$RUN" --repo "$TMP/linked" --out "$TMP/output")"; st=$?
 assert_eq "$st" 3 "symlink input is SKIP"
 assert_contains "$out" 'symlink' "symlink gap explained"
 
-section "excluded dependency links do not block an isolated build"
+section "links with excluded dependency names are rejected too"
 rm -rf "$TMP/native/node_modules"
 ln -s "$TMP/native" "$TMP/native/node_modules"
 out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
-assert_eq "$st" 0 "excluded node_modules symlink is ignored"
-rm "$TMP/native/node_modules"
+assert_eq "$st" 3 "excluded-name node_modules symlink is SKIP, not silently ignored"
+assert_contains "$out" 'symlink' "node_modules symlink reason"
+rm "$TMP/native/node_modules"; mkdir -p "$TMP/native/node_modules"; printf 'excluded\n' > "$TMP/native/node_modules/sentinel"
 
 section "isolated build can use caller-provided CocoaPods gem path"
 cat > "$TMP/bin/gem-probe" <<'SH'
@@ -318,5 +334,149 @@ assert_eq "$?" 0 "Flutter provenance distinguishes generated preparation from co
 out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/flutter" --framework flutter --out "$TMP/flutter-artifact" --timeout 20)"; st=$?
 assert_eq "$st" 3 "Flutter compiler-time source mutation still rejects binding"
 assert_contains "$out" 'provenance binding unavailable' "Flutter generated files were not excluded from integrity checks"
+
+section "symlinks named like excluded directories cannot escape the copy"
+for linkpath in ios/Pods build; do
+  rm -rf "$TMP/escape" "$TMP/outside"
+  mkproject escape
+  rm -rf "$TMP/escape/$linkpath"
+  mkdir -p "$TMP/outside"; printf 'outside\n' > "$TMP/outside/sentinel"
+  ln -s "$TMP/outside" "$TMP/escape/$linkpath"
+  outside_before="$(hash_tree "$TMP/outside")"
+  out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/escape" --out "$TMP/output" --timeout 20)"; st=$?
+  assert_eq "$st" 3 "$linkpath symlink is SKIP"
+  assert_contains "$out" 'symlink' "$linkpath symlink reason reported"
+  assert_eq "$(hash_tree "$TMP/outside")" "$outside_before" "$linkpath link never let a tool write outside the copy"
+done
+rm -rf "$TMP/escape" "$TMP/outside"
+mkproject escape
+mkdir -p "$TMP/outside"; printf 'outside\n' > "$TMP/outside/secret-target"
+ln -s "$TMP/outside/secret-target" "$TMP/escape/.env.local"
+ln -s "$TMP/outside/secret-target" "$TMP/escape/Auth.p12"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/escape" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 0 "secret-named links are excluded from the copy and do not block the build"
+rm -rf "$TMP/escape" "$TMP/outside"
+
+section "tool availability is checked before any project code runs"
+mkdir -p "$TMP/farm" "$TMP/pre-bin"
+for c in awk basename cat chmod cp dirname env find grep head ls mkdir mktemp mv python3 rm rsync sed sleep sort tr uname wc tail touch cut date readlink tee id sh bash; do
+  p="$(command -v "$c" 2>/dev/null)" && [[ -x "$p" ]] && ln -sf "$p" "$TMP/farm/$c"
+done
+for t in npm yarn pnpm npx pod flutter; do
+  printf '#!/bin/sh\ntouch "%s/ran-%s"\nexit 0\n' "$TMP/pre-bin" "$t" > "$TMP/pre-bin/$t"; chmod +x "$TMP/pre-bin/$t"
+done
+mkproject rnpre
+printf '{\n  "dependencies": {\n    "react-native": "0.76.0"\n  }\n}\n' > "$TMP/rnpre/package.json"
+printf '{}\n' > "$TMP/rnpre/package-lock.json"; printf 'platform :ios\n' > "$TMP/rnpre/ios/Podfile"
+out="$(PATH="$TMP/pre-bin:$TMP/farm" bash "$RUN" --repo "$TMP/rnpre" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "React Native without Xcode is SKIP"
+assert_contains "$out" 'xcodebuild' "missing Xcode is named"
+assert_eq "$(ls "$TMP/pre-bin" | grep -c '^ran-')" 0 "no npm/pod/expo step ran without xcodebuild"
+mkdir -p "$TMP/flutterpre/ios/Runner.xcodeproj"; printf 'name: fixture\n' > "$TMP/flutterpre/pubspec.yaml"
+out="$(PATH="$TMP/pre-bin:$TMP/farm" bash "$RUN" --repo "$TMP/flutterpre" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "Flutter without Xcode is SKIP"
+assert_eq "$(ls "$TMP/pre-bin" | grep -c '^ran-')" 0 "no flutter step ran without xcodebuild"
+printf '#!/bin/sh\nexit 0\n' > "$TMP/pre-bin/xcodebuild"; chmod +x "$TMP/pre-bin/xcodebuild"
+out="$(PATH="$TMP/pre-bin:$TMP/farm" bash "$RUN" --repo "$TMP/rnpre" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "Xcode without xcrun is SKIP"
+assert_contains "$out" 'xcrun' "missing xcrun named"
+assert_eq "$(ls "$TMP/pre-bin" | grep -c '^ran-')" 0 "no install step ran without xcrun"
+rm -f "$TMP/pre-bin/xcodebuild"
+
+section "IDE and Gradle state is not source"
+printf '%s\n' "$TMP/native" > "$TMP/bin/ide-state"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 0 "build writing .gradle/.kotlin/.idea/xcuserdata is not a source change"
+assert_absent "$out" 'source identity changed' "no source-changed skip"
+rm -f "$TMP/bin/ide-state"; rm -rf "$TMP/native/.idea" "$TMP/native/ios/App.xcodeproj/xcuserdata"
+mkdir -p "$TMP/kmp2/iosApp/iosApp.xcodeproj" "$TMP/kmpbin"
+printf 'plugins {}\n' > "$TMP/kmp2/build.gradle.kts"
+cat > "$TMP/kmp2/gradlew" <<SH
+#!/bin/sh
+printf '%s|%s\n' "\$PWD" "\$*" >> "$TMP/kmp-gradle-calls"
+mkdir -p .gradle .kotlin
+printf 'x\n' > .gradle/state; printf 'y\n' > .kotlin/session
+touch "$TMP/kmp-linked"
+SH
+chmod +x "$TMP/kmp2/gradlew"
+cat > "$TMP/kmpbin/xcodebuild" <<SH
+#!/usr/bin/env bash
+if [[ " \$* " == *" -list -json "* ]]; then printf '{"project":{"name":"iosApp","schemes":["iosApp"]}}\n'; exit 0; fi
+if [[ ! -f "$TMP/kmp-linked" ]]; then printf "ld: framework 'shared' not found\n"; exit 65; fi
+mkdir -p .gradle .kotlin; printf 'z\n' > .gradle/more
+dd=''; cfg=''
+while [[ \$# -gt 0 ]]; do case "\$1" in -derivedDataPath) dd="\$2"; shift 2;; -configuration) cfg="\$2"; shift 2;; *) shift;; esac; done
+mkdir -p "\$dd/Build/Products/\$cfg-iphonesimulator/iosApp.app"
+printf '<?xml version="1.0"?><plist><dict><key>CFBundleIdentifier</key><string>t</string></dict></plist>\n' > "\$dd/Build/Products/\$cfg-iphonesimulator/iosApp.app/Info.plist"
+SH
+chmod +x "$TMP/kmpbin/xcodebuild"; cp "$TMP/bin/xcrun" "$TMP/kmpbin/xcrun"
+rm -f "$TMP/kmp-linked" "$TMP/kmp-gradle-calls"
+out="$(cd "$TMP" && PATH="$TMP/kmpbin:$PATH" bash "$RUN" --repo "$TMP/kmp2" --out "$TMP/kmp-out" --timeout 20)"; st=$?
+assert_eq "$st" 0 "KMP gradlew fallback resolves ./gradlew in the step directory and build stays bound"
+assert_absent "$out" 'source identity changed' "KMP .gradle/.kotlin writes are not a source change"
+assert_contains "$(cat "$TMP/kmp-gradle-calls" 2>/dev/null)" '--project-cache-dir' "gradle project cache is redirected"
+case "$(cut -d'|' -f2 "$TMP/kmp-gradle-calls" 2>/dev/null)" in *"$TMP/kmp2"*) echo '  FAIL: gradle cache inside source'; fails=$((fails+1));; *) echo '  ok: gradle cache path is not the source tree';; esac
+
+section "multiple application bundles are ambiguous"
+: > "$TMP/bin/two-apps"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "App Clip style output with two .app bundles is SKIP"
+assert_contains "$out" 'more than one' "ambiguity reason"
+rm -f "$TMP/bin/two-apps"
+
+section "secret files are recorded as presence only"
+mkdir -p "$TMP/secrets/fastlane/metadata/review_information"
+printf 'abc\n' > "$TMP/secrets/.env"; printf 'x\n' > "$TMP/secrets/AuthKey_ABC.p8"; printf 'pw\n' > "$TMP/secrets/fastlane/metadata/review_information/demo_password.txt"
+printf 'y\n' > "$TMP/secrets/a.mobileprovision"; printf 'z\n' > "$TMP/secrets/dev-asc-key-1.json"; printf 'src\n' > "$TMP/secrets/main.swift"
+python3 "$ROOT/skills/appstore-precheck/scripts/source-snapshot.py" --repo "$TMP/secrets" --out "$TMP/secrets-snap.json"
+python3 - "$TMP/secrets-snap.json" <<'PYTEST'
+import hashlib, json, sys
+raw = open(sys.argv[1]).read()
+e = json.loads(raw)['entries']
+for k in ('.env', 'AuthKey_ABC.p8', 'fastlane/metadata/review_information/demo_password.txt', 'a.mobileprovision', 'dev-asc-key-1.json'):
+    assert e[k] == {'kind': 'file', 'secret': True}, (k, e.get(k))
+assert 'sha256' in e['main.swift']
+for value in (b'abc\n', b'x\n', b'pw\n', b'y\n', b'z\n'):
+    assert hashlib.sha256(value).hexdigest() not in raw
+PYTEST
+assert_eq "$?" 0 "secret snapshot entries carry no hash, size or mode"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"
+ev="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+secret_hash="$(printf 'never-print-this-secret\n' | python3 -c 'import hashlib,sys;print(hashlib.sha256(sys.stdin.buffer.read()).hexdigest())')"
+assert_absent "$(cat "$(dirname "$ev")/source-before.json")" "$secret_hash" "retained evidence has no brute-forceable secret hash"
+
+mkproject flpw
+mkdir -p "$TMP/flpw/fastlane/metadata/review_information" "$TMP/flpw/fastlane/review_information"
+printf 'pw\n' > "$TMP/flpw/fastlane/metadata/review_information/demo_password.txt"
+printf 'pw\n' > "$TMP/flpw/fastlane/review_information/Demo_Password.txt"
+printf 'Ada\n' > "$TMP/flpw/fastlane/metadata/review_information/first_name.txt"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/flpw" --out "$TMP/output" --timeout 20 --keep-build)"; st=$?
+assert_eq "$st" 0 "fastlane review credentials fixture builds"
+workspace="$(printf '%s\n' "$out" | sed -n 's/^build_workspace=//p')"
+[[ -f "$workspace/project/fastlane/metadata/review_information/first_name.txt" ]] && echo '  ok: non-secret review metadata still copied' || { echo '  FAIL: review metadata dropped'; fails=$((fails+1)); }
+[[ ! -e "$workspace/project/fastlane/metadata/review_information/demo_password.txt" && ! -e "$workspace/project/fastlane/review_information/Demo_Password.txt" ]] && echo '  ok: review password files stay out of the copy' || { echo '  FAIL: review password copied'; fails=$((fails+1)); }
+rm -rf "$workspace"
+
+section "wall-clock deadline and termination"
+: > "$TMP/bin/sleep-long"; rm -f "$TMP/bin/started"
+t0=$SECONDS
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 60 --deadline 3)"; st=$?
+assert_eq "$st" 3 "exhausted deadline is SKIP"
+assert_contains "$out" 'build deadline exceeded' "deadline reason"
+(( SECONDS - t0 < 15 )) && echo '  ok: deadline cut the 30s tool short' || { echo '  FAIL: deadline did not cap the step'; fails=$((fails+1)); }
+assert_eq "$(find "$TMP/build-temp" -maxdepth 1 -name 'appstore-precheck-build.*' | wc -l | tr -d ' ')" 0 "workspace removed after deadline"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --deadline 0 2>&1)"; st=$?
+assert_eq "$st" 64 "--deadline must be positive"
+rm -f "$TMP/bin/started"
+PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 60 > "$TMP/term.out" 2>&1 &
+pid=$!
+for _ in $(seq 1 100); do [[ -f "$TMP/bin/started" ]] && break; sleep 0.1; done
+[[ -f "$TMP/bin/started" ]] || { echo '  FAIL: build never started'; fails=$((fails+1)); }
+t0=$SECONDS
+kill -TERM "$pid"; wait "$pid"; st=$?
+assert_eq "$st" 143 "TERM exits 143"
+(( SECONDS - t0 < 10 )) && echo '  ok: TERM handled promptly' || { echo '  FAIL: TERM was deferred'; fails=$((fails+1)); }
+assert_eq "$(find "$TMP/build-temp" -maxdepth 1 -name 'appstore-precheck-build.*' | wc -l | tr -d ' ')" 0 "temp copy removed on TERM"
+rm -f "$TMP/bin/sleep-long" "$TMP/bin/started"
 
 exit "$fails"

@@ -3,11 +3,27 @@
 import argparse
 import hashlib
 import json
+import fnmatch
 import os
 from pathlib import Path
 
-# Git internals, downloaded dependencies and generated outputs are not source.
-EXCLUDED = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData', '.build', '__pycache__', '.dart_tool'}
+# Git internals, downloaded dependencies, generated outputs and IDE/Gradle state are
+# not source. These are also excluded from the build copy (build-run.sh rsync).
+EXCLUDED = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData', '.build', '__pycache__', '.dart_tool',
+            '.gradle', '.kotlin', '.idea'}
+# Per-user Xcode state (schemes/breakpoints/xcuserstate) is rewritten by a running Xcode,
+# so it is not source identity, but it is still copied because user schemes may live there.
+SNAPSHOT_ONLY_EXCLUDED = {'xcuserdata'}
+
+
+def is_secret(rel):
+    """Same patterns build-run.sh keeps out of the copy; record presence only, never a hash."""
+    parts = rel.split('/')
+    name = parts[-1]
+    if (name in ('.env', '.appstore-precheck.json') or name.startswith('.env.')
+            or fnmatch.fnmatch(name, '*asc-key*.json') or name.endswith(('.p8', '.p12', '.mobileprovision'))):
+        return True
+    return 'password' in name.lower() and 'review_information' in parts[:-1] and 'fastlane' in parts[:-1]
 
 
 def snapshot(root):
@@ -16,11 +32,14 @@ def snapshot(root):
         raise ValueError('source directory unavailable')
     entries, errors = {}, []
     for base, dirs, files in os.walk(str(root), followlinks=False):
-        dirs[:] = sorted(d for d in dirs if d not in EXCLUDED)
+        dirs[:] = sorted(d for d in dirs if d not in EXCLUDED and d not in SNAPSHOT_ONLY_EXCLUDED)
         for name in sorted(files + [d for d in dirs if (Path(base)/d).is_symlink()]):
             path = Path(base) / name
             key = path.relative_to(root).as_posix()
             try:
+                if is_secret(key):
+                    entries[key] = {'kind': 'symlink' if path.is_symlink() else 'file', 'secret': True}
+                    continue
                 if path.is_symlink():
                     digest = hashlib.sha256(os.readlink(str(path)).encode()).hexdigest()
                     entries[key] = {'kind': 'symlink', 'sha256': digest}
@@ -38,7 +57,7 @@ def snapshot(root):
                 errors.append(key)
     digest = hashlib.sha256(json.dumps(entries, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
     return {'schema_version': 1, 'sha256': digest, 'entries': entries,
-            'stable_read': not errors, 'read_errors': errors, 'excluded_directories': sorted(EXCLUDED)}
+            'stable_read': not errors, 'read_errors': errors, 'excluded_directories': sorted(EXCLUDED | SNAPSHOT_ONLY_EXCLUDED)}
 
 
 def main():
