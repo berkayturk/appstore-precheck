@@ -1,0 +1,34 @@
+{
+  "checks": {
+    "section1-kids-dependencies": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "static",
+      "symbol": "review_kids",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
+    },
+    "section1-safety-signals": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "static",
+      "symbol": "review_safety",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
+    },
+    "section1-ugc-controls": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section1-review.py",
+      "line_prefix": "SECTION1-",
+      "route": "static",
+      "symbol": "review_ugc",
+      "tests": [
+        "tests/test-section1-review.sh"
+      ]
+    }
+  }
+}

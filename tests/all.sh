@@ -47,6 +47,42 @@ SUITE=(
   "test-rag-run-guard.sh" # eval/run.sh --rag mismatch guard (RAG eval, no network)
   "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
   "test-typesafe.sh"   # optional typed semantic review, transport/cache failures, gate isolation
+  "test-source-snapshot.sh" # private source content binding
+  "test-verification-orchestration.sh" # opt-in runtime boundaries and selector forwarding
+  "test-verification-policy.sh" # implemented condition capability, independent of route labels
+  "test-verification-safety-policy.sh" # Safety evidence and exceptions
+  "test-verification-section2.sh" # Performance scope and metadata proof
+  "test-verification-metadata.sh" # exact ASC identity and limited name proof
+  "test-verification-business-policy.sh" # commerce scope and exceptions
+  "test-section4-verification.sh" # design and login evidence conditions
+  "test-verification-legal-policy.sh" # privacy, licenses and authority
+  "test-verification-intro-policy.sh" # submission scope and alias preservation
+  "test-verification-report.sh" # scoped decisions and independent proof
+  "test-manual-review-packet.sh" # criterion-specific private evidence requests and findings
+  "test-verification-contract.sh" # versioned evidence and decision invariants
+  "test-coverage.sh"   # obligation schema, registry, and route coverage
+  "test-copyright-boundary.sh" # source-text and npm package boundary
+  "test-default-golden.sh" # default scan text pinned to main baseline
+  "test-build-run.sh" # isolated opt-in build plans and source immutability
+  "test-obligations-1.sh" # Safety section atomic classification
+  "test-obligations-2.sh" # Performance section atomic classification
+  "test-obligations-3.sh" # Business section atomic classification
+  "test-obligations-4.sh" # Design section atomic classification
+  "test-obligations-5.sh" # Legal section atomic classification
+  "test-obligations-intro.sh" # Submission process atomic classification
+  "test-artifact-review.sh" # compiled bundle inspection and evidence gaps
+  "test-attestation-report.sh" # developer answers and obligation-level run report
+  "test-metadata-review.sh" # local and opt-in ASC listing evidence
+  "test-coverage-json.sh" # actual-run route states in the JSON envelope
+  "test-section1-review.sh" # Safety evidence routes and explicit abstention
+  "test-section2-review.sh" # Performance evidence routes and explicit abstention
+  "test-section3-review.sh" # Commerce evidence routes and explicit abstention
+  "test-section4-review.sh" # Design evidence routes and explicit abstention
+  "test-section5-review.sh" # Privacy and legal evidence routes and explicit abstention
+  "test-section6-review.sh" # Intro and submission evidence routes and explicit abstention
+  "test-runtime-review.sh" # bounded screen discovery and opt-in blocking
+  "test-corpus-panel.sh" # live panel scope, seed and benchmark regressions
+  "test-opt-in-review.sh" # temporary build orchestration and CLI opt-in
 )
 
 failed=()

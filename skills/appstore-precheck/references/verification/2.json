@@ -1,0 +1,3336 @@
+{
+  "schema_version": 1,
+  "section": "2",
+  "obligations": [
+    {
+      "obligation_id": "atom-bcc5e1c47ad942c992deac8363bd0d78",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "The build submitted for review, including a pre-order build, is production ready.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the submitted signed package, release acceptance scenarios, remote content and enabled feature inventory; identify unfinished flows and whether the offered product can be used end to end, including pre-order releases. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-022f8d501aee473fb3feecfeeba4cf71",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "All submitted URLs are functional.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory every URL supplied in each submitted locale and review field; open each destination and exercise its intended support, privacy or account function. A HEAD success alone proves neither usable content nor intended function. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-da5c1a8b088e415799ddc357c2f628fa",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Supply every metadata field needed for the reviewed release, including a pre-order listing.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile the selected app/version/build against required ASC fields, locales, platform, release and pre-order state, purchase configuration and applicable distribution route; record omitted required fields without assuming all conditional fields are universal. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-27c1bcb131ec4062aba7bc9362d42302",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Placeholder text, empty websites and temporary content are removed before submission.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect rendered release screens, localized copy, reachable remote content and submitted websites against their production content inventory; document temporary text and empty destinations. A source match is only a lead; absence of source matches does not cover remote content. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3c95a205dfc5469d86927977e0e7c636",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "real-hardware-test",
+          "description": "Submitted build has been tested on actual platform hardware.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "hardware-test-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect device/build-bound test execution records. Provide dated execution evidence from actual supported platform hardware bound to the submitted build, with exercised scenarios and observed stability outcomes; explain unresolved defects. A macOS build may be tested on a Mac; a simulator alone does not meet hardware testing and no formal defect log is mandatory. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        },
+        {
+          "id": "stability-defects",
+          "description": "Stability defects found before review are resolved.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "hardware-test-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review observed defect outcomes and corresponding fixes/retests, without requiring a formal defect log. Provide dated execution evidence from actual supported platform hardware bound to the submitted build, with exercised scenarios and observed stability outcomes; explain unresolved defects. A macOS build may be tested on a Mac; a simulator alone does not meet hardware testing and no formal defect log is mandatory. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e575151c903d4c8fb72cede56c55c136",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "review-access",
+          "description": "App Review can use the supplied credentials or approved alternate access.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "metadata-asc-snapshot",
+            "review-access-record",
+            "apple-approval-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify a successful review-access session against every account-gated entry point. Map every account-gated review journey to supplied review access instructions and a successful authorized test session; verify credentials remain usable through review without printing secrets. For demo-mode substitution, inspect legal/security necessity and Apple's prior approval under req-cfecb4c630e6425fb0e66478a005c2cd, plus feature parity. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using req-cfecb4c630e6425fb0e66478a005c2cd; an asserted exception without supporting evidence remains unresolved."
+        },
+        {
+          "id": "review-period-access",
+          "description": "Review access stays usable throughout the review period.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "metadata-asc-snapshot",
+            "review-access-record",
+            "apple-approval-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect account expiry, access restrictions and review-period operating arrangements; a single login is insufficient. Map every account-gated review journey to supplied review access instructions and a successful authorized test session; verify credentials remain usable through review without printing secrets. For demo-mode substitution, inspect legal/security necessity and Apple's prior approval under req-cfecb4c630e6425fb0e66478a005c2cd, plus feature parity. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using req-cfecb4c630e6425fb0e66478a005c2cd; an asserted exception without supporting evidence remains unresolved."
+        },
+        {
+          "id": "demo-exception",
+          "description": "Any credential-substitution demo mode meets its exception prerequisites.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "metadata-asc-snapshot",
+            "review-access-record",
+            "apple-approval-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "If no substitution is used, substantiate this branch from actual reviewer access configuration; otherwise require prior Apple approval, necessity and full feature access. Map every account-gated review journey to supplied review access instructions and a successful authorized test session; verify credentials remain usable through review without printing secrets. For demo-mode substitution, inspect legal/security necessity and Apple's prior approval under req-cfecb4c630e6425fb0e66478a005c2cd, plus feature parity. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using req-cfecb4c630e6425fb0e66478a005c2cd; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b2f36389d4ea4b93a7c399473abdefba",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Keep all services required by the submitted build reachable and responsive for the review period, including authentication and third-party services under developer control.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "service-operations-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map required services, including authentication and controlled third parties, to dated reachability/response observations and review-period operating arrangements. A single health check does not establish continuous availability; backend outages must not be blamed on a login UI. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-98d454c351724f8b83bd56473cb39b85",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "When a demo mode substitutes for reviewer credentials, it allows end-to-end inspection of every account feature.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review",
+            "review-access-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare demo-mode and real-account feature inventories and execute each gated journey to its meaningful end state; a demo button or one successful login is insufficient to establish full access. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "req-2f2096c499274b42bfe329048e038a33",
+      "owner": "release owner / QA reviewer",
+      "document_group": "release-readiness",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "complete-package",
+          "description": "The submitted installation package is complete.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect installation and required shipped resources for this exact build. Inspect package contents and installation, then exercise core and edge-case release flows on the target matrix. Separate a reproducible app crash from a driver timeout, unavailable backend or incomplete accessibility tree; a short clean launch is not a complete stability review. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        },
+        {
+          "id": "stable-operation",
+          "description": "The submitted app has no reproducible crashes or serious technical faults.",
+          "evidence_kinds": [
+            "release-inventory",
+            "runtime-transcript",
+            "signed-artifact-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review release-flow behavior on the applicable target matrix; three clean launches do not establish full stability. Inspect package contents and installation, then exercise core and edge-case release flows on the target matrix. Separate a reproducible app crash from a driver timeout, unavailable backend or incomplete accessibility tree; a short clean launch is not a complete stability review. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-480ab89df4f34502a50e8fdd6485c2f5",
+      "owner": "purchase owner / QA reviewer",
+      "document_group": "iap-review-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Offered IAP items are complete.",
+          "evidence_kinds": [
+            "purchase-inventory",
+            "metadata-asc-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile all offered IAP product IDs with submitted product records and usable purchased content; inspect missing assets, unimplemented entitlements and incomplete product configurations in the same release. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f1ad5ba672064b06a7999013a7f9e60a",
+      "owner": "purchase owner / QA reviewer",
+      "document_group": "iap-review-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Offered IAP items are up-to-date.",
+          "evidence_kinds": [
+            "purchase-inventory",
+            "metadata-asc-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare offered product records, descriptions, prices, availability and delivered content with current release behavior and dated product changes; identify obsolete products still offered. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ea124ccce4354665991b411600d9eeaf",
+      "owner": "purchase owner / QA reviewer",
+      "document_group": "iap-review-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Offered IAP items are visible to App Review.",
+          "evidence_kinds": [
+            "purchase-inventory",
+            "metadata-asc-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace every offered IAP from review entry and access steps to the product presentation on the submitted build; verify required account, region and eligibility access for App Review. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2e86ab0ea8624da08e7a081a50b90ce3",
+      "owner": "purchase owner / QA reviewer",
+      "document_group": "iap-review-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Offered IAP items function in the submitted build.",
+          "evidence_kinds": [
+            "purchase-inventory",
+            "metadata-asc-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Execute authorized sandbox purchase flows for every offered product type and inspect transaction completion plus delivered entitlement/content; a paywall, product fetch or simulated tap is insufficient. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-26cf6458c05541869843bb236e088a76",
+      "owner": "purchase owner / QA reviewer",
+      "document_group": "iap-review-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Review Notes explain any configured IAP item not findable or reviewable in the app.",
+          "evidence_kinds": [
+            "purchase-inventory",
+            "metadata-asc-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Diff configured IAP IDs against items discoverable by App Review, then inspect the actual submitted Notes for Review for an explanation of each absent or unreviewable item. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f796bdeba806404d9d1caeb611d8732e",
+      "owner": "release owner / distribution reviewer",
+      "document_group": "beta-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Production App Store submissions are complete products rather than demo, beta, or trial-only builds.",
+          "evidence_kinds": [
+            "distribution-record",
+            "beta-review-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect production distribution context, release feature inventory and end-to-end use to distinguish a completed product from a demo/beta/trial-only build; legitimate freemium limits alone are not proof of a trial-only app. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-537a0112fd81465ea93e66802fd79534",
+      "owner": "release owner / distribution reviewer",
+      "document_group": "beta-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "TestFlight beta build is intended for public distribution.",
+          "evidence_kinds": [
+            "distribution-record",
+            "beta-review-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the beta distribution plan and release audience evidence to determine whether this TestFlight product is intended for public distribution; do not apply this beta condition solely because TestFlight appears in source. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f25230e8a6004edbb77c8f422de49d65",
+      "owner": "release owner / distribution reviewer",
+      "document_group": "beta-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "TestFlight beta build complies with applicable App Review Guidelines.",
+          "evidence_kinds": [
+            "distribution-record",
+            "beta-review-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the exact beta build against the applicable guideline decision set, preserving all unresolved and finding results; a TestFlight acceptance record does not prove every applicable guideline. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a4d2b77d8ff942679010f433dc9e19bc",
+      "owner": "release owner / distribution reviewer",
+      "document_group": "beta-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "TestFlight access is not exchanged for tester compensation of any kind.",
+          "evidence_kinds": [
+            "distribution-record",
+            "beta-review-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect tester recruitment terms, access eligibility and compensation/payment arrangements for exchanges of value for TestFlight access; an owner yes/no answer does not resolve actual terms. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fc833c57c3024ec29ca3b1c81fbc7043",
+      "owner": "release owner / distribution reviewer",
+      "document_group": "beta-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Significant beta build update is submitted to TestFlight App Review before tester distribution.",
+          "evidence_kinds": [
+            "distribution-record",
+            "beta-review-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare significant beta change records, TestFlight review submission/approval records and tester distribution timestamps for the same build; establish whether review preceded distribution. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cd12f23d19f343c1950ed58269e45360",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Each submitted metadata surface stays current as the released product changes.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare each live submitted listing surface and locale with the release change inventory and current feature behavior; include custom product pages, previews and privacy declarations in the reconciliation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-edd8489e47804bd6abc3972fd96b18f0",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Across listing variants, customer-facing facts, privacy disclosures, text, images, and video accurately describe the shipped product.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Cross-check all localized listing variants, screenshots, previews and privacy disclosures against shipped features, data inventory and actual UI; document mismatches by surface and avoid generalizing from one screenshot. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1e5da57b9b5f418cbfed204ac0698f62",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "The release app contains no hidden, dormant or undocumented features.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect compiled feature inventory, remote flags, entitlements, alternate account/region states and reviewer-visible documentation for undisclosed or dormant functionality; no source keyword search can rule it out. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-334bde17ed704ef28c7949af2291fb13",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "The release app functionality is clear to end users and App Review.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Walk user and reviewer journeys with the public description and review notes; identify features whose purpose, activation or effect is unclear in the shipped interface or review instructions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d79c71f22baa4b1d85f84e1fdbd8f89c",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "All new features, functionality and product changes are specifically described in App Store Connect Notes for Review.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the release change list with actual submitted Notes for Review and require a specific entry for every new feature and material product change; generic release prose is not sufficient. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2471c65fff8442c8942b9c746975c731",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Reviewers can access every new or changed feature in the submitted build.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Execute each new or changed feature using the review access path, required hardware and configured services; record the meaningful result, not merely the presence of a navigation element. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6805b1286df343709017cbde58dbf50e",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Marketing within and outside the App Store does not materially misrepresent the app content or services.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare claims in App Store pages and developer-controlled external marketing against recorded shipped behavior and offered services for the same release and regions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0f3c924c69bc46a19fe491245db2aa77",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Marketing within and outside the App Store does not promote a false price.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile advertised prices on store and external marketing surfaces with actual payable amounts, currencies, eligibility and recurring terms for each region and customer class. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b3f1b8ff2f154c76a76e8ad53c9933b1",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Description, screenshots and previews identify featured items or features requiring additional purchase.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every featured screenshot, preview and description claim to purchase requirements; inspect whether the corresponding surface makes additional purchase clear for gated features. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-26707ff0c3f04fc48c8d9cba22adb583",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Promoted IAP display name, screenshot and description suit a public audience.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect every promoted IAP name, image and description for public-audience suitability across locales; consider depicted material and context, not keyword absence. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bc52f44a1c904218b6c8e56f18b2e65e",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Promoted IAP follows the linked Apple promotional guidance.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the current Apple promoted-IAP requirements against the exact promoted assets, product configuration and purchase integration; enumerate applicable requirements and unresolved evidence. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8686be1b06dc40a2b8db1920306fde4f",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "The app handles promoted IAP launch/purchase transaction completion.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Use an authorized sandbox promoted-product entry to launch the exact build and finish the transaction, then verify entitlement/content delivery and cancellation/error handling; a handler symbol does not prove completion. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3367a8ec9d40428e9485fa06d6404903",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Submitted screenshots show the app in use.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare every submitted screenshot with the matching usable app state; overlays and extended functionality may explain genuine use, while only title art, splash screens or login screens do not demonstrate app use. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b4d5eed51a6245dda00826ef43148049",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Preview footage derives from a video recording of actual app operation.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect preview source recordings and edit provenance against actual release use; permitted narration/overlays must explain captured use, and Messages context is allowed for stickers/iMessage extensions under the linked exceptions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-26e65bcbc54e4c59ae81b534f6e6612c, atom-9b44fd7a51204361b47d660915c809aa; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bef9722d5ab84f6db904c80fccdbf6a5",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App uses the most appropriate App Store category.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the app's principal purpose and usage with available categories and the submitted category selection; category presence alone does not prove it is the most appropriate one. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-504a8494ddbe4fe4bca64d5d7dab9177",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App Store Connect age-rating answers are honest and align with app behavior.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review each ASC age-rating answer against current content, features, UGC, advertising and available controls across regions and remote states; a numeric age label does not prove questionnaire accuracy. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-789bdc933c474241b69f852f5dfd81b5",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Required media content ratings and warnings appear in every applicable territory.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory",
+            "regional-classification-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify territories and media requiring local ratings/warnings, inspect the applicable classification evidence and their actual presentation in each territory; record qualified regional review where required. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4ce5277e9ca64bacb43032a88e36ddc9",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App name is unique enough to distinguish the app.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the submitted localized names with relevant existing app names and brand identity to assess whether users can distinguish the product; length validation cannot prove distinctiveness. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fad9dada6bdd482990b4f2871db577d9",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Keywords accurately describe the app.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each submitted keyword to demonstrable functionality or content in the current release and locale; document ambiguous terms in context. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c8d26ba611cb48fa8201dea7d711113b",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Metadata is not stuffed with trademarks, popular app names, prices or irrelevant phrases to game discovery.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect all discovery metadata in context for unrelated trademarks, popular app names, price terms and irrelevant phrases; legitimate descriptive uses require review rather than automatic string bans. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9518097ae09743e8a5d0e3a752b262aa",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "metadata-asc-snapshot",
+        "submission-scope"
+      ],
+      "conditions": [
+        {
+          "id": "app-name-limit",
+          "description": "App name is no longer than 30 characters.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot"
+          ],
+          "full_positive_verifiers": [
+            "metadata.app-name-length.v1"
+          ],
+          "decisive_finding_verifiers": [
+            "metadata.app-name-length.v1"
+          ],
+          "review_requirement": "Inspect a live ASC capture tied to the exact bundle, app version, platform and attached build; require complete paginated appInfo and localization collections, including primary locale, then measure every returned name. Local fastlane names alone do not prove submitted names and ambiguous Unicode counts remain unresolved. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ],
+      "applicability_verifiers": [
+        "metadata.app-name-length.v1"
+      ]
+    },
+    {
+      "obligation_id": "atom-d74e200dcb6642a7ae70e7f83e8a5645",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App names, subtitles, screenshots and previews omit prices, terms or descriptions inappropriate to that metadata type.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review app names, subtitles, screenshot copy and preview copy according to the allowed purpose of each metadata surface; identify inappropriate price/term/promotional content in context rather than banning every numeric token. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-97aa60928d3a40e6b8d023bd16fc61ac",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Subtitle follows standard metadata rules and excludes inappropriate content.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect every localized subtitle against the applicable metadata requirements and actual product context, including content suitability and accurate claims. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0ca323d6528245c3a1abfe1ae09bb627",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Subtitle does not reference other apps.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect localized subtitle text and contextual references to other apps; distinguish actual other-app references from coincidental ordinary words. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5deb3f638fd544fe8571f44736f90bad",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Subtitle does not make unverifiable product claims.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enumerate factual and comparative claims in each subtitle, obtain substantiating product evidence and identify claims that cannot be verified. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f2aabf7980e5450f9be01a60557d7cc3",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App and IAP icons, screenshots and previews suit a 4+ audience regardless of app rating.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review every app and IAP icon, screenshot and preview as a public visual asset for young audiences, including imagery and overlays; the app's older age rating is not an exception for these assets. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1eb522be2fd7493e81e6115fa15cbeec",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App metadata uses “For Kids” or “For Children” only when the app is in Kids Category.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the actual Kids Category setting and every localized child-directed name/phrase in submitted metadata; verify restricted child-directed labels occur only in that category, including equivalent localized claims. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4a55247181204104965cdfaaaf78b188",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App metadata names and icon variants remain recognizably consistent.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare app name and icon variants across store, device, purchase and localization surfaces for recognizable product identity; exact pixel or string equality is not required. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c568f26de7444ff59dfb492fdb9ce4d5",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Developer holds rights to all material shown in icons, screenshots and previews.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory",
+            "rights-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every depicted asset, brand, person and third-party material in icons/screenshots/previews to documented ownership, licenses or permissions covering distribution; confirm authority and scope with the rights owner. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence.",
+          "required_positive_evidence_kinds": [
+            "rights-record"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4a04e741bb5e4b0d8b5aa0d9bdc1b6e7",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Submitted visuals use fictional account information rather than a real person’s data.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect source and final visual assets for names, messages, accounts and other personal data; document synthetic account provenance and verify visuals do not expose an actual person's information. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9db9677a29c5465aac9b166f78fe5950",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App and metadata focus on the supported Apple-platform experience and omit other-platform/marketplace names, icons and imagery.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory",
+            "apple-approval-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect app and metadata for other-platform/marketplace imagery and names in context; for an exception, review specific Apple approval covering the actual interactive use under atom-b2b4076815824dc6a628c8d0d352c64d. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-b2b4076815824dc6a628c8d0d352c64d; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-74fbb357ec7248f4a6579b70b3f80d36",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App metadata is focused on the app and its actual experience.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare each metadata element to the app's supported experience and intended product use, identifying unrelated narratives or content. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a0fad48dc2f14f018fbfdbb018e703f6",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App metadata omits irrelevant information.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review localized metadata against the feature/content inventory and identify irrelevant information without assuming a keyword match proves irrelevance. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-142947eaa09c4b0ba55d784fbf6b99ff",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Pre-order app is complete and deliverable as submitted.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the actual pre-order package and delivery plan with complete core flows, resources and configured services; a future feature promise does not replace a deliverable submitted product. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8b806a7555a54445b3fb528d0eb014b5",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Released app is not materially different from the pre-order advertising.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the original pre-order listing/advertising snapshots with the planned released build and itemize material differences, including monetization and functionality. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6b3f135b76954fd9a8022fd23d402a53",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Material pre-order app change triggers restart of pre-order sales.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review pre-order change history for material changes and inspect ASC records showing sales were restarted where required; do not infer compliance merely from a current pre-order state. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9c2c65e3051541c291b4eea66e0d5a86",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "What’s New text clearly describes new features and product changes.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare What’s New text with the release change list. Generic prose is sufficient only for a release limited to bug fixes, security or performance under atom-0faad4c499ba43c684c4c395561973da; new features need specific description. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-0faad4c499ba43c684c4c395561973da; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0cf07fdf80a54ce6802790b6716b9232",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "The featured event matches an event classification available in App Store Connect.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the event experience with the selected ASC event type and the available classification definition; an arbitrary marketing campaign is not automatically an eligible event. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a4355e306bbd460bbcb25366cc997f93",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "In-app event metadata is factually accurate.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Cross-check localized event text/images and offered terms against actual event content, access requirements and behavior for the submitted event. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c0857e55558348dcb1ee87d6ae8c3897",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Event metadata pertains to the event, not the app generally.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect every event metadata field for information about that specific event; distinguish general app promotion from event-specific explanation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3eda34046051401f8a2cd172d453d8ef",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "In-app event occurs at selected dates and times in every selected storefront.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare configured start/end timestamps and selected storefronts with event backend scheduling and observed availability in each region/time zone; one successful regional run cannot cover all selected storefronts. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bb3b8be7c0924b608600a9158f361304",
+      "owner": "metadata owner / content reviewer",
+      "document_group": "listing-assets-and-claims",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Event deep link opens the proper in-app event destination.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "listing-asset-review",
+            "release-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Open each submitted event deep link from its external entry point on the target build and verify arrival at the correct active event content, including authentication and cold-start paths. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e1a97fafa5914e39be621f180bc1a137",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "iPhone app runs on iPad whenever feasible.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Test iPhone-app installation and supported flows on iPad; if claiming infeasibility, explain the actual platform or feature limitation with evidence under atom-b05afb92394740e4ac5d57768caf349b. A missing iPad target setting alone is not exclusion evidence and no formal document is mandatory. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-b05afb92394740e4ac5d57768caf349b; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f1f851ad4e0341298c3cb4f4fd0f4d9a",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App uses power efficiently.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Measure representative foreground/background energy use on actual target hardware with workload/duration and baseline recorded; explain unnecessary work and limitations of short or simulator observations. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bdd79b9987db49eba42feb75a1a013b7",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App behavior does not risk device damage.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect hardware-affecting operations and exercise relevant safe scenarios on the target matrix, recording resource and thermal behavior; qualified review must assess risk without conducting destructive tests. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f77576632ab3416089355b49e027d4ee",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not rapidly drain battery.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Capture battery/energy measurements across representative sustained and background workloads on real target devices; include environment, duration and comparators before judging rapid drain. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b0faf1f2127d48639d20ad867a729be5",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not generate excessive heat.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Capture sustained thermal behavior under representative workloads on real target devices and assess excessive heat in context; a simulator or short launch cannot establish thermal safety. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cbc112473b68450288dfed343e8cd591",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not put unnecessary strain on device resources.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Profile CPU, memory, storage and network use across representative scenarios and idle/background states; identify unnecessary resource use relative to the feature's actual work. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-67ab76073de04afd9a7f8e1867942296",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Neither the app nor its ads launch background work unrelated to product functions, including mining.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Audit scheduled/background tasks and bundled ad SDK behavior against documented product purposes, with runtime traces including remote configurations; no mining keyword alone proves execution or absence. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-26be828bac124f4d84cd54e1067f6b12",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Apple TV app is usable with Siri Remote or a third-party game controller without requiring another input device.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise all essential tvOS flows with Siri Remote or a supported game controller. Other peripherals may enhance features under atom-419d429384ff4d9f84e40454a04847db but must not be required for baseline usability. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-419d429384ff4d9f84e40454a04847db; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a0cb0b0c8341445c8601fde841dd5719",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Apple TV app metadata clearly discloses a required game controller.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "When a controller is required, compare hardware requirements with each submitted tvOS listing locale and verify the controller requirement is clearly stated. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-65f90c54bb344871b76e99b86bf89ee6",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not suggest or require a device restart unrelated to core functionality.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect onboarding, help, errors and recovery flows for device-restart requests and map any request to a necessary core function; a mention of restart in source is not itself a violation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-68a2c49a54074ee9b46ac9b510dc3027",
+      "owner": "platform engineer / device QA reviewer",
+      "document_group": "hardware-and-resource-behavior",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not suggest or require system-setting changes unrelated to core functionality.",
+          "evidence_kinds": [
+            "hardware-test-record",
+            "runtime-transcript",
+            "resource-profile"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect requests to alter system settings across onboarding, help and failure states; document why each requested change is necessary for actual core functionality. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0e8825a62d2b413fb5268095982b68e5",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app is appropriately sandboxed.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect signed Mac distribution entitlements, all executable bundles and sandbox operation under representative file/network workflows; simulator or unsigned entitlement guesses cannot verify Mac App Store sandboxing. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6c722ce67613460fb35b0736aa297d11",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app follows applicable macOS file-system requirements.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace Mac file-system reads/writes and stored data locations under actual installation/use, then compare with applicable file-system requirements and user permissions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0c7f47dbb9384e1f80d0b3039773cd38",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app uses appropriate macOS APIs when modifying user data stored by another app.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review code paths and runtime operations modifying other apps' user data, identifying the specific macOS APIs and user grants used; absence of a source match is not proof of no such operation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fe36028e269244cf841654a0f5b9dca5",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app is packaged and submitted using Xcode-provided technologies.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect build/archive/export provenance and actual submission packaging for the Mac release; establish use of Xcode-provided submission technologies without requiring every source file to have been authored in Xcode. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-87dee9a6a6c84c6b8ab6a08c35299e12",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app uses no third-party installer.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect first-run/update flows and packaged launchers for invoked third-party installers; confirm observed installation behavior as well as bundle inventory. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-775011efd03340c2b097e71667c95bb9",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app is a self-contained single installation bundle.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the full signed distribution package and install it in a controlled Mac environment; verify a single self-contained app installation instead of external required installation bundles. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0533fe9c07884058a6de6911c7649e32",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not install code or resources in shared locations.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record file-system effects during installation, first run, feature activation and update; inspect any code/resources written to shared locations and their purpose. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5d94c888569a49a0a24af0eb863a479c",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not auto-launch or run at startup/login without consent.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Observe a fresh Mac installation through launch/login/restart in an authorized test environment and inspect login-item registration plus explicit consent; startup behavior must be tied to consent before enabling it. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-27e0dd6085d343b2b6e697322eb3688f",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not leave processes running after quit without consent.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace processes before launch and after normal quit, identify remaining helpers and inspect prior explicit consent for persistent operation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a7de176aa7db4bce89b78db9fda4c246",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not automatically add its icon to the Dock.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Observe a fresh Mac install and first-run flow with Dock state before/after; distinguish user-created pins from automatic app additions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4093d96d0c33494293c02b33a8ae320d",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not leave desktop shortcuts.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Observe installation and first-run file-system changes for desktop shortcuts and distinguish app-created shortcuts from user actions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-503911f138af48b48a3d6b3e7a15a2ff",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not download or install standalone apps or kernel extensions.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Audit downloaded payloads, helper tools and installation flows for standalone applications or kernel extensions; include remotely delivered content and controlled update states. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fd73c4026bbc402093fda4a7d8ba49b0",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "The Mac build does not fetch or install supplemental program material that expands or materially alters reviewed functionality.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare shipped and subsequently fetched Mac program material with reviewed functionality; inspect payload purpose and behavior instead of treating ordinary data updates as executable feature changes. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a634a4f88f774f699988397e4335f909",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not request root privilege escalation.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect privilege requests, helper installation, authorization calls and actual prompted flows; determine whether the Mac app requests root escalation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-693301486c0b44ffaf94f2e557644f8b",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not use setuid attributes.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect mode bits for all executable files in the distribution/install outputs and any app-created files; verify no setuid use, with full traversal completeness evidence. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f0aac438b6fb456fb7bddb238a98bdf9",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not show a license screen at launch.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Observe first launch and returning-user launches across license states and locales to determine whether a license screen gates launch. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9b0838b9b8ac472b956321fe66848797",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not require license keys.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect license activation UI, documented purchase process and feature access for required license keys, including offline and migrated-account states. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7818702d8b2e42bfb1bcf7f60edadfef",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not implement its own copy protection.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Audit licensing/DRM mechanisms, feature gates and vendor service interactions for self-implemented copy protection; ordinary user authentication alone is not a finding. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5dae75e9eb9d47baba6e8af50f85422b",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app distributes updates through the Mac App Store.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect update mechanisms, feed configuration and actual update delivery paths; confirm the Mac App Store supplies app updates rather than an external updater. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-131b2d1e33bb42989dbfe5c3b2c10266",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app runs on the currently shipping macOS.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Execute the Mac distribution build on the currently shipping macOS and cover representative app functionality; record exact OS/build/hardware and unresolved compatibility failures. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-133bd645375c4195adbc41e7e3b4bfb9",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app does not rely on deprecated or optionally installed technology.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Audit runtime/framework dependencies and clean-machine launch/feature tests for deprecated or optional components; a developer machine with extra runtimes installed is not sufficient. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3005822c01fa4ef9bfe3e295e9f7abdd",
+      "owner": "macOS engineer / distribution reviewer",
+      "document_group": "mac-distribution",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Mac App Store app contains all language and localization support in one app bundle.",
+          "evidence_kinds": [
+            "signed-artifact-review",
+            "runtime-transcript",
+            "build-provenance"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the single distribution bundle's language inventory and exercise supported locale switching; verify localization resources do not require separate app downloads/installations. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-96d20ed02de5492290c863e05b2854d4",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App uses only public platform APIs.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Audit linked APIs, dynamic loading and bundled third-party components against current public API documentation; binary symbol absence cannot prove all runtime APIs are public. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ee93e56edba3419f84ac316b0da1f8f8",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App runs on the currently shipping supported OS.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Execute the submitted build on the currently shipping supported platform OS across core flows and platform integrations; an SDK version string alone does not prove operation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d93aa7a8e4c743debc0e2b1119d49946",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App keeps features/frameworks current and phases out deprecated or unsupported technology.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review framework/API lifecycle status against the shipped dependency inventory and exercised features; identify remaining deprecated/unsupported dependencies and the claimed current replacement. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7d829d5c917947adb6a8fb6872e8f6bc",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App uses APIs and frameworks for their intended purposes.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each platform integration to its documented permitted purpose and actual user-facing function, including background services and collected data. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-83a80f632b4140a9b43c37e9da73037f",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App description identifies the relevant framework integration.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Cross-check relevant framework integrations, including those identified by guideline context, against the actual localized submitted description and shipped integration. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0162f240996e46ff9c4167f88c7efaa2",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "When using HealthKit, support its health or fitness purpose and integration with the Health app.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace the HealthKit integration's health/fitness purpose, permissions, data flows and interaction with the Health app; generic health marketing is not proof of intended use. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-710fe555195141d28464263c1bb7f725",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App remains self-contained in its bundle.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect distribution bundle, runtime dependencies and installation/resource loading paths to establish whether required app code remains self-contained. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-770691ed891c49268f287bc54203bac2",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Do not read or write data outside the app designated container.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace file reads/writes and user-mediated access against the actual designated container and platform-granted access model; source path strings alone neither prove nor disprove unauthorized access. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7eaa8420985d4f51856fd1e7314316ef",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not download/install/execute code that introduces or changes app functionality, including other apps.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory fetched executable material and changed functionality, including SDKs and remote flags. For the educational-code exception, establish its limited educational purpose and user-viewable/editable supplied source under atom-a794bf1568084157961eca5a24a2fc49. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-a794bf1568084157961eca5a24a2fc49; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6d19e409a4c44687a04b3e6bf3eefc3d",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Educational app exposes its provided source code completely for user viewing and editing.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For an educational coding app relying on the exception, inspect all app-provided code and demonstrate users can view and edit its complete source; user-authored code alone does not satisfy the supplied-code condition. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a92e61f23c06461fa08971d3f8bdb5da",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not transmit viruses or files/code/programs that disrupt OS or hardware features.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect executable dependencies and transmitted/downloaded payload behavior for disruptive actions, with authorized non-destructive analysis; absence of antivirus signals is not exhaustive proof. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-fac8c4a06bdb4184a49787b404f2c1ab",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Multitasking app uses each background service only for its intended purpose.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each enabled background mode/service and actual background task to the platform's intended use and the product feature; declared mode presence alone is not a violation. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-17d97473b1734f77a5309a54e43743d4",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App is fully functional on IPv6-only networks.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise all network-dependent features on a documented IPv6-only test network, including authentication, assets and third-party endpoints; DNS parsing or absence of IPv4 literals alone is insufficient. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1540dc9f7e9449ff9a508b3253ad84ba",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "exception-review"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Web-browsing app uses appropriate WebKit framework and WebKit JavaScript unless entitled otherwise.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript",
+            "apple-approval-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect browser engine components and active code paths; if using an alternative engine, review the approved entitlement and its applicable platform/territory scope under atom-d4338aba09a9458aaeb8419b5071d8cc. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence. Resolve exception prerequisites using atom-d4338aba09a9458aaeb8419b5071d8cc; an asserted exception without supporting evidence remains unresolved."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ed0dec3e64734a49b0ce3f98d5188b19",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not create an alternate desktop or home-screen environment.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect launch/navigation and system integrations to determine whether the app constructs an alternative desktop/home-screen environment rather than an ordinary in-app interface. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d5c354dc0a26495bb9f5da025c615b86",
+      "owner": "platform engineer / technical reviewer",
+      "document_group": "platform-integrations",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App does not alter or disable standard switches or native UI behaviors.",
+          "evidence_kinds": [
+            "source-review",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise hardware switches and native interface actions relevant to app behavior, then inspect any override/disable logic in context; a custom UI alone is not proof of disabling native behavior. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1b18e840083244aead0be31b487c7058",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Every registered Siri/Shortcut intent can be handled without another app.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enumerate all shipped Siri/Shortcut registrations and execute each with other apps unavailable; verify completion does not require another app's installation or launch. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-844b8364da344feabffbdb41fc841e79",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Registered intents match functionality users would expect from the app.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every registered intent to actual user-facing product functionality and the user's expected action; generic intent names are not evidence of relevance. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-32dcc77ad20a42ff84c4f86151911a09",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Siri vocabulary and phrases in plist pertain to the app and supported intents.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare all localized Siri vocabulary/phrase plist entries with supported intents and actual app features. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4ff5050a2d494957b136db0682d6a522",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Siri aliases relate directly to app or company name.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare every Siri alias with the app/company names and documented relationships, including localized variants. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-745ad7b1034b49d790675c8733b82467",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Siri aliases omit generic terms and third-party names or services.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review Siri aliases for generic terms and third-party names/services in context; token matching alone cannot establish ownership or genericity. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3b10c9fb693c475aaf1aa36a561fa56b",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Siri request or Shortcut is fulfilled by the most direct route.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record invocation-to-completion transitions for each Siri/Shortcut intent and justify intermediate steps necessary for the requested action. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-878565a246224f57bb78cde7986fe187",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "No ad or marketing step is inserted before fulfillment.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect each Siri/Shortcut invocation path for ads or marketing inserted before its meaningful completion, including remote-configured paths. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e2bb5dc03b2d4c72a0600c5beaa0f974",
+      "owner": "intent owner / QA reviewer",
+      "document_group": "siri-shortcuts",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Siri/Shortcut asks for disambiguation only when needed to complete the task.",
+          "evidence_kinds": [
+            "intent-inventory",
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise ambiguous and unambiguous intent inputs and inspect follow-up prompts; each disambiguation question must resolve information actually needed for the task. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3940a243bb9b4d17a0a4b790076c162f",
+      "owner": "screening owner / privacy reviewer",
+      "document_group": "call-message-screening",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "CallKit or SMS Fraud Extension blocks a phone number only when confirmed spam.",
+          "evidence_kinds": [
+            "screening-policy",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect blocking-list entries and the process/evidence confirming spam before a number is blocked; test allow/block behavior with authorized synthetic numbers and record false-positive handling. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0eefa6ba21024058bb75316cb42de4d6",
+      "owner": "screening owner / privacy reviewer",
+      "document_group": "call-message-screening",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Marketing text clearly identifies call/SMS/MMS blocking and spam identification features.",
+          "evidence_kinds": [
+            "screening-policy",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare call/SMS/MMS screening features with actual marketing copy in every shipped locale; require a clear explanation of blocking and spam identification capabilities. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4126138c06f84ecdbadbdffb8e228fc9",
+      "owner": "screening owner / privacy reviewer",
+      "document_group": "call-message-screening",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Marketing text explains the criteria used for blocked/spam lists.",
+          "evidence_kinds": [
+            "screening-policy",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare actual block/spam selection criteria and operational rules with their published marketing explanation; a general anti-spam claim does not describe criteria. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0057d65618a7482caca0753c574cdcd7",
+      "owner": "screening owner / privacy reviewer",
+      "document_group": "call-message-screening",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Data accessed through call/SMS/MMS blocking tools is used only to operate or improve the app or extension.",
+          "evidence_kinds": [
+            "screening-policy",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace extension-accessed call/message data through storage, analytics and third-party sharing against the allowed operation/improvement purpose, including backend processing and retention. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1386c41a24c643fdb20000fcaefc0821",
+      "owner": "authentication owner / QA reviewer",
+      "document_group": "facial-authentication",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Facial-recognition account authentication uses LocalAuthentication where possible.",
+          "evidence_kinds": [
+            "authentication-design",
+            "runtime-transcript",
+            "feature-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect facial-authentication implementation and device capability handling; demonstrate LocalAuthentication use where feasible and provide technical reasons for any alternate facial path. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-278df0505134493782dab1b40f540527",
+      "owner": "authentication owner / QA reviewer",
+      "document_group": "facial-authentication",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Users under 13 have an alternate authentication method.",
+          "evidence_kinds": [
+            "authentication-design",
+            "runtime-transcript",
+            "feature-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For facial-authentication apps serving children under 13, execute age-appropriate alternative authentication on supported devices and verify account access without facial recognition. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-515c453beb284e17b2b76a3ec9da0d9e",
+      "owner": "privacy owner / QA reviewer",
+      "document_group": "recording-consent",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App requests explicit user consent before recording or logging user activity.",
+          "evidence_kinds": [
+            "data-flow-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enumerate camera, microphone, screen and other activity-recording/logging triggers and demonstrate explicit user consent precedes each trigger; a purpose string or system permission alone may not explain the actual recording. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-05e2a3b4e13148cfb1346b72f06554cc",
+      "owner": "privacy owner / QA reviewer",
+      "document_group": "recording-consent",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App gives clear visual or audible indication while recording/logging user activity.",
+          "evidence_kinds": [
+            "data-flow-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record actual activity capture/logging sessions and verify a clear visual or audible indication throughout each operation, including background/embedded SDK paths and stop transitions. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3595d905f8f749dfb185ebc63a569514",
+      "owner": "platform engineer / QA reviewer",
+      "document_group": "file-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "File-picking app includes files from the Files app.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise every browse/select-file entry point and verify Files-app sources are accessible with appropriate grants; a document-picker symbol alone is insufficient. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-23ff6a342b554e8a9908588b0731e7a2",
+      "owner": "platform engineer / QA reviewer",
+      "document_group": "file-access",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "File-picking app includes user iCloud documents.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise file selection from the user's iCloud documents with an authorized test account, recording available providers, permissions and resulting access. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d6bfb90a962c4dd39f042d00a582bc47",
+      "owner": "extension owner / QA reviewer",
+      "document_group": "app-extensions-and-clips",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Widgets, extensions and notifications relate to the app’s content and functionality.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each shipped widget, extension and notification type and remotely supplied content to the main app's features; inspect unrelated promotion and content in actual surfaces. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1f77bf82172d4cfa80969a23c86c46f4",
+      "owner": "extension owner / QA reviewer",
+      "document_group": "app-extensions-and-clips",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Every App Clip feature and function is included in the main app binary.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare App Clip feature inventory and executable behavior with the main app binary, and exercise matching main-app flows; a source module name does not establish binary inclusion. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-322563ebb1c548c18815b05ff0d013ac",
+      "owner": "extension owner / QA reviewer",
+      "document_group": "app-extensions-and-clips",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "App Clip contains no advertising.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "signed-artifact-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect every App Clip surface, bundled SDK and remote configuration for displayed advertising; main-app ad behavior does not by itself prove Clip behavior. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b3fcc4ed783340f1aee3fea92ae7b3bb",
+      "owner": "accessory owner / certification reviewer",
+      "document_group": "matter-integration",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Matter app initiates pairing through Apple’s Matter support framework.",
+          "evidence_kinds": [
+            "component-inventory",
+            "certification-record",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace Matter accessory pairing and show invocation through Apple's Matter support framework on relevant hardware, including onboarding and failure/retry paths. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0c62e14c97974eaf95c413cb93cf16db",
+      "owner": "accessory owner / certification reviewer",
+      "document_group": "matter-integration",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Every non-Apple Matter software component is CSA-certified for its running platform.",
+          "evidence_kinds": [
+            "component-inventory",
+            "certification-record",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory every non-Apple Matter component, version and running platform, then inspect CSA certificates covering those exact combinations; a vendor assertion or unrelated certificate does not close a gap. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence.",
+          "required_positive_evidence_kinds": [
+            "certification-record"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-01ad1dd07c5c4f539db0d42e987e1959",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Display ads occur only in the primary app, with none inside auxiliary surfaces such as clips, extensions, widgets, notifications, keyboards, or watch apps.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory all advertising placements and exercise auxiliary surfaces including clips/extensions/widgets/notifications/keyboards/watch apps; verify ads stay within the primary app across remote configurations. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f635b829c9db4040acbd5f08fb43a680",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Displayed ads suit the app’s age rating.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the app's actual age rating with ad-provider filtering controls and observed creative inventory across regions and remote campaigns; one benign ad cannot establish coverage. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4ef52dc6f7e947ba8bd07e8f41812976",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Users can see all ad-targeting inputs inside the app.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile the complete ad-targeting input inventory, including SDK/backend-derived attributes, with the information users can access inside the app. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b80610a405da445a99321dd8c85c5ae8",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Ads do not use sensitive health, school or child data for behavioral/targeted advertising.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace health, school and children's data through ad SDK/backend integrations and targeting configuration; confirm prohibited sensitive inputs are not used for behavioral/targeted ads, including inferred inputs. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-87b5107fbcc8416e80c69e6b51329a58",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Interruptive/interstitial ads clearly identify themselves as ads.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect actual interruptive/interstitial creative states and transitions for clear advertising identification before interaction, across ad providers and locales. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6f25f94a1886450c9600463229b1b52a",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Ads do not manipulate or trick users into tapping.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise actual ad interactions and inspect layout, timing and labels for misleading controls or induced accidental taps; evaluate context rather than only button text. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-08289924f1294a30b65bfc6084911175",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Interruptive ads provide accessible, visible close/skip controls large enough to dismiss.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise visible close/skip actions for each interruptive ad format using touch and accessibility controls; inspect target size, discoverability and actual dismissal, including delayed controls. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0dbb61034ab2445d9939c489525cb04d",
+      "owner": "advertising owner / privacy and content reviewer",
+      "document_group": "advertising-placement-and-data",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "criterion",
+          "description": "Users can report inappropriate or age-inappropriate ads inside the app.",
+          "evidence_kinds": [
+            "ad-configuration",
+            "data-flow-review",
+            "runtime-transcript",
+            "listing-asset-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Use the in-app ad-reporting path for each ad provider/format and verify a report can be submitted with enough context to identify inappropriate or age-inappropriate ads; a static report label is insufficient. Establish scope from the submitted platform, distribution, feature inventory and relevant locales; unknown feature presence remains UNKNOWN, and absence of a source signal is not exclusion evidence."
+        }
+      ]
+    }
+  ]
+}

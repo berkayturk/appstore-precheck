@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "attestation-generic": {
+      "evidence_class": "developer-attestation",
+      "implementation": "skills/appstore-precheck/scripts/attestation-report.py",
+      "line_prefix": "ATTESTATION_REQUIRED",
+      "route": "attestation",
+      "symbol": "evaluate_attestation",
+      "tests": [
+        "tests/test-attestation-report.sh"
+      ]
+    }
+  }
+}

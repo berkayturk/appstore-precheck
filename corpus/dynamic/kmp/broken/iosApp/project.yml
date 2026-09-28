@@ -1,0 +1,24 @@
+name: PrecheckKmpBroken
+options:
+  bundleIdPrefix: org.appstoreprecheck.corpus
+settings:
+  base:
+    IPHONEOS_DEPLOYMENT_TARGET: '16.0'
+    SWIFT_VERSION: '5.0'
+targets:
+  PrecheckKmpBroken:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    preBuildScripts:
+      - name: Build shared Kotlin framework
+        script: test -n "$TEMP_DIR" && cd "$SRCROOT/.." && export GRADLE_USER_HOME="$TEMP_DIR/gradle-home" && ./gradlew --project-cache-dir "$TEMP_DIR/gradle-project-cache" :shared:link${CONFIGURATION}FrameworkIosSimulatorArm64
+    settings:
+      base:
+        "ARCHS[sdk=iphonesimulator*]": arm64
+        PRODUCT_BUNDLE_IDENTIFIER: org.appstoreprecheck.corpus.kmp.broken
+        INFOPLIST_FILE: Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: Precheck.entitlements
+        FRAMEWORK_SEARCH_PATHS: ["$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/debugFramework", "$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/releaseFramework"]
+        OTHER_LDFLAGS: "$(inherited) -framework Shared"

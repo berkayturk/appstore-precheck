@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-09-26",
+  "target": {
+    "bundle_id": null,
+    "version": null,
+    "build": null,
+    "artifact_sha256": null,
+    "source_sha256": null,
+    "platform": null,
+    "os": null,
+    "devices": null,
+    "storefronts": null,
+    "backend": null,
+    "distribution": null
+  },
+  "facts": {
+    "ugc": {"value": null},
+    "accounts": {"value": null},
+    "subscriptions": {"value": null},
+    "tracking": {"value": null}
+  }
+}

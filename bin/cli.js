@@ -29,16 +29,32 @@ function printHelp() {
     `\n` +
     `Usage:\n` +
     `  npx appstore-precheck [options]\n` +
+    `  npx appstore-precheck dynamic --build [options]\n` +
+    `  npx appstore-precheck verify --profile <json> --evidence <json> --decisions <json> --out <json>\n` +
+    `  npx appstore-precheck review-packet --source-root <path> --profile <json> --out <directory>\n` +
     `  npx appstore-precheck review --repo <path> --prepare\n` +
     `  npx appstore-precheck review --bundle <json> --live\n` +
     `\n` +
     `Runs the static scanner over the current directory and prints a\n` +
-    `GREEN / YELLOW / RED verdict. Read-only: it never edits your files.\n` +
+    `GREEN / YELLOW / RED verdict. It never edits your project files.\n` +
+    `Dynamic build/run is opt-in and executes a temporary project copy.\n` +
     `\n` +
     `Options:\n` +
     `  --dir <path>        Directory to scan (default: current directory)\n` +
     `  --fail-on <level>   Exit non-zero at RED (default) or YELLOW\n` +
     `  --format <fmt>      Output format: text (default), json, or sarif\n` +
+    `  --build             Build a simulator app in a temporary project copy\n` +
+    `  --app <path>        Inspect and run an existing simulator .app\n` +
+    `  --metadata          Review local fastlane metadata\n` +
+    `  --no-runtime        Build/inspect without launching the app\n` +
+    `  --demo-login        Opt in to env-configured test login (three fresh attempts)\n` +
+    `  --asc-version-id <id> Select the intended App Store version\n` +
+    `  --asc-info-id <id>  Select the intended App Store app info\n` +
+    `  --asc-app-id <id>   Opt in to read-only App Store Connect metadata\n` +
+    `  --check-urls        Opt in to public support/privacy URL HEAD checks\n` +
+    `  --dynamic-blocking  Block only unanimous launch/demo-login failures\n` +
+    `  --out <path>        Keep the opt-in report outside the project\n` +
+    `  --dry-run           Plan an opt-in build without executing it\n` +
     `  -v, --version       Print the version and exit\n` +
     `  -h, --help          Show this help and exit\n` +
     `\n` +
@@ -56,7 +72,9 @@ function fail(message, code) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text' };
+  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text', build: false,
+    app: null, metadata: false, ascAppId: null, checkUrls: false,
+    dynamicBlocking: false, out: null, dryRun: false, noRuntime: false, demoLogin: false, ascVersionId: null, ascInfoId: null };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') { printHelp(); process.exit(0); }
@@ -78,19 +96,64 @@ function parseArgs(argv) {
       opts.format = v;
       continue;
     }
+    if (a === '--build') { opts.build = true; continue; }
+    if (a === '--app' || a === '--asc-app-id' || a === '--out') {
+      const value = argv[++i];
+      if (!value) fail(`${a} requires a value`, 64);
+      if (a === '--app') opts.app = value;
+      else if (a === '--asc-app-id') { opts.ascAppId = value; opts.metadata = true; }
+      else opts.out = value;
+      continue;
+    }
+    if (a === '--no-runtime') { opts.noRuntime = true; continue; }
+    if (a === '--demo-login') { opts.demoLogin = true; continue; }
+    if (a === '--asc-version-id' || a === '--asc-info-id') {
+      const value = argv[++i];
+      if (!value) fail(`${a} requires an ID`, 64);
+      if (a === '--asc-version-id') opts.ascVersionId = value;
+      else opts.ascInfoId = value;
+      continue;
+    }
+    if (a === '--metadata') { opts.metadata = true; continue; }
+    if (a === '--check-urls') { opts.checkUrls = true; opts.metadata = true; continue; }
+    if (a === '--dynamic-blocking') { opts.dynamicBlocking = true; continue; }
+    if (a === '--dry-run') { opts.dryRun = true; continue; }
     fail(`unknown option: ${a} (try --help)`, 64);
   }
   return opts;
 }
 
 function main() {
+  if (process.argv[2] === 'review-packet') {
+    const script = path.join(PKG_ROOT, 'skills', 'appstore-precheck', 'scripts', 'manual-review-packet.py');
+    const result = spawnSync('python3', ['-B', script, ...process.argv.slice(3)], { stdio: 'inherit' });
+    if (result.error) fail('python3 is required for manual evidence packets', 70);
+    process.exit(result.signal ? 70 : (result.status || 0));
+  }
+  if (process.argv[2] === 'verify') {
+    const script = path.join(PKG_ROOT, 'skills', 'appstore-precheck', 'scripts', 'verification-report.py');
+    const result = spawnSync('python3', ['-B', script, ...process.argv.slice(3)], { stdio: 'inherit' });
+    if (result.error) fail('python3 is required for evidence verification', 70);
+    process.exit(result.signal ? 70 : (result.status || 0));
+  }
   if (process.argv[2] === 'review') {
     const script = path.join(PKG_ROOT, 'skills', 'appstore-precheck', 'scripts', 'semantic-review.py');
     const result = spawnSync('python3', ['-B', script, ...process.argv.slice(3)], { stdio: 'inherit' });
     if (result.error) fail('python3 is required for optional semantic review', 70);
     process.exit(result.signal ? 70 : (result.status || 0));
   }
-  const opts = parseArgs(process.argv.slice(2));
+  const dynamic = process.argv[2] === 'dynamic';
+  const opts = parseArgs(process.argv.slice(dynamic ? 3 : 2));
+  if (dynamic && !opts.build && !opts.app) fail('dynamic requires --build or --app', 64);
+  if (opts.build && opts.app) fail('use --build or --app', 64);
+  if (opts.noRuntime && (opts.demoLogin || opts.dynamicBlocking)) fail('--no-runtime conflicts with demo login or dynamic blocking', 64);
+
+  // The scanner child runs with cwd=--dir, so every path option must be made absolute
+  // against the caller's cwd first; otherwise a relative --out/--app/--dir is
+  // re-resolved against the scanned project.
+  opts.dir = path.resolve(opts.dir);
+  if (opts.out) opts.out = path.resolve(opts.out);
+  if (opts.app) opts.app = path.resolve(opts.app);
 
   if (!fs.existsSync(SCAN) || !fs.existsSync(VERDICT)) {
     fail('bundled scanner scripts are missing from the package', 70);
@@ -104,6 +167,18 @@ function main() {
   // the enclosing git toplevel.
   const scanArgs = [SCAN, '--dir', opts.dir];
   if (opts.format !== 'text') scanArgs.push('--format', opts.format);
+  if (opts.build) scanArgs.push('--build');
+  if (opts.app) scanArgs.push('--app', opts.app);
+  if (opts.metadata) scanArgs.push('--metadata');
+  if (opts.ascAppId) scanArgs.push('--asc-app-id', opts.ascAppId);
+  if (opts.checkUrls) scanArgs.push('--check-urls');
+  if (opts.dynamicBlocking) scanArgs.push('--dynamic-blocking');
+  if (opts.out) scanArgs.push('--out', opts.out);
+  if (opts.dryRun) scanArgs.push('--dry-run');
+  if (opts.noRuntime) scanArgs.push('--no-runtime');
+  if (opts.demoLogin) scanArgs.push('--demo-login');
+  if (opts.ascVersionId) scanArgs.push('--asc-version-id', opts.ascVersionId);
+  if (opts.ascInfoId) scanArgs.push('--asc-info-id', opts.ascInfoId);
   const scan = spawnSync('bash', scanArgs, {
     cwd: opts.dir,
     encoding: 'utf8',
@@ -114,12 +189,15 @@ function main() {
   }
   if (scan.error) fail(`failed to run the scanner: ${scan.error.message}`, 70);
   if (scan.signal) fail(`scanner was killed by signal ${scan.signal}`, 70);
+  // A usage/setup failure must not become GREEN from an empty transcript.
+  if (scan.status !== 0) fail(`scanner failed (exit ${scan.status})`, scan.status || 70);
 
   const scanOut = scan.stdout || '';
   process.stdout.write(scanOut);
 
+  // A non-zero scanner status already exited above, so non-text output is done here.
   if (opts.format !== 'text') {
-    process.exit(scan.status === 0 ? 0 : (scan.status || 0));
+    process.exit(0);
   }
 
   const verdict = spawnSync('bash', [VERDICT], { input: scanOut, encoding: 'utf8' });

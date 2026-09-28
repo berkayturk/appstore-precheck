@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# macOS-only, opt-in real build/runtime panel. No existing simulator is erased.
+# Usage: bash tests/local/dynamic-panel.sh [--framework name] [--variant clean|broken]
+#        [--out directory] [--build-timeout seconds] [--window seconds] [--repeats N]
+set -u
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+CORPUS="$ROOT/corpus/dynamic"
+SCRIPTS="$ROOT/skills/appstore-precheck/scripts"
+OUT="" FILTER_FW="" FILTER_VARIANT="" BUILD_TIMEOUT=1200 WINDOW=10 REPEATS=3 EXPLORE_SECONDS=90
+usage() { echo "dynamic-panel.sh: $1" >&2; exit 64; }
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --framework) [[ $# -ge 2 ]] || usage "$1 needs a value"; FILTER_FW="$2"; shift 2 ;;
+    --variant) [[ $# -ge 2 ]] || usage "$1 needs a value"; FILTER_VARIANT="$2"; shift 2 ;;
+    --out) [[ $# -ge 2 ]] || usage "$1 needs a value"; OUT="$2"; shift 2 ;;
+    --build-timeout) [[ $# -ge 2 ]] || usage "$1 needs a value"; BUILD_TIMEOUT="$2"; shift 2 ;;
+    --window) [[ $# -ge 2 ]] || usage "$1 needs a value"; WINDOW="$2"; shift 2 ;;
+    --repeats) [[ $# -ge 2 ]] || usage "$1 needs a value"; REPEATS="$2"; shift 2 ;;
+    --explore-seconds) [[ $# -ge 2 ]] || usage "$1 needs a value"; EXPLORE_SECONDS="$2"; shift 2 ;;
+    *) usage "unknown option '$1'" ;;
+  esac
+done
+case "$FILTER_FW" in ""|swiftui|rn-bare|expo|flutter|kmp) ;; *) usage "unknown framework '$FILTER_FW'" ;; esac
+case "$FILTER_VARIANT" in ""|clean|broken) ;; *) usage "unknown variant '$FILTER_VARIANT'" ;; esac
+for n in "$BUILD_TIMEOUT" "$WINDOW" "$REPEATS" "$EXPLORE_SECONDS"; do [[ "$n" =~ ^[0-9]+$ ]] || usage "time and repeat options must be integers"; done
+(( BUILD_TIMEOUT >= 1 && REPEATS >= 1 )) || usage "timeout and repeats must be positive"
+[[ "$(uname -s)" == Darwin ]] || { echo "SKIP: dynamic panel requires macOS/Xcode"; exit 3; }
+command -v python3 >/dev/null 2>&1 || { echo "SKIP: Python 3 unavailable"; exit 3; }
+command -v xcrun >/dev/null 2>&1 || { echo "SKIP: Xcode command line tools unavailable"; exit 3; }
+[[ -n "$OUT" ]] || OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic-panel.XXXXXX")"
+mkdir -p "$OUT" || usage "cannot create output directory"
+OUT="$(cd "$OUT" && pwd -P)"
+echo "dynamic panel artifacts: $OUT"
+# Never mix a previous app/runtime transcript with a new failed attempt.
+for fw in swiftui rn-bare expo flutter kmp; do
+  [[ -z "$FILTER_FW" || "$FILTER_FW" == "$fw" ]] || continue
+  for variant in clean broken; do
+    [[ -z "$FILTER_VARIANT" || "$FILTER_VARIANT" == "$variant" ]] || continue
+    prior="$OUT/$fw/$variant"
+    if [[ -d "$prior" && -n "$(find "$prior" -mindepth 1 -print -quit)" ]]; then
+      usage "$fw/$variant output is not empty; choose a fresh --out directory"
+    fi
+  done
+done
+python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$OUT/integrity.json" before
+xcrun simctl list devices --json > "$OUT/simulators-before.json" 2>/dev/null || :
+
+# One status record per case; the Python summary reads these and the transcript.
+for fw in swiftui rn-bare expo flutter kmp; do
+  [[ -z "$FILTER_FW" || "$FILTER_FW" == "$fw" ]] || continue
+  for variant in clean broken; do
+    [[ -z "$FILTER_VARIANT" || "$FILTER_VARIANT" == "$variant" ]] || continue
+    case_dir="$OUT/$fw/$variant"
+    mkdir -p "$case_dir/artifact" "$case_dir/runtime"
+    python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" before
+    echo "== $fw/$variant =="
+    bash "$CORPUS/$fw/build.sh" "$variant" --out "$case_dir/artifact" --timeout "$BUILD_TIMEOUT" > "$case_dir/build.txt" 2>&1
+    build_status=$?
+    if [[ "$build_status" -ne 0 ]]; then
+      if [[ "$build_status" -eq 3 ]]; then state=SKIP; else state=ERROR; fi
+      printf '%s\n' "$state" > "$case_dir/state"
+      sed -n '/^SKIP:/p' "$case_dir/build.txt" | tail -1
+      python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
+      continue
+    fi
+    app="$(sed -n 's/^app_path=//p' "$case_dir/build.txt" | tail -1)"
+    if [[ -z "$app" || ! -f "$app/Info.plist" ]]; then
+      printf '%s\n' ERROR > "$case_dir/state"
+      echo "ERROR: build exported no simulator app"
+      python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
+      continue
+    fi
+    case "$fw" in swiftui) runtime_fw=native ;; rn-bare|expo) runtime_fw=rn ;; *) runtime_fw="$fw" ;; esac
+    extra=()
+    if [[ -f "$CORPUS/$fw/$variant/navigation.json" ]]; then
+      extra+=(--authorized-navigation "$CORPUS/$fw/$variant/navigation.json")
+    fi
+    if grep -q -- '--explore' "$SCRIPTS/dynamic-run.sh"; then extra+=(--explore --explore-seconds "$EXPLORE_SECONDS"); fi
+    bash "$SCRIPTS/dynamic-run.sh" --app "$app" --repo "$CORPUS/$fw/$variant" \
+      --framework "$runtime_fw" --out "$case_dir/runtime" --repeats "$REPEATS" \
+      --window "$WINDOW" "${extra[@]+"${extra[@]}"}" > "$case_dir/runtime.txt" 2>&1
+    runtime_status=$?
+    if [[ "$runtime_status" -eq 0 ]]; then
+      printf '%s\n' RAN > "$case_dir/state"
+      config="$(sed -n 's/^build_config=//p' "$case_dir/build.txt" | tail -1)"
+      [[ -n "$config" ]] || config=unknown
+      bash "$SCRIPTS/dynamic.sh" --transcript "$case_dir/runtime/transcript.txt" \
+        --target simulator --build-config "$config" --format json > "$case_dir/reconciled.json" 2> "$case_dir/reconcile.err" || :
+    elif [[ "$runtime_status" -eq 3 || "$runtime_status" -eq 69 ]]; then
+      printf '%s\n' SKIP > "$case_dir/state"
+    else
+      printf '%s\n' ERROR > "$case_dir/state"
+    fi
+    python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
+    xcrun simctl list devices --json > "$case_dir/simulators-after.json" 2>/dev/null || :
+  done
+done
+
+python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$OUT/integrity.json" after
+xcrun simctl list devices --json > "$OUT/simulators-after.json" 2>/dev/null || :
+python3 "$ROOT/tests/local/dynamic-panel-report.py" "$CORPUS/manifest.json" "$OUT"

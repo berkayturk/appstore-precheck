@@ -187,6 +187,12 @@ gd_main() {
       checks="$(gd_checks_for_section "$scan" "$sec" | tr '\n' ' ' | sed 's/ *$//')"
       [[ -z "$checks" ]] && checks="(covered — review manually)"
       echo "WARN: guideline text drift — $sec changed since baseline; review check(s): $checks"
+      # The public catalog has persistent atom IDs; list the affected records
+      # without including any Apple source text in the output.
+      if command -v python3 >/dev/null 2>&1 && [[ -f "$here/scripts/coverage.py" ]]; then
+        python3 "$here/scripts/coverage.py" --changed-ref "$sec" \
+          | sed "s/^/AFFECTED-OBLIGATION: $sec /"
+      fi
     fi
   done <<< "$covered"
 

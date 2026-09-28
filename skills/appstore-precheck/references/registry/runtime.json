@@ -1,0 +1,134 @@
+{
+  "checks": {
+    "dyn-account-deletion": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-account-deletion",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-bundle-drift": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-bundle-drift",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-external-payment": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-external-payment",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-host-privacy": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-host-privacy",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-layout-review": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-layout-review",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-login-wall": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-login-wall",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-navigation-crash": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-navigation-crash",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-paywall-disclosure": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-paywall-disclosure",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-permission-purpose": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-permission-purpose",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-placeholder": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-placeholder",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-restore-response": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-restore-response",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-siwa-parity": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-siwa-parity",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    },
+    "dyn-ugc-safety": {
+      "evidence_class": "runtime",
+      "implementation": "skills/appstore-precheck/scripts/lib/dyn-explore.py",
+      "line_prefix": "RUNTIME-",
+      "route": "runtime",
+      "symbol": "dyn-ugc-safety",
+      "tests": [
+        "tests/test-runtime-review.sh"
+      ]
+    }
+  }
+}

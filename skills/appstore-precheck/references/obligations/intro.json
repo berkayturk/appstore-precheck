@@ -1,0 +1,2519 @@
+{
+  "obligations": [
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple states its App Store safety and developer opportunity aims.",
+      "exceptions": [],
+      "id": "req-f1e7b91193894fce8ef34f8c6ec4dddc",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "ff94682a9e0593a6254ac968bf50820537ea4dcd47459e8e2f7eba6d57c3da3f"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes its human review and editorial discovery processes.",
+      "exceptions": [],
+      "id": "req-2c24cd23a5804e478bc16f6acb0c955c",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "026157dc7c2a85c5bdc38971392258f375318ad56692a63a2e5fcbe65be378b1"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes its own malware screening process.",
+      "exceptions": [],
+      "id": "req-b2dc6ff9121b48e989166e23ed5d9406",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "2f8868ce1f0de573e42e9db8877094cdbe83ed11cd0c7b9bc4dcd2f349ec1408"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple characterizes the results of its platform safety work.",
+      "exceptions": [],
+      "id": "req-bd2fa73466d24fc6bd6892e7f619ae28",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3db796a3c11b40d17e66fc50dd0678db3318d329ca2de0ea3ae6df5e7550c120"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Alternative notarized distribution is available only for eligible markets and platforms.",
+      "exceptions": [],
+      "id": "req-4d5082eb574e4467adc23ce3d6cb7024",
+      "kind": "exception",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "675231dcb60b1c0599ca64756cab52d7a9b985ce5746c0431b8073eeff6fdf11"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The paragraph points readers to alternative distribution documentation.",
+      "exceptions": [],
+      "id": "req-ba29c5e858d84c689697a2f4fa8949ec",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "67fc50b54644e75285c610167d861cf06dd58d42c86cdc2fd409f6e0ad30d9be"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The page explains how to filter rules that apply to iOS and iPadOS notarization.",
+      "exceptions": [],
+      "id": "req-a31c06c9ef5b4b5ea62a6844eb691ee8",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "9cb93c5d55e0dc2a19acb2dea7043833c4ec525012892551f057820168961a23"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The open web is described as another distribution channel.",
+      "exceptions": [],
+      "id": "req-563fca07f9884f1387dcf5026e7af405",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "a089eb2b76c8756ab348e9840ce9fb3a3378f6f4c9511daec628521838055bca"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Safari is presented as an option for ideas outside Apple app distribution.",
+      "exceptions": [],
+      "id": "req-5d9ab5bc9167486bae4d27248b5f8b52",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "32d49455a5af03bb534e2f78198889d70ca148f186c1a02aaab930d55d9e4daf"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The guideline document is organized into five subject areas.",
+      "exceptions": [],
+      "id": "req-a877640244cf476fa742ae3d9230b4a4",
+      "kind": "definition",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "d3995d2cfcaafda1b78d4966726c8a55b56abdbff21d1cbe2c808dfb8d4ffbcb"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple explains that its store and products continue to evolve.",
+      "exceptions": [],
+      "id": "req-92daecb0c1d54531846de8839fc93ef1",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "a70e011085722b100ea1197a82535c9e40eccf9ffb9fb6abd6bc20692515b37a"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the separate maintenance duty for existing App Store apps.",
+      "exceptions": [],
+      "id": "req-d26a51fa86e74ad2b604bdde147c8bb9",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-aa8284569e164afb823d07720c3ca324"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-aa8284569e164afb823d07720c3ca324.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "c9260c88fdc3a1952b14216bb591d9bea2d2b3dcb8516dd348815b157319acb4"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "This sentence introduces general points about Apple platform distribution.",
+      "exceptions": [],
+      "id": "req-384f854631c0417191c1e2cc745fba3e",
+      "kind": "definition",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "2cc63396d85137706a5f8e5d8162be6a606c1695af854796ced34fd28ff7200f"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes how young people use apps.",
+      "exceptions": [],
+      "id": "req-264ca68a6681416285e7e57fabfbd540",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3eb167da0de7c6c8015fc8d79e0c27061ebf025a0871ab1204cb4be7b18449df"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple states its interest in protecting young users.",
+      "exceptions": [],
+      "id": "req-8f15222898cf4137a64e71ab254c8423",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "08f4df75c28b6f194afe2c539ef104bd909371dbb83b2a801cb0d79151f39491"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Parental controls do not replace the developer’s role in protecting young users.",
+      "exceptions": [],
+      "id": "req-dae83badac024810a203dc4386ac989d",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-c44cce19b9104b2ca5f658e0dd2a93a5"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-c44cce19b9104b2ca5f658e0dd2a93a5.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "42d951f563d0006b8f40b8e02b173d9f78813263355196bfde549ba8eb6314d0"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the separate in-app age suitability duty.",
+      "exceptions": [],
+      "id": "req-df1ef4572037492a889758f63e8c7507",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-c44cce19b9104b2ca5f658e0dd2a93a5"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-c44cce19b9104b2ca5f658e0dd2a93a5.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "b35a6c66167f207ca5848bfa3340239733bf84d662995c35537bf21a99f83502"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes the potential reach of its store.",
+      "exceptions": [],
+      "id": "req-71f9d4df8f1b42d1b20829f19aa97169",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4f711ec2f97db4d13238aad759f0bf26fc01839b7b5af6ddfd6fbf793b89d4d6"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple advises that small private audiences may be better served elsewhere.",
+      "exceptions": [],
+      "id": "req-d7657a6a8da3439bb594412b9204ac96",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "602ac1cc4c5c65074d37fc85f833a8451fe4f94b174c3e216052a0623c1c1f4b"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Xcode installation and Ad Hoc distribution are suggested alternatives.",
+      "exceptions": [],
+      "id": "req-29f4e4c235a442809bab201b8f52810d",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "c9c3441252225bdd394412eb6ef5ee7d6f5cb364219e75378f049fce8471916c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The paragraph links to developer program information.",
+      "exceptions": [],
+      "id": "req-dba012a32f90478888ad6d2eeac63c2d",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "1beca126819bdccbc0f469bc82fd30235c74bf1774ad83172b1be4693a71e8ec"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source contains separate duties about respectful expression and experience quality.",
+      "exceptions": [],
+      "id": "req-1f2c02e380d74260b717cd62a1db4c72",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-a386ca273c58478cb0f5608babab9a81",
+        "atom-240f52a443aa466f840ab6ee91f0811d"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-a386ca273c58478cb0f5608babab9a81, atom-240f52a443aa466f840ab6ee91f0811d.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "e237f9a724047f72cf2bae877dfc246f4c0c5acfe39b90e6ace3430a1191ee63"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple states the review consequence of unacceptable content or behavior.",
+      "exceptions": [],
+      "id": "req-785d516962764029b2b284fd80d2dc82",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "218b7f4c3359e801b82679f5d2800f9b8b65dd69266efd3910d9b550cee58d7b"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "A rhetorical question introduces Apple’s judgment about unacceptable content.",
+      "exceptions": [],
+      "id": "req-17325787cbc94c4fad29460f6574fb13",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "c8dd99b50eeb871c8c5b3199ab73061e765bb54fb4ecd82aa4281268b2a47913"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The quotation illustrates discretionary content judgment.",
+      "exceptions": [],
+      "id": "req-c22f96bd1d34485aa80ae1d8bb6f4d1a",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "281efa6d3f9e8e78e6b8ef4d0f3fd73d4514163c20efb8b03530b81522668c70"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple underscores that developers should recognize unacceptable conduct.",
+      "exceptions": [],
+      "id": "req-497ae69b02304859be0c222407e5f733",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "abde1e68069ea9fe0925c6002f734ae0412476ac9696f3a777dafd3dcf8ba13b"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the separate intentional ecosystem deception duty and its sanctions.",
+      "exceptions": [],
+      "id": "req-ae367c0fad77408d802a5d1c957f01ed",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-f7d015611dde4efda35fcf052340c2f6"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f7d015611dde4efda35fcf052340c2f6.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "e3b17f4f2fa5a6b98402b0b70fb1740a4bf9a0c0febe4438fe274e984dada66e"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the separate third-party component diligence duty.",
+      "exceptions": [],
+      "id": "req-aaa914fb7837449792affda757ec3b57",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-f65a3e371c2c49229e0449753fef6859"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f65a3e371c2c49229e0449753fef6859.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4b19f23f7741411d58028911b20cc60a79477329fe268c3edbf4fbe74bcd046f"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Restricted platform capabilities may require a special entitlement.",
+      "exceptions": [],
+      "id": "req-866ab275f95a4fc59386c05acf8545e8",
+      "kind": "definition",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3e3848fd78d40e1d46f36521b2d17221e98647ec637d747cdbf94ee784384791"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The paragraph gives examples of restricted capabilities.",
+      "exceptions": [],
+      "id": "req-e2f8fd7db8fb4fadbeb3a589c6bc103a",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "36003d919d499ebdca559ecd26f046abea348a0abba64a4b9480f6e32fdd25e9"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple states its aspiration for a consistent review process.",
+      "exceptions": [],
+      "id": "req-b46c8aef56de496cbe216d07417e9b34",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "19a967bb6ccf8a0659f1f79b4b1ecfbae85611650532a1430b6c6ee366c1c32d"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The guidelines are subject to revision.",
+      "exceptions": [],
+      "id": "req-b8916a042be04b5ea4481141c3ee39cf",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "1efc45497929e0d0585b42a9289ce7ecd8c224cdafd3f5cb99a34bed3928ca8d"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Novel apps can prompt future policy changes.",
+      "exceptions": [],
+      "id": "req-8203ac7671264285ba3caf9070b9c80e",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "45976c37273fb3d1dd6d4bff34c37632b349afd49e4e574bad0c97f8971e8554"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple remarks that a particular app could raise a novel issue.",
+      "exceptions": [],
+      "id": "req-b861573b6a414a6392056fdef38c2524",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "a8b392275fed165677aa9625bbfd6073fd66337c86b922e309d7952c57fcecf2"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple offers encouragement to developers.",
+      "exceptions": [],
+      "id": "req-35324335e6284f53a3bfabc723494533",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4ef0cc909fd1b88cadad71f7d7d38c5dd406698e332d72fe2001667f8d506f66"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes its aim to support developer expression and business.",
+      "exceptions": [],
+      "id": "req-c6676a4b7cef4393b67288a8480331ed",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "ee6531f8a4022685312e177ed0136b4345cd5ec21e0f91fdd6057fc70239ebc8"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist previews common submission problems and possible review delays.",
+      "exceptions": [],
+      "id": "req-068a3c5726d149d0a6844a946572f12a",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3a5ade3413fd65da9ac2d6e09ea15224c469a2dd793eac689a619fb97662374c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist is advisory context and does not replace substantive rules.",
+      "exceptions": [],
+      "id": "req-3a2b988aa08748039ebd0e2e427d7f03",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "18424ac94f0c83faf359663efd0fe4eb85f05e18a6eb6aed3fd6227b0f3d3b3c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes removal of a released app that stops functioning or receiving support; maintenance duties are tracked separately.",
+      "exceptions": [],
+      "id": "req-3f67da2598b44452a1f9d9f34bf6d928",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-7660b11f2dad457fbefdac9a83a74d99",
+        "atom-aa8284569e164afb823d07720c3ca324"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-7660b11f2dad457fbefdac9a83a74d99, atom-aa8284569e164afb823d07720c3ca324.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4c5e6e9c5030ad6089d69cbe2d81bb20a9223816d202b58c1f3204d522ba81ce"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "This sentence links to Apple’s existing app maintenance policy.",
+      "exceptions": [],
+      "id": "req-72ddd19665c547319c8b1b2059490519",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "a54bdec6e6f3bebb6fe1ef50244ecac40bbf637b1e402cdaa990d09d27e71e98"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The following items form a submission preparation checklist.",
+      "exceptions": [],
+      "id": "req-842ef4b1abd64abfb20d2affedb8c14e",
+      "kind": "definition",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "8724465c80cd257adfcc943b76a796cdbf5882b994a6c43487ed2e4396b4285f"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist repeats the device testing and stability duty tracked in section 2.1.",
+      "exceptions": [],
+      "id": "req-a0328546b97348069335b5008c0ee30a",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-3c95a205dfc5469d86927977e0e7c636"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-3c95a205dfc5469d86927977e0e7c636.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "10c89229b61156b26af8e4b727742319c5087e805721e2e133294d4a381662ac"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist repeats completeness and accuracy duties tracked in sections 2.1 and 2.3.",
+      "exceptions": [],
+      "id": "req-d5d276d6b743445190ff321f2d46fa51",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-da5c1a8b088e415799ddc357c2f628fa",
+        "atom-edd8489e47804bd6abc3972fd96b18f0"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-da5c1a8b088e415799ddc357c2f628fa, atom-edd8489e47804bd6abc3972fd96b18f0.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "8d4f470aef2f9b6af790efb5290929f5a8e7c17ff2715273cb821e469d251e85"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist repeats the contact currency duty tracked in developer identity rules.",
+      "exceptions": [],
+      "id": "req-e2e3a8535b174a08acf0243bec918db9",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-21008b99be694b86ac628de503f46e07"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-21008b99be694b86ac628de503f46e07.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "44d4f37f545818c3ca372ecbec19cef69ae8211292cf6276a2c2f64c5276196b"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the separate full review access outcome duty.",
+      "exceptions": [],
+      "id": "req-c59656dacdd949e2881338f05fc6cdc9",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-884097dadb564c018667d7c730d75f61"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-884097dadb564c018667d7c730d75f61.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "aeadc0ade1f1c621510d21e9948c4385c8d1d7133e5eb232cf1718d546ce688c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist introduces account access, demo mode, and needed review resources; their conditions are tracked separately.",
+      "exceptions": [],
+      "id": "req-f8b39e9813ab4a0e98d5a7a30111f812",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-e575151c903d4c8fb72cede56c55c136",
+        "atom-98d454c351724f8b83bd56473cb39b85",
+        "atom-e7ac52bbed6742cea1216b232bf01b1a"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-e575151c903d4c8fb72cede56c55c136, atom-98d454c351724f8b83bd56473cb39b85, atom-e7ac52bbed6742cea1216b232bf01b1a.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "181963b470b2a1725dc69952bd87e4e1167d862fd13813dd829114abb8456e6e"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist repeats the live backend duty tracked under app completeness.",
+      "exceptions": [],
+      "id": "req-16b2071a83284cda926089f8a30e8066",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-b2f36389d4ea4b93a7c399473abdefba"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-b2f36389d4ea4b93a7c399473abdefba.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "199d8a4468bce009d386a0c03adf2a4dc252642ab4cb5351c3f03d57b86c7da8"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of separate review note duties for unfamiliar features and purchases.",
+      "exceptions": [],
+      "id": "req-ba63a06dfa084f0880eb3d789ff26cdb",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-f9a98fc9b0544658a3b9a4b0152a160e",
+        "atom-89ba978493b44f34a8ed0f9e9d4b9bb1"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f9a98fc9b0544658a3b9a4b0152a160e, atom-89ba978493b44f34a8ed0f9e9d4b9bb1.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "08c75ce9d816a9990f2ac6597243bb5fae64388fc36a6b8dec6e060028a5a86c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The checklist points developers to other applicable technical and design guidance.",
+      "exceptions": [],
+      "id": "req-68b4b2a660d84773a07a291d64b23519",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4911e64cd6c899581abc953e2c51d29a377bf3a75bcdd81f06d103bcaab45288"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "A page marker identifies which rules also apply to iOS and iPadOS notarization.",
+      "exceptions": [],
+      "id": "req-b0a9d79713f644b6975fa5cb63941357",
+      "kind": "definition",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "2d68154efc6b8ff0a1cf9d1b0fffb70849fd497a0e52adaa9ec38a87e67de0f8"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The closing section addresses the period after submission.",
+      "exceptions": [],
+      "id": "req-c3755643036a4c67b4c31c4f9a112b7c",
+      "kind": "definition",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit definition: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3260437090e26acef9787600ae81afde61324e55fd21e57c5763fde6d6e427c5"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes its review timing objective.",
+      "exceptions": [],
+      "id": "req-b595939459644129905a33e1337089c5",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "aadb40bd5b32ba8073ae4e470c44c484d543c88bd348b88cc36d1bc23f903cfa"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Complex or novel submissions may take longer to evaluate.",
+      "exceptions": [],
+      "id": "req-669f9a9e15694e28913771b13a159fdd",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "8cbb6e88f17b723722dfa9c292065bb6b15a1860f241742b0172ea6bc218efd4"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Repeated rejections and review manipulation may extend review time; substantive conduct duties appear elsewhere.",
+      "exceptions": [],
+      "id": "req-e8e042e43f2e4af2b0ced7775630f853",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-f7d015611dde4efda35fcf052340c2f6"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-f7d015611dde4efda35fcf052340c2f6.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "2ef3e35897999f3be1b29ad3787c38ec1051a991f5921f1c50490f66b3bcc495"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "This sentence links to App Review process details.",
+      "exceptions": [],
+      "id": "req-ce0eb88609644243a63502769e87c44d",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "a435c410b400b41d85f42af9c3a43a7f4c7513562be1d4636c05fef5d9d57148"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "App Store Connect displays submission status.",
+      "exceptions": [],
+      "id": "req-316a0e781dcf4e93b25ad0854522d3b4",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "7795de77be5a7cf2476093dfdf3e5800d276f2d0c35e277471209d31b4844f36"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Developers with a critical timing issue may seek expedited review.",
+      "exceptions": [],
+      "id": "req-4e84d96564824273b96bfedd2a10a309",
+      "kind": "exception",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "0b00710e9712f9ba730f19f802fb23947747b3e3005b26dd4e6a58a2b2b2b09d"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the conditional duty to reserve expedite requests for genuine need.",
+      "exceptions": [],
+      "id": "req-e1235dc007a9401dbae80e6567f8a969",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-a9c3f3d5e7344174860729bd57ddfa21"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-a9c3f3d5e7344174860729bd57ddfa21.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "1dba3d7a59659520334f47746c40fc22b49649892328fdfea3e9b9a8dc9ca1fc"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple may decline future expedite requests after abuse.",
+      "exceptions": [],
+      "id": "req-61a06d8208434dc49d89249b98a66314",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "db22e4a0c7b7e18b501754b49ccb502be925a0f7d223716854c3b71831d465b0"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "A future release date delays store availability even after approval.",
+      "exceptions": [],
+      "id": "req-68380ce8d5a7456cb816e90c657dadd4",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "553507c9a9ff8350141ecf0e78ddf1fa23a8906016e58b93bc639d15f5e8380a"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Storefront publication can take additional time after release.",
+      "exceptions": [],
+      "id": "req-9c5d55010df24a62a0edf7285e281865",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "d5650c3aa514ae601ee2077a6ebe23bd84eec64e373aedd074fb3eca345bb12c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple describes its goal of fair, consistent review.",
+      "exceptions": [],
+      "id": "req-2ae945434397439e97276fc9c8793d91",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "46f8ab0a9d99778cb91fa72b836f79a0f956213352f13f74f48f02b0fa43f047"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "App Store Connect is the communication channel for questions after rejection.",
+      "exceptions": [],
+      "id": "req-1bf946474d8d41c2bb86cba7cd4df98f",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "192fea6d926f1c884d87c390e5f00bdebe0d95999e61f88f0ce6b08b171cbf8f"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Developer feedback may resolve a rejection or inform policy clarification.",
+      "exceptions": [],
+      "id": "req-7d5b6fc59dce4a5396eb7f631103d66b",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3b18412c0d1f94ca9814c17606a9535b248f0560f14008e3e81806afa85a7c40"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "A developer may appeal an unfavorable review decision.",
+      "exceptions": [],
+      "id": "req-6c788b0c9dd146d6b2d0ac6e0c48fd13",
+      "kind": "exception",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "0f4678660d3a81944d017a66118ef35675db4e44e58211f1696274ce03a3bef6"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "An appeal can change the publication outcome.",
+      "exceptions": [],
+      "id": "req-d6fc0324eb054793bd42940cfd47bf9b",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "a74b208b7b25c747bc22024b0293a92dce02767c3d5a656bcf23c836b02728ef"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Developers may submit suggestions about the guidelines.",
+      "exceptions": [],
+      "id": "req-d126a30db72d4993a29c8100a8933bfe",
+      "kind": "exception",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "490f99dacc1051ce5cc0577ca06c2d2d466d4b4ae36b6090e44e15dcfedd4ffe"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Eligible maintenance updates may proceed despite unrelated guideline issues, except legal or safety concerns.",
+      "exceptions": [],
+      "id": "req-fb3bf8d317c44b1383032c7a55cf047d",
+      "kind": "exception",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-fb4cb3107c0940c49cb5b9268e624813"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit exception: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-fb4cb3107c0940c49cb5b9268e624813.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "2914de80691629eff597ffa9a958ee02cc8c18bbd33e92114bb99c449535a73e"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "The source of the conditional procedure for requesting the bug-fix review treatment.",
+      "exceptions": [],
+      "id": "req-8338b41405c243e0ae666cfc5d2181d8",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "atom-fb4cb3107c0940c49cb5b9268e624813"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty. Linked records: atom-fb4cb3107c0940c49cb5b9268e624813.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "021d305c601b121a74a782bbdb610e4aa5a7c774137ecef43322f7c3ed8d8f04"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "context": "Apple platform distribution or review process as described by this source fragment"
+      },
+      "criterion": "Apple closes with an expression of interest in future apps.",
+      "exceptions": [],
+      "id": "req-84dde0c3a4144b0e820bf4773f3c3636",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: Process context, scope, permission, or an alias to a separately identified duty.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "c65bc43b38a33eba7bb8817bc2f71cdaac4e559f9f090edb3b001532359e8501"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Keep a released App Store app usable and current enough to serve users as platform and product needs evolve.",
+      "exceptions": [],
+      "id": "atom-aa8284569e164afb823d07720c3ca324",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-d26a51fa86e74ad2b604bdde147c8bb9"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "c9260c88fdc3a1952b14216bb591d9bea2d2b3dcb8516dd348815b157319acb4"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "condition": "Children or teens can access the app.",
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Ensure app content and flows available to children or teens suit their age and maturity.",
+      "exceptions": [],
+      "id": "atom-c44cce19b9104b2ca5f658e0dd2a93a5",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-df1ef4572037492a889758f63e8c7507"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "b35a6c66167f207ca5848bfa3340239733bf84d662995c35537bf21a99f83502"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Treat users with differing views respectfully through app content and behavior.",
+      "exceptions": [],
+      "id": "atom-a386ca273c58478cb0f5608babab9a81",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-1f2c02e380d74260b717cd62a1db4c72"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "e237f9a724047f72cf2bae877dfc246f4c0c5acfe39b90e6ace3430a1191ee63"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Deliver an overall app experience of sufficient quality for App Store distribution.",
+      "exceptions": [],
+      "id": "atom-240f52a443aa466f840ab6ee91f0811d",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-1f2c02e380d74260b717cd62a1db4c72",
+        "req-f1a90bcb1c6f4c9e89a27c7cf7da261e"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "design-quality",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
+        },
+        {
+          "check_id": "minimum-functionality",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
+        },
+        {
+          "check_id": "dyn-dark-mode",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "dyn-dynamic-type",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        },
+        {
+          "check_id": "dyn-layout-review",
+          "decides": "partial",
+          "evidence_class": "runtime",
+          "route": "runtime"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "e237f9a724047f72cf2bae877dfc246f4c0c5acfe39b90e6ace3430a1191ee63"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Avoid intentional deception or manipulation of Apple review, distribution, user data, intellectual property, ratings, or discovery systems.",
+      "exceptions": [],
+      "id": "atom-f7d015611dde4efda35fcf052340c2f6",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-ae367c0fad77408d802a5d1c957f01ed"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "rating-manipulation",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "e3b17f4f2fa5a6b98402b0b70fb1740a4bf9a0c0febe4438fe274e984dada66e"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "condition": "External components or services are integrated.",
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Assess externally supplied SDKs, ads, analytics, and services before integration, monitor them while distributed, and retain responsibility for their guideline compliance.",
+      "exceptions": [],
+      "id": "atom-f65a3e371c2c49229e0449753fef6859",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-aaa914fb7837449792affda757ec3b57"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "section6-external-components",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4b19f23f7741411d58028911b20cc60a79477329fe268c3edbf4fbe74bcd046f"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#introduction",
+      "apple_ref": "introduction",
+      "applicability": {
+        "context": "App Store distribution",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Special entitlement availability is a platform capability description, not a general entitlement grant.",
+      "exceptions": [],
+      "id": "atom-cceffef53c7640dc8158f299f656ff99",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-866ab275f95a4fc59386c05acf8545e8"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "introduction informational: Describes capability or points to external documents; concrete duties are elsewhere.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "3e3848fd78d40e1d46f36521b2d17221e98647ec637d747cdbf94ee784384791"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Continue supporting a released App Store app so its promised functionality remains available.",
+      "exceptions": [],
+      "id": "atom-7660b11f2dad457fbefdac9a83a74d99",
+      "kind": "informational",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-3f67da2598b44452a1f9d9f34bf6d928",
+        "atom-aa8284569e164afb823d07720c3ca324"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Before-You-Submit restatement of the introduction maintenance duty; evaluated on the linked atom. Linked records: atom-aa8284569e164afb823d07720c3ca324.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4c5e6e9c5030ad6089d69cbe2d81bb20a9223816d202b58c1f3204d522ba81ce"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Give reviewers a working path to every submitted feature and content item, including any developer-controlled access gate.",
+      "exceptions": [],
+      "id": "atom-884097dadb564c018667d7c730d75f61",
+      "kind": "informational",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-c59656dacdd949e2881338f05fc6cdc9",
+        "atom-e575151c903d4c8fb72cede56c55c136"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Before-You-Submit alias of the 2.1(a) demo-access duty; evaluated on the linked atom. Linked records: atom-e575151c903d4c8fb72cede56c55c136.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "aeadc0ade1f1c621510d21e9948c4385c8d1d7133e5eb232cf1718d546ce688c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "condition": "Review requires hardware or a resource beyond ordinary app access.",
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Arrange access to specialized hardware, sample data, codes, or other resources needed for review; an accepted demonstration video may establish a difficult hardware case, subject to later reviewer requests.",
+      "exceptions": [],
+      "id": "atom-e7ac52bbed6742cea1216b232bf01b1a",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-f8b39e9813ab4a0e98d5a7a30111f812"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "section6-special-hardware",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "181963b470b2a1725dc69952bd87e4e1167d862fd13813dd829114abb8456e6e"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "condition": "A feature is not reasonably discoverable or its behavior is unclear to a reviewer.",
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Explain features whose behavior or review steps are difficult to find, understand, or exercise; provide navigation and supporting material when needed.",
+      "exceptions": [],
+      "id": "atom-f9a98fc9b0544658a3b9a4b0152a160e",
+      "kind": "obligation",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "attestation",
+      "related": [
+        "req-ba63a06dfa084f0880eb3d789ff26cdb"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "check_id": "attestation-generic",
+          "decides": "full",
+          "evidence_class": "developer-attestation",
+          "route": "attestation"
+        },
+        {
+          "check_id": "meta-review-notes",
+          "decides": "partial",
+          "evidence_class": "metadata",
+          "route": "metadata"
+        },
+        {
+          "check_id": "review-notes",
+          "decides": "partial",
+          "evidence_class": "semantic",
+          "route": "semantic"
+        },
+        {
+          "check_id": "screentime-justification",
+          "decides": "partial",
+          "evidence_class": "source",
+          "route": "static"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "08c75ce9d816a9990f2ac6597243bb5fae64388fc36a6b8dec6e060028a5a86c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "condition": "A purchase path or delivered benefit is difficult to find, understand, or exercise.",
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Explain purchases whose access, behavior, fulfillment, or verification would not be clear to a reviewer from the app alone.",
+      "exceptions": [],
+      "id": "atom-89ba978493b44f34a8ed0f9e9d4b9bb1",
+      "kind": "informational",
+      "platforms": [
+        "iOS",
+        "iPadOS",
+        "macOS",
+        "tvOS",
+        "watchOS",
+        "visionOS"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-ba63a06dfa084f0880eb3d789ff26cdb",
+        "atom-26cf6458c05541869843bb236e088a76"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Before-You-Submit alias of the 2.1(b) in-app purchase review-notes duty; evaluated on the linked atom. Linked records: atom-26cf6458c05541869843bb236e088a76.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "08c75ce9d816a9990f2ac6597243bb5fae64388fc36a6b8dec6e060028a5a86c"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#before-you-submit",
+      "apple_ref": "before-you-submit",
+      "applicability": {
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "External documentation pointers do not establish a single independently testable app duty.",
+      "exceptions": [],
+      "id": "atom-8ec7a1f236414c65a4604e3c7e1fe1bb",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-68b4b2a660d84773a07a291d64b23519"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "before-you-submit informational: Describes capability or points to external documents; concrete duties are elsewhere.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "4911e64cd6c899581abc953e2c51d29a377bf3a75bcdd81f06d103bcaab45288"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "condition": "Developer requests expedited review.",
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "Request expedited review only when a concrete critical timing need exists.",
+      "exceptions": [],
+      "id": "atom-a9c3f3d5e7344174860729bd57ddfa21",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-e1235dc007a9401dbae80e6567f8a969"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: After-You-Submit conduct for requesting expedited review; an App Review process step, not a property of the submitted app.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "1dba3d7a59659520334f47746c40fc22b49649892328fdfea3e9b9a8dc9ca1fc"
+    },
+    {
+      "anchor": "https://developer.apple.com/app-store/review/guidelines/#after-you-submit",
+      "apple_ref": "after-you-submit",
+      "applicability": {
+        "condition": "A previously distributed app update qualifies for the maintenance bug-fix path, no legal or safety issue is involved, and the developer elects to request it.",
+        "context": "Applicable submitted or released app and review process",
+        "unknown": "NEEDS_REVIEW"
+      },
+      "criterion": "When seeking the eligible bug-fix path after rejection, tell App Review through App Store Connect and commit to resolving the issue in a later submission.",
+      "exceptions": [],
+      "id": "atom-fb4cb3107c0940c49cb5b9268e624813",
+      "kind": "informational",
+      "platforms": [
+        "all_apple_platforms"
+      ],
+      "primary_route": "not_app_checkable",
+      "related": [
+        "req-8338b41405c243e0ae666cfc5d2181d8",
+        "req-fb3bf8d317c44b1383032c7a55cf047d"
+      ],
+      "retired_from": [],
+      "routes": [
+        {
+          "decides": "full",
+          "evidence_class": "source-classification",
+          "reason": "after-you-submit informational: After-You-Submit conduct for the post-rejection bug-fix path; an App Review process step, not a property of the submitted app.",
+          "route": "not_app_checkable"
+        }
+      ],
+      "section": "intro",
+      "text_sha256": "021d305c601b121a74a782bbdb610e4aa5a7c774137ecef43322f7c3ed8d8f04"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "authorized": true,
+  "environment": "sandbox",
+  "scope": {
+    "synthetic": true,
+    "backend": "local-state-only"
+  },
+  "selectors": [
+    "Delete Account",
+    "Restore Purchases",
+    "Report Content",
+    "Block Member"
+  ],
+  "transitions": {
+    "Delete Account": {
+      "flow": "deletion",
+      "start": "Precheck Clean",
+      "success": "Account deleted",
+      "failure": "Unexpected fixture error"
+    },
+    "Restore Purchases": {
+      "flow": "restore",
+      "start": "Precheck Clean",
+      "success": "Restore request completed",
+      "failure": "Unexpected fixture error"
+    },
+    "Report Content": {
+      "flow": "ugc-report",
+      "start": "Precheck Clean",
+      "success": "Report submitted",
+      "failure": "Unexpected fixture error"
+    },
+    "Block Member": {
+      "flow": "ugc-block",
+      "start": "Precheck Clean",
+      "success": "Member blocked",
+      "failure": "Unexpected fixture error"
+    }
+  }
+}

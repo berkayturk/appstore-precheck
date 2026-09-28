@@ -1,0 +1,44 @@
+{
+  "checks": {
+    "section5-contact-preselect": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_contact_preselect",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-contact-select-all": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_contact_select_all",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-privacy-entry": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_privacy_entry",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    },
+    "section5-safari-obscure": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section5-review.py",
+      "line_prefix": "SECTION5-",
+      "route": "static",
+      "symbol": "review_safari_obscure",
+      "tests": [
+        "tests/test-section5-review.sh"
+      ]
+    }
+  }
+}

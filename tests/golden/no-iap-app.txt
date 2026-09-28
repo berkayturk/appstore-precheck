@@ -1,0 +1,21 @@
+PASS: layout — ios='./ios/NoIapApp' metadata='./ios/fastlane/metadata' xcstrings='?' locales=1
+PASS: 5.1.1 Required Reason API — 'UserDefaults' parity OK
+PASS: 5.1.2 ATT — not used (no tracking)
+PASS: 2.3.10 Other-platform mentions — metadata clean
+PASS: 2.3 Localized metadata — checked 1 locales
+WARN: 2.3.3 Screenshots — en-US has only 1 image(s) (3-10 recommended)
+      evidence: resource · judgment-call
+PASS: 2.3.3 Screenshots — checked 1 locales under ./ios/fastlane/screenshots
+PASS: 3.1.2 IAP — no in-app purchase / subscription signals detected, skipping paywall checks
+PASS: 2.5.1 Private API — clean
+PASS: 4.2 Minimum functionality — 1 navigation hub(s) found
+WARN: export-compliance — Info.plist has no ITSAppUsesNonExemptEncryption; set it (true/false) to skip the App Store Connect encryption-export prompt every submission
+      evidence: manifest · judgment-call
+WARN: 2.3 Support URL — no non-empty support_url.txt in any locale under fastlane metadata; Apple requires a working support URL with developer contact info (1.5 / 2.3)
+      evidence: metadata · validator-blocking
+WARN: 2.3 Privacy URL — no non-empty privacy_url.txt in any locale under fastlane metadata; a privacy policy link is required for every app, and especially apps with accounts or in-app purchases (5.1.1(i))
+      evidence: metadata · validator-blocking
+PASS: 2.3.7 App name/subtitle — no pricing/promo language detected
+PASS: 4.3 Saturated category — no 4.3(b) category term in the app name/subtitle/keywords
+PASS: 2.5.5 IPv6-only — no IPv4-only socket API or hardcoded IPv4 literal found
+---END-OF-SCAN---

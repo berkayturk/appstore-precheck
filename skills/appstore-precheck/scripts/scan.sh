@@ -15,6 +15,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 FORMAT="text"
 SCAN_DIR=""
+OPT_NO_RUNTIME=0 OPT_DEMO=0 OPT_ASC_VERSION="" OPT_ASC_INFO=""
+OPT_BUILD=0 OPT_APP="" OPT_METADATA=0 OPT_ASC="" OPT_URLS=0 OPT_DYN_BLOCK=0 OPT_DRY=0 OPT_OUT="" OPT_TEMP=""
+# 1 only when opt-in-review.py exited successfully in THIS run; a reused --out may
+# hold last run's run-results.json/summary.json, which must never be merged.
+OPT_RAN_OK=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --format)
@@ -25,10 +30,31 @@ while [[ $# -gt 0 ]]; do
       if [[ $# -lt 2 ]]; then echo "scan.sh: --dir needs a path" >&2; exit 64; fi
       SCAN_DIR="$2"; shift 2 ;;
     --dir=*) SCAN_DIR="${1#*=}"; shift ;;
+    --build) OPT_BUILD=1; shift ;;
+    --app)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --app needs a path" >&2; exit 64; fi
+      OPT_APP="$2"; shift 2 ;;
+    --metadata) OPT_METADATA=1; shift ;;
+    --no-runtime) OPT_NO_RUNTIME=1; shift ;;
+    --demo-login) OPT_DEMO=1; shift ;;
+    --asc-version-id|--asc-info-id)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: $1 needs an ID" >&2; exit 64; fi
+      if [[ "$1" == --asc-version-id ]]; then OPT_ASC_VERSION="$2"; else OPT_ASC_INFO="$2"; fi
+      shift 2 ;;
+    --asc-app-id)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --asc-app-id needs an ID" >&2; exit 64; fi
+      OPT_ASC="$2"; OPT_METADATA=1; shift 2 ;;
+    --check-urls) OPT_URLS=1; OPT_METADATA=1; shift ;;
+    --dynamic-blocking) OPT_DYN_BLOCK=1; shift ;;
+    --dry-run) OPT_DRY=1; shift ;;
+    --out)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --out needs a path" >&2; exit 64; fi
+      OPT_OUT="$2"; shift 2 ;;
     *) shift ;;
   esac
 done
 [[ "$FORMAT" == json || "$FORMAT" == text || "$FORMAT" == sarif ]] || { echo "scan.sh: --format must be text|json|sarif" >&2; exit 64; }
+if [[ "$OPT_BUILD" == 1 && -n "$OPT_APP" ]]; then echo "scan.sh: use --build or --app" >&2; exit 64; fi
 
 # An explicit --dir is authoritative: scan exactly that directory. Without it,
 # snap to the enclosing git toplevel (monorepo subdirs need --dir to opt out).
@@ -47,7 +73,7 @@ source "$SCRIPT_DIR/image-dims.sh"
 source "$SCRIPT_DIR/sarif.sh"
 source "$SCRIPT_DIR/framework-detect.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
-trap 'rm -f "$FINDINGS_TMP"' EXIT
+trap 'rm -f "$FINDINGS_TMP"; if [[ -n "$OPT_TEMP" && ! -f "$OPT_TEMP/summary.json" ]]; then rm -rf -- "$OPT_TEMP"; fi' EXIT
 # The envelope `version` is the appstore-precheck TOOL's own version (from this
 # skill's SKILL.md), never the scanned repo's — $ROOT above is the SCANNED app's
 # git root, so reading its package.json here would leak the wrong version.
@@ -73,6 +99,22 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   fi
   echo "false"
 }
+# The config lives in the SCANNED repository, so it must never execute that
+# project's code on its own: dynamic.build is honoured only when the invoker vouches
+# for the config with APPSTORE_PRECHECK_TRUST_CONFIG=1 (or passes --build/--app).
+if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then
+  if [[ "${APPSTORE_PRECHECK_TRUST_CONFIG:-}" == 1 ]]; then
+    OPT_BUILD=1
+  else
+    echo "appstore-precheck: config requests dynamic.build; ignored (pass --build or set APPSTORE_PRECHECK_TRUST_CONFIG=1)" >&2
+  fi
+fi
+# dynamic.demoLogin is only a default for a run that is already active (flags or
+# trusted config) and launches the app; on its own it must never fail a scan.
+if [[ ( "$OPT_BUILD" == 1 || -n "$OPT_APP" ) && "$OPT_NO_RUNTIME" != 1 && "$(cfg_bool '.dynamic.demoLogin')" == true ]]; then OPT_DEMO=1; fi
+if [[ "$OPT_NO_RUNTIME" == 1 && ( "$OPT_DEMO" == 1 || "$OPT_DYN_BLOCK" == 1 ) ]]; then echo "scan.sh: --no-runtime conflicts with --demo-login or --dynamic-blocking" >&2; exit 64; fi
+if [[ "$OPT_DEMO" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --demo-login needs --build or --app" >&2; exit 64; fi
+if [[ "$OPT_DYN_BLOCK" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --dynamic-blocking needs --build or --app" >&2; exit 64; fi
 
 _LAST_SUPPRESSED=0
 
@@ -1632,9 +1674,69 @@ if [[ -n "$IOS_DIR" ]]; then
   fi
 fi
 
+if [[ "$OPT_BUILD" == 1 || -n "$OPT_APP" || "$OPT_METADATA" == 1 ]]; then
+  if ! command -v python3 >/dev/null 2>&1; then
+    set_rule "opt-in-review"
+    skip "opt-in review — Python 3.8+ is required for build, artifact, runtime, and metadata reporting"
+  else
+    if [[ -z "$OPT_OUT" ]]; then
+      OPT_TEMP="$(mktemp -d "${TMPDIR:-/tmp}/appstore-precheck-review.XXXXXX")"
+      OPT_OUT="$OPT_TEMP"
+    fi
+    OPT_ARGS=( --repo "$ROOT" --out-dir "$OPT_OUT" )
+    [[ "$OPT_BUILD" == 1 ]] && OPT_ARGS+=( --build )
+    [[ -n "$OPT_APP" ]] && OPT_ARGS+=( --app "$OPT_APP" )
+    [[ "$OPT_METADATA" == 1 ]] && OPT_ARGS+=( --metadata )
+    [[ -n "$OPT_ASC" ]] && OPT_ARGS+=( --asc-app-id "$OPT_ASC" )
+    [[ "$OPT_URLS" == 1 ]] && OPT_ARGS+=( --check-urls )
+    [[ "$OPT_DYN_BLOCK" == 1 ]] && OPT_ARGS+=( --dynamic-blocking )
+    [[ "$OPT_DRY" == 1 ]] && OPT_ARGS+=( --dry-run )
+    [[ "$OPT_NO_RUNTIME" == 1 ]] && OPT_ARGS+=( --no-runtime )
+    [[ "$OPT_DEMO" == 1 ]] && OPT_ARGS+=( --demo-login )
+    [[ -n "$OPT_ASC_VERSION" ]] && OPT_ARGS+=( --asc-version-id "$OPT_ASC_VERSION" )
+    [[ -n "$OPT_ASC_INFO" ]] && OPT_ARGS+=( --asc-info-id "$OPT_ASC_INFO" )
+    if python3 "$SCRIPT_DIR/opt-in-review.py" "${OPT_ARGS[@]}" >/dev/null; then
+      OPT_RAN_OK=1
+      if [[ "$FORMAT" == text ]]; then
+        python3 - "$OPT_OUT/summary.json" <<'PY'
+import json,sys
+data=json.load(open(sys.argv[1]))
+for name,status in data['tiers'].items():
+    print('OPT-IN: {} — {}'.format(name,status))
+print('OPT-IN: report — {}'.format(data['run_results']))
+PY
+      fi
+      while IFS= read -r line; do
+        if [[ "$line" == FAIL:* ]]; then
+          if [[ "$line" =~ \[([^]]+)\] ]]; then set_rule "${BASH_REMATCH[1]}"; else set_rule "dynamic-blocking"; fi
+          fail "${line#FAIL: }"
+        fi
+      done < <(python3 - "$OPT_OUT/summary.json" <<'PY'
+import json,sys
+for line in json.load(open(sys.argv[1])).get('blocking',[]):print(line)
+PY
+)
+    else
+      set_rule "opt-in-review"
+      skip "opt-in review — runner could not complete; see command arguments and environment"
+    fi
+  fi
+fi
+
 echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
   printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"
 fi
-if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json;
+if [[ "$FORMAT" == json ]]; then
+  exec 1>&4 4>&-
+  if command -v python3 >/dev/null 2>&1; then
+    if [[ "$OPT_RAN_OK" == 1 && -n "$OPT_OUT" && -f "$OPT_OUT/run-results.json" ]]; then
+      render_json | python3 "$SCRIPT_DIR/augment-json.py" --config "$CONFIG" \
+        --run-results "$OPT_OUT/run-results.json" --opt-summary "$OPT_OUT/summary.json"
+    else
+      render_json | python3 "$SCRIPT_DIR/augment-json.py" --config "$CONFIG"
+    fi
+  else
+    render_json
+  fi
 elif [[ "$FORMAT" == sarif ]]; then exec 1>&4 4>&-; render_sarif; fi

@@ -1,0 +1,1 @@
+{"expo":{"name":"Precheck Expo Broken","slug":"precheck-expo-broken","version":"1.0.0","orientation":"portrait","plugins":[["expo-camera",{"cameraPermission":false}],"./plugins/removeCameraPurpose"],"ios":{"bundleIdentifier":"org.appstoreprecheck.corpus.expo.broken"}}}

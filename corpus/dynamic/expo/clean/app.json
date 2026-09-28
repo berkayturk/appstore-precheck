@@ -1,0 +1,1 @@
+{"expo":{"name":"Precheck Expo Clean","slug":"precheck-expo-clean","version":"1.0.0","orientation":"portrait","plugins":[["expo-camera",{"cameraPermission":"Attach a photo to a report."}]],"ios":{"bundleIdentifier":"org.appstoreprecheck.corpus.expo.clean"}}}

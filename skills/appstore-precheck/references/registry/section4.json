@@ -1,0 +1,54 @@
+{
+  "checks": {
+    "section4-apple-branding": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_brand",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-extension-commerce": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_commerce",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-keyboard-navigation": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_keyboard",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-placeholder-copy": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_placeholder",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    },
+    "section4-safari-access": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section4-review.py",
+      "line_prefix": "SECTION4-",
+      "route": "static",
+      "symbol": "review_safari",
+      "tests": [
+        "tests/test-section4-review.sh"
+      ]
+    }
+  }
+}

@@ -84,6 +84,28 @@ assert_contains "$OUT" "VERDICT: GREEN" "subdir scan reaches the same GREEN as a
 assert_eq "$CODE" "0" "exit 0 for the subdir GREEN"
 rm -rf "$mono"
 
+section "relative --dir/--out/--app resolve against the caller's cwd, not --dir"
+# The scanner child runs with cwd=--dir, so a relative value used to be re-resolved
+# against the scanned project (and --out then landed inside it, where it is refused).
+rel="$(cd "$(mktemp -d)" && pwd -P)"
+mkdir -p "$rel/proj"
+cp -R "$FIXTURES/clean-app/." "$rel/proj/"
+( cd "$rel" && node "$CLI" --dir proj --build --dry-run --metadata --out rel-out --format json >"$rel/out.json" 2>"$rel/err.txt" ); CODE=$?
+assert_eq "$CODE" "0" "relative --dir/--out scan exits 0"
+if [[ -f "$rel/rel-out/summary.json" ]]; then echo "  ok: relative --out lands under the caller's cwd"
+else echo "  FAIL: relative --out did not land under the caller's cwd"; fails=$((fails + 1)); fi
+if [[ ! -e "$rel/proj/rel-out" ]]; then echo "  ok: nothing written inside the scanned project"
+else echo "  FAIL: relative --out was resolved against --dir"; fails=$((fails + 1)); fi
+mkdir -p "$rel/shim"
+printf '#!/bin/sh\nprintf "%%s\\n" "$@" >> "%s/args.log"\n' "$rel" > "$rel/shim/bash"
+chmod +x "$rel/shim/bash"
+( cd "$rel" && PATH="$rel/shim:$PATH" node "$CLI" --dir proj --app build/Sample.app --out rel-out >/dev/null 2>&1 )
+args="$(cat "$rel/args.log" 2>/dev/null)"
+assert_contains "$args" "$rel/build/Sample.app" "relative --app is passed as an absolute path from the caller's cwd"
+assert_contains "$args" "$rel/rel-out" "relative --out is passed as an absolute path from the caller's cwd"
+assert_contains "$args" "$rel/proj" "relative --dir is passed as an absolute path"
+rm -rf "$rel"
+
 echo
 if (( fails == 0 )); then echo "test-cli: ALL PASSED"; else echo "test-cli: $fails FAILED"; fi
 exit "$fails"

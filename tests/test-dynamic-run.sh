@@ -17,6 +17,9 @@ T="$(mktemp -d)"
 SHIM="$T/shim"; mkdir -p "$SHIM"
 export FAKE_CALLS="$T/calls.log" FAKE_PIDS="$T/pids" FAKE_SCENARIO=pass FAKE_PNG="$T/varied.png" FAKE_APP=""
 export FAKE_COUNTER="$T/launches"
+# Stateful fake device store (UDID<TAB>name per line) + ui state, so sweeps and getters are observable.
+export FAKE_DEVICES="$T/devices.tsv" FAKE_UI_APPEARANCE="$T/ui-appearance" FAKE_UI_CONTENT="$T/ui-content"
+: > "$FAKE_DEVICES"
 
 # A varied PNG for the screenshot shim (a flat one would be a "hung splash").
 python3 - "$FAKE_PNG" <<'PY'
@@ -36,10 +39,20 @@ shift   # simctl
 case "$1" in
   list)
     case "$2" in
+      devices)     jq -Rn '[inputs | split("\t") | {udid: .[0], name: .[1], state: "Shutdown", isAvailable: true}] | {devices: {"com.apple.CoreSimulator.SimRuntime.iOS-26-5": .}}' < "$FAKE_DEVICES" ;;
       runtimes)    echo '{"runtimes":[{"platform":"iOS","isAvailable":true,"version":"26.5","identifier":"com.apple.CoreSimulator.SimRuntime.iOS-26-5"}]}' ;;
       devicetypes) echo '{"devicetypes":[{"productFamily":"iPhone","name":"iPhone 16","identifier":"com.apple.CoreSimulator.SimDeviceType.iPhone-16"},{"productFamily":"iPhone","name":"iPhone 17","identifier":"com.apple.CoreSimulator.SimDeviceType.iPhone-17"},{"productFamily":"iPhone","name":"iPod touch (7th generation)","identifier":"com.apple.CoreSimulator.SimDeviceType.iPod-touch--7th-generation-"},{"productFamily":"iPad","name":"iPad Pro 11-inch (M5)","identifier":"com.apple.CoreSimulator.SimDeviceType.iPad-Pro-11-inch-M5"}]}' ;;
     esac ;;
-  create) echo "FAKE-UDID-$(( RANDOM ))" ;;
+  create) u="FAKE-UDID-$(( RANDOM ))"; printf '%s\t%s\n' "$u" "$2" >> "$FAKE_DEVICES"; echo "$u" ;;
+  delete)
+    if [[ -n "${FAKE_DELETE_FAIL_ONCE:-}" && ! -f "$FAKE_DELETE_FAIL_ONCE" ]]; then : > "$FAKE_DELETE_FAIL_ONCE"; exit 1; fi
+    grep -v "^$2	" "$FAKE_DEVICES" > "$FAKE_DEVICES.new"; mv "$FAKE_DEVICES.new" "$FAKE_DEVICES"; exit 0 ;;
+  shutdown) [[ -n "${FAKE_SHUTDOWN_HANG:-}" ]] && sleep "$FAKE_SHUTDOWN_HANG"; exit 0 ;;
+  ui)
+    # ui <udid> appearance|content_size [value]: no value = getter (absent state file = no getter)
+    case "$3" in appearance) f="$FAKE_UI_APPEARANCE" ;; content_size) f="$FAKE_UI_CONTENT" ;; *) exit 0 ;; esac
+    if [[ -n "${4:-}" ]]; then printf '%s\n' "$4" > "$f"; else [[ -f "$f" ]] && cat "$f"; fi
+    exit 0 ;;
   install) [[ -d "$3" ]] || { echo "Unable to install: not a bundle" >&2; exit 1; } ;;
   get_app_container) echo "$FAKE_APP" ;;
   launch)
@@ -52,7 +65,7 @@ case "$1" in
     pid=$!; echo "$pid" >> "$FAKE_PIDS"; echo "$4: $pid" ;;
   io) cp "$FAKE_PNG" "$5" ;;
   spawn) exec sleep 3600 ;;
-  boot|bootstatus|status_bar|privacy|shutdown|erase|delete|ui) exit 0 ;;
+  boot|bootstatus|status_bar|privacy|erase) exit 0 ;;
   *) exit 0 ;;
 esac
 EOF
@@ -74,7 +87,7 @@ mkdir -p "$T/Debug-iphonesimulator"; cp -R "$FX/dynamic-bundle/Installed.app" "$
 APP="$T/Debug-iphonesimulator/Installed.app"; export FAKE_APP="$APP"
 REPO="$T/repo"; mkdir -p "$REPO/ios/App"; cp "$FX/dynamic-bundle/repo/Info.plist" "$REPO/ios/App/Info.plist"
 
-reset_calls() { : > "$FAKE_CALLS"; rm -f "$FAKE_COUNTER"; }
+reset_calls() { : > "$FAKE_CALLS"; rm -f "$FAKE_COUNTER" "$FAKE_UI_APPEARANCE" "$FAKE_UI_CONTENT"; : > "$FAKE_DEVICES"; }
 kill_fakes() { [[ -f "$FAKE_PIDS" ]] && { while read -r p; do kill "$p" 2>/dev/null; done < "$FAKE_PIDS"; : > "$FAKE_PIDS"; }; return 0; }
 first_idx() { grep -n -- "$1" "$FAKE_CALLS" | head -1 | cut -d: -f1; }
 count() { grep -c -- "$1" "$FAKE_CALLS"; }
@@ -128,6 +141,9 @@ assert_eq "$(count 'maestro')" "$(grep -c 'hierarchy' "$FAKE_CALLS")" "every Mae
 assert_eq "debug" "$(jq -r .build_config "$OUT1/run.json")" "run.json: build_config from the directory name"
 assert_eq "true" "$(jq -r .device.created_by_this_run "$OUT1/run.json")" "run.json: device ownership"
 assert_eq "3" "$(jq -r .launch.pass "$OUT1/run.json")" "run.json: launch tally"
+assert_eq "3" "$(jq -r '.d1_d2_seconds | length' "$OUT1/run.json")" "run.json: D1+D2 durations recorded per repeat"
+assert_eq "3" "$(jq -r '.timing.observation_seconds | length' "$OUT1/run.json")" "run.json: separate pure observation durations recorded"
+assert_eq "true" "$(jq '[range(0;3) as $i | .d1_d2_seconds[$i] >= .timing.observation_seconds[$i]] | all' "$OUT1/run.json")" "legacy duration retains lifecycle overhead"
 assert_contains "$(jq -r .next "$OUT1/run.json")" "--build-config debug" "run.json: the dynamic.sh command carries the config"
 assert_eq "$(grep -c '^DYNAMIC-' "$OUT1/transcript.txt")" "$(grep -c '^DYNAMIC-' <<<"$tx")" "transcript file mirrors stdout"
 
@@ -173,14 +189,15 @@ tx="$(FAKE_APP="$T/Release-iphonesimulator/Installed.app" bash "$RUN" --app "$T/
 assert_eq "2" "$(count 'simctl launch')" "with main.jsbundle the launches happen (and --repeats 2 is honoured)"
 assert_eq "release" "$(jq -r .build_config "$T/out5/run.json")" "Release-iphonesimulator -> release"
 
-section "Flutter: selector-based checks are SKIPped up front"
+section "Flutter: unexecuted selector checks retain measured accessibility scope"
 reset_calls
 FL="$T/fl"; cp -R "$FX/flutter-app" "$FL"
 tx="$(bash "$RUN" --app "$APP" --repo "$FL" --repeats 1 --window 1 --out "$T/out6" 2>/dev/null)"; kill_fakes
-assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — not driveable on flutter" "D3b pre-SKIP"
+assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — flutter accessibility tree observed" "D3b scoped SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-demo-login]" "D5 pre-SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 5.1.1(ii) [dyn-permission-prompt]" "D4 trigger half pre-SKIP"
-assert_contains "$tx" "no semantics to Maestro" "…with the reason"
+assert_contains "$tx" "dedicated selector flows were not executed" "…with the actual flow limitation"
+assert_absent "$tx" "not driveable on flutter" "healthy tree is not labeled undriveable"
 assert_contains "$tx" "DYNAMIC-PASS: 2.1 [dyn-launch]" "observation-based D1 still runs"
 assert_contains "$tx" "Dart HttpClient bypasses CFNetwork" "empty host list on Flutter names the CFNetwork blind spot"
 assert_contains "$tx" "--pktap" "…and the opt-in remedy"
@@ -221,6 +238,131 @@ bash "$RUN" >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "no --app / --udid reje
 bash "$RUN" --udid X >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "--udid without --bundle-id rejected"
 bash "$RUN" --app "$T/nonexistent.app" >/dev/null 2>&1; st=$?; assert_eq "66" "$st" "missing .app is exit 66"
 bash "$RUN" --app "$APP" --framework cordova >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "unknown framework rejected"
+
+section "live observation-only exploration works without a navigation authorization file"
+reset_calls
+bash "$RUN" --app "$APP" --repeats 1 --window 1 --explore --explore-seconds 1 \
+  --out "$T/observe-only" > "$T/observe-only.txt" 2> "$T/observe-only.err"
+st=$?
+assert_eq "0" "$st" "empty optional navigation array works under Bash nounset"
+[[ -f "$T/observe-only/run.json" ]] || { echo "  FAIL: observation-only run metadata missing"; fails=$((fails+1)); }
+[[ -f "$T/observe-only/screen-inventory.json" ]] || { echo "  FAIL: observation-only screen inventory missing"; fails=$((fails+1)); }
+assert_absent "$(cat "$T/observe-only.err")" "unbound variable" "no Bash 3.2 empty-array expansion error"
+kill_fakes
+
+section "deadline and cancellation clean the owned simulator"
+reset_calls
+PRECHECK_RUNTIME_DEADLINE_SECONDS=3 bash "$RUN" --app "$APP" --window 60 --out "$T/deadline" > "$T/deadline.txt" 2>/dev/null
+st=$?
+assert_eq "124" "$st" "deadline has an explicit timeout status"
+assert_eq "1" "$(count 'simctl delete')" "deadline runs owned-device cleanup"
+assert_eq "$(cat "$T/deadline/owned-simulators.txt")" "$(cat "$T/deadline/deleted-simulators.txt")" "deadline ownership ledger matches successful deletion"
+kill_fakes
+reset_calls
+bash "$RUN" --app "$APP" --window 60 --out "$T/cancel" > "$T/cancel.txt" 2>/dev/null & runner_pid=$!
+for _ in {1..100}; do
+  [[ -s "$T/cancel/owned-simulators.txt" ]] && grep -q 'simctl launch' "$FAKE_CALLS" && break
+  sleep 0.05
+done
+kill -TERM "$runner_pid"
+wait "$runner_pid"; st=$?
+assert_eq "143" "$st" "cancel has an explicit cancellation status"
+assert_eq "1" "$(count 'simctl delete')" "cancel runs owned-device cleanup"
+kill_fakes
+
+section "orphan sweep: only this run's own ledgered precheck-* devices are deleted"
+reset_calls
+OUTO="$T/orphan-out"; mkdir -p "$OUTO"
+printf '%s\n' ORPHAN-1 ORPHAN-2 DONE-4 GONE-6 > "$OUTO/owned-simulators.txt"
+printf '%s\n' DONE-4 > "$OUTO/deleted-simulators.txt"
+printf '%s\t%s\n' ORPHAN-1 precheck-20260101000000-111 ORPHAN-2 "iPhone 17" DONE-4 precheck-20260101000000-222 USER-5 precheck-user-made >> "$FAKE_DEVICES"
+tx="$(bash "$RUN" --app "$APP" --repeats 1 --window 1 --out "$OUTO" 2>/dev/null)"; kill_fakes
+deletes="$(grep 'simctl delete' "$FAKE_CALLS")"
+assert_contains "$deletes" "delete ORPHAN-1" "ledgered precheck-* orphan is deleted"
+assert_absent "$deletes" "ORPHAN-2" "ledgered UDID whose device name is not precheck-* is never deleted"
+assert_absent "$deletes" "DONE-4" "UDID already in deleted-simulators.txt is not deleted again"
+assert_absent "$deletes" "USER-5" "a precheck-* device that is not in this run's ledger is never deleted"
+assert_absent "$deletes" "GONE-6" "a ledgered UDID that no longer exists is not deleted"
+assert_contains "$(cat "$OUTO/deleted-simulators.txt")" "ORPHAN-1" "the sweep records the deletion in the ledger"
+assert_eq "2" "$(count 'simctl delete')" "orphan + this run's own device, nothing else"
+# Symlinked ledger: never followed, so an out-of-dir file cannot steer deletions.
+reset_calls
+OUTL="$T/orphan-link"; mkdir -p "$OUTL"; printf '%s\n' ORPHAN-9 > "$T/elsewhere-owned.txt"
+ln -s "$T/elsewhere-owned.txt" "$OUTL/owned-simulators.txt"
+printf '%s\t%s\n' ORPHAN-9 precheck-20260101000000-333 >> "$FAKE_DEVICES"
+bash "$RUN" --app "$APP" --repeats 1 --window 1 --out "$OUTL" >/dev/null 2>&1; kill_fakes
+assert_absent "$(grep 'simctl delete' "$FAKE_CALLS")" "ORPHAN-9" "a symlinked ledger is not trusted"
+# Exit sweep: a delete that failed during teardown is retried once before the runner exits.
+reset_calls; rm -f "$T/delete-failed-once"
+FAKE_DELETE_FAIL_ONCE="$T/delete-failed-once" bash "$RUN" --app "$APP" --repeats 1 --window 1 --out "$T/exit-sweep" >/dev/null 2>&1; kill_fakes
+assert_eq "2" "$(count 'simctl delete')" "failed delete is retried by the exit sweep"
+assert_eq "$(cat "$T/exit-sweep/owned-simulators.txt")" "$(cat "$T/exit-sweep/deleted-simulators.txt")" "…and the ledger ends balanced"
+assert_eq "0" "$(grep -c . "$FAKE_DEVICES")" "no precheck-* device left behind"
+# Dry run never sweeps.
+reset_calls; mkdir -p "$T/orphan-dry"; printf '%s\n' ORPHAN-1 > "$T/orphan-dry/owned-simulators.txt"
+bash "$RUN" --app "$APP" --repeats 1 --window 1 --dry-run --out "$T/orphan-dry" >/dev/null 2>&1
+assert_eq "0" "$(grep -c . "$FAKE_CALLS")" "dry run makes no simctl call, sweep included"
+
+section "--udid mode restores the user's appearance and content size"
+reset_calls
+printf 'dark\n' > "$FAKE_UI_APPEARANCE"; printf 'accessibility-large\n' > "$FAKE_UI_CONTENT"
+tx="$(bash "$RUN" --udid USER-DEVICE-2 --bundle-id com.example.installed --repeats 1 --window 1 --out "$T/out-ui" 2>/dev/null)"; kill_fakes
+assert_eq "dark" "$(cat "$FAKE_UI_APPEARANCE")" "original dark appearance restored exactly"
+assert_eq "accessibility-large" "$(cat "$FAKE_UI_CONTENT")" "original content size restored exactly (not forced to large)"
+assert_contains "$tx" "DYNAMIC-PASS: 4.0 [dyn-dark-mode]" "D7 still judged when the originals were readable"
+assert_contains "$tx" "DYNAMIC-PASS: 4.0 [dyn-dynamic-type]" "D8 still judged when the originals were readable"
+assert_contains "$(grep 'simctl ui' "$FAKE_CALLS")" "ui USER-DEVICE-2 appearance dark" "appearance getter/setter targets the user device"
+reset_calls
+tx="$(bash "$RUN" --udid USER-DEVICE-3 --bundle-id com.example.installed --repeats 1 --window 1 --out "$T/out-ui2" 2>/dev/null)"; kill_fakes
+assert_contains "$tx" "DYNAMIC-SKIP: 4.0 [dyn-dark-mode]" "unreadable original appearance: D7 SKIP, not mutation"
+assert_contains "$tx" "DYNAMIC-SKIP: 4.0 [dyn-dynamic-type]" "unreadable original content size: D8 SKIP"
+assert_contains "$tx" "original" "the SKIP reason says why (original value unreadable)"
+assert_eq "0" "$(grep -cE 'simctl ui [^ ]+ (appearance|content_size) [a-z-]+' "$FAKE_CALLS")" "no setter was issued on the unrestorable user device"
+# A device this run created keeps the old behaviour (fresh device: light / large).
+reset_calls
+bash "$RUN" --app "$APP" --repeats 1 --window 1 --out "$T/out-ui3" >/dev/null 2>&1; kill_fakes
+assert_eq "large" "$(cat "$FAKE_UI_CONTENT")" "created device: content size reset to large"
+assert_eq "light" "$(cat "$FAKE_UI_APPEARANCE")" "created device: appearance reset to light"
+
+section "--out must not be inside --repo"
+reset_calls
+bash "$RUN" --app "$APP" --repo "$REPO" --dry-run --out "$REPO/out" >/dev/null 2>"$T/e1"; st=$?
+assert_eq "64" "$st" "--out inside --repo is a usage error"
+assert_contains "$(cat "$T/e1")" "--out" "the error names --out"
+[[ ! -e "$REPO/out" ]] && echo "  ok: nothing created inside the repo" || { echo "  FAIL: out dir created inside the repo"; fails=$((fails+1)); }
+bash "$RUN" --app "$APP" --repo "$REPO" --dry-run --out "$REPO/a/b/c" >/dev/null 2>&1; st=$?
+assert_eq "64" "$st" "not-yet-existing nested --out inside --repo rejected"
+[[ ! -e "$REPO/a" ]] && echo "  ok: no parent directories created inside the repo" || { echo "  FAIL: parent dirs created inside the repo"; fails=$((fails+1)); }
+ln -s "$REPO" "$T/repolink"
+bash "$RUN" --app "$APP" --repo "$REPO" --dry-run --out "$T/repolink/viaLink" >/dev/null 2>&1; st=$?
+assert_eq "64" "$st" "--out through a symlink into --repo rejected"
+bash "$RUN" --app "$APP" --repo "$T/repolink" --dry-run --out "$REPO/viaRepoLink" >/dev/null 2>&1; st=$?
+assert_eq "64" "$st" "--repo given as a symlink, --out real path inside: rejected"
+bash "$RUN" --app "$APP" --repo "$REPO" --dry-run --out "$REPO" >/dev/null 2>&1; st=$?
+assert_eq "64" "$st" "--out equal to --repo rejected"
+bash "$RUN" --app "$APP" --repo "$REPO" --dry-run --out "$REPO/../repo/dotdot" >/dev/null 2>&1; st=$?
+assert_eq "64" "$st" "--out with .. that resolves into --repo rejected"
+bash "$RUN" --app "$APP" --repo "$REPO" --dry-run --out "$T/repo-sibling-out" >/dev/null 2>&1; st=$?
+assert_eq "0" "$st" "a sibling directory sharing the repo's name prefix is allowed"
+
+section "deadline watchdog: cleanup finishes before the supervisor's deadline"
+reset_calls
+started=$SECONDS
+PRECHECK_RUNTIME_DEADLINE_SECONDS=8 bash "$RUN" --app "$APP" --window 60 --out "$T/watchdog" > "$T/watchdog.txt" 2>/dev/null
+st=$?; elapsed=$((SECONDS-started)); kill_fakes
+assert_eq "124" "$st" "watchdog exit keeps the deadline status"
+assert_eq "1" "$(count 'simctl delete')" "owned device deleted"
+assert_eq "true" "$([[ "$elapsed" -lt 8 ]] && echo true || echo false)" "the runner cleaned up before the 8s supervisor deadline (took ${elapsed}s)"
+assert_eq "$(cat "$T/watchdog/owned-simulators.txt")" "$(cat "$T/watchdog/deleted-simulators.txt")" "ledger balanced after the watchdog exit"
+
+section "teardown steps are individually bounded"
+reset_calls
+started=$SECONDS
+FAKE_SHUTDOWN_HANG=12 DYN_TEARDOWN_STEP_TIMEOUT=2 bash "$RUN" --app "$APP" --repeats 1 --window 1 --out "$T/hang" >/dev/null 2>&1
+st=$?; elapsed=$((SECONDS-started)); kill_fakes
+assert_eq "0" "$st" "a hung shutdown does not fail the run"
+assert_eq "true" "$([[ "$elapsed" -lt 11 ]] && echo true || echo false)" "a hung simctl shutdown is cut at the step timeout (took ${elapsed}s)"
+assert_eq "1" "$(grep -c 'simctl delete' "$FAKE_CALLS")" "delete is still attempted after the shutdown timed out"
 
 section "the runner never contains a build invocation"
 assert_eq "0" "$(grep -vE '^\s*#' "$RUN" "$S"/lib/dyn-*.sh | grep -E '(^|[;&|] *|\$\()(xcodebuild|flutter build|gradle)' | grep -c . | tr -d ' ')" "no xcodebuild / flutter build / gradle command in the runner or its libs"

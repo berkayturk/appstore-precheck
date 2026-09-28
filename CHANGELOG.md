@@ -5,13 +5,52 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Added
+- Offline `verify` CLI with versioned external profiles, hash/date/scope-bound evidence,
+  criterion conditions and authorized review records. Capability, review completion and
+  verified compliance are separate; unproven applicability stays unresolved.
+- Offline `review-packet` CLI with criterion-specific document requests, retained
+  observations and a separate findings backlog. Positive review requires qualifying
+  documents while preserving valid institutional or regulatory alternatives.
+- Recorded runtime state transitions, explicit sandbox navigation authorization, process
+  group cancellation and owned-device cleanup ledgers; build source/artifact provenance.
+- Real Flutter and ARM64 KMP corpus runs, guarded panel lineage and benchmark reporting.
+  A fresh ten-case runtime panel matched launch and discovery expectations. The unchanged
+  lifecycle speed gate remains unmet (75-second median versus 60 seconds); UI transitions
+  remain separate from verified backend, receipt and entitlement outcomes.
+- Public, reviewed guideline obligation records with route and fixture validation; generated coverage and per-run evidence reports separate available routes from checks that executed.
+  All 580 obligations are routed, but only because each carries the generic developer-attestation
+  route: 155 have another route, 117 an automated one, and only 1 of 580 has full automatic
+  decision capability; 425 depend on developer attestation or evidence alone. The coverage report
+  now labels its headline "Routed (including developer attestation)" and derives these rows. The
+  tool does not certify App Store compliance.
+- Explicit isolated simulator builds, artifact inspection, bounded runtime exploration, read-only metadata/App Store Connect review, and developer attestation. Default scans remain offline and read-only.
+- A five-framework clean/broken simulator corpus and local scorecard runner. Runtime blocking is opt-in and limited to repeated launch or demo-login failure.
+
 ### Fixed
+- Select application schemes in workspaces with dependency schemes, and use a UTF-8
+  CocoaPods environment with an explicitly supplied gem path for isolated builds.
+- Aggregate runtime bundle subchecks under registered IDs without hiding advisory
+  defects behind a later summary PASS; recognize unfamiliar sign-in providers.
+- Verify corpus bundle seeds after Expo generation so default permission text cannot
+  silently replace the intentionally missing purpose string.
 - Correct scanner and Pierre guideline references, and require storefront/exception
   context before drawing conclusions from payment SDK signals.
 - Keep missing evidence, unsupported inspection and unexecuted checks separate from
   supported review outcomes. Freeze catalog v2 procedures for historical evaluation
   cases while current reviews use catalog v3; bind resumed evaluations to both.
 - Report TypeSafe transport attempts and retries, including unknown retry billing.
+
+### Security
+- `.appstore-precheck.json` `dynamic.build: true` no longer triggers a build by itself. The config
+  lives in the scanned repository, so it is honoured only when the invoker sets
+  `APPSTORE_PRECHECK_TRUST_CONFIG=1`; otherwise the scan prints a stderr notice and stays static.
+  `dynamic.demoLogin` applies only while a build or `--app` run is active. The GitHub Action never
+  trusts the config. Default scans remain offline and read-only.
+- Reject symlinks anywhere in the isolated build input, including ones named `Pods`, `build` or
+  `node_modules`.
+- Bound the isolated build with a 2400-second total deadline (2700-second outer cap) and lower the
+  runtime runner's default deadline to 1200 seconds.
 
 ### Maintenance
 - Keep private source archives outside Git and npm packages; exercise the package

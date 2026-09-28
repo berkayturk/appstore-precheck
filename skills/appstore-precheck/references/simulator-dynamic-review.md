@@ -1,4 +1,4 @@
-# Local dynamic simulator tier (agent-mode, opt-in, non-blocking)
+# Local dynamic simulator tier (opt-in, advisory unless `--dynamic-blocking`)
 
 The fourth, opt-in tier: a **local dynamic** review that runs the app on a simulator and observes
 real behavior — the class of checks a static scan cannot make (does it launch without crashing, does
@@ -9,14 +9,33 @@ to). It is the free/local alternative to a paid cloud device farm, built from `x
 Maestro (the MCP tools `mcp__maestro__*` for the agent-driven checks, the `maestro` CLI for the
 runner's hierarchy reads) already available on a Mac with Xcode.
 
-**Identity:** runs ONLY in agent-skill mode, ONLY when the user explicitly asks for it and supplies a
-built app (or a booted simulator UDID + bundle id). It is NOT part of the offline CLI / npx /
-GitHub-Action scan, and it never runs by default. Requires macOS + Xcode + a simulator runtime; it
-cannot run in this project's `ubuntu-latest` CI and is permanently local-only.
+**Identity:** never runs by default. The default `scan.sh` / `npx appstore-precheck` scan stays
+offline, static and read-only. The tier runs only on an explicit opt-in:
 
-**This tier never changes the verdict.** GREEN/YELLOW/RED comes only from the static scan counts
-(Phases 0–2). This tier emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines,
-like Pierre deep-review's `REVIEW-*` lines.
+- `scan.sh --build` or `npx appstore-precheck dynamic --build` (also `npx appstore-precheck
+  --build`) builds a simulator app in a disposable project copy, then runs it;
+- `scan.sh --app <path>.app` or `npx appstore-precheck --app <path>.app` runs a simulator build
+  the user already made; `--no-runtime` inspects the build or bundle without launching it;
+- in agent mode, the user asks for it and supplies a built app (or a booted simulator UDID +
+  bundle id), and the agent drives the selector-based checks below.
+
+`dynamic.build: true` in `.appstore-precheck.json` is honoured **only** when the invoker also sets
+`APPSTORE_PRECHECK_TRUST_CONFIG=1`: that config lives in the scanned repository, and a scanned
+repository must not be able to make the scanner execute its code. Without the variable the scan
+prints a notice on stderr and stays static. `dynamic.demoLogin` applies only while a build or
+`--app` run is active. The GitHub Action never trusts the config. Requires macOS + Xcode + a
+simulator runtime; it cannot run in this project's `ubuntu-latest` CI and is local-only.
+
+**Advisory by default.** GREEN/YELLOW/RED comes from the static scan counts (Phases 0–2). This
+tier emits `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines, like Pierre deep-review's
+`REVIEW-*` lines, and they do not change the verdict. The single exception is explicit
+`--dynamic-blocking` (it needs `--build` or `--app`): it adds a `FAIL:` only for a unanimous 3/3
+launch crash (`dyn-launch`) or a 3/3 demo-login failure (`dyn-demo-login`). A mixed ratio, a
+SKIP, or any other runtime observation never blocks.
+
+**Time budget.** The isolated build has a total deadline of 2400 s (outer cap 2700 s); the
+runtime runner's process-group supervisor stops at 1200 s by default
+(`PRECHECK_RUNTIME_DEADLINE_SECONDS`). A deadline yields `SKIP` / `NOT_RUN`, never a PASS.
 
 **No-write, but it executes your application code.** The tier never modifies the user's repo,
 and it **creates its own throwaway device** (`xcrun simctl create`, a unique name), erases it before
@@ -36,15 +55,19 @@ the static scan never has. Say so before the first launch:
   shows them to the user and never uploads them anywhere. Mask or skip a screenshot that shows
   a secret the user did not intend to expose.
 
-**It never builds.** No `xcodebuild`, `flutter build`, `gradle` — ever. The `.app` must already
-exist. [`scripts/app-discover.sh`](../scripts/app-discover.sh) lists the simulator apps the user
+**Builds only on explicit `--build`.** Without it, no `xcodebuild`, `flutter build` or `gradle`
+runs and the `.app` must already exist. With it, [`scripts/build-run.sh`](../scripts/build-run.sh)
+copies the project into a temporary directory and builds there (see SECURITY.md: build scripts are
+arbitrary project code). A symlink anywhere in the build input — including one named `Pods`,
+`build` or `node_modules` — is rejected rather than followed. Discovery never builds:
+[`scripts/app-discover.sh`](../scripts/app-discover.sh) lists the simulator apps the user
 already built (DerivedData, `build/ios/iphonesimulator`), with their **build time**, their
 **configuration read from the directory name** (`Debug-iphonesimulator` → `debug`,
 `Release-iphonesimulator` → `release`, anything else → `unknown`) and their bundle id, and
 recommends the newest. **Obtain the user's explicit confirmation of one candidate before installing
 or launching anything.** If nothing is found, the report carries the `runtime-not-audited` gap
-record and the discovery output prints the build command **for the user to run** — this tool will
-not run it.
+record and the discovery output prints the build command **for the user to run**; discovery does
+not run it (an explicit `--build` is the only path that builds).
 
 **Machine-readable:** every observation line carries a **rule id** (`[dyn-…]`, table below) so
 [`scripts/dynamic.sh`](../scripts/dynamic.sh) can turn the transcript into the same JSONL records
@@ -58,8 +81,9 @@ reporter, or real-device QA.
 
 ## Rules
 
-- Advisory only: every check reports `DYNAMIC-PASS:`, `DYNAMIC-FINDING:` or `DYNAMIC-SKIP:` — never
-  `FAIL`, never a verdict contribution.
+- Advisory by default: every check reports `DYNAMIC-PASS:`, `DYNAMIC-FINDING:` or `DYNAMIC-SKIP:`,
+  which never contribute to the verdict. Only explicit `--dynamic-blocking` turns a unanimous 3/3
+  `dyn-launch` or `dyn-demo-login` failure into a `FAIL:`.
 - Evidence-based: cite a screenshot filename + what was observed.
 - **A check that could not be driven is a `DYNAMIC-SKIP`, never a PASS and never an invented
   FINDING.** No paywall in this app, a UI selector that cannot be found, no permissions declared, an
@@ -68,8 +92,8 @@ reporter, or real-device QA.
   counts an unobserved behaviour as observed.
 - **Determinism before findings.** The launch checks run **N=3 times**, each on a freshly erased
   device; a `DYNAMIC-FINDING` for a crash needs **3/3**. A mixed result is a FINDING that carries its
-  ratio (`quorum 1/3: failed on 1 of 3 launches (not unanimous; advisory, never blocking)`) — the
-  Phase 3 blocking channel reads that ratio and never blocks on it.
+  ratio (`quorum 1/3: failed on 1 of 3 launches (not unanimous; advisory, never blocking)`) —
+  `--dynamic-blocking` reads that ratio and never blocks on it.
 - **One flow per Maestro invocation.** The iOS 26 driver misbehaves in batch mode (Maestro issues
   #3254 / #3318): every `mcp__maestro__run` call carries exactly one flow; the runner reads the
   hierarchy with one `maestro hierarchy` call at a time.
@@ -121,7 +145,7 @@ under-detect on those toolkits). This tier uses it for two things:
 |---|---|---|---|
 | native | — | agent-driven | run |
 | rn | A Debug `.app` without an embedded `main.jsbundle` needs **Metro on port 8081**. If Metro is not listening, D1/D2 are `DYNAMIC-SKIP: 2.1 [dyn-launch] — Metro bundler not running …` — otherwise every RN app "crashes on launch" for a reason that is not the app's. | agent-driven | run |
-| flutter, kmp (Compose Multiplatform) | — | **SKIPped up front**: `dyn-restore-tap`, `dyn-demo-login` and the trigger half of `dyn-permission-prompt` are `DYNAMIC-SKIP … no accessibility semantics exposed to Maestro` (the tree is empty or single-node on a healthy screen). D3 and D6 can still be judged from screenshots. | pre-SKIP | run — but a degenerate tree is never a failure signal on its own, and D7–D9 are SKIP when the tree is degenerate (judge the screenshot by eye) |
+| flutter, kmp | — | Dedicated selector flows remain SKIP unless explicitly driven; the reason reports measured accessibility or unknown capability. Authorized navigation is recorded separately. | Run; a small or unreadable tree alone is never an app failure. |
 
 ## Per-check procedure
 
@@ -182,12 +206,12 @@ not be read is written into the line as such — never assumed healthy, never as
   error` line for the app in the window, and no new `<Executable>-*.ips` in
   `~/Library/Logs/DiagnosticReports`;
 - **accessibility tree ≥ N nodes:** `maestro --device <udid> hierarchy` (one call). **Degenerate
-  tree caveat:** Flutter and Compose Multiplatform apps return an empty or single-node tree on a
-  perfectly healthy screen, so a small tree on its own is **never** a FINDING; it only counts when
+  tree caveat:** Any framework may expose an empty or single-node tree on a
+  healthy screen, so a small tree on its own is **never** a FINDING; it only counts when
   another signal also fails.
 
 Per repeat: process gone, a crash line, or a flat screenshot → failed; every readable signal
-healthy → passed; nothing readable → skipped. Across the N=3 repeats
+healthy with a positive process, image or tree signal → passed; clean logs alone → skipped. Across the N=3 repeats
 ([`lib/dyn-quorum.sh`](../scripts/lib/dyn-quorum.sh)): every repeat failed → `DYNAMIC-FINDING …
 quorum 3/3`; some failed → `DYNAMIC-FINDING … quorum k/3 … (not unanimous; advisory, never
 blocking)`; every repeat skipped (driver timeouts) → `DYNAMIC-SKIP`; otherwise `DYNAMIC-PASS`
@@ -206,9 +230,9 @@ setting applied by Xcode. `xcrun simctl launch` (and a Maestro `launchApp`) does
 default** for an app launched by this tier. An empty or price-less paywall is therefore never
 evidence of a 3.1.2 problem here.
 
-1. If a paywall exists (per the static scan / app structure), navigate to it with a
+1. After establishing paywall applicability and authorized test scope, navigate to it with a
    `mcp__maestro__run` flow (`tapOn` steps; check `mcp__maestro__cheat_sheet` for selector syntax).
-   No paywall → `DYNAMIC-SKIP: 3.1.2 — not applicable: no paywall in this app`.
+   A source hint cannot establish absence; unconfirmed applicability remains unresolved.
 2. Look for a rendered price (a currency amount) on the paywall screen.
    - **No price visible** → `DYNAMIC-SKIP: 3.1.2 — StoreKit products are not loaded under simctl
      launch; paywall prices cannot be observed on a local simulator. Launch the app from Xcode with
@@ -225,16 +249,18 @@ does something.
 1. On the paywall (or settings) screen, find the Restore control by **`accessibilityText`** in
    the `mcp__maestro__inspect_screen` hierarchy — that is the field Maestro exposes the label in,
    not `text`. No such control → `DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — no Restore Purchases
-   control found`. On Flutter / KMP this is pre-SKIPped (no semantics).
-2. `tapOn` it and wait up to 3 s for a **non-inert response**: an alert, a spinner / progress
-   indicator, or any change in the accessibility tree or screenshot.
-3. A response → `DYNAMIC-PASS`. No visible reaction at all within 3 s → `DYNAMIC-FINDING` (a
-   dead Restore button is a 3.1.2 rejection). StoreKit products are not loaded under `simctl
-   launch`, so "restore found nothing" *with* an alert is still a PASS: the control works.
+   control found`. An unexecuted dedicated selector flow remains SKIP; report the measured tree capability.
+2. Only in an explicitly authorized test environment, capture the starting state, perform
+   the allowlisted action and capture its actual postcondition. Record a bounded timeout,
+   missing selector or unavailable StoreKit as a driver/evidence gap.
+3. A visible response is a UI observation. Restore completion additionally requires the
+   corresponding receipt/transaction and restored entitlement/content in the intended
+   sandbox or device environment. An alert or spinner cannot prove that completion.
 
-This is a **partial** test of §10 (`subscription-links-restore`), which also wants terms and
-privacy links on the paywall — so a PASS here can downgrade a static FAIL to WARN but never
-resolve it (see the reconciliation table in `dynamic.sh`).
+This remains a **partial** test of §10 (`subscription-links-restore`). A delayed or invisible
+response alone cannot establish a rejection; it stays unresolved without causal evidence.
+UI observations never close whole-guideline conditions. See the transition contract for
+`OBSERVED_PASS`, `OBSERVED_FAILURE` and `UNRESOLVED` packet semantics.
 
 ### D4 — Permission prompt vs purpose string (`dyn-permission-prompt:<KEY>`)
 1. For each `NS*UsageDescription` in `Info.plist`, trigger the feature that requests it.
@@ -243,13 +269,19 @@ resolve it (see the reconciliation table in `dynamic.sh`).
    (`[dyn-permission-prompt:NSCameraUsageDescription]`): that is what lets a PASS resolve the
    matching static §2 finding for that key. A permission whose trigger cannot be found →
    `DYNAMIC-SKIP` for that key. A keyless line (`[dyn-permission-prompt]`) is treated as partial.
-   On Flutter / KMP the trigger half is pre-SKIPped; the OS prompt itself is native and visible in
+   An unexecuted trigger remains SKIP; the OS prompt itself is native and visible in
    a screenshot if the agent reaches the feature by coordinates.
 
 ### D5 — Demo / login path (`dyn-demo-login`)
-1. For a login-gated app, look for a guest/demo entry, or enter the declared review demo credentials.
-2. Confirm a reachable path to core features; `DYNAMIC-FINDING` if the only path is a wall with no
-   working demo. Not login-gated → `DYNAMIC-SKIP: 2.1 — not applicable`.
+
+Use `--demo-login` only with private test credentials/selectors,
+`PRECHECK_DEMO_AUTHORIZED_TEST=1` and `PRECHECK_DEMO_ENVIRONMENT=test|sandbox`.
+Record the initial fields, completed action and new success state in three fresh runs.
+Missing credentials, backend unavailability, ambiguous selectors and insufficient trees
+produce `DYNAMIC-SKIP`, not an app violation. A backend-ready assertion alone cannot
+attribute a rejection to the app. UI success remains partial until the authenticated
+session and reviewer feature access have independent evidence. No account-gate signal
+in source is insufficient for verified N/A.
 
 ### D6 — Live UI vs marketing screenshots (`dyn-screenshot-parity`)
 1. Capture live screenshots of key screens.
@@ -332,7 +364,12 @@ SKIP is listed under "Not audited" in Phase 5, next to the static `SKIP:` lines.
 ## Running it
 
 ```bash
-# 1. find a build the user already made (never builds); the user confirms ONE candidate
+# 0. scripted end to end instead (opt-in): isolated build + runtime, or an existing .app
+bash skills/appstore-precheck/scripts/scan.sh --dir /path/to/app --build --out /tmp/precheck-review
+npx appstore-precheck dynamic --build --dir /path/to/app --out /tmp/precheck-review
+#    add --dynamic-blocking to FAIL on a 3/3 launch crash or demo-login failure; --dry-run plans only
+
+# 1. or find a build the user already made (discovery never builds); the user confirms ONE candidate
 bash skills/appstore-precheck/scripts/app-discover.sh --repo /path/to/app --json
 
 # 2. the observation-based checks on a throwaway device (3 repeats, 10 s window)
@@ -345,6 +382,8 @@ bash skills/appstore-precheck/scripts/dynamic-run.sh --app <path>.app --repo /pa
 
 `tests/local/run-dynamic.sh` chains discovery → confirmation → runner → `dynamic.sh` on macOS; it is
 not part of `tests/all.sh`.
+`run.json` records `d1_d2_seconds` for each launch/first-screen repeat. Later repeats include
+device erase, boot, and reinstall time; the median describes this local workflow, not app startup.
 
 ## Feeding the transcript to dynamic.sh
 
@@ -380,3 +419,10 @@ partial, a keyless D10 line aims at nothing); `att-usage ↔ dyn-shipped-bundle:
 `release` claim over a transcript whose D0 line says `Debug-iphonesimulator` is degraded to
 `unknown`, loudly. `dynamic.sh --not-run --findings <static.json>` produces the
 `runtime-not-audited` gap record for a run where the tier was not used.
+
+### Authorized exploration and transition evidence
+
+Default exploration captures one screen without tapping. Explicit sandbox/test navigation
+uses an exact-label allowlist and records hashed start/action/postcondition evidence.
+See [runtime-transition-evidence.md](runtime-transition-evidence.md). Selected UI state
+observations are distinct from backend/StoreKit/OS outcomes; unresolved flows remain open.

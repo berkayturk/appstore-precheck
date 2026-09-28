@@ -18,15 +18,23 @@
 #   D11 dyn-hosts-contacted hosts from CFNetwork diagnostics (opt-in --pktap adds DNS)
 # The selector-based checks (D3 paywall, D3b Restore tap, D4 prompts, D5 demo login,
 # D6 screenshot parity) stay with the agent + Maestro MCP; on Flutter / KMP they are
-# SKIPped up front here because those toolkits expose no semantics to Maestro.
+# recorded as unexecuted here; measured accessibility may still support exploration.
 #
 # WHAT IT NEVER DOES: xcodebuild / flutter / gradle; touch a device it did not create
-# (a --udid device is launched on, never erased, reset or deleted); write under the repo.
+# (a --udid device is launched on, never erased, reset or deleted; D7/D8 read its
+# appearance and content size first, restore them exactly, and are SKIPped when the
+# originals cannot be read); write under the repo (an --out inside --repo is exit 64).
+#
+# CLEANUP: the EXIT trap deletes this run's own simulators (each simctl step capped),
+# then sweeps <out>/owned-simulators.txt minus deleted-simulators.txt (only precheck-*
+# devices, only ledgers inside --out). A watchdog starts the wind-down min(120s, 1/4) of
+# PRECHECK_RUNTIME_DEADLINE_SECONDS before the supervisor's deadline so teardown finishes.
 #
 # USAGE
 #   dynamic-run.sh --app <path.app> [--repo DIR] [--framework rn|flutter|kmp|native]
 #                  [--repo-plist Info.plist] [--repeats 3] [--window 10]
-#                  [--device-type ID] [--runtime ID] [--ipad] [--pktap] [--out DIR] [--dry-run]
+#                  [--device-type ID] [--runtime ID] [--ipad] [--pktap] [--out DIR]
+#                  [--explore] [--demo-login] [--dynamic-blocking] [--dry-run]
 #   dynamic-run.sh --udid <UDID> --bundle-id <id> [same options]
 #   Output: the transcript on stdout (also <out>/transcript.txt) + <out>/run.json.
 #   Then: dynamic.sh --transcript <out>/transcript.txt --findings <scan.json> \
@@ -35,6 +43,12 @@
 
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# A process-group supervisor gives traps time to remove this run's devices on
+# cancellation/deadline. No caller-owned simulator is ever deleted.
+if [[ "${PRECHECK_RUNTIME_SUPERVISED:-0}" != 1 ]]; then
+  export PRECHECK_RUNTIME_SUPERVISED=1
+  exec python3 "$HERE/lib/dyn-process.py" --timeout "${PRECHECK_RUNTIME_DEADLINE_SECONDS:-1800}" -- bash "$0" "$@"
+fi
 # shellcheck source=framework-detect.sh
 . "$HERE/framework-detect.sh"
 # shellcheck source=lib/dyn-quorum.sh
@@ -52,7 +66,7 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- Arguments --------------------------------------------------------------------
 APP="" UDID="" BID="" REPO="" FRAMEWORK="" REPO_PLIST="" REPEATS=3 WINDOW=10
-DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0
+DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0 EXPLORE=0 EXPLORE_SECONDS=360 EXPLORE_SCREENS=25 DYN_BLOCKING=0 DYN_DEMO=0 NAVIGATION_AUTH=""
 usage_err() { echo "dynamic-run.sh: $1" >&2; exit 64; }
 need() { [[ $# -ge 2 ]] || usage_err "$1 needs a value"; }
 while [[ $# -gt 0 ]]; do
@@ -71,15 +85,29 @@ while [[ $# -gt 0 ]]; do
     --ipad)        IPAD=1; shift ;;
     --pktap)       PKTAP=1; shift ;;
     --dry-run)     DYN_DRY_RUN=1; shift ;;
+    --explore)     EXPLORE=1; shift ;;
+    --explore-seconds) need "$@"; EXPLORE_SECONDS="$2"; shift 2 ;;
+    --explore-screens) need "$@"; EXPLORE_SCREENS="$2"; shift 2 ;;
+    --authorized-navigation) need "$@"; NAVIGATION_AUTH="$2"; shift 2 ;;
+    --demo-login)  DYN_DEMO=1; shift ;;
+    --dynamic-blocking) DYN_BLOCKING=1; shift ;;
     *) usage_err "unknown option '$1'" ;;
   esac
 done
 export DYN_DRY_RUN
+[[ "$EXPLORE_SECONDS" =~ ^[0-9]+$ ]] && (( EXPLORE_SECONDS >= 1 && EXPLORE_SECONDS <= 360 )) || usage_err "--explore-seconds must be 1..360"
+[[ "$EXPLORE_SCREENS" =~ ^[0-9]+$ ]] && (( EXPLORE_SCREENS >= 1 && EXPLORE_SCREENS <= 25 )) || usage_err "--explore-screens must be 1..25"
 if [[ -n "$APP" && -n "$UDID" ]]; then usage_err "give --app OR --udid, not both"; fi
 if [[ -z "$APP" && -z "$UDID" ]]; then usage_err "one of --app <path.app> or --udid <UDID> --bundle-id <id> is required"; fi
 if [[ -n "$UDID" && -z "$BID" ]]; then usage_err "--udid needs --bundle-id"; fi
 [[ "$REPEATS" =~ ^[0-9]+$ ]] && (( REPEATS >= 1 )) || usage_err "--repeats must be a positive integer"
 [[ "$WINDOW" =~ ^[0-9]+$ ]] || usage_err "--window must be an integer number of seconds"
+if (( DYN_BLOCKING )) && [[ -n "$UDID" || "$REPEATS" != 3 ]]; then
+  usage_err "--dynamic-blocking requires --app and exactly three fresh repeats"
+fi
+if (( DYN_DEMO )) && [[ -n "$UDID" || "$REPEATS" != 3 ]]; then
+  usage_err "--demo-login requires --app and exactly three fresh repeats"
+fi
 case "$FRAMEWORK" in ""|rn|flutter|kmp|native) ;; *) usage_err "--framework must be rn|flutter|kmp|native" ;; esac
 if [[ -n "$APP" ]]; then
   [[ -d "$APP" ]] || { echo "dynamic-run.sh: no such .app: $APP" >&2; exit 66; }
@@ -88,7 +116,19 @@ fi
 [[ -n "$REPO" && ! -d "$REPO" ]] && { echo "dynamic-run.sh: --repo is not a directory: $REPO" >&2; exit 66; }
 command -v xcrun >/dev/null 2>&1 || { echo "dynamic-run.sh: xcrun not found — this tier needs macOS with Xcode (it is permanently local-only)" >&2; exit 69; }
 [[ -z "$FRAMEWORK" ]] && { if [[ -n "$REPO" ]]; then FRAMEWORK="$(detect_framework "$REPO")"; else FRAMEWORK=native; fi; }
-[[ -n "$OUT" ]] || OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic.XXXXXX")"
+OUT_GENERATED=0
+if [[ -z "$OUT" ]]; then OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic.XXXXXX")"; OUT_GENERATED=1; fi
+# The header promises nothing is ever written under the repo: refuse an --out that resolves
+# inside --repo (symlinks resolved, path need not exist yet) BEFORE anything is created.
+# Fail closed: anything but a definite "outside" answer stops the run.
+if [[ -n "$REPO" ]]; then
+  python3 "$HERE/lib/dyn-paths.py" inside "$OUT" "$REPO"; out_rc=$?
+  case "$out_rc" in
+    0) (( OUT_GENERATED )) && rmdir "$OUT" 2>/dev/null; usage_err "--out must not be inside --repo (the runner never writes under the repo): $OUT" ;;
+    1) ;;
+    *) (( OUT_GENERATED )) && rmdir "$OUT" 2>/dev/null; usage_err "cannot verify that --out is outside --repo (dyn-paths.py failed)" ;;
+  esac
+fi
 mkdir -p "$OUT" || { echo "dynamic-run.sh: cannot create --out $OUT" >&2; exit 66; }
 TRANSCRIPT="$OUT/transcript.txt"; : > "$TRANSCRIPT"
 DYN_PLAN_FILE="$OUT/plan.txt"; : > "$DYN_PLAN_FILE"; export DYN_PLAN_FILE
@@ -126,15 +166,54 @@ if [[ "$FRAMEWORK" == rn && -n "$APP" && ! -f "$APP/main.jsbundle" ]]; then
 fi
 
 # --- Teardown, always -------------------------------------------------------------------
-CREATED_UDID="" CREATED_IPAD="" PKTAP_PID=""
+CREATED_UDID="" CREATED_IPAD="" PKTAP_PID="" WATCHDOG_PID="" CLEANING=0
+# A --udid device is never erased or deleted, but D7/D8 change its UI settings; the
+# originals are recorded here so cleanup restores them exactly, even on cancellation.
+UI_RESTORE_UDID="" UI_RESTORE_APPEARANCE="" UI_RESTORE_CONTENT=""
 cleanup() {
+  # Re-entrancy: a second signal during teardown only sets a flag (a handler, not SIG_IGN,
+  # which children would inherit and then ignore TERM from the step timeouts).
+  trap 'CLEANING=2' TERM INT USR1
+  [[ -n "$WATCHDOG_PID" ]] && { kill "$WATCHDOG_PID" 2>/dev/null; wait "$WATCHDOG_PID" 2>/dev/null; WATCHDOG_PID=""; }
   dyn_log_stop
   [[ -n "$PKTAP_PID" ]] && { sudo kill "$PKTAP_PID" 2>/dev/null || kill "$PKTAP_PID" 2>/dev/null; PKTAP_PID=""; }
-  dyn_device_teardown "$CREATED_UDID"; CREATED_UDID=""
-  dyn_device_teardown "$CREATED_IPAD"; CREATED_IPAD=""
+  if [[ -n "$UI_RESTORE_UDID" ]]; then
+    [[ -z "$UI_RESTORE_APPEARANCE" ]] || dyn_device_appearance "$UI_RESTORE_UDID" "$UI_RESTORE_APPEARANCE"
+    [[ -z "$UI_RESTORE_CONTENT" ]] || dyn_device_content_size "$UI_RESTORE_UDID" "$UI_RESTORE_CONTENT"
+    UI_RESTORE_UDID=""
+  fi
+  local owned
+  for owned in "$CREATED_UDID" "$CREATED_IPAD"; do
+    [[ -n "$owned" ]] || continue
+    # A failed delete is not recorded here: the sweep below retries it once and only
+    # a device that is STILL present lands in cleanup-failures.txt.
+    dyn_device_teardown "$owned" && printf '%s\n' "$owned" >> "$OUT/deleted-simulators.txt"
+  done
+  CREATED_UDID="" CREATED_IPAD=""
+  dyn_sweep_owned "$OUT"
+  # The normal path calls cleanup mid-script; make cancellation effective again.
+  trap 'exit 143' TERM; trap 'exit 130' INT; trap 'exit 124' USR1
   return 0
 }
 trap cleanup EXIT
+trap 'exit 143' TERM
+trap 'exit 130' INT
+# Deadline watchdog. The supervisor (lib/dyn-process.py, PRECHECK_RUNTIME_DEADLINE_SECONDS)
+# TERMs this process group at the deadline and only waits a short grace before SIGKILL, so
+# the runner starts winding down a quarter of the deadline (at most 120s) EARLIER: the
+# watchdog signals USR1 here and TERMs the step in flight, the trap exits 124, and the
+# bounded teardown runs to completion before the supervisor's deadline.
+trap 'note "deadline watchdog fired: stopping the run and tearing down its own simulators"; exit 124' USR1
+if [[ "$DYN_DRY_RUN" != 1 ]]; then
+  wd_deadline="${PRECHECK_RUNTIME_DEADLINE_SECONDS:-1800}"
+  if [[ "$wd_deadline" =~ ^[0-9]+$ ]] && (( wd_deadline >= 4 )); then
+    wd_reserve=$(( wd_deadline / 4 )); (( wd_reserve > 120 )) && wd_reserve=120
+    python3 "$HERE/lib/dyn-watchdog.py" --pid "$$" --after "$(( wd_deadline - wd_reserve ))" >/dev/null 2>&1 & WATCHDOG_PID=$!
+  fi
+  # Startup sweep: a previous run killed before teardown finished (same --out) may have
+  # left ledgered precheck-* devices behind; only those, only when they still exist.
+  dyn_sweep_owned "$OUT"
+fi
 
 # --- D0: device + install -------------------------------------------------------------------
 [[ -n "$RUNTIME" ]] || RUNTIME="$(dyn_pick_runtime)"
@@ -144,6 +223,7 @@ if [[ -n "$APP" ]]; then
   [[ -n "$RUNTIME" && -n "$DEVTYPE" ]] || { emit "$(dyn_line SKIP setup dyn-install "no available iOS runtime / iPhone device type to create a simulator from")"; skip_all "setup failed: no runtime"; exit 3; }
   CREATED_UDID="$(dyn_device_create "$DEV_NAME" "$DEVTYPE" "$RUNTIME")"
   [[ -n "$CREATED_UDID" ]] || { emit "$(dyn_line SKIP setup dyn-install "simctl create failed for $DEVTYPE on $RUNTIME")"; skip_all "setup failed: simctl create"; exit 3; }
+  printf '%s\n' "$CREATED_UDID" >> "$OUT/owned-simulators.txt"
   UDID="$CREATED_UDID"
   dyn_device_boot "$UDID"
   dyn_device_prepare "$UDID"
@@ -183,31 +263,63 @@ elif (( PKTAP )); then
 fi
 
 # --- D1 / D2: N launch repeats ----------------------------------------------------------------------
-L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP"
+L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 D_PASS=0 D_FIND=0 D_SKIP=0 D1_D2_SECONDS="" OBSERVATION_SECONDS=""
+LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP" FRESH=1 TREE_MAX=-1
 if (( METRO_SKIP )); then
   emit "$(dyn_line SKIP 2.1 dyn-launch "Metro bundler not running on 127.0.0.1:8081 and $APP_LABEL embeds no main.jsbundle; a React Native Debug build cannot load its JavaScript, so a launch would fail for a reason that is not the app's — start Metro or supply a release bundle")"
   emit "$(dyn_line SKIP 2.1 dyn-first-screen "launch skipped (Metro not running)")"
 else
   i=1
   while (( i <= REPEATS )); do
-    if (( i > 1 )) && [[ -n "$CREATED_UDID" ]]; then
-      dyn_device_erase "$UDID"; dyn_device_boot "$UDID"; dyn_device_prepare "$UDID"
-      dyn_device_install "$UDID" "$APP" >/dev/null 2>&1 || true
+    repeat_started=$SECONDS
+    if (( i > 1 || DYN_BLOCKING || DYN_DEMO )) && [[ -n "$CREATED_UDID" ]]; then
+      dyn_device_erase "$UDID" || FRESH=0
+      dyn_device_boot "$UDID"; dyn_device_prepare "$UDID"
+      dyn_device_install "$UDID" "$APP" >/dev/null 2>&1 || FRESH=0
     fi
+    observation_started=$SECONDS
     r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "$i")"
+    OBSERVATION_SECONDS="${OBSERVATION_SECONDS}${OBSERVATION_SECONDS:+,}$((SECONDS-observation_started))"
     kind="$(cut -f1 <<<"$r")"; LAST_DETAIL="$(cut -f2 <<<"$r")"; LAST_SIGNALS="$(cut -f3 <<<"$r")"
+    tree_nodes="${LAST_SIGNALS##*,}"
+    if [[ "$tree_nodes" =~ ^[0-9]+$ ]] && (( tree_nodes > TREE_MAX )); then TREE_MAX="$tree_nodes"; fi
     case "$kind" in PASS) L_PASS=$((L_PASS+1)) ;; FINDING) L_FIND=$((L_FIND+1)) ;; *) L_SKIP=$((L_SKIP+1)) ;; esac
+    if (( DYN_DEMO )) && [[ "$DYN_DRY_RUN" != 1 ]]; then
+      demo="$(python3 "$HERE/lib/dyn-demo-login.py" "$UDID" "$BID")"
+      demo_kind="$(cut -f1 <<<"$demo")"
+      case "$demo_kind" in PASS) D_PASS=$((D_PASS+1)) ;; FINDING) D_FIND=$((D_FIND+1)) ;; *) D_SKIP=$((D_SKIP+1)) ;; esac
+    fi
     # D2 from the same repeat: a varied screenshot with a live process is a real first screen.
     proc="${LAST_SIGNALS%%,*}"; rest="${LAST_SIGNALS#*,}"; shot="${rest%%,*}"
     if [[ "$shot" == varied && "$proc" == alive ]]; then S_PASS=$((S_PASS+1))
     elif [[ "$shot" == uniform || "$proc" == dead ]]; then S_FIND=$((S_FIND+1))
     else S_SKIP=$((S_SKIP+1)); fi
+    D1_D2_SECONDS="${D1_D2_SECONDS}${D1_D2_SECONDS:+,}$((SECONDS-repeat_started))"
     i=$((i+1))
   done
   q="$(dyn_quorum "$L_PASS" "$L_FIND" "$L_SKIP")"; LAUNCH_KIND="$(cut -f1 <<<"$q")"
-  emit "$(dyn_line "$LAUNCH_KIND" 2.1 dyn-launch "$(cut -f2 <<<"$q"); last repeat: $LAST_DETAIL; window ${WINDOW}s; screenshots $OUT/launch-*.png")"
+  fresh_note=""
+  if (( DYN_BLOCKING )) && [[ "$CREATED_UDID" != "" && "$DYN_DRY_RUN" != 1 && "$FRESH" == 1 && "$REPEATS" == 3 ]]; then
+    fresh_note="; fresh erase verified"
+  fi
+  emit "$(dyn_line "$LAUNCH_KIND" 2.1 dyn-launch "$(cut -f2 <<<"$q"); last repeat: $LAST_DETAIL; window ${WINDOW}s; screenshots $OUT/launch-*.png$fresh_note")"
   q="$(dyn_quorum "$S_PASS" "$S_FIND" "$S_SKIP")"
   emit "$(dyn_line "$(cut -f1 <<<"$q")" 2.1 dyn-first-screen "$(cut -f2 <<<"$q") (a non-blank screenshot with the process alive after ${WINDOW}s; a splash stuck as a flat frame counts as failed)")"
+fi
+if (( DYN_DEMO )); then
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then
+    emit "$(dyn_line SKIP 2.1 dyn-demo-login "dry run: no credentials entered")"
+  elif (( D_FIND == 3 && D_PASS == 0 && D_SKIP == 0 )); then
+    if [[ "$FRESH" == 1 ]]; then
+      emit "$(dyn_line FINDING 2.1 dyn-demo-login "quorum 3/3: explicit login rejection on every attempt; fresh erase verified")"
+    else
+      emit "$(dyn_line SKIP 2.1 dyn-demo-login "all attempts rejected but fresh erase could not be verified")"
+    fi
+  elif (( D_PASS == 3 )); then
+    emit "$(dyn_line PASS 2.1 dyn-demo-login "quorum 3/3: demo success selector observed on every attempt")"
+  else
+    emit "$(dyn_line SKIP 2.1 dyn-demo-login "mixed or unreadable login attempts: pass $D_PASS, rejected $D_FIND, skipped $D_SKIP of 3; backend or selector evidence insufficient")"
+  fi
 fi
 
 # --- D7 / D8: dark mode and Dynamic Type geometry ------------------------------------------------------
@@ -221,16 +333,36 @@ geometry_pass() { # geometry_pass <rule-id> <guideline> <label> <tag>
   [[ "$tree" == unread ]] && { emit "$(dyn_line SKIP "$g" "$id" "$label: accessibility tree could not be read (Maestro missing or timed out); screenshot $png for a human eye")"; return 0; }
   emit "$(dyn_geometry_line "$(dyn_geometry_report "$hier" 0 0)" "$g" "$id" "$label" "$png")"
 }
-if (( METRO_SKIP )) || [[ "$LAUNCH_KIND" != PASS && "$L_PASS" -eq 0 ]]; then
+if (( DYN_DEMO )); then
+  emit "$(dyn_line SKIP 4.0 dyn-dark-mode "demo credentials entered; persistent screenshots suppressed")"
+  emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "demo credentials entered; persistent screenshots suppressed")"
+elif (( METRO_SKIP )) || [[ "$LAUNCH_KIND" != PASS && "$L_PASS" -eq 0 ]]; then
   emit "$(dyn_line SKIP 4.0 dyn-dark-mode "app did not stay up on any launch; layout not judged")"
   emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "app did not stay up on any launch; layout not judged")"
 else
-  dyn_device_appearance "$UDID" dark
-  geometry_pass dyn-dark-mode 4.0 "dark appearance" dark
-  dyn_device_appearance "$UDID" light
-  dyn_device_content_size "$UDID" accessibility-extra-extra-extra-large
-  geometry_pass dyn-dynamic-type 4.0 "Dynamic Type accessibility-extra-extra-extra-large" dynamic-type
-  dyn_device_content_size "$UDID" large
+  # A device this run created starts from factory settings (light / large). A user-supplied
+  # --udid device keeps whatever its owner set: read the originals first, restore them
+  # exactly afterwards, and SKIP a check whose original cannot be read (never guess).
+  if [[ -n "$CREATED_UDID" ]]; then ORIG_APPEARANCE=light ORIG_CONTENT=large
+  else ORIG_APPEARANCE="$(dyn_device_get_appearance "$UDID")"; ORIG_CONTENT="$(dyn_device_get_content_size "$UDID")"; fi
+  if [[ -z "$ORIG_APPEARANCE" ]]; then
+    emit "$(dyn_line SKIP 4.0 dyn-dark-mode "not judged: the original appearance of user-supplied device $UDID could not be read (simctl ui appearance getter unavailable), so it cannot be restored; the device was left unchanged")"
+  else
+    [[ -n "$CREATED_UDID" ]] || { UI_RESTORE_UDID="$UDID" UI_RESTORE_APPEARANCE="$ORIG_APPEARANCE" UI_RESTORE_CONTENT="${ORIG_CONTENT:-}"; }
+    dyn_device_appearance "$UDID" dark
+    geometry_pass dyn-dark-mode 4.0 "dark appearance" dark
+    dyn_device_appearance "$UDID" "$ORIG_APPEARANCE"
+    UI_RESTORE_UDID=""
+  fi
+  if [[ -z "$ORIG_CONTENT" ]]; then
+    emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "not judged: the original content size of user-supplied device $UDID could not be read (simctl ui content_size getter unavailable), so it cannot be restored; the device was left unchanged")"
+  else
+    [[ -n "$CREATED_UDID" ]] || { UI_RESTORE_UDID="$UDID" UI_RESTORE_APPEARANCE="${ORIG_APPEARANCE:-}" UI_RESTORE_CONTENT="$ORIG_CONTENT"; }
+    dyn_device_content_size "$UDID" accessibility-extra-extra-extra-large
+    geometry_pass dyn-dynamic-type 4.0 "Dynamic Type accessibility-extra-extra-extra-large" dynamic-type
+    dyn_device_content_size "$UDID" "$ORIG_CONTENT"
+    UI_RESTORE_UDID=""
+  fi
 fi
 
 # --- D9: iPad (opt-in) --------------------------------------------------------------------------------
@@ -245,6 +377,7 @@ if (( IPAD )); then
     if [[ -z "$CREATED_IPAD" ]]; then
       emit "$(dyn_line SKIP 2.4.1 dyn-ipad-layout "simctl create failed for $IPAD_TYPE")"
     else
+      printf '%s\n' "$CREATED_IPAD" >> "$OUT/owned-simulators.txt"
       dyn_device_boot "$CREATED_IPAD"; dyn_device_prepare "$CREATED_IPAD"
       if dyn_device_install "$CREATED_IPAD" "${APP:-}" >/dev/null 2>&1; then
         saved="$UDID"; UDID="$CREATED_IPAD"
@@ -280,12 +413,35 @@ else HOST_NOTE="CFNetwork diagnostics only; a stack that bypasses CFNetwork is i
 PRIV=""; [[ -n "$INSTALLED" && -f "$INSTALLED/PrivacyInfo.xcprivacy" ]] && PRIV="$INSTALLED/PrivacyInfo.xcprivacy"
 emit "$(dyn_hosts_line "$(dyn_hosts_parity "$HOSTS" "$PRIV")" "$HOST_NOTE")"
 
-# --- Selector-based checks: pre-SKIP on toolkits without semantics, else left to the agent ----------------
+# Optional bounded navigation on the same throwaway simulator. The inventory is
+# independent of the D-check transcript and cannot change the legacy verdict.
+if (( EXPLORE )); then
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then
+    note "explore dry run: no screens observed"
+  elif (( DYN_DEMO )); then
+    note "explore SKIP: demo credentials entered; persistent screen capture suppressed"
+  elif [[ "$LAUNCH_KIND" != PASS || -z "$CREATED_UDID" ]]; then
+    note "explore SKIP: requires a successful launch on this run's created simulator"
+  elif ! command -v maestro >/dev/null 2>&1; then
+    note "explore SKIP: Maestro unavailable (install Maestro to capture accessibility screens)"
+  else
+    navigation_args=()
+    [[ -z "$NAVIGATION_AUTH" ]] || navigation_args=(--authorized-navigation "$NAVIGATION_AUTH")
+    [[ -z "$REPO" ]] || navigation_args=(${navigation_args[@]+"${navigation_args[@]}"} --repo "$REPO")
+    python3 "$HERE/lib/dyn-explore.py" --udid "$UDID" --bundle-id "$BID" --out "$OUT" \
+      --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" ${navigation_args[@]+"${navigation_args[@]}"} \
+      ${HOSTS:+--hosts "$HOSTS"} ${PRIV:+--privacy-manifest "$PRIV"} \
+      ${INSTALLED:+--installed-bundle "$INSTALLED"} ${APP:+--source-bundle "$APP"} \
+      > "$OUT/explore.json" || note "explore SKIP: Maestro exploration failed or timed out"
+  fi
+fi
+
+# --- Dedicated selector checks: report what ran and measured accessibility scope ----------------
 case "$FRAMEWORK" in
   flutter|kmp)
-    why="not driveable on $FRAMEWORK: the accessibility tree exposes no semantics to Maestro (empty or single-node on a healthy screen), so selector-based steps cannot find controls; judge by screenshot"
+    why="$(dyn_selector_scope "$FRAMEWORK" "$TREE_MAX")"
     emit "$(dyn_line SKIP 3.1.2 dyn-restore-tap "$why")"
-    emit "$(dyn_line SKIP 2.1 dyn-demo-login "$why")"
+    (( DYN_DEMO )) || emit "$(dyn_line SKIP 2.1 dyn-demo-login "$why")"
     emit "$(dyn_line SKIP '5.1.1(ii)' dyn-permission-prompt "$why (trigger half); the OS prompt itself is native and visible in a screenshot")"
     note "agent: D3 paywall, D6 screenshot parity remain observation-based and can still be judged from screenshots" ;;
   *)
@@ -299,10 +455,15 @@ jq -n --arg app "${APP:-}" --arg bid "$BID" --arg cfg "$BUILD_CONFIG" --arg fw "
       --argjson created "$([[ -n "$CREATED_UDID" ]] && echo true || echo false)" \
       --argjson metro "$([[ "$METRO_SKIP" == 1 ]] && echo true || echo false)" \
       --argjson dry "$([[ "$DYN_DRY_RUN" == 1 ]] && echo true || echo false)" \
-      --argjson lp "$L_PASS" --argjson lf "$L_FIND" --argjson ls "$L_SKIP" '
+      --argjson lp "$L_PASS" --argjson lf "$L_FIND" --argjson ls "$L_SKIP" \
+      --arg durations "$D1_D2_SECONDS" --arg observations "$OBSERVATION_SECONDS" '
   {app:(if $app=="" then null else $app end), bundle_id:$bid, build_config:$cfg, framework:$fw,
    device:{udid:$udid, name:$name, type:$type, runtime:$rt, created_by_this_run:$created},
-   repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls}, metro_skipped:$metro,
+   repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls},
+   d1_d2_seconds:($durations | if . == "" then [] else split(",") | map(tonumber) end), metro_skipped:$metro,
+   timing:{legacy_d1_d2_definition:"per repeat reset/boot/install when performed plus D1+D2; unchanged",
+           observation_definition:"launch and full observation window plus four signal collection, excluding lifecycle and demo",
+           observation_seconds:($observations | if . == "" then [] else split(",") | map(tonumber) end)},
    dry_run:$dry, out:$out, transcript:($out + "/transcript.txt"),
    next:("dynamic.sh --transcript " + $out + "/transcript.txt --findings <scan.json> --target simulator --build-config " + $cfg)}' > "$OUT/run.json"
 # Teardown now (the EXIT trap becomes a no-op) so the transcript and the plan are complete.
@@ -312,4 +473,7 @@ if [[ "$DYN_DRY_RUN" == 1 ]]; then
   cat "$DYN_PLAN_FILE"
 fi
 echo "dynamic-run: transcript $TRANSCRIPT · run.json $OUT/run.json · build config $BUILD_CONFIG (pass it to dynamic.sh --build-config)" >&2
+if (( DYN_BLOCKING )) && [[ "$DYN_DRY_RUN" != 1 ]]; then
+  bash "$HERE/runtime-review.sh" --dynamic-blocking --transcript "$TRANSCRIPT" | tee -a "$TRANSCRIPT"
+fi
 exit 0

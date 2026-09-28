@@ -46,6 +46,33 @@ v="$(dyn_launch_verdict alive unread unread unread)"
 assert_eq "PASS" "$(kind "$v")" "one readable healthy signal is a PASS with three caveats"
 assert_contains "$(detail "$v")" "log stream" "caveat names the log"
 
+section "no-crash log without a positive app signal is not a healthy launch"
+# The real RN panel left a one-byte hierarchy, no screenshot, no process PID,
+# and only SpringBoard bookkeeping. This anonymized fixture reproduces that shape.
+source "$L/dyn-signals.sh"
+UNREAD_FIXTURE="$FX/runtime/unread-launch"
+[[ ! -e "$UNREAD_FIXTURE/launch.png" ]] || { echo "  FAIL: unread-launch fixture unexpectedly has a screenshot"; fails=$((fails+1)); }
+assert_eq "1" "$(wc -c < "$UNREAD_FIXTURE/hierarchy.json" | tr -d ' ')" "recorded hierarchy is one newline"
+lg="$(dyn_signal_log "$UNREAD_FIXTURE/log.txt" FixtureApp)"
+assert_eq "clean" "$lg" "SpringBoard-only bookkeeping contains no app crash"
+v="$(dyn_launch_verdict "$(dyn_signal_process "")" unread "$lg" unread)"
+assert_eq "SKIP" "$(kind "$v")" "clean log alone cannot prove app launch"
+assert_eq "SKIP" "$(kind "$(dyn_launch_verdict unread unread clean 1)")" "clean log and degenerate tree still have no positive app signal"
+assert_eq "SKIP" "$(kind "$(dyn_launch_verdict unread unread clean malformed)")" "malformed node count is not a positive signal"
+assert_eq "FINDING" "$(kind "$(dyn_launch_verdict unread unread crash unread)")" "explicit crash detection still wins without positive signals"
+assert_eq "PASS" "$(kind "$(dyn_launch_verdict unread varied clean unread)")" "real screenshot remains a positive signal"
+assert_eq "PASS" "$(kind "$(dyn_launch_verdict unread unread clean 4)")" "usable app tree remains a positive signal"
+
+section "toolkit selector scope follows measured trees, not framework stereotypes"
+reason="$(dyn_selector_scope kmp 72)"
+assert_contains "$reason" "72 nodes" "healthy measured KMP tree is reported"
+assert_contains "$reason" "not executed" "available tree does not imply dedicated flow completion"
+assert_absent "$reason" "not driveable" "framework name cannot overrule measured capability"
+reason="$(dyn_selector_scope flutter 1)"
+assert_contains "$reason" "degenerate" "actual tiny tree keeps its limitation"
+reason="$(dyn_selector_scope kmp unread)"
+assert_contains "$reason" "not measured" "missing tree evidence does not mean no semantics"
+
 section "quorum: FINDING only on N/N, mixed carries its ratio, all-SKIP is SKIP"
 q="$(dyn_quorum 3 0 0)"; assert_eq "PASS" "$(kind "$q")" "3/3 pass -> PASS"; assert_contains "$(detail "$q")" "3/3" "ratio shown"
 q="$(dyn_quorum 0 3 0)"; assert_eq "FINDING" "$(kind "$q")" "0/3 -> FINDING"; assert_contains "$(detail "$q")" "quorum 3/3" "unanimous ratio"
@@ -246,6 +273,64 @@ assert_contains "$l" "Installed.debug.dylib" "…and the line says the dylib was
 mkdir -p "$T/noexe.app"; cp "$B/Installed.app/Info.plist" "$T/noexe.app/"
 assert_contains "$(PATH="$shim:$PATH" dyn_bundle_links_line "$T/noexe.app")" "DYNAMIC-SKIP" "missing executable -> SKIP"
 rm -rf "$shim"
+
+section "Maestro \${...} markers are refused, never evaluated or echoed"
+DEMO="$L/dyn-demo-login.py"; EXPLORE="$L/dyn-explore.py"
+mb="$T/mbin"; mkdir -p "$mb"
+printf '#!/bin/sh\necho "$@" >> "%s/maestro-calls"\nexit 0\n' "$T" > "$mb/maestro"; chmod +x "$mb/maestro"
+demo() { # demo <username> <password> [submit-label]
+  PATH="$mb:$PATH" PRECHECK_DEMO_USERNAME="$1" PRECHECK_DEMO_PASSWORD="$2" PRECHECK_DEMO_SUBMIT="${3:-Sign In}" \
+    PRECHECK_DEMO_SUCCESS_TEXT=Dashboard PRECHECK_DEMO_FAILURE_TEXT=Invalid \
+    PRECHECK_DEMO_AUTHORIZED_TEST=1 PRECHECK_DEMO_ENVIRONMENT=sandbox python3 "$DEMO" UDID org.example.app
+}
+rm -f "$T/maestro-calls"
+r="$(demo reviewer@example.invalid 'pa${process.env.HOME}ss')"
+assert_eq "SKIP" "$(kind "$r")" "a password containing \${ is a SKIP"
+assert_contains "$r" "password" "…the reason names the field"
+assert_absent "$r" 'process.env' "…and never echoes the credential value"
+assert_absent "$r" 'pa${' "…not even a prefix of it"
+r="$(demo 'me${1+1}@example.invalid' 'plain-pass')"
+assert_eq "SKIP" "$(kind "$r")" "a username containing \${ is a SKIP"
+assert_contains "$r" "username" "…named as the username"
+assert_absent "$r" '1+1' "…without echoing it"
+r="$(demo reviewer@example.invalid plain-pass '${label}')"
+assert_eq "SKIP" "$(kind "$r")" "a submit label containing \${ is a SKIP"
+[[ ! -e "$T/maestro-calls" ]] && echo "  ok: Maestro was never invoked for any refused value" || { echo "  FAIL: Maestro ran with a \${ value"; fails=$((fails+1)); }
+r="$(demo reviewer@example.invalid 'pa$$w{0}rd')"
+assert_absent "$r" "Maestro would evaluate" "a bare \$ or { is not refused"
+[[ -e "$T/maestro-calls" ]] && echo "  ok: the guard is not over-broad (Maestro is reached for a plain \$ / {)" || { echo "  FAIL: benign special characters were refused"; fails=$((fails+1)); }
+explore_probe="$(python3 - "$EXPLORE" <<'PY'
+import importlib.util, pathlib, sys, tempfile
+spec = importlib.util.spec_from_file_location('explore', sys.argv[1])
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+calls = []
+m.command = lambda argv, timeout, cwd=None: calls.append(argv) or '{"children":[]}'
+def auth(selector):
+    return {'schema_version': 1, 'authorized': True, 'environment': 'sandbox', 'selectors': [selector]}
+with tempfile.TemporaryDirectory() as tmp:
+    try:
+        m.live_explore('owned', 'org.example.app', pathlib.Path(tmp), 25, 1, auth('Sett${ings}'))
+        print('accepted-marker')
+    except ValueError:
+        print('refused-marker calls=%d' % len(calls))
+    try:
+        m.live_explore('owned', 'org.example.app', pathlib.Path(tmp), 25, 1, auth('Settings'))
+        print('accepted-plain')
+    except ValueError:
+        print('refused-plain')
+PY
+)"
+assert_contains "$explore_probe" "refused-marker calls=0" "an authorized navigation selector containing \${ is refused before Maestro runs"
+assert_contains "$explore_probe" "accepted-plain" "a plain selector is still accepted"
+
+section "dyn-explore.py: --out must not be inside --repo"
+mkdir -p "$T/xrepo" "$T/xscreens"
+python3 "$EXPLORE" --screens "$T/xscreens" --out "$T/xrepo/inner/out" --repo "$T/xrepo" >/dev/null 2>"$T/xerr"; st=$?
+assert_eq "64" "$st" "--out inside --repo is a usage error (64)"
+assert_contains "$(cat "$T/xerr")" "--out must not be inside --repo" "…with a clear message"
+[[ ! -e "$T/xrepo/inner" ]] && echo "  ok: nothing was created inside the repo" || { echo "  FAIL: created under the repo"; fails=$((fails+1)); }
+python3 "$EXPLORE" --screens "$T/xscreens" --out "$T/xout-outside" --repo "$T/xrepo" >/dev/null 2>&1; st=$?
+assert_eq "0" "$st" "an --out outside --repo works"
 
 section "every generated line is accepted by dynamic.sh under a catalogued id"
 all="$( { dyn_bundle_plist_lines "$B/Installed.app/Info.plist" "$B/repo/Info.plist"; dyn_bundle_sdk_line "$B/Installed.app/Info.plist"; dyn_hosts_line "$(dyn_hosts_parity "$T/hosts.txt" "")"; dyn_geometry_line "$(dyn_geometry_report "$H/clipped.json" 393 852)" 4.0 dyn-dark-mode dark; } )"

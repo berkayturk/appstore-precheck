@@ -1,0 +1,114 @@
+{
+  "checks": {
+    "meta-age-rating": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-category": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-demo-account": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-iap-review-notes": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-iap-screenshot": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-price": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-privacy-url": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-review-notes": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-screenshots": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-storefront": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    },
+    "meta-support-url": {
+      "evidence_class": "metadata",
+      "implementation": "skills/appstore-precheck/scripts/lib/metadata-review.py",
+      "line_prefix": "METADATA-",
+      "route": "metadata",
+      "symbol": "review",
+      "tests": [
+        "tests/test-metadata-review.sh"
+      ]
+    }
+  }
+}

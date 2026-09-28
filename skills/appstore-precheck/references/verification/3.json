@@ -1,0 +1,2913 @@
+{
+  "schema_version": 1,
+  "section": "3",
+  "obligations": [
+    {
+      "obligation_id": "atom-6a41938db9834b6280f26698785a38c7",
+      "owner": "product owner / commerce reviewer",
+      "document_group": "commerce-offers",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "revenue-explanation",
+          "description": "Explain an unusual revenue model in listing materials and reviewer notes.",
+          "evidence_kinds": [
+            "revenue-model",
+            "product-catalog",
+            "listing-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the revenue model, paid dependencies and transaction flow with the localized description and App Review notes for the submitted version. Identify unusual charging arrangements and verify both surfaces explain them accurately. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c78e6e527ce74897989f6cefb707b72f",
+      "owner": "product owner / commerce reviewer",
+      "document_group": "commerce-offers",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "reviewer-commerce-access",
+          "description": "Make app behavior and offered digital purchases understandable to reviewers.",
+          "evidence_kinds": [
+            "revenue-model",
+            "product-catalog",
+            "listing-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace every offered digital product from reviewer navigation to its benefits and charge. Match the product inventory and feature demonstrations to App Review notes, supplied test access and purchase descriptions; hidden offers and remote configuration need coverage. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4a698ec6486b44989f045f756ac3cd3a",
+      "owner": "product owner / commerce reviewer",
+      "document_group": "commerce-offers",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "nonexploitative-pricing",
+          "description": "Avoid pricing that plainly exploits customers.",
+          "evidence_kinds": [
+            "revenue-model",
+            "product-catalog",
+            "listing-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review actual prices, recurring charges, claimed benefits and customer context in each offered storefront. Record the business justification and a contextual reviewer assessment of exploitative pricing; a numeric price threshold alone cannot decide this criterion. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6a7fc154eea34bd8be8becce5b8dff32",
+      "owner": "product owner / commerce reviewer",
+      "document_group": "commerce-offers",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "price-value-honesty",
+          "description": "Do not use extreme charges to mislead customers about value.",
+          "evidence_kinds": [
+            "revenue-model",
+            "product-catalog",
+            "listing-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare displayed price and value claims with the benefits actually delivered, including repeated charges, currency presentation and high-priced variants. Review for misleading value claims rather than assuming any high price is prohibited. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-48bff8fe6beb4877a3a6610621ec892a",
+      "owner": "growth owner / independent reviewer",
+      "document_group": "growth-and-rating-integrity",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "chart-integrity",
+          "description": "Do not boost chart position by artificial means or hired intermediaries.",
+          "evidence_kinds": [
+            "campaign-records",
+            "source-and-backend-review",
+            "runtime-transcript",
+            "vendor-contracts"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect acquisition campaigns, agency contracts, paid traffic instructions and relevant operational records for artificial chart boosting. A clean app screen cannot establish how hired promoters operate. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-87abf334df3644c09fd1782fb0d88852",
+      "owner": "growth owner / independent reviewer",
+      "document_group": "growth-and-rating-integrity",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "review-integrity",
+          "description": "Do not obtain distorted app reviews through payment, incentives, selective prompts, or fabricated feedback.",
+          "evidence_kinds": [
+            "campaign-records",
+            "source-and-backend-review",
+            "runtime-transcript",
+            "vendor-contracts"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect rating prompt branches, sentiment gates, reward rules, review campaigns and vendor instructions for payment, incentives, fabricated reviews or selective positive solicitation. Exercise positive and negative feedback paths; a native review API call alone is insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-997058a40b3344e99d8bdee763e77f8b",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "digital-payment-route",
+          "description": "Use Apple in-app purchase for digital features or content unlocked within the app, unless a named exception applies.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every digital unlock to its actual transaction and entitlement issuance, including remote offers and web checkout. For any alternative, identify the named exception and prove all its conditions for this product, platform and storefront. Distinguish reader prior purchases, cross-platform matching IAP, organization-only sales, live one-to-one services, physical consumption, free web companions, ad administration, hardware dependence and voluntary cash gifts. A US buying-link allowance does not by itself waive every digital-unlock requirement. Evaluate linked exception records explicitly: atom-2b5f47478f2b446ca8d0dfe048985f55, atom-83acd6e5a6634f2ab030f98ee08a87e4, atom-ce0ef87e6f5c40c6ae24083839137ffc, req-98f2c5be2bf14af69dc6ccd283895353, req-ed9498f185b34118a0d26efce7b73851, req-93126169195246e1913afb9ae87c0047, req-0ec30002d4934d929fe2cd390027a4f5, req-80e3b847b9194ba39010065c337b3e6c, req-d3de8fe094db41d7b8b0d6d844c9da8c, req-7aca860be1e44fb3850c7be8d838e9d1. Evidence must establish their prerequisites; an asserted exception name is not enough. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ec57f6028fbc49c8a9134643ee424b25",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "substitute-unlock-route",
+          "description": "Do not substitute license codes, tokens, markers, or similar mechanisms for required in-app purchase.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace license, activation code, QR/AR marker, crypto wallet and token redemption to the actual unlocked digital benefit and its purchase origin. Apply the digital-payment exception review before finding a violation; a Mac App Store plug-in or extension enabling mechanism has its own allowance (req-95650ef4819840ca891f87b367c802cc). Do not treat the presence of a code scanner as a paid unlock. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6c351a87ea6a49f89a18320c5ddd0f69",
+      "owner": "commerce engineer / transaction reviewer",
+      "document_group": "purchase-entitlement-lifecycle",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "restore-entitlement",
+          "description": "Provide a usable restore path for purchases that can be restored.",
+          "evidence_kinds": [
+            "product-catalog",
+            "sandbox-transaction-record",
+            "backend-entitlement-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Demonstrate a prior restorable purchase on a clean installation or another supported device using an authorized sandbox/test account. Record the restore action, transaction/receipt validation, restored entitlement and accessible paid benefit; test no-purchase, cancellation and network failures. A visible restore button, acknowledgement dialog or simulator tap is not restored access. Distinguish consumables from restorable products. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a10550e15d084d37bc031e8f49836f18",
+      "owner": "commerce engineer / transaction reviewer",
+      "document_group": "purchase-entitlement-lifecycle",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "credit-nonexpiry",
+          "description": "Keep purchased virtual credits available without an expiration date.",
+          "evidence_kinds": [
+            "product-catalog",
+            "sandbox-transaction-record",
+            "backend-entitlement-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare purchase-origin credit ledgers, backend expiry jobs and access rules across account inactivity, subscription expiry and migrations. Demonstrate purchased balances are not removed merely with time; distinguish purchased credits from explicitly separate promotional balances and consumption. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cd87865906cd4c99975b43c732509340",
+      "owner": "commerce engineer / transaction reviewer",
+      "document_group": "purchase-entitlement-lifecycle",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "gift-refund-recipient",
+          "description": "Return a gifted purchase payment only to its original buyer.",
+          "evidence_kinds": [
+            "product-catalog",
+            "sandbox-transaction-record",
+            "backend-entitlement-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace an authorized test gift refund through the original transaction, buyer identity and refund ledger. Confirm funds return only to that buyer, including rejected recipient-refund requests; a refund policy page alone does not establish settlement behavior. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ff90b78affe046238e81cdb3f1496126",
+      "owner": "commerce engineer / transaction reviewer",
+      "document_group": "purchase-entitlement-lifecycle",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "gift-no-exchange",
+          "description": "Prevent gifted digital items from being traded for something else.",
+          "evidence_kinds": [
+            "product-catalog",
+            "sandbox-transaction-record",
+            "backend-entitlement-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect gifted-item entitlement and trading APIs, transfer/resale screens and backend rules. Test attempted exchange for cash, credit or other items with authorized test data; permissible gifting is not permission to operate an exchange. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d362f099845945b9ba633753d7064ed2",
+      "owner": "game economy owner / commerce reviewer",
+      "document_group": "randomized-purchase-odds",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "random-item-odds",
+          "description": "Show the chance for each randomized item category before a paid draw.",
+          "evidence_kinds": [
+            "probability-configuration",
+            "product-catalog",
+            "prepurchase-capture",
+            "backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For each purchasable randomized pool, compare the actual server probability table and categories with the disclosure visible before payment. Cover probability-changing offers, pity mechanics, locales and remote configurations. A source string containing odds cannot prove visibility or accuracy. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f1e506715b5a4150b03360f62e4f9108",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "digital-gift-payment",
+          "description": "Sell digital-value gift instruments in the app through in-app purchase.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory gift cards, vouchers and coupons by redemption value and fulfillment. Trace digitally redeemable items to IAP; distinguish a physical gift card actually mailed to the buyer under req-d69f1d9a20a4482f95e4326bec407abf, and verify fulfillment rather than relying on a physical label. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-02ffb30dd1d445e3a60cd986e2407363",
+      "owner": "commerce owner / offer reviewer",
+      "document_group": "non-subscription-trial",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "trial-ending-benefits",
+          "description": "Identify which trial benefits end when the free interval finishes.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "trial-entitlement-rules",
+            "prepurchase-capture",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare pre-start trial screens with feature entitlements before and after expiry. List the specific content or services lost; verify the customer sees this before accepting the non-subscription trial in every offered locale. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2c72981d6d74406da156c61e391c2dc7",
+      "owner": "commerce owner / offer reviewer",
+      "document_group": "non-subscription-trial",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "trial-product-type-and-price",
+          "description": "The non-subscription trial uses a zero-price non-consumable product.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "trial-entitlement-rules",
+            "prepurchase-capture",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify the actual offered product type and price from the scoped store record. For this non-subscription time trial, compare the product used by the build to the submitted/live product record: non-consumable type, zero price and the XX-day Trial name convention matching actual duration. A local .storekit fixture is test configuration, not App Store Connect product truth. Do not apply this product type to an auto-renewable subscription introductory offer. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        },
+        {
+          "id": "trial-product-name",
+          "description": "The trial product name expresses its real day count using the required convention.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "trial-entitlement-rules",
+            "prepurchase-capture",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the product name with the implemented trial interval. For this non-subscription time trial, compare the product used by the build to the submitted/live product record: non-consumable type, zero price and the XX-day Trial name convention matching actual duration. A local .storekit fixture is test configuration, not App Store Connect product truth. Do not apply this product type to an auto-renewable subscription introductory offer. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-642f6e61015849e683ad50487909240e",
+      "owner": "commerce owner / offer reviewer",
+      "document_group": "non-subscription-trial",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "trial-follow-on-charge",
+          "description": "Disclose the amount or nature of payment needed after the trial for continued full access.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "trial-entitlement-rules",
+            "prepurchase-capture",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the pre-start non-subscription trial disclosure with the full-unlock offer and actual downstream price/payment requirement. Verify all required payments for continued full functionality are visible before the trial starts. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9a6d8f60e7e743d58bb182563121ed2e",
+      "owner": "commerce owner / offer reviewer",
+      "document_group": "non-subscription-trial",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "trial-duration-disclosure",
+          "description": "State the trial length before a person begins it.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "trial-entitlement-rules",
+            "prepurchase-capture",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the stated non-subscription trial interval to receipt/backend start and expiry rules, and capture the statement before initiation. Cover locale, timezone and returning-customer paths; a duration label elsewhere in the app does not establish timely disclosure. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-283dcbbc9da043a1b8bb43ad4f8cb73d",
+      "owner": "commerce owner / NFT feature reviewer",
+      "document_group": "nft-commerce",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "nft-ownership-unlock",
+          "description": "Do not unlock app functions merely because a user owns an NFT.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "wallet-entitlement-review",
+            "storefront-runtime-capture",
+            "payment-flow-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare feature access for otherwise identical accounts with and without NFT ownership; trace wallet ownership checks and backend entitlements. Distinguish permitted viewing and IAP-paid minting/listing/transfer services from functionality unlocked merely by owning the asset. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a6114024f6f94361a463a84fc1a7a503",
+      "owner": "commerce owner / NFT feature reviewer",
+      "document_group": "nft-commerce",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "nft-collection-purchase-prompts",
+          "description": "Outside the United States storefront, avoid off-platform buying prompts while showing others\u2019 NFT collections.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "wallet-entitlement-review",
+            "storefront-runtime-capture",
+            "payment-flow-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory other owners' NFT collection screens, web views and remote content by storefront. Outside the United States storefront, inspect buttons, links and indirect buying calls to action; record the actual destination and storefront evidence. Do not turn a US-only allowed presentation into an all-region violation or exemption. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-792af3fdfba646389746446c7b18b3e7",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "external-link-messaging",
+          "description": "Keep price and purchase messaging inside the bounds of the external-link entitlement agreement.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare each external link, displayed price comparison and destination with the current applicable external purchase entitlement agreement. Verify the developer owns or is responsible for the destination and the communicated purchase method/price stays within the agreement. An entitlement key is not proof of approval or current agreement terms. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3c81315eba0047768ffbd71871a855a8",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "external-link-distribution",
+          "description": "Restrict the external purchase link entitlement to eligible iPhone or iPad storefront distribution.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match signed distribution entitlements and Apple approval/agreement to the app's actual iPhone/iPad platform and storefront availability. Test gating outside eligible storefronts; distinguish the separate United States link allowance from use of an entitlement, and do not infer storefront from device language or IP location. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a017a6446edb434fb697a7a183abec0a",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "external-prompt-eligibility",
+          "description": "Where neither the US rule nor an entitlement permits it, omit off-platform digital buying prompts from app and listing.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review in-app and listing buttons, web views, links and buying messages per storefront. For each allowed prompt, establish United States scope or the precise approved external-link/music/reader allowance with its terms and destination ownership. An absent entitlement cannot prove a violation in the US; a source entitlement cannot grant global eligibility. Evaluate linked exception records explicitly: atom-2b5f47478f2b446ca8d0dfe048985f55, atom-14ae5df863d948a2bba1f3eaddd03398, req-38283652f1c14cb7981d3a040eeb1294. Evidence must establish their prerequisites; an asserted exception name is not enough. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-aa20270312f645cbb34d00f51beaf485",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "music-link-email-purpose",
+          "description": "If invoking the music link entitlement, collect an email only to send the eligible purchase link.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace the music-entitlement email invitation, consent copy, stored field, recipient list and actual outbound use. Verify collection is expressly for sending the eligible link to the developer's music purchase site; inspect retention/use mapping and unrelated marketing enrollment rather than assuming any email capture is allowed. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f6e1ab3c0edd43abb4c8c59b18586df2",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "music-link-messaging",
+          "description": "Limit music purchase link price and buying information to the entitlement terms.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare every music purchase link or buy button, price and explanatory text with the approved music entitlement agreement and the developer-owned/responsible destination. Inspect redirected pages and remote content; general external-link approval is not necessarily music-service approval. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-24997ecef251401db1137b634e0fde03",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "music-link-distribution",
+          "description": "Use the music service entitlement only on eligible iPhone or iPad storefronts.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match music-service entitlement approval, signed artifact, iPhone/iPad platform and offered storefronts with current agreement eligibility. Demonstrate gating outside those storefronts; record any separately applicable United States allowance without treating it as worldwide entitlement approval. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c21f214d278d413b90b96d53eee7cabe",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "music-outside-scope-prompts",
+          "description": "Outside eligible music storefronts, omit off-platform purchase prompts in the app and listing.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect app and listing buying prompts in every storefront outside the music entitlement coverage. Resolve the general United States allowance in 3.1.1(a) explicitly; elsewhere require a separately applicable permitted route or absence of prompts. Unknown storefront or missing approval remains unresolved, not an automatic finding. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a5cc1d35bc12484e97df04d10d240d9d",
+      "owner": "distribution owner / payment eligibility reviewer",
+      "document_group": "external-link-entitlements",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "external-link-marketing-integrity",
+          "description": "Avoid deceptive claims or fraud when using an external purchase entitlement.",
+          "evidence_kinds": [
+            "apple-entitlement-approval",
+            "entitlement-agreement",
+            "signed-artifact",
+            "storefront-runtime-capture",
+            "listing-snapshot",
+            "destination-ownership"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare entitlement-related price, savings, affiliation and purchase claims against the actual checkout, delivered benefit and business records. Inspect scams, redirects, switched offers and fraud reports with sufficient context; entitlement possession does not establish truthful marketing. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1cc05db68a2a475c8d4c3cd528b5d861",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-device-access",
+          "description": "Honor the subscription on each supported device belonging to its buyer.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map supported devices/platforms to subscription entitlements and demonstrate purchased access for the same buyer on each supported device class, including restore and account linking. Unsupported devices need a documented support matrix; lack of a simulator driver is not evidence a device is unsupported. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7d481d3a56db42dc9ff64dc3581315e1",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-continuing-value",
+          "description": "Give auto-renewing subscribers continuing value during paid periods.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare recurring billing periods with the continuing service, maintained functionality, updated content or ongoing access actually delivered. Review service operation and content/update records over the paid period, not only a one-time feature or a roadmap promise. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d697d85363f54565ae5c0054ad8d7205",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-minimum-period",
+          "description": "Set each auto-renewal period to no fewer than seven days.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare all offered auto-renewable product periods from scoped App Store Connect/StoreKit production records with at least seven days, and bind product IDs to the build's offerings. Introductory free-trial duration and a local StoreKit test period are not the recurring subscription period. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-315a0b7738b947edb8e0fc025d0189df",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "game-nonsubscriber-treatment",
+          "description": "Do not penalize customers who have not joined a shared game subscription.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the same game paths and advertised rights for shared-service subscribers and ordinary purchasers. Identify penalties or degraded treatment imposed on non-subscribers beyond the benefits they did not purchase, with pricing and gameplay context. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-68f316d5db6144208bee0248324e5ec2",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "game-direct-distribution",
+          "description": "Distribute games in a shared streaming subscription directly through the App Store.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every third-party game participating in the shared streaming subscription to its direct App Store distribution record and actual installation route. Review service catalog changes; a wrapper catalog link alone does not establish direct distribution for every game. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9e815f5b1d704f0ea9b0a9e96a5d4f75",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "game-duplicate-payment",
+          "description": "Prevent a shared game subscriber from paying twice for the same access.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Use authorized test accounts with existing shared subscriptions to exercise each participating game's purchase gates. Confirm entitlement recognition avoids paying again for the same access; cover cross-app account linking, restore and renewal transitions with transaction records. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c19d8afd1b594ce9980fa1f5cb7c09b9",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-no-extra-tasks",
+          "description": "Give subscribers purchased benefits without requiring unrelated promotional or social tasks.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace paid entitlement access through all promotional gates and backend checks. Demonstrate subscribers receive purchased benefits without social posting, contact uploads, repeated check-ins or other unrelated tasks; distinguish necessary service input from promotional work. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5bcdac00f2eb4a94827846cccabd1f18",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "legacy-paid-access",
+          "description": "Preserve previously paid core access for existing buyers after switching to subscriptions.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare historic paid products and promised core features with migration rules and the new subscription build. Exercise an authorized previously paid account after upgrade/restore to verify original core access survives without an additional subscription. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-96e8caaddd2c4a07b1083d241c64c59e",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-trial-record",
+          "description": "Supply the necessary trial terms in App Store Connect for an auto-renewing trial.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match each auto-renewing trial offered to the customer with its App Store Connect introductory-offer record, eligibility, duration and post-trial product terms for the submitted product. Local test configuration and non-subscription trial naming do not establish this record. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5163dc4e52c84d63a55c3a759f1107f9",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-offer-honesty",
+          "description": "Do not obtain subscription signups through deceptive offers or switched terms.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare acquisition ads, paywalls, trial disclosures, purchase confirmation and delivered entitlement for the same offer. Inspect switched benefits/prices, misleading trial claims and recurring-charge presentation across remote variants and locales. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-13f97b3592d642d7acaa569ec9b7e0b9",
+      "owner": "carrier business owner / subscription reviewer",
+      "document_group": "carrier-subscription-bundles",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "carrier-media-approval",
+          "description": "Get Apple approval before bundling music or video auto-renewals with a new mobile data plan.",
+          "evidence_kinds": [
+            "apple-bundle-approval",
+            "carrier-contract",
+            "product-catalog",
+            "backend-entitlement-review",
+            "sandbox-transaction-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect authenticated prior Apple approval that covers the carrier, app, music/video subscription and new mobile data plan bundle. Match the approved scope with the actual bundle and sale date; a pending request or generic developer agreement is not approval. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "apple-bundle-approval"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0a55d4fab71c4f72a3d6fb6921722d2d",
+      "owner": "carrier business owner / subscription reviewer",
+      "document_group": "carrier-subscription-bundles",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "carrier-prior-approval",
+          "description": "Apple approved this carrier bundle before it was offered.",
+          "evidence_kinds": [
+            "apple-bundle-approval",
+            "carrier-contract",
+            "product-catalog",
+            "backend-entitlement-review",
+            "sandbox-transaction-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Authenticate prior approval for the exact carrier and bundle. Obtain prior Apple approval for the particular non-music/video carrier bundle with a new data plan and match its scope to the shipped offering. Independently demonstrate a usable in-app purchase option for customers, with product and transaction evidence; approval alone does not satisfy the IAP requirement. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "apple-bundle-approval"
+          ]
+        },
+        {
+          "id": "carrier-iap-availability",
+          "description": "Customers can buy the other bundled subscription through in-app purchase.",
+          "evidence_kinds": [
+            "apple-bundle-approval",
+            "carrier-contract",
+            "product-catalog",
+            "backend-entitlement-review",
+            "sandbox-transaction-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Demonstrate the offered IAP transaction and resulting entitlement. Obtain prior Apple approval for the particular non-music/video carrier bundle with a new data plan and match its scope to the shipped offering. Independently demonstrate a usable in-app purchase option for customers, with product and transaction evidence; approval alone does not satisfy the IAP requirement. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-25dc6b52a96643889de2ae590fcbd474",
+      "owner": "carrier business owner / subscription reviewer",
+      "document_group": "carrier-subscription-bundles",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "carrier-no-consumables",
+          "description": "Exclude consumable benefits and discounts from carrier-bundled auto-renewals.",
+          "evidence_kinds": [
+            "apple-bundle-approval",
+            "carrier-contract",
+            "product-catalog",
+            "backend-entitlement-review",
+            "sandbox-transaction-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect every benefit and discount in each carrier-bundled auto-renewal. Confirm no consumable credits, goods or discounts on consumables are included; the general allowance for consumables in ordinary subscriptions does not override the carrier restriction. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3916226c88aa4de795c87edd78f50d7a",
+      "owner": "carrier business owner / subscription reviewer",
+      "document_group": "carrier-subscription-bundles",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "carrier-cotermination",
+          "description": "End a carrier-bundled subscription when its linked mobile data plan ends.",
+          "evidence_kinds": [
+            "apple-bundle-approval",
+            "carrier-contract",
+            "product-catalog",
+            "backend-entitlement-review",
+            "sandbox-transaction-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace authorized test plan cancellation/termination events through carrier callbacks and subscription entitlement revocation. Verify access/billing terminates with the linked data plan, including delayed or retried events; a common end-date field alone is insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-21321b0580604d559a3ee1d04814f3e9",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-tier-transition",
+          "description": "Let subscribers move between tiers without an obstructive transition.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise upgrade and downgrade paths between offered tiers using sandbox transactions. Record effective dates, charges, entitlement continuity and completion, including cancellation/error recovery; compare behavior to the disclosed change without unnecessary obstacles. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a1e346697a7c4bfe9144d32c43c01b31",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-no-concurrent-variants",
+          "description": "Prevent accidental concurrent enrollment in equivalent subscription variants.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map equivalent benefits to subscription groups and account entitlements. Attempt switching or buying from each entry point with an existing subscription and verify protection against accidental overlapping equivalent subscriptions; correct group names alone do not establish behavior. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-60233698a81243ae9e571db7ba1d8164",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-benefit-disclosure",
+          "description": "Show the benefits and scope of the subscription before requesting payment.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Capture every offer immediately before the subscription request and compare its price, amount of content, storage, access level and limits with actual entitlements. Cover localized, discounted and remote paywall variants; generic premium branding is not a benefits description. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f42064f36b1e4c8faeeedf6956ba182e",
+      "owner": "subscription owner / commerce reviewer",
+      "document_group": "subscription-offers-and-access",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "subscription-agreement-disclosures",
+          "description": "Present the subscription terms required by the applicable developer agreement.",
+          "evidence_kinds": [
+            "app-store-product-record",
+            "subscription-benefit-map",
+            "sandbox-transaction-record",
+            "runtime-transcript",
+            "offer-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the current applicable Schedule 2 agreement and map its required subscription disclosures to the actual purchase surfaces, including localized price/period, renewal/payment terms and functional terms/privacy links where required. Record the agreement version and each required field; a source URL or visible link alone does not prove usable or sufficient terms. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-936a6cda3c944b5aaa1c14bdbc34b83b",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "alternative-payment-prompt-scope",
+          "description": "For apps using another payment exception, keep in-app off-platform purchase prompts within the US and named entitlement or reader allowances.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Classify payment eligibility separately from permission to encourage external buying. For each in-app prompt, prove the US storefront or named 3.1.1(a)/reader allowance and its exact terms. Distinguish developer communications sent outside the app from in-app encouragement, and map embedded web flows too. Evaluate linked exception records explicitly: req-a062d314b6e748c290a0f189f3a0bd44, req-38283652f1c14cb7981d3a040eeb1294, atom-2b5f47478f2b446ca8d0dfe048985f55, atom-14ae5df863d948a2bba1f3eaddd03398. Evidence must establish their prerequisites; an asserted exception name is not enough. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-546e55f649d44109859ed67495def6e3",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "reader-media-scope",
+          "description": "Limit reader-app prior-purchase access to the qualifying media categories.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory all externally acquired content exposed through the reader route and establish it is within magazines, newspapers, books, audio, music or video. Confirm the app's actual primary reader behavior and prior-purchase access; unrelated interactive digital features are not cleared by a reader label. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-debd19891963471bb580fb1022273b57",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "reader-account-scope",
+          "description": "Limit reader-app account creation to free access and account management to existing customers.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise free-tier signup and existing-customer account management, recording which accounts and features each path serves. Inspect new paid signup and checkout destinations separately under the relevant storefront/link allowance; account management is not a blanket exception for all paid services. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-14a13b1656a44dcc95d27e7a5f3bb1d2",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "reader-link-entitlement",
+          "description": "Use a reader account website link only when its entitlement and ownership terms apply.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For each account website link, verify the developer's ownership/responsibility, reader eligibility and actual account creation/management destination. Outside the US storefront, match approval and signed entitlement to its terms; req-a062d314b6e748c290a0f189f3a0bd44 waives the entitlement prerequisite for US links without establishing unrelated eligibility. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-54c9e12357d247e6a0e41c048bd5d3dc",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "cross-platform-matching-iap",
+          "description": "For cross-platform acquisitions accessed in the app, make matching items purchasable through in-app purchase there.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each external platform or website acquisition, including consumable game items, to equivalent purchasable IAP content in this app. Compare product IDs, benefits, availability and authorized purchase/access traces in every offered storefront. Shared login or an unrelated IAP product is insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f553a6d6863c4726a8dcd3a9f1ff6df9",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "enterprise-direct-sales",
+          "description": "Apply organization-only prior-purchase access solely to direct sales for staff or students.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect contracts, buyer entities, distribution and account provisioning to confirm the prior-purchase route is sold directly to organizations/groups for their staff or students. Trace mixed consumer offerings separately; an enterprise account label does not exempt individual sales. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-57562ccf07cb42cdb85a70da00bc80be",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "enterprise-consumer-iap",
+          "description": "Use in-app purchase for consumer, individual, or family sales even when an enterprise offering exists.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory consumer, individual and family offers alongside enterprise contracts. Demonstrate those sales use IAP and cannot enter the organization-only external checkout path; sample separate account types and remote offers. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-38fcb8bd11194471a2a365dfe7c60b81",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "one-to-one-live-service",
+          "description": "Limit the personal-service payment exception to live services delivered between two people.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Document the purchased service, its real-time delivery and exactly two individual participants. Compare booking, attendance and payment traces; asynchronous content, recordings and group classes do not qualify merely because a provider answers messages. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8f02da195564446497467538583aa1a0",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "group-live-service-iap",
+          "description": "Use in-app purchase for live service sessions serving groups rather than one individual.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map one-to-few and one-to-many live offerings to IAP products and actual payment flows. Test group-size upgrades and mixed one-to-one/group booking paths; provider count alone does not establish the number of served customers. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3ad67610200b4020b09f991932b3071c",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "physical-consumption-payment",
+          "description": "Use a payment channel other than in-app purchase for physical items or services consumed away from the app.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Classify goods/services by actual fulfillment and where they are consumed. For physical goods and services used outside the app, trace Apple Pay/card or another non-IAP channel. Review mixed baskets separately so external physical checkout does not exempt bundled digital unlocks. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2ddcf75d3e544bb6828e52f95a702bb4",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "free-standalone-companion",
+          "description": "The free app is a stand-alone companion to the identified paid web tool.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify download pricing and the relationship to the web service. Prove the app is free and a stand-alone companion to an identified paid web tool. Inventory every in-app surface and remote variant to establish there are no purchases inside the app and no off-app purchase calls to action under this exception; evaluate a separately claimed US allowance explicitly rather than silently broadening this exception. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        },
+        {
+          "id": "companion-no-in-app-sales",
+          "description": "The companion exception has no purchasing inside the app.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect all app and embedded web transaction entry points. Prove the app is free and a stand-alone companion to an identified paid web tool. Inventory every in-app surface and remote variant to establish there are no purchases inside the app and no off-app purchase calls to action under this exception; evaluate a separately claimed US allowance explicitly rather than silently broadening this exception. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        },
+        {
+          "id": "companion-no-purchase-prompts",
+          "description": "The companion exception has no prompts to purchase outside the app.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect app copy, web views and remote calls to action by storefront. Prove the app is free and a stand-alone companion to an identified paid web tool. Inventory every in-app surface and remote variant to establish there are no purchases inside the app and no off-app purchase calls to action under this exception; evaluate a separately claimed US allowance explicitly rather than silently broadening this exception. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6bdf79fcd3134946a3cbd521bd33f9f8",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "ad-management-purpose",
+          "description": "Reserve the advertising management exception for apps devoted to cross-media campaign purchasing and administration.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map features, customers and purchased inventory to cross-media campaign purchasing/administration as the app's sole purpose. Contrast advertiser management tools with consumer content and in-app post boosts; an advertising SDK or business account is insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4487c19c1ec54a4c8368a6824ee63aee",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "ad-management-no-display",
+          "description": "The ad management exception requires management rather than display of the ads in that app.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review runtime surfaces and campaign delivery architecture to establish the app administers campaigns rather than displaying the purchased ads itself. Record actual ad destinations across media and distinguish required management previews from delivered advertising with contextual review. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-56257ec6707747c38c995cf7f555f81e",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "same-app-promotion-iap",
+          "description": "Charge through in-app purchase for digital content and promotions experienced within the same app.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace purchases of boosts, promoted posts and other digital content to their eventual display/consumption in this same app, and verify IAP is used. The advertiser-management exception cannot be applied solely because a purchase is named a campaign. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4ca70616c9714b4888be2a7ef99c08eb",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "hardware-functional-dependence",
+          "description": "A digital feature unlocked through specific hardware must actually depend on that hardware to function.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Demonstrate the specific hardware interaction and why the unlocked function cannot operate without it. Test connected/disconnected states and compare hardware protocols with the feature; a serial number or QR ownership check alone does not prove functional dependence. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-85bddc7ff5734633a258029655074c9b",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "optional-hardware-iap",
+          "description": "When an optional approved product unlocks app functionality, also offer an in-app purchase route.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify approval of the optional physical product and show the same unlocked app functionality can also be purchased through IAP. Exercise both purchase routes; do not confuse an optional toy association with mandatory hardware-dependent functionality. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2eb3d1a46c7d4c0da855afd7a53c7187",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "hardware-no-marketing-gate",
+          "description": "Do not demand ad viewing or marketing work as a condition for unlocking functions.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect every hardware-associated unlock for required ad viewing, referrals or marketing activity and exercise the nonparticipation path. Evaluate ordinary optional rewards separately under atom-c6a14f55a49a42059c77a7fdf76f30a6; a rewarded-ad keyword alone does not decide whether core unlock is conditioned on marketing. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bd5c149376d243af8f5d98a3ca495dfe",
+      "owner": "commerce owner / payment eligibility reviewer",
+      "document_group": "payment-exception-matrix",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "no-unrelated-product-gate",
+          "description": "Do not make an unrelated physical-product purchase a condition for digital access.",
+          "evidence_kinds": [
+            "product-catalog",
+            "payment-flow-map",
+            "runtime-transcript",
+            "exception-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each required physical purchase to a demonstrated functional relationship with the unlocked digital feature. Inspect rejection paths for users without the product; an arbitrary receipt, merchandise code or promotion is not hardware dependence. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5b8921dd8dc94abd992bd4b024718aee",
+      "owner": "regulated service owner / qualified regulatory reviewer",
+      "document_group": "cryptocurrency-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "wallet-organization-enrollment",
+          "description": "Offer virtual-currency storage only through an enrolled organization developer account.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the virtual-currency storage feature and distributed bundle to the App Store developer account's verified organization enrollment. A company name in metadata or source does not establish enrollment type. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4df376a5aed34aaf9c2da826f212119c",
+      "owner": "regulated service owner / qualified regulatory reviewer",
+      "document_group": "cryptocurrency-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "mining-off-device",
+          "description": "Perform any cryptocurrency mining outside the user\u2019s device.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify all mining workloads in native code, SDKs, web views and downloaded/remote code, then trace execution to off-device infrastructure. Use implementation review and device/server execution evidence; network requests alone or low sampled CPU do not prove mining never runs locally. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0d521530026845aa8ea7b9e7295b3283",
+      "owner": "regulated service owner / qualified regulatory reviewer",
+      "document_group": "cryptocurrency-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "approved-exchange",
+          "description": "Each exchange used for transactions has the required approval.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Authenticate exchange identity and approval. Verify approval for each exchange used, identify the legal operator, and authenticate its current permissions in every country/region served. Compare licenses and product scope with distribution and actual service gating; device locale and a license in one country are insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
+        },
+        {
+          "id": "exchange-local-permissions",
+          "description": "The operator has current permissions for every territory where exchange service is offered.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match permission scope, dates and entity with service availability. Verify approval for each exchange used, identify the legal operator, and authenticate its current permissions in every country/region served. Compare licenses and product scope with distribution and actual service gating; device locale and a license in one country are insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-903a6bd06d5d494995c4aad1f0d38e87",
+      "owner": "regulated service owner / qualified regulatory reviewer",
+      "document_group": "cryptocurrency-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "crypto-institution-standing",
+          "description": "Offer cryptocurrency securities, futures, or initial coin offerings only through organizations with the required standing and permissions.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the submitting/operating legal entity for ICOs, futures or crypto-securities with authenticated bank, securities firm, FCM or other approved institution standing and the needed authorizations. A partnership logo or exchange API integration does not establish that standing. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ba228b966de04cfc910e7ba6dc3d7a69",
+      "owner": "regulated service owner / qualified regulatory reviewer",
+      "document_group": "cryptocurrency-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "crypto-territorial-law",
+          "description": "Ensure those crypto trading activities meet the law in each offered territory.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Have a qualified owner review the specific offered instruments and operations against applicable law in each available territory, with current permissions, service controls and dated legal analysis. A developer's assertion or an unverified document upload cannot authenticate regulatory compliance. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e700cc457d854eed8744b42f97aeb61e",
+      "owner": "regulated service owner / qualified regulatory reviewer",
+      "document_group": "cryptocurrency-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "crypto-task-rewards",
+          "description": "Do not reward cryptocurrency for downloads, referrals, social posts, or similar tasks.",
+          "evidence_kinds": [
+            "service-inventory",
+            "institution-identity",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "source-and-backend-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect reward schedules, referral campaigns, social/download incentives and backend payout triggers. Trace whether completing such tasks grants cryptocurrency, including deferred and partner-paid rewards; unrelated conventional loyalty points require classification before a finding. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-967f0a7ad7de44c79515fa75f49755fc",
+      "owner": "product owner / editorial reviewer",
+      "document_group": "app-collection-purpose",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "own-app-catalog-substance",
+          "description": "A developer\u2019s promotion of its own apps must not reduce the product to a mere app catalog.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "content-inventory",
+            "editorial-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory app features and exercise the main journeys to establish substantive utility beyond promoting the developer's other apps. Compare time, navigation prominence and functionality with promotional catalog content; a few descriptive text blocks alone do not prove meaningful utility. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9b9f57851da4417ebc886850676f80ce",
+      "owner": "product owner / editorial reviewer",
+      "document_group": "app-collection-purpose",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "third-party-collection-purpose",
+          "description": "The third-party collection cannot function as a general app storefront.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "content-inventory",
+            "editorial-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Establish the collection's specific approved user need and review its complete navigation/catalog behavior against a general storefront. Reference atom-a35a226b7a544044b4613a2fab047cf3; a themed app list alone does not establish the exception. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b60c95e8e6a84119bd47544c00b798c4",
+      "owner": "product owner / editorial reviewer",
+      "document_group": "app-collection-purpose",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "third-party-editorial-value",
+          "description": "Provide substantial editorial guidance around third-party app recommendations.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "content-inventory",
+            "editorial-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review editorial coverage, authorship and useful guidance around the third-party recommendations for the defined approved need. Inspect enough of the full collection to assess substantive guidance, beyond copied descriptions or purchase links. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d9a7820c78114031b7ce582158d99737",
+      "owner": "commerce engineer / transaction reviewer",
+      "document_group": "purchase-entitlement-lifecycle",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "nonrental-access-duration",
+          "description": "Keep non-rental digital items and services from expiring merely with time.",
+          "evidence_kinds": [
+            "product-catalog",
+            "rental-approval",
+            "backend-entitlement-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map purchased items/services to expiry and entitlement rules. For a claimed rental exception atom-ba7b9603b18b41b7807ce12531015866, establish specific approved rental media and the agreed rental interval; test access at expiry and ensure non-rental purchased access is not removed merely with time. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-55958e7c896c4ea994fcf1692edb1bef",
+      "owner": "pass issuer / Wallet reviewer",
+      "document_group": "wallet-purpose",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "wallet-purpose-eligibility",
+          "description": "Avoid Wallet pass purposes outside the authorized categories unless separately approved.",
+          "evidence_kinds": [
+            "pass-type-inventory",
+            "issued-pass-artifact",
+            "runtime-transcript",
+            "apple-purpose-approval"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each issued pass and runtime use to supported payment, offer or identification functions under atom-47a9fef916cd4a648960840fd3e35892. For a different purpose require explicit applicable approval, not just successful signing or Wallet import. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-27dfb56ef46149f385d8113fba76ad6b",
+      "owner": "insurance operator / qualified regulatory reviewer",
+      "document_group": "insurance-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "insurance-no-iap",
+          "description": "Do not sell insurance app items through in-app purchase.",
+          "evidence_kinds": [
+            "insurance-product-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "app-store-price-record",
+            "payment-flow-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace every insurance app purchase and product catalog to verify no IAP is used, including extra app items and remote offers. Payment SDK absence in source alone does not establish the sales channel. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-da0a9af60d8d4901b440c0cc8394681f",
+      "owner": "insurance operator / qualified regulatory reviewer",
+      "document_group": "insurance-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "insurance-territorial-law",
+          "description": "Meet local insurance law wherever the app is distributed.",
+          "evidence_kinds": [
+            "insurance-product-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "app-store-price-record",
+            "payment-flow-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Authenticate insurance provider permissions and qualified legal review for every distributed region; compare the actual products, disclosures, underwriting and sales flow with that scope. Record expiry and authority gaps rather than accepting a company statement as legal proof. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-de0b437b8ac64c91874c17baee2859ff",
+      "owner": "insurance operator / qualified regulatory reviewer",
+      "document_group": "insurance-services",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "insurance-free-download",
+          "description": "Offer an insurance app without an App Store download charge.",
+          "evidence_kinds": [
+            "insurance-product-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "app-store-price-record",
+            "payment-flow-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare submitted/live App Store price records and availability by storefront to confirm the insurance app has no download charge. A local marketing claim or free trial label does not establish the store price. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-463d5d26067448ff93e0fe02c55e5306",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "charity-approval",
+          "description": "Verify charity approval before using the in-app fundraising allowance.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Authenticate nonprofit approval for the organization using the in-app fundraising allowance and match its legal identity to the donation beneficiary. Tax-exempt status alone is not proof of the required approval; third-party hosting does not remove beneficiary approval requirements. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "nonprofit-approval"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8dd8832bc69041b1983ac64bd888fd5b",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "charity-apple-pay",
+          "description": "Provide Apple Pay in an eligible in-app donation flow.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise the eligible donation flow with authorized test payment configuration to verify Apple Pay is actually offered and usable. Confirm merchant/beneficiary configuration matches the campaign; an Apple Pay logo alone does not prove support. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ee52cf5ca5ca4672a17866df22fd017e",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "charity-related-guidelines",
+          "description": "Apply the other relevant review rules to a charitable campaign.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each campaign's content, privacy, payments and user interactions to the other applicable obligation IDs and review their evidence. Do not treat nonprofit approval as exempting unrelated requirements or let this aggregate claim hide unresolved campaign-specific findings. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4f7c1f8c0420482b9a22e3345b2c4931",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "charity-tax-receipts",
+          "description": "Make proper tax documentation available to donors.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect donor receipt generation/retrieval using authorized synthetic donations and review receipt contents with the responsible tax/charity owner for the applicable jurisdiction. Match the receipt to the actual beneficiary, amount and transaction; a promise of a receipt is insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5953c0654c3c42bd8be1bf876c85f2be",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "charity-use-disclosure",
+          "description": "Explain the intended use of donations to prospective donors.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare pre-donation statements of intended fund use with campaign budgets, beneficiary arrangements and restrictions. Verify understandable disclosure in each donation path and locale before authorization; a general organization mission alone is insufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8f9af0d0ce1c4dd4b851f33cd4ecaeee",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "charity-campaign-law",
+          "description": "Comply with governing law for each donation campaign.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review campaign-specific local/federal fundraising obligations, registrations and controls for every offered jurisdiction with the qualified legal owner. Authenticate current documents and compare actual collection/disbursement practices, not merely nonprofit status. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b319bc5b4521475e86e872d318d04f77",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "charity-review-response",
+          "description": "Supply additional fundraising details if App Review requests them.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect the current App Review correspondence for fundraising information requests and the supplied response/evidence. Verify every requested detail is supplied accurately; no request requires evidence from the scoped correspondence, not an assumed N/A. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9dc3572afdfd414ca8e03f0701579217",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "charity-platform-beneficiaries",
+          "description": "List only approved charities on a platform that connects donors with them.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile the complete active beneficiary directory, including remote additions, with authenticated approval records for every listed nonprofit. Inspect onboarding/removal controls and expired approvals; one approved platform operator does not establish beneficiary eligibility. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "nonprofit-approval"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-03f3e3c030004be3ac1707583fc65860",
+      "owner": "payment operator / settlement reviewer",
+      "document_group": "person-to-person-cash-gifts",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "cash-gift-voluntary",
+          "description": "Ensure the sender can freely choose whether to give the cash gift.",
+          "evidence_kinds": [
+            "gift-flow-map",
+            "sandbox-transaction-record",
+            "settlement-ledger",
+            "digital-benefit-map",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise sender journeys without giving, including decline and cancellation, and inspect default selection, pressure and gating. Establish a voluntary person-to-person monetary gift, distinct from paid digital access or provider compensation. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a236bf6bc2194e44ab7c1fc76c8a584f",
+      "owner": "payment operator / settlement reviewer",
+      "document_group": "person-to-person-cash-gifts",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "cash-gift-full-payout",
+          "description": "Deliver the entire gift amount to its intended recipient.",
+          "evidence_kinds": [
+            "gift-flow-map",
+            "sandbox-transaction-record",
+            "settlement-ledger",
+            "digital-benefit-map",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile authorized gift transaction, fees, commissions, currency conversion and recipient settlement so the full gifted amount reaches the intended individual. Show who pays any processing cost; a 100 percent marketing claim does not prove the actual payout. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-71995e2b64614ab186c0916f6eee5090",
+      "owner": "payment operator / settlement reviewer",
+      "document_group": "person-to-person-cash-gifts",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "cash-gift-digital-value",
+          "description": "Use in-app purchase if a cash gift is ever tied to receiving digital value.",
+          "evidence_kinds": [
+            "gift-flow-map",
+            "sandbox-transaction-record",
+            "settlement-ledger",
+            "digital-benefit-map",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace gifting incentives, badges, access rights and promised later benefits across the full transaction lifecycle. If any digital content or service is associated with the gift at any time, verify IAP; calling it a donation or paying the full recipient amount does not satisfy this separate requirement. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5b0aab6113a14ce3a5bbfa3ff4567ac0",
+      "owner": "financial institution owner / qualified regulatory reviewer",
+      "document_group": "financial-service-permissions",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "finance-territorial-permissions",
+          "description": "Hold the needed financial licenses in each territory where service is available.",
+          "evidence_kinds": [
+            "institution-identity",
+            "service-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Authenticate the operating institution's current licenses/permissions for each offered service and territory. Reconcile approved instruments and customer eligibility with App Store availability and backend restrictions; an unrestricted global release cannot be cleared by a single domestic license. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8ea9c37033624287953bf3a56b788061",
+      "owner": "financial institution owner / qualified regulatory reviewer",
+      "document_group": "financial-service-permissions",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "finance-submitting-institution",
+          "description": "Have the financial institution actually delivering the service submit its trading or money-management app.",
+          "evidence_kinds": [
+            "institution-identity",
+            "service-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the submitting developer's legal identity to the financial institution actually performing trading, investing or money management. Review service contracts and operational responsibility; a white-label developer or referral agreement alone does not establish that identity. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "institution-identity"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c69e614095d34edbb187dc838c7d07d1",
+      "owner": "product owner / editorial reviewer",
+      "document_group": "app-collection-purpose",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-general-app-marketplace",
+          "description": "Do not present a general app marketplace for third-party apps, extensions, or plug-ins.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "content-inventory",
+            "editorial-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the catalog, discovery, installation/purchase and navigation flows for third-party apps, extensions and plug-ins. Distinguish a specific approved collection with substantial editorial guidance from a general-interest storefront; source URLs alone do not decide purpose. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2cfcd9d203704ab8932996f7284adfa7",
+      "owner": "advertising owner / product and analytics reviewer",
+      "document_group": "advertising-integrity",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "ad-metric-integrity",
+          "description": "Do not fabricate extra ad views or clicks.",
+          "evidence_kinds": [
+            "ad-inventory",
+            "ad-event-trace",
+            "source-and-backend-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect ad SDK integration, impression/click triggers, background behavior and server analytics for generated rather than genuine engagement. Use authorized test traces and campaign records; high click-through rates alone are not proof of fabrication. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4f1e2d281368419d80aebb80ea8fb7e0",
+      "owner": "advertising owner / product and analytics reviewer",
+      "document_group": "advertising-integrity",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "ad-purpose-balance",
+          "description": "Do not make advertisement display the app\u2019s main purpose.",
+          "evidence_kinds": [
+            "ad-inventory",
+            "ad-event-trace",
+            "source-and-backend-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the complete core journeys, functionality and actual prominence/frequency of ads to determine whether ad display dominates the product's purpose. A banner or ad SDK alone is not a violation, and one clean screen does not clear remote ad-heavy paths. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2973a6a6960a4dd7a71867a880bde5ea",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "charity-in-app-exception",
+          "description": "Absent the approved charity allowance, do not collect charitable funds inside the app.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace all charitable collection paths and verify either the approved nonprofit allowance atom-2e1ed01d219e403c979c9e845016653d with all 3.2.1(vi) conditions, or no collection inside the app. A charity label or nonprofit tax registration cannot substitute for approval. Evaluate linked exception records explicitly: atom-2e1ed01d219e403c979c9e845016653d. Evidence must establish their prerequisites; an asserted exception name is not enough. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-182b09e8cfc947b08b0fcabb3669a7ae",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "charity-external-collection",
+          "description": "For non-exempt charitable fundraising, route payments outside the app.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "For fundraising outside the approved exception, follow payment initiation through the actual external browser/SMS destination. Confirm funds are collected outside the app; an embedded web checkout is not established as external merely by using an HTTPS URL. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-21c3e063948f433c9e13b68d1ba962ab",
+      "owner": "charity operator / approval and campaign reviewer",
+      "document_group": "charitable-fundraising",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "product-catalog",
+        "payment-exception-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "charity-nonexempt-free",
+          "description": "Offer a non-exempt fundraising app free of charge.",
+          "evidence_kinds": [
+            "nonprofit-approval",
+            "campaign-inventory",
+            "donation-flow-record",
+            "beneficiary-directory",
+            "legal-and-tax-review",
+            "app-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare download price records in every offered storefront for the non-exempt fundraising app to confirm it is free. Verify exception applicability independently; external collection alone does not establish download pricing. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f8ddbab62bc44016b958734f103b7f75",
+      "owner": "product owner / eligibility reviewer",
+      "document_group": "access-eligibility",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "nonarbitrary-access-restrictions",
+          "description": "Do not impose arbitrary access restrictions based on carrier, location, or similar traits.",
+          "evidence_kinds": [
+            "access-rule-inventory",
+            "restriction-rationale",
+            "runtime-transcript",
+            "service-availability-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory carrier, geography and other access gates and their documented purpose. Exercise permitted/blocked cases and review whether restrictions have a legitimate service, legal or technical basis rather than being arbitrary; necessary licensed-territory gating must not be flagged solely because it restricts location. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9d89f302b4884abe85a3c33aafe22ed2",
+      "owner": "integration owner / terms reviewer",
+      "document_group": "external-service-permissions",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "other-service-ranking-terms",
+          "description": "Do not use app or its listing to exploit another service or its brand without permission allowed by that service terms.",
+          "evidence_kinds": [
+            "external-service-inventory",
+            "service-terms",
+            "service-authorization",
+            "integration-trace",
+            "listing-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify affected external services and compare actual visibility/status/rank manipulation with their current terms or explicit permission under atom-c3a1833040944770b05f935ce6dbff31. Review app and listing claims, API actions and vendor activity; a public API key does not establish permission to manipulate ranking. Evaluate linked exception records explicitly: atom-c3a1833040944770b05f935ce6dbff31. Evidence must establish their prerequisites; an asserted exception name is not enough. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b61a39c81a9b47b6a300b3dc1a9b8a14",
+      "owner": "financial institution owner / qualified regulatory reviewer",
+      "document_group": "financial-service-permissions",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "no-binary-options",
+          "description": "Do not facilitate binary-options trading through the app.",
+          "evidence_kinds": [
+            "institution-identity",
+            "service-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory financial instruments and trace offered trades, referrals and embedded exchange paths to distinguish binary options from ordinary trading or explanatory content. Inspect remote catalogs and jurisdiction variants; naming a product investment is not sufficient classification. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e591af4341824863947c5635c09b12e4",
+      "owner": "financial institution owner / qualified regulatory reviewer",
+      "document_group": "financial-service-permissions",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "derivatives-local-licenses",
+          "description": "Hold valid local licenses for derivatives trading wherever it is offered.",
+          "evidence_kinds": [
+            "institution-identity",
+            "service-inventory",
+            "regulatory-permissions",
+            "distribution-territory-snapshot",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Authenticate licenses for CFD, forex and other derivative services in every jurisdiction where the service is actually offered. Match entity, instrument, validity and availability controls; a cryptocurrency license or single-territory approval is not automatically sufficient. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence.",
+          "required_positive_evidence_kinds": [
+            "regulatory-permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-25cdf7a8964c4cbbabcd91ec67a51c30",
+      "owner": "lender / qualified finance and legal reviewer",
+      "document_group": "personal-loan-terms",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "loan-apr-and-deadline-disclosure",
+          "description": "Include the highest equivalent APR and payment deadline in those loan disclosures.",
+          "evidence_kinds": [
+            "loan-contracts",
+            "loan-offer-inventory",
+            "rate-and-fee-calculation",
+            "repayment-schedule",
+            "preagreement-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare each loan's maximum equivalent APR and payment due date with prominently displayed pre-agreement terms, including fees and personalized/remote offers. Verify dates and rate calculation against the contract rather than looking only for APR and due-date words. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6f16c5183f3d41f49c43bfc5e9c7c210",
+      "owner": "lender / qualified finance and legal reviewer",
+      "document_group": "personal-loan-terms",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "loan-complete-clear-terms",
+          "description": "Disclose the complete applicable loan terms prominently and understandably, including all required rates, charges, and repayment conditions.",
+          "evidence_kinds": [
+            "loan-contracts",
+            "loan-offer-inventory",
+            "rate-and-fee-calculation",
+            "repayment-schedule",
+            "preagreement-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile every offered loan's contract and rate/fee schedule with clear, conspicuous customer disclosures before acceptance. Include all charges, repayment conditions, consequences and localized presentation; a link to dense terms alone does not prove completeness or prominence. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a65bca1597d64179bf7c1f57349cdd83",
+      "owner": "lender / qualified finance and legal reviewer",
+      "document_group": "personal-loan-terms",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "loan-apr-cap",
+          "description": "Keep a personal loan\u2019s effective annual charge, including fees, at or below 36 percent.",
+          "evidence_kinds": [
+            "loan-contracts",
+            "loan-offer-inventory",
+            "rate-and-fee-calculation",
+            "repayment-schedule",
+            "preagreement-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Have the responsible finance reviewer recompute the maximum equivalent annual rate for all available loan variants, including costs and fees, and compare with the 36 percent ceiling. Bind calculations to actual contracts and backend offer generation; source percentages or a self-reported APR field do not prove effective cost. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c6786ba2029b4e07b99267033b098c34",
+      "owner": "lender / qualified finance and legal reviewer",
+      "document_group": "personal-loan-terms",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope",
+        "service-territory-map",
+        "operator-identity"
+      ],
+      "conditions": [
+        {
+          "id": "loan-repayment-window",
+          "description": "Allow more than 60 days before requiring full personal-loan repayment.",
+          "evidence_kinds": [
+            "loan-contracts",
+            "loan-offer-inventory",
+            "rate-and-fee-calculation",
+            "repayment-schedule",
+            "preagreement-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare actual disbursement and required full repayment dates for every loan variant; the full repayment deadline must be more than 60 days after lending. Include fees, rollover/default provisions and effective required payoff, distinguishing voluntary early repayment. Text saying 61 days cannot clear a contract that requires earlier full payment. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4599cc6b6a6b402e874a4504d940acae",
+      "owner": "growth owner / independent reviewer",
+      "document_group": "growth-and-rating-integrity",
+      "applicability_evidence": [
+        "feature-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "no-store-action-access-gate",
+          "description": "Do not gate app access on a store rating, review, another app download, or similar action.",
+          "evidence_kinds": [
+            "campaign-records",
+            "source-and-backend-review",
+            "runtime-transcript",
+            "vendor-contracts"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise access after declining ratings, reviews, other app downloads and store-related actions. Inspect backend and remote gates for forced participation. Distinguish optional ordinary in-app rewards allowed by atom-c6a14f55a49a42059c77a7fdf76f30a6 from compulsory store actions; a rating prompt or optional reward alone does not establish a violation. Bind the review to the offered build, backend, platform, storefronts and review date; record uncovered variants as missing evidence. Missing source signals do not establish feature absence."
+        }
+      ]
+    }
+  ]
+}

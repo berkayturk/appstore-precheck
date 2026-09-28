@@ -1,0 +1,24 @@
+{
+  "checks": {
+    "section6-external-components": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section6-review.py",
+      "line_prefix": "SECTION6-",
+      "route": "static",
+      "symbol": "review_external_components",
+      "tests": [
+        "tests/test-section6-review.sh"
+      ]
+    },
+    "section6-special-hardware": {
+      "evidence_class": "source",
+      "implementation": "skills/appstore-precheck/scripts/lib/section6-review.py",
+      "line_prefix": "SECTION6-",
+      "route": "static",
+      "symbol": "review_special_hardware",
+      "tests": [
+        "tests/test-section6-review.sh"
+      ]
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "decisive_finding_obligation_ids": [
+    "atom-9518097ae09743e8a5d0e3a752b262aa"
+  ],
+  "full_positive_obligation_ids": [
+    "atom-9518097ae09743e8a5d0e3a752b262aa"
+  ],
+  "policy_gap_ids": [],
+  "schema_version": 1,
+  "source": {
+    "apple_updated": "June 8, 2026",
+    "snapshot_sha256": "c533b971f44f463af01ed5b8c0f4e5c44a2b0ee71919883d12350232cd93453f",
+    "url": "https://developer.apple.com/app-store/review/guidelines/"
+  },
+  "summary": {
+    "classes": {
+      "developer-evidence": 425,
+      "human-review": 38,
+      "machine-verifiable": 1,
+      "mixed": 116
+    },
+    "decisive_finding_capability": 1,
+    "decisive_finding_percent": 0.17,
+    "full_positive_capability": 1,
+    "full_positive_percent": 0.17,
+    "policy_defined": 580,
+    "total_obligations": 580,
+    "unknown_applicability": 580
+  },
+  "verifiers": {
+    "dyn-state-transition-v1": {
+      "evidence_kinds": [
+        "runtime-transition"
+      ],
+      "finding": false,
+      "positive": false
+    },
+    "metadata.app-name-length.v1": {
+      "applicability": true,
+      "evidence_kinds": [
+        "metadata-asc-snapshot"
+      ],
+      "finding": true,
+      "positive": true
+    },
+    "runtime.launch-crash.v1": {
+      "applicability": true,
+      "evidence_kinds": [
+        "runtime-transcript"
+      ],
+      "finding": true,
+      "positive": false
+    }
+  }
+}
