@@ -1,0 +1,1700 @@
+{
+  "schema_version": 1,
+  "section": "1",
+  "obligations": [
+    {
+      "obligation_id": "atom-6a9ccd921f234306b5c47b9eb2cfc16b",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "content-safety",
+          "description": "Content is suitable in context, including harmful material outside the enumerated examples.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review the complete content inventory, imagery, audio, generated output, notifications and remote feeds for disturbing, degrading or offensive presentation. Record borderline judgments with the relevant scene and audience. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a4f2adc1120b4379883ed7055ffc2a8f",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "targeted-content-context",
+          "description": "Material does not attack people or groups; any satire allowance is supported by context.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect depictions and statements targeting individuals or protected and other groups. For a claimed atom-d5b89600bc7a4d759c84e7b75a11a2c3 exception, establish professional political satire or humor, authorship and context; humor labeling alone does not establish the exception. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-54af33f29d8f46dfadc64688752cfba3",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "realistic-harm",
+          "description": "Realistic scenes do not depict prohibited severe harm to people or animals.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review all relevant scenes and media sequences, including unlockable content, for killing, mutilation, torture or abuse. Preserve sufficient context for borderline realism decisions; low age rating or stylized keywords alone do not clear imagery. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-40fe49bd689740b4a9de179221c187e6",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "violence-encouragement",
+          "description": "Narrative, incentives and presentation do not encourage violence.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect calls to action, rewards, instructions, challenges and narrative treatment of violence. Distinguish neutral reporting from encouragement using actual content and interaction context. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-058d7ffef5fa4358b935b69aa1ef6e15",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "enemy-roster",
+          "description": "The game enemy roster is not exclusively directed at a real-world entity or identity.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Establish game/enemy applicability from design and playable states. Review the full enemy roster, story affiliations and targeting mechanics against real races, cultures, governments, businesses and other entities; one neutral enemy screenshot is insufficient. A verified non-game or absence of enemy targeting supports N/A. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2fcd0b8878af4175b4809085a400c4d6",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "weapon-use-context",
+          "description": "Weapon and dangerous-object depictions do not encourage unlawful or reckless conduct.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect tutorials, scenes, reward rules and interactive instructions involving weapons or dangerous objects. Record legal/contextual review where legality depends on the offered territory. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a97b9a857f9149958f63e5c1ea5bb7d4",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "firearm-commerce",
+          "description": "The service does not facilitate buying firearms or ammunition.",
+          "evidence_kinds": [
+            "commerce-inventory",
+            "runtime-transcript",
+            "content-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace searchable listings, checkout, referrals, external links, chat-to-sale and remote catalog categories. Distinguish a historical reference from purchase facilitation; absence of a native checkout is not sufficient. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e1e5dd4351284c3cb362052ede106689",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "sexual-content-and-purpose",
+          "description": "Both displayed material and the service purpose satisfy the sexual-content restriction.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review imagery, text, audio, matching rules, promoted use and actual service operation for explicit sexual material, pornography facilitation and sexual-hookup design. Assess purpose independently of whether a sampled screen contains explicit imagery. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a406cb745b2647ebab05e63c34564938",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "prostitution-facilitation",
+          "description": "Service interactions do not facilitate prostitution.",
+          "evidence_kinds": [
+            "service-design",
+            "content-review",
+            "moderation-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review service categories, listings, paid arrangements, matching, messaging, referral destinations and moderation outcomes for arrangements involving commercial sex. A terms prohibition without operational evidence is insufficient. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-4d0fbfc8ac274eb6b65f5ca81789322b",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "religious-commentary-context",
+          "description": "Religious commentary is not presented in an inflammatory manner.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Establish whether religious commentary is present in bundled or remote material, then review full passages, imagery, audience and translations for inflammatory treatment. Support N/A with content inventory rather than no source keyword. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-abc7a5dcc4ea4dd39e530b5efdc6ef4c",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "religious-quotation-accuracy",
+          "description": "Religious quotations retain accurate wording and non-misleading context.",
+          "evidence_kinds": [
+            "quotation-source-map",
+            "content-review",
+            "content-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every quotation and translation to its identified source edition and surrounding passage; a qualified reviewer checks omissions, attribution, translation and altered meaning. Support N/A with the quotation inventory. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d21d8f8c5f4244f19324b26d9d109c57",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "information-accuracy",
+          "description": "Information and device readings presented as genuine have a defensible factual basis.",
+          "evidence_kinds": [
+            "claim-inventory",
+            "measurement-validation",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map factual and sensor claims to underlying sources and measurement implementations; reproduce relevant readings against appropriate references. Check disclosure and claimed precision. An entertainment disclaimer does not excuse false device data. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a2a5e40a2f5946c7bfd103f3e7a02ad2",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "calling-messaging-capability",
+          "description": "Calling and SMS/MMS flows do not enable anonymity or prank behavior.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "provider-configuration",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect all calling and messaging providers, caller identity controls, templates and executable flows, including server-configured features. Exercise authorized test destinations only. Ordinary phone URL presence is a lead, not proof of prank capability. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9209336ae03545949fabe472e53b563f",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "harmful-event-exploitation",
+          "description": "Product concepts do not exploit a recent or ongoing harmful event.",
+          "evidence_kinds": [
+            "campaign-inventory",
+            "content-review",
+            "commercial-model"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review event-linked campaigns, themes, paid items, monetization and narratives against dated event context. Explain why an educational or relief use is not exploitation; recency, purpose and commercial framing require a dated contextual review. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e90ce97c6e7d4632b40f9f6fefe9c4d0",
+      "owner": "trust and safety owner / backend reviewer",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "service-primary-use",
+          "description": "Observed service purpose and use do not fall into a prohibited UGC pattern.",
+          "evidence_kinds": [
+            "service-design",
+            "usage-analysis",
+            "moderation-records",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review matching/chat design, community categories, dated usage and moderation evidence for primarily pornographic use, random or anonymous chat, objectification, threats or bullying. If incidental mature web content is claimed under atom-d4fce7eecff7444d9bb83f193f54adaf, establish it is incidental, hidden on fresh in-app accounts by default, and enabled only by the user on the website (atom-4cef1aaf5be14dbfa4bc141618e5f661 and atom-958acc1e293ff59d2c168434a84f98b5). It cannot excuse a primarily prohibited service."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e728e9764730455ab83bcf4a37e92384",
+      "owner": "trust and safety owner / backend reviewer",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "violating-content-removal",
+          "description": "Moderation removes content violating safety requirements, terms or community rules.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "backend-test-record",
+            "moderation-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map each rule set to enforcement actions and inspect dated case records from detection/report through removal, including cached/search/feed visibility and repeat posting. Demonstrate an authorized synthetic removal end to end; a remove button or policy document alone does not establish operating enforcement."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0dc300f5137a4c7e9833c5f4cca8bc24",
+      "owner": "trust and safety owner / submission owner",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope",
+        "app-review-correspondence"
+      ],
+      "conditions": [
+        {
+          "id": "requested-remediation",
+          "description": "An applicable Apple request has a concrete corrective plan.",
+          "evidence_kinds": [
+            "app-review-correspondence",
+            "remediation-plan",
+            "implementation-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Read the actual request, affected content and response. Verify the plan names causes, removal actions, prevention measures, responsible owners and delivery dates. A request absent from a source scan cannot establish N/A; use submission correspondence history. Do not invent an Apple acceptance or treat a proposed plan as completed remediation."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a9b4a1952d944e24a795730819986b70",
+      "owner": "trust and safety owner / backend reviewer",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "submission-filter",
+          "description": "Objectionable UGC is stopped before it becomes visible.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "backend-test-record",
+            "moderation-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Enumerate text, image, video, profile and other submission paths. For each relevant format, use safe synthetic cases in an authorized test environment and show rejected/quarantined state before another account can view the contribution. Check server enforcement and bypass routes; post-publication removal alone does not prove pre-publication filtering."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b159c69f4a294eb68d1bc7aa7ebb98a8",
+      "owner": "trust and safety owner / backend reviewer",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "report-delivery",
+          "description": "Users can report offensive contributions and reports reach moderation.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "backend-test-record",
+            "moderation-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record the journey from each applicable content surface through submission and acknowledgement, then match the report to a backend moderation case with correct content/account identifiers. Test failure handling and accessibility. A Report label or tap without delivered case evidence is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3695711bedf344469b8442714d23fca5",
+      "owner": "trust and safety owner / backend reviewer",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "timely-safety-response",
+          "description": "Safety reports receive appropriate timely operational responses.",
+          "evidence_kinds": [
+            "moderation-records",
+            "staffing-and-escalation-plan",
+            "response-time-analysis"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review queue timestamps, risk triage, staffing and escalation coverage over a defined representative period. Trace sampled urgent and routine reports to action and communication. Explain delays against the risk involved; do not invent a universal Apple response-time threshold or substitute one synthetic test for sustained operations."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8a14301460114ce3bca499a40882c0d6",
+      "owner": "trust and safety owner / backend reviewer",
+      "document_group": "ugc-safety-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "effective-account-block",
+          "description": "Blocking prevents abusive account interactions across relevant service surfaces.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "backend-test-record",
+            "moderation-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Use two authorized test accounts and trace block action to persisted backend state, then verify messages, comments, invitations and other relevant interactions are prevented across sessions/devices. Include unblock and alternate entry points where applicable. A block control or a hidden profile alone does not prove service enforcement."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-dc2caed931c44f58abc0fc8807b00cfc",
+      "owner": "support owner / usability reviewer",
+      "document_group": "developer-contact",
+      "applicability_evidence": [
+        "feature-inventory",
+        "service-design",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "reachable-ugc-contact",
+          "description": "Published developer contact is discoverable and usable by the UGC community.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "contact-ownership-record",
+            "support-channel-test"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Show where users locate contact details in the service and that the destination provides a usable channel owned and monitored by the developer. Review guest/member accessibility and localizations. A URL returning HTTP 200 or a generic support claim is insufficient; reuse the developer-contact evidence packet for 1.5."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5f9ba791c2b746daa65864befd7bc7f9",
+      "owner": "creator platform owner / product safety reviewer",
+      "document_group": "creator-experience-and-age",
+      "applicability_evidence": [
+        "feature-inventory",
+        "creator-capability-inventory",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "bounded-creator-experience",
+          "description": "Creator content stays inside the established native feature set.",
+          "evidence_kinds": [
+            "creator-capability-inventory",
+            "source-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare creator authoring tools, interpreters and delivered experiences against the native capability inventory; test representative and highest-capability content. Review whether creator payloads introduce new native features or functionality. A content file extension or a single simple creation cannot establish the boundary."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3d7e6af4e0984c4daeab01f0b2f02244",
+      "owner": "creator platform owner / product safety reviewer",
+      "document_group": "creator-experience-and-age",
+      "applicability_evidence": [
+        "feature-inventory",
+        "creator-capability-inventory",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "paid-content-identification",
+          "description": "Users can identify creator items that require payment.",
+          "evidence_kinds": [
+            "creator-entitlement-catalog",
+            "runtime-capture",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the complete paid/free creator entitlement catalog with discovery, detail and access screens for each purchase model and locale; users must be informed before an attempted acquisition. Reuse purchase evidence but do not treat a generic app paywall as labeling every paid creator item."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3deb247ab0e740c9afb2f58c46fd852a",
+      "owner": "creator platform owner / product safety reviewer",
+      "document_group": "creator-experience-and-age",
+      "applicability_evidence": [
+        "feature-inventory",
+        "creator-capability-inventory",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "higher-rated-content-identification",
+          "description": "Creator material above the assigned app rating can be identified.",
+          "evidence_kinds": [
+            "age-rating-snapshot",
+            "creator-rating-policy",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Bind the current app age rating and territory to the creator classification system. Inspect authoring, labeling, discovery and moderation flows for above-rating content, including unclassified items and classification changes. Document who assigns and corrects ratings."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-57e208a826334b3792bb5b8484e236a2",
+      "owner": "creator platform owner / product safety reviewer",
+      "document_group": "creator-experience-and-age",
+      "applicability_evidence": [
+        "feature-inventory",
+        "creator-capability-inventory",
+        "backend-scope",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "creator-age-access",
+          "description": "Declared or verified age effectively prevents underage access to higher-rated creator content.",
+          "evidence_kinds": [
+            "age-rating-snapshot",
+            "age-assurance-design",
+            "runtime-transcript",
+            "backend-test-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace declared/verified age provenance into access decisions with authorized underage, boundary-age and adult test accounts. Exercise feeds, search, direct links, cached content and age changes; unknown age must not silently bypass protection. Compare content thresholds to the applicable rating. A date-of-birth field alone does not show enforcement."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-557e5451c175420c8b8992d746b49a07",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "child-age-experience",
+          "description": "The experience is designed for the selected child age band.",
+          "evidence_kinds": [
+            "category-history",
+            "runtime-capture",
+            "child-ux-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Read the selected Kids age band and evaluate content, navigation, reading burden, tasks and interaction complexity with age-appropriate review evidence. Cover all major journeys and remote material; an age-band selection or child-themed graphics alone are insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-21a6b7b46d434be090a65751650f807d",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "gated-outbound-links",
+          "description": "Children cannot access outbound links outside the protected parent area.",
+          "evidence_kinds": [
+            "restricted-action-inventory",
+            "runtime-transcript",
+            "parent-gate-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory outbound links across all app, ad, remote and deep-link entry points. Demonstrate a child cannot reach them before completing an effective parent gate and that return, relaunch and gate-session behavior preserve the boundary. For atom-f85a03d0854e432995003cbc11227d67, verify the designated adult area and actual gate effectiveness; a parent label, age checkbox or purchase system prompt alone is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-0108bfecf9ea4c2e8b1cf69d5d17662e",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "gated-purchases",
+          "description": "Children cannot access purchasing opportunities outside the protected parent area.",
+          "evidence_kinds": [
+            "restricted-action-inventory",
+            "runtime-transcript",
+            "parent-gate-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory purchasing opportunities across all app, ad, remote and deep-link entry points. Demonstrate a child cannot reach them before completing an effective parent gate and that return, relaunch and gate-session behavior preserve the boundary. For atom-f85a03d0854e432995003cbc11227d67, verify the designated adult area and actual gate effectiveness; a parent label, age checkbox or purchase system prompt alone is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-32b3120b994f415c8d70ba45c88225c7",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "gated-distractions",
+          "description": "Children cannot access other distracting destinations or actions outside the protected parent area.",
+          "evidence_kinds": [
+            "restricted-action-inventory",
+            "runtime-transcript",
+            "parent-gate-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory other distracting destinations or actions across all app, ad, remote and deep-link entry points. Demonstrate a child cannot reach them before completing an effective parent gate and that return, relaunch and gate-session behavior preserve the boundary. For atom-f85a03d0854e432995003cbc11227d67, verify the designated adult area and actual gate effectiveness; a parent label, age checkbox or purchase system prompt alone is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9c53e07611ad4df3b1fda0d14b0ab465",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "continued-kids-protection",
+          "description": "Updates preserve established Kids protections despite category deselection.",
+          "evidence_kinds": [
+            "category-history",
+            "release-history",
+            "kids-protection-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare category/version history, audience representations and user expectations with current protections, including gates and SDK/data changes. A currently non-Kids category does not establish N/A if prior versions created Kids expectations; record the historical basis of applicability."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-bb3fb63adabe4a5dbb7b9f569018a8c2",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "regional-child-privacy",
+          "description": "Child-data processing satisfies applicable regional privacy duties.",
+          "evidence_kinds": [
+            "child-data-inventory",
+            "regional-legal-analysis",
+            "consent-and-rights-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "A qualified privacy reviewer maps child audience ages, collection purposes, recipients, consent/parent verification, retention and rights flows to every offered region and actual implementation. Supply legal basis and supporting implementation/operations records; a privacy-policy link or developer assurance is insufficient. Unresolved legal interpretation remains open."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-6186554d692347f783bbb47b9052e065",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "child-identifying-data",
+          "description": "Third-party flows do not transmit restricted personally identifying child information.",
+          "evidence_kinds": [
+            "child-data-inventory",
+            "sdk-configuration",
+            "network-capture",
+            "backend-dataflow-review",
+            "authoritative-policy-interpretation"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace personally identifying child information through the shipped app, extensions, SDKs and backend forwarding using field-level data inventory, configurations and captured authorized test flows. Include combinations that can identify a child or device. The catalog flags linked Kids guidance interpretation as unresolved: obtain a documented authoritative interpretation for any claimed permission, tied to the exact flow; parental consent, a parent gate or SDK marketing alone does not close it. Missing traffic in a limited run is not proof of absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3e0f0c34543d434ba957cd1d634af137",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "child-device-data",
+          "description": "Third-party flows do not transmit restricted device information.",
+          "evidence_kinds": [
+            "child-data-inventory",
+            "sdk-configuration",
+            "network-capture",
+            "backend-dataflow-review",
+            "authoritative-policy-interpretation"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace device information through the shipped app, extensions, SDKs and backend forwarding using field-level data inventory, configurations and captured authorized test flows. Include combinations that can identify a child or device. The catalog flags linked Kids guidance interpretation as unresolved: obtain a documented authoritative interpretation for any claimed permission, tied to the exact flow; parental consent, a parent gate or SDK marketing alone does not close it. Missing traffic in a limited run is not proof of absence."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-46e109a06fef4a9999003e29a29d7c4a",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "analytics-exception",
+          "description": "Third-party analytics is absent or every limited allowance condition is demonstrated.",
+          "evidence_kinds": [
+            "sdk-inventory",
+            "provider-data-practices",
+            "sdk-configuration",
+            "network-capture",
+            "backend-dataflow-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory actual analytics SDKs, runtime activation and backend recipients. If any is used, assess atom-7edb6d5616cf4d89a20015609eb960fd and its linked restrictions separately: no IDFA; no child-identifying fields; no child location; no device-identifying information; and no device/network combinations capable of identification. Verify both collection and transmission with provider documentation, build configuration, field-level flows and backend review. A vendor child-safe label or disabled IDFA flag cannot establish the whole exception."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-ad8d2c491c07479395c8bfa313dda1d3",
+      "owner": "children product owner / privacy and child-safety reviewer",
+      "document_group": "kids-safety-and-data",
+      "applicability_evidence": [
+        "category-history",
+        "audience-profile",
+        "storefront-scope",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "contextual-ad-exception",
+          "description": "Third-party advertising is absent or a documented contextual-only allowance is satisfied.",
+          "evidence_kinds": [
+            "ad-provider-inventory",
+            "provider-kids-policy",
+            "creative-review-records",
+            "ad-delivery-records",
+            "network-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Identify every ad provider, placement and remote configuration. For atom-a60d137ff0f34744aa62bac5ca2d0b15, show contextual operation; for atom-543cef8ec19743e09df55246cf779485, inspect publicly available Kids policies; for atom-ec5d383477bc4334966d626c815327f1, verify a human creative-review process for child suitability with dated workflow and delivery evidence. Review actual served creatives and data flows; a single benign ad does not prove the provider process."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5f0e9701e9e84c24a76a30ecac3b7379",
+      "owner": "product safety owner / qualified risk reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "intended-use-and-hazards",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "physical-risk-assessment",
+          "description": "App behavior does not expose users to physical injury risks.",
+          "evidence_kinds": [
+            "hazard-assessment",
+            "runtime-transcript",
+            "safety-validation"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review intended use, foreseeable misuse, instructions, incentives, connected hardware and environment for physical hazards beyond medical or driving examples. Verify mitigations against actual behavior and cover relevant device/use scenarios; absence of a crash or hazardous keyword is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-51aba889f71c499eb7faca3ed514d66b",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "clearance-link-in-submission",
+          "description": "Existing regulatory clearance documentation is linked in the submission.",
+          "evidence_kinds": [
+            "regulatory-clearance-record",
+            "submission-review-details",
+            "linked-document-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Establish whether clearance exists for this product, version, intended use and territory; absence of a source-code link cannot support N/A. Compare authentic clearance documentation with the actual selected App Review submission and resolve the submitted link to the matching document. A reachable unrelated regulator page is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cf0dd5a70e5a47c8bd3ecd533d4c9c0d",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "accuracy-evidence-disclosure",
+          "description": "Health measurement accuracy evidence is clearly disclosed.",
+          "evidence_kinds": [
+            "medical-claim-inventory",
+            "clinical-validation-dossier",
+            "runtime-capture",
+            "metadata-snapshot"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every numerical or qualitative accuracy claim to a visible disclosure of supporting data in the actual app/listing/review material as appropriate. Review discoverability, language, limitations, target population and consistency with the validation dossier; possession of an unpublished study alone does not establish disclosure."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-9b4aa004dae84a22a66c46f674f29272",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "measurement-method-disclosure",
+          "description": "The method behind each health measurement claim is clearly disclosed.",
+          "evidence_kinds": [
+            "medical-claim-inventory",
+            "measurement-method-dossier",
+            "runtime-capture",
+            "source-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match every claimed measurement to disclosed sensors, inputs, algorithms or calculation method and material assumptions. Compare disclosure against implementation and validation protocol across relevant devices. A vague proprietary-technology statement or study link with no identifiable method is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-00797e38ee51476aafe57e41aa87b9d2",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "sensor-medical-capability",
+          "description": "Device-only medical claims stay within supported measurement capabilities.",
+          "evidence_kinds": [
+            "medical-claim-inventory",
+            "hardware-and-sensor-inventory",
+            "measurement-validation",
+            "clinical-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory medical functions and sensor-only claims, including but not limited to imaging and vital-sign readings. Trace required hardware and measurement method to device capability and appropriate clinical evidence. Reproduce claims only with safe authorized validation procedures; simulated values or an entertainment disclaimer cannot validate a medical function."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-b6bfe635e6cf49b3bdc8650244d8b675",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "doctor-consultation-reminder",
+          "description": "Medical decision journeys remind users that app use must be supplemented by medical consultation.",
+          "evidence_kinds": [
+            "medical-journey-inventory",
+            "runtime-transcript",
+            "clinical-content-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect diagnosis, treatment, recommendations and measurement-result journeys for an understandable consultation reminder before medical decisions, including relevant locales and repeat-use entry points. A disclaimer found in source, inaccessible terms, or a launch screenshot does not prove the reminder reaches those journeys."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a7348ccb4c63425ca0384e3ee4c9e339",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "qualified-dose-origin-or-approval",
+          "description": "Dose calculation is supplied by an eligible institution or holds qualifying regulatory approval.",
+          "evidence_kinds": [
+            "institutional-authorization",
+            "regulatory-approval",
+            "dose-method-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Establish the actual institutional source and authority: drug manufacturer, hospital, university, health insurer, pharmacy or another approved entity; alternatively verify applicable FDA or counterpart approval. Match documentation to the app, dose logic, indication and territory. A copied institutional logo, cited paper or developer profession does not prove institutional supply or regulatory approval."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-55729f8061e341b694c5caac2a81bc92",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "dose-support-continuity",
+          "description": "Dose calculator support has credible long-term ownership and resources.",
+          "evidence_kinds": [
+            "institutional-authorization",
+            "long-term-support-plan",
+            "support-operations-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review named clinical/technical support owners, support channels, contractual or institutional commitments, continuity arrangements and incident response for calculator defects. Confirm authority and operational coverage with the responsible organization; a generic promise to support or app-store support URL alone is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-98d88ec86acc4741b25278e5405454bb",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "tobacco-vaping-encouragement",
+          "description": "Content and incentives do not encourage tobacco or vaping consumption.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review product themes, advice, achievements, reminders and commercial promotions for inducements to smoke or vape. Distinguish cessation support from consumption rewards using the full journey. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e8f1053816464b5d9cc0200dac37129f",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "illegal-drug-encouragement",
+          "description": "The app does not encourage use of drugs that are illegal in the offered territory.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "regional-legal-analysis",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map substance-related advice, challenges, rewards and promotions to the relevant territory and context; a reviewer must establish any material legal classification rather than infer it from a substance keyword. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e96ea933c0be4bafada64388114da3e5",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "excessive-alcohol-encouragement",
+          "description": "The experience does not promote excessive alcohol consumption.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-review",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review drinking challenges, scoring, rewards, recommendations and event flows for pressure toward harmful quantities or intoxication. Explain the consumption context rather than clearing all alcohol mentions or imposing an invented numeric Apple limit. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5cfe6efad6b0475fa06cbfd8233f675b",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "minor-substance-encouragement",
+          "description": "Minors are not encouraged to consume the covered substances.",
+          "evidence_kinds": [
+            "audience-profile",
+            "content-review",
+            "age-control-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review audience targeting, age controls, content delivery, characters and incentives for tobacco/vaping, drugs or alcohol. Test relevant minor-age journeys and direct entry points; an adult app rating alone does not prove minors are not targeted or encouraged. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-1120cf24fc3e431b87ba3e7bf5583dd5",
+      "owner": "commerce owner / qualified licensing reviewer",
+      "document_group": "restricted-goods-commerce",
+      "applicability_evidence": [
+        "commerce-inventory",
+        "storefront-scope",
+        "merchant-license-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "controlled-substance-sale-exception",
+          "description": "Every facilitated controlled-substance sale is absent or within the limited legal allowance.",
+          "evidence_kinds": [
+            "commerce-inventory",
+            "merchant-license-records",
+            "regional-legal-analysis",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace listings, checkout, delivery, referrals and off-app handoffs for controlled substances. For atom-49e33ae2dae14a4f84b7a46ddd09d1ef, verify a pharmacy license or licensed/otherwise lawful cannabis dispensary status, the actual merchant and coverage of each offered territory and transaction. Expired licenses, an unverified merchant claim or age gating alone do not establish the exception; tobacco is outside it."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a11ad225300a477d8bdef0b539f52389",
+      "owner": "commerce owner / product safety reviewer",
+      "document_group": "restricted-goods-commerce",
+      "applicability_evidence": [
+        "commerce-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "tobacco-sale",
+          "description": "No service flow facilitates tobacco sales.",
+          "evidence_kinds": [
+            "commerce-inventory",
+            "runtime-transcript",
+            "referral-destination-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review native and remote catalogs, checkout, affiliate/referral destinations and purchase handoffs for tobacco. The controlled-substance pharmacy/cannabis allowance does not extend to tobacco; adult-only access or a legal merchant does not create an exception."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-2cfda6d6703b4610aac220d3f6bfafc9",
+      "owner": "transport product owner / content provenance reviewer",
+      "document_group": "driving-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "location-content-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "checkpoint-provenance",
+          "description": "Displayed impaired-driving checkpoint locations originate from law-enforcement publications.",
+          "evidence_kinds": [
+            "checkpoint-source-map",
+            "agency-publication-record",
+            "backend-ingestion-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace every checkpoint data source, including community edits and partner feeds, to the publishing law-enforcement agency. Verify provenance and ingestion controls against displayed records; an agency-like label or user confirmation does not establish agency publication. Establish N/A using the location-content inventory."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-98dd49825df5474bb71c4d416caf00b8",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "reckless-driving-encouragement",
+          "description": "Directions, incentives and content do not promote impaired, speeding or reckless driving.",
+          "evidence_kinds": [
+            "driving-journey-inventory",
+            "content-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review route guidance, gamified rewards, challenges, notifications and driving-related advice under actual use conditions. Check whether app incentives encourage unsafe driving rather than relying only on a general driving disclaimer. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-8e828e3910c64410ba6ef42c1155a17b",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "dangerous-activity-encouragement",
+          "description": "Instructions and incentives do not urge users toward injurious activities.",
+          "evidence_kinds": [
+            "intended-use-and-hazards",
+            "hazard-assessment",
+            "content-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review challenges, physical exercises, tasks and rewarded actions against foreseeable injury scenarios and intended audiences. Inspect qualifications and substantive mitigation where an activity has contextual risk; a generic use-at-own-risk disclaimer is not proof of safety. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-7c7546436ef84b0c99c309a7bde451bc",
+      "owner": "product safety owner / qualified contextual reviewer",
+      "document_group": "physical-safety",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "audience-profile",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "dangerous-device-handling",
+          "description": "App instructions do not encourage hazardous device use or handling.",
+          "evidence_kinds": [
+            "device-use-inventory",
+            "hazard-assessment",
+            "physical-device-observation",
+            "content-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect instructions and actual interaction demands for unsafe placement, charging, motion, distraction or use near hazards. Evaluate connected accessories and physical setting; safe behavior on a simulator cannot establish physical handling safety. Cover localized, remote and promotional content and actual interactions; educational, prevention or recovery context requires substantive review, and isolated words are only leads."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d188d94683794eb6a1e3977400195292",
+      "owner": "support owner / usability reviewer",
+      "document_group": "developer-contact",
+      "applicability_evidence": [
+        "feature-inventory",
+        "metadata-snapshot",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "in-app-contact-path",
+          "description": "Users can reach a developer contact channel from within the app.",
+          "evidence_kinds": [
+            "runtime-transcript",
+            "contact-ownership-record",
+            "support-channel-test"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Record discovery and activation of the contact path in the shipped app, including guest/account and localized states where offered. Verify destination usability and ownership; a URL literal or mail composer button alone does not establish an accessible working contact route."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cb980266eda4426cb44c7d30b2a00ca1",
+      "owner": "support owner / usability reviewer",
+      "document_group": "developer-contact",
+      "applicability_evidence": [
+        "feature-inventory",
+        "metadata-snapshot",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "support-url-contact",
+          "description": "The submitted Support URL exposes a usable developer contact method.",
+          "evidence_kinds": [
+            "metadata-snapshot",
+            "support-page-capture",
+            "contact-ownership-record",
+            "support-channel-test"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Read the actual support URL for the selected listing/version and locale, follow redirects and inspect page content for a reachable channel. Check access barriers and the support destination ownership. HTTP success, DNS resolution or a privacy-policy page without contact does not close this condition."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-aee38865f5f34a8e8d3d9b67bba99c53",
+      "owner": "support owner / usability reviewer",
+      "document_group": "developer-contact",
+      "applicability_evidence": [
+        "feature-inventory",
+        "metadata-snapshot",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "current-contact-details",
+          "description": "All displayed developer contact details are accurate and current.",
+          "evidence_kinds": [
+            "contact-inventory",
+            "contact-ownership-record",
+            "metadata-snapshot",
+            "runtime-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Reconcile app, listing and support-site addresses/channels with a dated owner-validated contact inventory. Verify the channels belong to the responsible developer and work; domain similarity or matching text across stale pages is insufficient. Do not fabricate an owner confirmation."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-d1a35f3c93ba453fb776bf0a5b2a9612",
+      "owner": "Wallet issuer / distribution reviewer",
+      "document_group": "wallet-issuer-assurance",
+      "applicability_evidence": [
+        "feature-inventory",
+        "pass-type-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "wallet-issuer-contact",
+          "description": "Issued passes carry valid contact information for the actual issuer.",
+          "evidence_kinds": [
+            "issued-pass-artifact",
+            "issuer-contact-record",
+            "wallet-render-capture"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect each pass type and locale from the issued signed artifact and its Wallet presentation. Match contact fields to the actual issuer and validate channel usability; developer support contact elsewhere in the app does not prove the pass contains issuer contact."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-564c86e5c2b44721aacf6d633eec6024",
+      "owner": "Wallet issuer / signing and brand authority reviewer",
+      "document_group": "wallet-issuer-assurance",
+      "applicability_evidence": [
+        "feature-inventory",
+        "pass-type-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "pass-signature",
+          "description": "Each pass has a valid signature from its dedicated pass certificate.",
+          "evidence_kinds": [
+            "issued-pass-artifact",
+            "pass-signature-verification",
+            "certificate-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify the manifest and signature over actual issued pass bytes, certificate chain, validity and pass/team identifiers for each pass type. A certificate filename or unsigned pass template is insufficient."
+        },
+        {
+          "id": "brand-certificate-assignment",
+          "description": "The signing certificate is assigned to the pass brand or trademark owner.",
+          "evidence_kinds": [
+            "brand-ownership-record",
+            "certificate-assignment-record",
+            "issuer-authorization"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Match the signing identity and dedicated certificate to authenticated brand/trademark ownership and the issuing organization. A cryptographically valid signature alone cannot prove brand ownership or assignment; unresolved authority remains open."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-5185983edd3c4ce6b703a88850a08ad3",
+      "owner": "security owner / qualified security reviewer",
+      "document_group": "user-data-security",
+      "applicability_evidence": [
+        "user-data-inventory",
+        "backend-scope",
+        "sdk-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "data-security-design",
+          "description": "Security controls cover the actual information lifecycle and threat exposure.",
+          "evidence_kinds": [
+            "user-data-inventory",
+            "security-architecture-review",
+            "threat-assessment"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map sensitive fields and trust boundaries across app, extensions, SDKs, transit, storage, backend and service providers. Review access control, authentication, encryption/key handling, retention and administrative access according to data sensitivity. HTTPS or ATS configuration alone does not establish suitable end-to-end protection."
+        },
+        {
+          "id": "data-security-enforcement",
+          "description": "The scoped implementation and operations enforce those controls against unauthorized use, disclosure and access.",
+          "evidence_kinds": [
+            "security-test-report",
+            "source-and-artifact-review",
+            "backend-control-review",
+            "security-operations-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review current build/backend test evidence for authorization boundaries, exposed secrets, transport and storage protection, provider access and known unresolved vulnerabilities. Include permission failures and authorized cross-account negative tests. Document scope and residual limitations; no findings in a keyword scan or a partial penetration test cannot clear untested systems."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-07be96c43fdd40c9a9a80c9dad4e5094",
+      "owner": "crime-reporting operator / local agency liaison",
+      "document_group": "crime-reporting-agency-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "crime-reporting-workflow",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "active-agency-involvement",
+          "description": "Local law enforcement participates in operating the crime-reporting service.",
+          "evidence_kinds": [
+            "agency-agreement",
+            "agency-authorization-record",
+            "operational-handoff-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Verify active involvement with each relevant local agency, authorized contacts, responsibilities and the actual report handling process. A public police telephone number, emergency link, drafted agreement or generic terms does not prove operational participation. Record agreement authenticity/authority gaps without inventing agency approval."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e3de8c3eed2c43fca45d753b8816164e",
+      "owner": "crime-reporting operator / distribution owner",
+      "document_group": "crime-reporting-agency-operations",
+      "applicability_evidence": [
+        "feature-inventory",
+        "crime-reporting-workflow",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "agency-territory-distribution",
+          "description": "Every offered country or region is covered by active law-enforcement involvement.",
+          "evidence_kinds": [
+            "agency-coverage-map",
+            "agency-agreement",
+            "distribution-territory-snapshot",
+            "service-availability-configuration"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare the dated active agency coverage map to the actual App Store distribution and service availability in every offered territory. Verify no expired or uncovered region remains offered. A device geofence or one cooperative agency does not by itself prove distribution is limited to covered regions."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-cd332aacc916d543227d199423c74576",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "feature-authenticity",
+          "description": "Features presented as real perform the claimed operation rather than deception.",
+          "evidence_kinds": [
+            "feature-claim-map",
+            "source-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map advertised features to implementation and demonstrable outcomes, particularly tracking/location and simulated readings. Check random, prerecorded or spoofed outputs and marketing context. Entertainment or joke disclaimers do not create an exception to false functionality. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a737e601b645d959436ab8f711a3015f",
+      "owner": "content owner / contextual safety reviewer",
+      "document_group": "safety-content",
+      "applicability_evidence": [
+        "feature-inventory",
+        "content-inventory",
+        "distribution-scope"
+      ],
+      "conditions": [
+        {
+          "id": "trafficking-exploitation-facilitation",
+          "description": "Service design and operation do not facilitate trafficking or exploitation.",
+          "evidence_kinds": [
+            "service-design",
+            "content-review",
+            "moderation-records",
+            "abuse-risk-assessment"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review matching, recruitment, transport, accommodation, paid arrangements and messaging features in their actual use context, plus abuse indicators and moderation cases. Distinguish ordinary legitimate services from facilitation using substantive operational evidence; a terms prohibition alone does not establish safety. Cover bundled, remote, user-supplied and third-party surfaces, supported locales and feature states; document inventory coverage and ongoing content controls. A keyword scan or a small clean sample cannot establish absence across unreviewed content."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-726881973a096ad43aa49a76b2f997b1",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "validated-measurement-accuracy",
+          "description": "Claimed measurement accuracy is supported by valid, applicable evidence.",
+          "evidence_kinds": [
+            "clinical-validation-dossier",
+            "measurement-validation",
+            "medical-claim-inventory"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "A qualified reviewer compares each accuracy claim to a reproducible validation protocol, reference method, sample/population, statistical results, error bounds and supported devices. Confirm relevance to the shipped method and intended use; testimonials, an unreviewed spreadsheet or a claim copied into a study summary cannot establish accuracy."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c969c9f28aa1f547adc9c2c637bb10fb",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "validated-measurement-method",
+          "description": "The actual health measurement method has a substantiated scientific basis.",
+          "evidence_kinds": [
+            "measurement-method-dossier",
+            "clinical-validation-dossier",
+            "implementation-method-map"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "A qualified reviewer evaluates physiological/technical basis, algorithm assumptions, reference method, reproducibility and known failure conditions of the disclosed method. Match implementation/version to validation and supported hardware/population. An accurate-looking sample result or a paper about a different method does not validate this method."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-3e6c8461610ea4b69e9d276e85b06725",
+      "owner": "medical product owner / qualified clinical or regulatory reviewer",
+      "document_group": "medical-claims-and-validation",
+      "applicability_evidence": [
+        "medical-claim-inventory",
+        "intended-use-and-hazards",
+        "hardware-and-sensor-inventory",
+        "storefront-scope"
+      ],
+      "conditions": [
+        {
+          "id": "dose-update-continuity",
+          "description": "Dose calculation has a credible process for continuing clinical and technical updates.",
+          "evidence_kinds": [
+            "clinical-update-plan",
+            "institutional-authorization",
+            "dose-validation-plan",
+            "release-maintenance-records"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect ownership and resources for monitoring drug guidance, reviewing dosing changes, validating updated calculations, distributing updates and withdrawing unsafe versions. Match the process to the actual calculator and clinical authority; a release roadmap alone does not demonstrate credible sustained maintenance."
+        }
+      ]
+    }
+  ]
+}
