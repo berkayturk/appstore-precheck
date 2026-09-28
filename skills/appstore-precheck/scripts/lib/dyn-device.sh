@@ -30,6 +30,20 @@ dyn_cmd() {
   "$@"
 }
 
+# Per-step wall-clock caps for teardown and the simulator UI calls. A cap is enforced by
+# lib/dyn-process.py (its own process group, up to 15s of TERM grace on top), so the four
+# teardown steps of two devices stay inside ~120s (4 x (15s + 15s grace)) even if CoreSimulator wedges.
+: "${DYN_TEARDOWN_STEP_TIMEOUT:=15}"
+: "${DYN_UI_TIMEOUT:=20}"
+DYN_DEVICE_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# dyn_cmd_bounded <secs> <argv…> — dyn_cmd with a wall-clock cap (124 on expiry).
+dyn_cmd_bounded() {
+  local secs="$1"; shift
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "$*"; return 0; fi
+  python3 "$DYN_DEVICE_LIB_DIR/dyn-process.py" --timeout "$secs" -- "$@"
+}
+
 # dyn_pick_runtime -> the newest available iOS runtime identifier.
 dyn_pick_runtime() {
   [[ "$DYN_DRY_RUN" == 1 ]] && { echo "com.apple.CoreSimulator.SimRuntime.iOS-PLAN"; return 0; }
@@ -84,12 +98,76 @@ dyn_device_container() {
 }
 
 # dyn_device_teardown <udid> — shutdown + delete. ONLY for a device this run created.
+# Each step is capped (DYN_TEARDOWN_STEP_TIMEOUT); returns the status of the delete.
 dyn_device_teardown() {
   [[ -n "${1:-}" ]] || return 0
-  dyn_cmd xcrun simctl shutdown "$1" >/dev/null 2>&1 || true
-  dyn_cmd xcrun simctl delete "$1" >/dev/null 2>&1
+  dyn_cmd_bounded "$DYN_TEARDOWN_STEP_TIMEOUT" xcrun simctl shutdown "$1" >/dev/null 2>&1 || true
+  dyn_cmd_bounded "$DYN_TEARDOWN_STEP_TIMEOUT" xcrun simctl delete "$1" >/dev/null 2>&1
+}
+
+# dyn_ledger_has <file> <line> — exact whole-line membership; a missing file has nothing.
+dyn_ledger_has() { [[ -f "$1" ]] && grep -qxF -- "$2" "$1"; }
+
+# dyn_sweep_owned <out-dir> — delete every simulator this run's own ledger still owns.
+# A UDID is deleted only when ALL of these hold: it is in <out-dir>/owned-simulators.txt,
+# it is not in <out-dir>/deleted-simulators.txt, both ledgers are regular files directly
+# inside <out-dir> (a symlinked ledger is never trusted), and `simctl list devices -j`
+# currently names that UDID with this tool's own precheck-<timestamp>-<pid>[-ipad] pattern.
+# Nothing else is ever deleted. Successes go to deleted-simulators.txt; a device that is
+# still present afterwards (or that cannot be verified) goes to cleanup-failures.txt.
+# No-op in a dry run.
+dyn_sweep_owned() {
+  local out="$1" owned deleted failures udid name listing="" pending="" listed=0
+  [[ "$DYN_DRY_RUN" == 1 ]] && return 0
+  owned="$out/owned-simulators.txt"; deleted="$out/deleted-simulators.txt"; failures="$out/cleanup-failures.txt"
+  [[ -f "$owned" && ! -L "$owned" ]] || return 0
+  [[ -L "$deleted" ]] && return 0
+  [[ ! -e "$deleted" || -f "$deleted" ]] || return 0
+  while IFS= read -r udid || [[ -n "$udid" ]]; do
+    [[ "$udid" =~ ^[A-Za-z0-9][A-Za-z0-9-]*$ ]] || continue
+    dyn_ledger_has "$deleted" "$udid" && continue
+    case " $pending " in *" $udid "*) continue ;; esac
+    pending="$pending $udid"
+  done < "$owned"
+  [[ -n "${pending// /}" ]] || return 0
+  if listing="$(xcrun simctl list devices -j 2>/dev/null)" && jq -e . >/dev/null 2>&1 <<<"$listing"; then listed=1; fi
+  for udid in $pending; do
+    if (( ! listed )); then
+      dyn_ledger_has "$failures" "$udid" || printf '%s\n' "$udid" >> "$failures"
+      continue
+    fi
+    name="$(jq -r --arg u "$udid" '[.devices[]?[]? | select(.udid == $u) | .name] | first // empty' <<<"$listing")"
+    [[ "$name" =~ ^precheck-[0-9]{14}-[0-9]+(-ipad)?$ ]] || continue
+    if dyn_device_teardown "$udid"; then
+      printf '%s\n' "$udid" >> "$deleted"
+    else
+      dyn_ledger_has "$failures" "$udid" || printf '%s\n' "$udid" >> "$failures"
+    fi
+  done
+  return 0
 }
 
 # dyn_device_appearance <udid> light|dark ; dyn_device_content_size <udid> <size>
-dyn_device_appearance()   { dyn_cmd xcrun simctl ui "$1" appearance "$2" >/dev/null 2>&1 || true; }
-dyn_device_content_size() { dyn_cmd xcrun simctl ui "$1" content_size "$2" >/dev/null 2>&1 || true; }
+dyn_device_appearance()   { dyn_cmd_bounded "$DYN_UI_TIMEOUT" xcrun simctl ui "$1" appearance "$2" >/dev/null 2>&1 || true; }
+dyn_device_content_size() { dyn_cmd_bounded "$DYN_UI_TIMEOUT" xcrun simctl ui "$1" content_size "$2" >/dev/null 2>&1 || true; }
+
+# dyn_device_get_appearance <udid> -> light | dark, or "" when the getter is unavailable or
+# answers with anything else. Read-only.
+dyn_device_get_appearance() {
+  local v
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "xcrun simctl ui $1 appearance   # read the original"; echo light; return 0; fi
+  v="$(python3 "$DYN_DEVICE_LIB_DIR/dyn-process.py" --timeout "$DYN_UI_TIMEOUT" -- xcrun simctl ui "$1" appearance 2>/dev/null | head -1 | tr -d '[:space:]')"
+  case "$v" in light|dark) echo "$v" ;; *) echo "" ;; esac
+}
+
+# dyn_device_get_content_size <udid> -> a restorable content-size category, or "".
+dyn_device_get_content_size() {
+  local v
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "xcrun simctl ui $1 content_size   # read the original"; echo large; return 0; fi
+  v="$(python3 "$DYN_DEVICE_LIB_DIR/dyn-process.py" --timeout "$DYN_UI_TIMEOUT" -- xcrun simctl ui "$1" content_size 2>/dev/null | head -1 | tr -d '[:space:]')"
+  case "$v" in
+    extra-small|small|medium|large|extra-large|extra-extra-large|extra-extra-extra-large|\
+    accessibility-medium|accessibility-large|accessibility-extra-large|accessibility-extra-extra-large|accessibility-extra-extra-extra-large) echo "$v" ;;
+    *) echo "" ;;
+  esac
+}

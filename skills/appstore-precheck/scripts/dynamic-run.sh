@@ -21,7 +21,14 @@
 # recorded as unexecuted here; measured accessibility may still support exploration.
 #
 # WHAT IT NEVER DOES: xcodebuild / flutter / gradle; touch a device it did not create
-# (a --udid device is launched on, never erased, reset or deleted); write under the repo.
+# (a --udid device is launched on, never erased, reset or deleted; D7/D8 read its
+# appearance and content size first, restore them exactly, and are SKIPped when the
+# originals cannot be read); write under the repo (an --out inside --repo is exit 64).
+#
+# CLEANUP: the EXIT trap deletes this run's own simulators (each simctl step capped),
+# then sweeps <out>/owned-simulators.txt minus deleted-simulators.txt (only precheck-*
+# devices, only ledgers inside --out). A watchdog starts the wind-down min(120s, 1/4) of
+# PRECHECK_RUNTIME_DEADLINE_SECONDS before the supervisor's deadline so teardown finishes.
 #
 # USAGE
 #   dynamic-run.sh --app <path.app> [--repo DIR] [--framework rn|flutter|kmp|native]
@@ -109,7 +116,19 @@ fi
 [[ -n "$REPO" && ! -d "$REPO" ]] && { echo "dynamic-run.sh: --repo is not a directory: $REPO" >&2; exit 66; }
 command -v xcrun >/dev/null 2>&1 || { echo "dynamic-run.sh: xcrun not found — this tier needs macOS with Xcode (it is permanently local-only)" >&2; exit 69; }
 [[ -z "$FRAMEWORK" ]] && { if [[ -n "$REPO" ]]; then FRAMEWORK="$(detect_framework "$REPO")"; else FRAMEWORK=native; fi; }
-[[ -n "$OUT" ]] || OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic.XXXXXX")"
+OUT_GENERATED=0
+if [[ -z "$OUT" ]]; then OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic.XXXXXX")"; OUT_GENERATED=1; fi
+# The header promises nothing is ever written under the repo: refuse an --out that resolves
+# inside --repo (symlinks resolved, path need not exist yet) BEFORE anything is created.
+# Fail closed: anything but a definite "outside" answer stops the run.
+if [[ -n "$REPO" ]]; then
+  python3 "$HERE/lib/dyn-paths.py" inside "$OUT" "$REPO"; out_rc=$?
+  case "$out_rc" in
+    0) (( OUT_GENERATED )) && rmdir "$OUT" 2>/dev/null; usage_err "--out must not be inside --repo (the runner never writes under the repo): $OUT" ;;
+    1) ;;
+    *) (( OUT_GENERATED )) && rmdir "$OUT" 2>/dev/null; usage_err "cannot verify that --out is outside --repo (dyn-paths.py failed)" ;;
+  esac
+fi
 mkdir -p "$OUT" || { echo "dynamic-run.sh: cannot create --out $OUT" >&2; exit 66; }
 TRANSCRIPT="$OUT/transcript.txt"; : > "$TRANSCRIPT"
 DYN_PLAN_FILE="$OUT/plan.txt"; : > "$DYN_PLAN_FILE"; export DYN_PLAN_FILE
@@ -147,25 +166,54 @@ if [[ "$FRAMEWORK" == rn && -n "$APP" && ! -f "$APP/main.jsbundle" ]]; then
 fi
 
 # --- Teardown, always -------------------------------------------------------------------
-CREATED_UDID="" CREATED_IPAD="" PKTAP_PID=""
+CREATED_UDID="" CREATED_IPAD="" PKTAP_PID="" WATCHDOG_PID="" CLEANING=0
+# A --udid device is never erased or deleted, but D7/D8 change its UI settings; the
+# originals are recorded here so cleanup restores them exactly, even on cancellation.
+UI_RESTORE_UDID="" UI_RESTORE_APPEARANCE="" UI_RESTORE_CONTENT=""
 cleanup() {
+  # Re-entrancy: a second signal during teardown only sets a flag (a handler, not SIG_IGN,
+  # which children would inherit and then ignore TERM from the step timeouts).
+  trap 'CLEANING=2' TERM INT USR1
+  [[ -n "$WATCHDOG_PID" ]] && { kill "$WATCHDOG_PID" 2>/dev/null; wait "$WATCHDOG_PID" 2>/dev/null; WATCHDOG_PID=""; }
   dyn_log_stop
   [[ -n "$PKTAP_PID" ]] && { sudo kill "$PKTAP_PID" 2>/dev/null || kill "$PKTAP_PID" 2>/dev/null; PKTAP_PID=""; }
+  if [[ -n "$UI_RESTORE_UDID" ]]; then
+    [[ -z "$UI_RESTORE_APPEARANCE" ]] || dyn_device_appearance "$UI_RESTORE_UDID" "$UI_RESTORE_APPEARANCE"
+    [[ -z "$UI_RESTORE_CONTENT" ]] || dyn_device_content_size "$UI_RESTORE_UDID" "$UI_RESTORE_CONTENT"
+    UI_RESTORE_UDID=""
+  fi
   local owned
   for owned in "$CREATED_UDID" "$CREATED_IPAD"; do
     [[ -n "$owned" ]] || continue
-    if dyn_device_teardown "$owned"; then
-      printf '%s\n' "$owned" >> "$OUT/deleted-simulators.txt"
-    else
-      printf '%s\n' "$owned" >> "$OUT/cleanup-failures.txt"
-    fi
+    # A failed delete is not recorded here: the sweep below retries it once and only
+    # a device that is STILL present lands in cleanup-failures.txt.
+    dyn_device_teardown "$owned" && printf '%s\n' "$owned" >> "$OUT/deleted-simulators.txt"
   done
   CREATED_UDID="" CREATED_IPAD=""
+  dyn_sweep_owned "$OUT"
+  # The normal path calls cleanup mid-script; make cancellation effective again.
+  trap 'exit 143' TERM; trap 'exit 130' INT; trap 'exit 124' USR1
   return 0
 }
 trap cleanup EXIT
 trap 'exit 143' TERM
 trap 'exit 130' INT
+# Deadline watchdog. The supervisor (lib/dyn-process.py, PRECHECK_RUNTIME_DEADLINE_SECONDS)
+# TERMs this process group at the deadline and only waits a short grace before SIGKILL, so
+# the runner starts winding down a quarter of the deadline (at most 120s) EARLIER: the
+# watchdog signals USR1 here and TERMs the step in flight, the trap exits 124, and the
+# bounded teardown runs to completion before the supervisor's deadline.
+trap 'note "deadline watchdog fired: stopping the run and tearing down its own simulators"; exit 124' USR1
+if [[ "$DYN_DRY_RUN" != 1 ]]; then
+  wd_deadline="${PRECHECK_RUNTIME_DEADLINE_SECONDS:-1800}"
+  if [[ "$wd_deadline" =~ ^[0-9]+$ ]] && (( wd_deadline >= 4 )); then
+    wd_reserve=$(( wd_deadline / 4 )); (( wd_reserve > 120 )) && wd_reserve=120
+    python3 "$HERE/lib/dyn-watchdog.py" --pid "$$" --after "$(( wd_deadline - wd_reserve ))" >/dev/null 2>&1 & WATCHDOG_PID=$!
+  fi
+  # Startup sweep: a previous run killed before teardown finished (same --out) may have
+  # left ledgered precheck-* devices behind; only those, only when they still exist.
+  dyn_sweep_owned "$OUT"
+fi
 
 # --- D0: device + install -------------------------------------------------------------------
 [[ -n "$RUNTIME" ]] || RUNTIME="$(dyn_pick_runtime)"
@@ -292,12 +340,29 @@ elif (( METRO_SKIP )) || [[ "$LAUNCH_KIND" != PASS && "$L_PASS" -eq 0 ]]; then
   emit "$(dyn_line SKIP 4.0 dyn-dark-mode "app did not stay up on any launch; layout not judged")"
   emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "app did not stay up on any launch; layout not judged")"
 else
-  dyn_device_appearance "$UDID" dark
-  geometry_pass dyn-dark-mode 4.0 "dark appearance" dark
-  dyn_device_appearance "$UDID" light
-  dyn_device_content_size "$UDID" accessibility-extra-extra-extra-large
-  geometry_pass dyn-dynamic-type 4.0 "Dynamic Type accessibility-extra-extra-extra-large" dynamic-type
-  dyn_device_content_size "$UDID" large
+  # A device this run created starts from factory settings (light / large). A user-supplied
+  # --udid device keeps whatever its owner set: read the originals first, restore them
+  # exactly afterwards, and SKIP a check whose original cannot be read (never guess).
+  if [[ -n "$CREATED_UDID" ]]; then ORIG_APPEARANCE=light ORIG_CONTENT=large
+  else ORIG_APPEARANCE="$(dyn_device_get_appearance "$UDID")"; ORIG_CONTENT="$(dyn_device_get_content_size "$UDID")"; fi
+  if [[ -z "$ORIG_APPEARANCE" ]]; then
+    emit "$(dyn_line SKIP 4.0 dyn-dark-mode "not judged: the original appearance of user-supplied device $UDID could not be read (simctl ui appearance getter unavailable), so it cannot be restored; the device was left unchanged")"
+  else
+    [[ -n "$CREATED_UDID" ]] || { UI_RESTORE_UDID="$UDID" UI_RESTORE_APPEARANCE="$ORIG_APPEARANCE" UI_RESTORE_CONTENT="${ORIG_CONTENT:-}"; }
+    dyn_device_appearance "$UDID" dark
+    geometry_pass dyn-dark-mode 4.0 "dark appearance" dark
+    dyn_device_appearance "$UDID" "$ORIG_APPEARANCE"
+    UI_RESTORE_UDID=""
+  fi
+  if [[ -z "$ORIG_CONTENT" ]]; then
+    emit "$(dyn_line SKIP 4.0 dyn-dynamic-type "not judged: the original content size of user-supplied device $UDID could not be read (simctl ui content_size getter unavailable), so it cannot be restored; the device was left unchanged")"
+  else
+    [[ -n "$CREATED_UDID" ]] || { UI_RESTORE_UDID="$UDID" UI_RESTORE_APPEARANCE="${ORIG_APPEARANCE:-}" UI_RESTORE_CONTENT="$ORIG_CONTENT"; }
+    dyn_device_content_size "$UDID" accessibility-extra-extra-extra-large
+    geometry_pass dyn-dynamic-type 4.0 "Dynamic Type accessibility-extra-extra-extra-large" dynamic-type
+    dyn_device_content_size "$UDID" "$ORIG_CONTENT"
+    UI_RESTORE_UDID=""
+  fi
 fi
 
 # --- D9: iPad (opt-in) --------------------------------------------------------------------------------
@@ -362,6 +427,7 @@ if (( EXPLORE )); then
   else
     navigation_args=()
     [[ -z "$NAVIGATION_AUTH" ]] || navigation_args=(--authorized-navigation "$NAVIGATION_AUTH")
+    [[ -z "$REPO" ]] || navigation_args=(${navigation_args[@]+"${navigation_args[@]}"} --repo "$REPO")
     python3 "$HERE/lib/dyn-explore.py" --udid "$UDID" --bundle-id "$BID" --out "$OUT" \
       --seconds "$EXPLORE_SECONDS" --max-screens "$EXPLORE_SCREENS" ${navigation_args[@]+"${navigation_args[@]}"} \
       ${HOSTS:+--hosts "$HOSTS"} ${PRIV:+--privacy-manifest "$PRIV"} \
