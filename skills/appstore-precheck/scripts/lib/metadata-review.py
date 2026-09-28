@@ -7,6 +7,7 @@ keys, demo credentials, raw review notes, URLs, or product names.
 import argparse
 import base64
 import ipaddress
+import importlib.util
 import json
 import os
 import pathlib
@@ -99,8 +100,12 @@ def make_jwt(key_id, issuer_id, key_path):
 
 class ASC:
     def __init__(self, fixture=None):
+        if fixture is not None and (not isinstance(fixture, dict) or not isinstance(fixture.get("responses"), dict)):
+            raise ApiError("Fixture API response collection malformed")
         self.fixture = fixture
         self.token = None
+        self.responses = {}
+        self.deadline = time.monotonic() + 120
         if fixture is None:
             key_id = os.environ.get("ASC_KEY_ID")
             issuer_id = os.environ.get("ASC_ISSUER_ID")
@@ -110,18 +115,27 @@ class ASC:
             self.token = make_jwt(key_id, issuer_id, key_path)
 
     def get(self, path):
+        if time.monotonic() >= self.deadline:
+            raise ApiError("App Store Connect collection deadline exceeded")
+        value = self._get(path)
+        self.responses[path] = value
+        return value
+
+    def _get(self, path):
         if not path.startswith("/v1/") and not path.startswith("/v2/"):
             raise ApiError("Unsupported App Store Connect resource")
         if self.fixture is not None:
             value = self.fixture.get("responses", {}).get(path)
             if not isinstance(value, dict):
                 raise ApiError("Fixture API resource unavailable")
+            if value.get("fixture_error") in ("authorization", "timeout"):
+                raise ApiError("App Store Connect request unavailable")
             return value
         request = urllib.request.Request(API_BASE + path,
                                          headers={"Authorization": "Bearer " + self.token,
                                                   "Accept": "application/json"}, method="GET")
         try:
-            with urllib.request.build_opener(NoRedirect()).open(request, timeout=12) as response:
+            with urllib.request.build_opener(NoRedirect()).open(request, timeout=max(0.1, min(12, self.deadline - time.monotonic()))) as response:
                 if response.status != 200:
                     raise ApiError("App Store Connect request unavailable")
                 raw = response.read(4 * 1024 * 1024 + 1)
@@ -137,18 +151,27 @@ class ASC:
     def items(self, path):
         result = []
         next_path = path
+        seen = set()
         for _ in range(10):
+            if next_path in seen:
+                raise ApiError("App Store Connect pagination cycle")
+            seen.add(next_path)
             value = self.get(next_path)
             data = value.get("data")
-            if not isinstance(data, list):
+            if not isinstance(data, list) or any(not isinstance(x, dict) for x in data):
                 raise ApiError("App Store Connect list unavailable")
             result.extend(data)
             links = value.get("links")
             next_url = links.get("next") if isinstance(links, dict) else None
             if not next_url:
+                total = value.get("meta", {}).get("paging", {}).get("total") if isinstance(value.get("meta"), dict) and isinstance(value.get("meta", {}).get("paging"), dict) else None
+                if total is not None and (type(total) is not int or total != len(result)):
+                    raise ApiError("App Store Connect list incomplete")
                 return result
+            if not isinstance(next_url, str):
+                raise ApiError("Malformed App Store Connect pagination URL")
             parsed = urllib.parse.urlparse(next_url)
-            if parsed.scheme != "https" or parsed.netloc != "api.appstoreconnect.apple.com":
+            if parsed.scheme != "https" or parsed.netloc != "api.appstoreconnect.apple.com" or parsed.path != path.split("?", 1)[0] or parsed.fragment:
                 raise ApiError("Unexpected App Store Connect pagination URL")
             next_path = parsed.path + ("?" + parsed.query if parsed.query else "")
         raise ApiError("App Store Connect list exceeded page budget")
@@ -171,7 +194,8 @@ def one(data):
 
 
 def attrs(item):
-    return item.get("attributes", {}) if isinstance(item, dict) else {}
+    value = item.get("attributes") if isinstance(item, dict) else None
+    return value if isinstance(value, dict) else {}
 
 
 def relation(item, name):
@@ -188,16 +212,21 @@ def encode_id(value):
     return urllib.parse.quote(str(value), safe="")
 
 
-def collect_asc(api, app_id, version_id=None, info_id=None):
+def collect_asc(api, app_id, version_id=None, info_id=None, bundle_id=None, version_string=None, build_number=None):
     """Fetch only documented GET routes. Each field retains its own failure."""
     app = "/v1/apps/" + encode_id(app_id)
-    out = {}
+    out = {"app": safe(api, "get", app)}
     infos = safe(api, "items", app + "/appInfos")
     if isinstance(infos, ApiError):
         out["info"] = infos
     else:
-        info = next((x for x in infos if identifier(x) == info_id), None) if info_id else (infos[0] if infos else None)
-        out["info"] = info
+        matches = [x for x in infos if identifier(x) == info_id] if info_id else infos
+        info = matches[0] if len(matches) == 1 and identifier(matches[0]) else None
+        out["info"] = info or ApiError("App info selection missing or ambiguous")
+        # Capture every info localization for conservative whole-listing name proof.
+        for candidate in infos:
+            if identifier(candidate):
+                safe(api, "items", "/v1/appInfos/" + encode_id(identifier(candidate)) + "/appInfoLocalizations")
         if info:
             path = "/v1/appInfos/" + encode_id(identifier(info))
             out["age"] = safe(api, "get", path + "/ageRatingDeclaration")
@@ -207,16 +236,26 @@ def collect_asc(api, app_id, version_id=None, info_id=None):
         out["version"] = versions
     else:
         ios = [x for x in versions if attrs(x).get("platform") == "IOS"]
-        if version_id:
-            version = next((x for x in ios if identifier(x) == version_id), None)
-        else:
-            preferred = [x for x in ios if attrs(x).get("appStoreState") in
-                         ("PREPARE_FOR_SUBMISSION", "READY_FOR_REVIEW", "REJECTED", "METADATA_REJECTED")]
-            version = max(preferred or ios, key=lambda x: attrs(x).get("createdDate", "")) if ios else None
-        out["version"] = version
+        matches = [x for x in ios if (not version_id or identifier(x) == version_id) and
+                   (not version_string or attrs(x).get("versionString") == version_string)]
+        version = matches[0] if len(matches) == 1 and identifier(matches[0]) else None
+        out["version"] = version or ApiError("App Store version selection missing or ambiguous")
+        out["selection_status"] = "SELECTED" if version else "UNRESOLVED"
+        if bundle_id and attrs(one(out["app"])).get("bundleId") != bundle_id:
+            version = None
+            out["version"] = ApiError("Bundle identity mismatch or unavailable")
+            out["selection_status"] = "UNRESOLVED"
         if version:
             path = "/v1/appStoreVersions/" + encode_id(identifier(version))
-            out["review"] = safe(api, "get", path + "/appStoreReviewDetail")
+            out["build"] = safe(api, "get", path + "/build")
+            if build_number and attrs(one(out["build"])).get("version") != build_number:
+                out["version"] = ApiError("Build identity mismatch or unavailable")
+                out["selection_status"] = "UNRESOLVED"
+                out["review"] = ApiError("Build selection unavailable")
+                out["version_localizations"] = ApiError("Build selection unavailable")
+                out["screenshots"] = ApiError("Build selection unavailable")
+            else:
+                out["review"] = safe(api, "get", path + "/appStoreReviewDetail")
             locs = safe(api, "items", path + "/appStoreVersionLocalizations")
             out["version_localizations"] = locs
             if isinstance(locs, list):
@@ -234,6 +273,9 @@ def collect_asc(api, app_id, version_id=None, info_id=None):
                             if set_id:
                                 screenshots.append(safe(api, "items", "/v1/appScreenshotSets/" + encode_id(set_id) + "/appScreenshots"))
                 out["screenshots"] = screenshots
+    if isinstance(out.get("version"), ApiError):
+        for key in ("review", "version_localizations", "screenshots"):
+            out[key] = ApiError("App Store version or build selection unavailable")
     purchases = safe(api, "items", app + "/inAppPurchasesV2")
     groups = safe(api, "items", app + "/subscriptionGroups")
     if isinstance(groups, list):
@@ -364,7 +406,7 @@ def review(args, asc):
         results.append(unavailable(CHECKS[0], False, "Age rating declaration needs opt-in App Store Connect access"))
 
     review_data = asc.get("review") if asc_on else None
-    notes = attrs(one(review_data)).get("notes") if asc_on and not isinstance(review_data, ApiError) else local_review(metadata, "notes")
+    notes = attrs(one(review_data)).get("notes") if asc_on and not isinstance(review_data, ApiError) else (None if asc_on else local_review(metadata, "notes"))
     if isinstance(review_data, ApiError) and notes is None:
         results.append(unavailable(CHECKS[1], True, "App Review details could not be read"))
     elif notes is None and not local and not asc_on:
@@ -374,8 +416,8 @@ def review(args, asc):
                               "App Review notes are present" if notes else "App Review notes are empty or absent"))
 
     required = args.login_required or (attrs(one(review_data)).get("demoAccountRequired") is True if asc_on and not isinstance(review_data, ApiError) else False)
-    user = attrs(one(review_data)).get("demoAccountName") if asc_on and not isinstance(review_data, ApiError) else local_review(metadata, "demo_user")
-    password = attrs(one(review_data)).get("demoAccountPassword") if asc_on and not isinstance(review_data, ApiError) else local_review(metadata, "demo_password")
+    user = attrs(one(review_data)).get("demoAccountName") if asc_on and not isinstance(review_data, ApiError) else (None if asc_on else local_review(metadata, "demo_user"))
+    password = attrs(one(review_data)).get("demoAccountPassword") if asc_on and not isinstance(review_data, ApiError) else (None if asc_on else local_review(metadata, "demo_password"))
     if isinstance(review_data, ApiError) and user is None and password is None:
         results.append(unavailable(CHECKS[2], True, "Demo account fields could not be read"))
     elif not required and not user and not password:
@@ -419,7 +461,7 @@ def review(args, asc):
         if isinstance(remote, list):
             values = [attrs(x).get(field) for x in remote]
         else:
-            values = local_values
+            values = [] if asc_on else local_values
         if isinstance(remote, ApiError) and not values:
             results.append(unavailable(check_id, True, "Store URL fields could not be read"))
         elif not values and not local and not asc_on:
@@ -434,7 +476,7 @@ def review(args, asc):
 
     info = asc.get("info") if asc_on else None
     category = relation(info, "primaryCategory") if isinstance(info, dict) else None
-    if not category:
+    if not category and not asc_on:
         category = local_text(metadata, "primary_category.txt")
     if isinstance(info, ApiError) and category is None:
         results.append(unavailable(CHECKS[7], True, "Primary category could not be read"))
@@ -474,6 +516,8 @@ def review(args, asc):
                                   "Store screenshots are present" if ok else "Store screenshot sets contain no images"))
     elif isinstance(version_locs, list):
         results.append(record(CHECKS[10], "NEEDS_REVIEW", "Store screenshots are absent from returned localizations"))
+    elif asc_on:
+        results.append(unavailable(CHECKS[10], True, "Store screenshots could not be read for selected version"))
     else:
         images = [x for x in screenshots.rglob("*") if x.is_file() and x.suffix.lower() in (".png", ".jpg", ".jpeg")] if screenshots.is_dir() else []
         if images:
@@ -494,6 +538,10 @@ def main(argv=None):
     parser.add_argument("--asc-app-id", help="Opt in to read-only App Store Connect GET requests")
     parser.add_argument("--asc-version-id", help="Choose an iOS App Store version")
     parser.add_argument("--asc-info-id", help="Choose an app info resource")
+    parser.add_argument("--bundle-id", help="Expected ASC bundle identifier")
+    parser.add_argument("--version", help="Expected App Store version string")
+    parser.add_argument("--build-number", help="Expected attached build number")
+    parser.add_argument("--verification-evidence-out", help="Private name-only ASC evidence output; requires exact target selectors")
     parser.add_argument("--asc-fixture", help="Offline API response fixture for tests")
     parser.add_argument("--login-required", action="store_true", help="Assess demo credentials as required")
     parser.add_argument("--check-urls", action="store_true", help="Opt in to HEAD requests for public support/privacy URLs")
@@ -503,15 +551,31 @@ def main(argv=None):
         parser.error("--asc-fixture requires --asc-app-id")
     if args.asc_fixture and os.environ.get("APPSTORE_PRECHECK_TEST_MODE") != "1":
         parser.error("--asc-fixture is available only with APPSTORE_PRECHECK_TEST_MODE=1")
+    if args.verification_evidence_out and not all((args.asc_app_id, args.asc_version_id, args.bundle_id, args.version, args.build_number)):
+        parser.error("--verification-evidence-out requires app/version IDs, bundle ID, version and build number")
+    input_roots = [pathlib.Path(args.repo).resolve(), local_metadata_dir(args).resolve()]
+    for output in (args.out, args.verification_evidence_out):
+        if output:
+            resolved = pathlib.Path(output).resolve()
+            if any(resolved == root or root in resolved.parents for root in input_roots):
+                parser.error("Metadata outputs must be outside the read-only input project")
+    if args.out and args.verification_evidence_out and pathlib.Path(args.out).resolve() == pathlib.Path(args.verification_evidence_out).resolve():
+        parser.error("Report and private evidence require separate output paths")
     asc = None
+    api = None
+    asc_status = "NOT_RUN"
     if args.asc_app_id:
         try:
             fixture = json.loads(pathlib.Path(args.asc_fixture).read_text(encoding="utf-8")) if args.asc_fixture else None
-            asc = collect_asc(ASC(fixture), args.asc_app_id, args.asc_version_id, args.asc_info_id)
+            api = ASC(fixture)
+            asc_status = "FIXTURE" if args.asc_fixture else "ATTEMPTED"
+            asc = collect_asc(api, args.asc_app_id, args.asc_version_id, args.asc_info_id, args.bundle_id, args.version, args.build_number)
         except (ApiError, OSError, ValueError, UnicodeError) as exc:
             asc = {key: ApiError("App Store Connect unavailable") for key in
                    ("age", "info", "review", "purchases", "subscriptions", "info_localizations",
                     "version_localizations", "price", "availability", "screenshots")}
+    if api is not None:
+        api.token = None
     results = review(args, asc)
     summary = {s: sum(x["status"] == s for x in results) for s in
                ("PASS", "FINDING", "NEEDS_REVIEW", "SKIP", "NOT_RUN")}
@@ -519,11 +583,36 @@ def main(argv=None):
                "sources": {"fastlane_metadata": local_metadata_dir(args).is_dir(),
                            "app_store_connect_requested": bool(args.asc_app_id),
                            "app_store_connect_fixture": bool(args.asc_fixture),
+                           "app_store_connect_status": asc_status,
                            "url_head_requested": bool(args.check_urls)},
-               "results": results, "summary": summary}
+               "results": results, "summary": summary,
+               "selection": {"status": asc.get("selection_status", "UNRESOLVED") if asc else "NOT_RUN",
+                             "target_binding_requested": all((args.bundle_id, args.version, args.build_number))},
+               "local_results": review(args, None) if asc else results,
+               "limitations": ["Presence checks do not verify metadata accuracy, login success, price correctness or regional payment exceptions.",
+                               "App privacy labels require separately supplied App Store Connect evidence; no privacy-label endpoint is assumed.",
+                               "Local fastlane metadata is evaluated separately and cannot repair an unavailable ASC resource."]}
+    if args.verification_evidence_out:
+        path = pathlib.Path(__file__).with_name("verification-metadata.py")
+        spec = importlib.util.spec_from_file_location("verification_metadata", path)
+        verifier = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(verifier)
+        proof = verifier.capture(api.responses if api else {}, args.asc_app_id, args.asc_version_id,
+                                 bool(args.asc_fixture))
+        # Create exclusively, mode 0600; never follow or overwrite a user file/symlink.
+        try:
+            fd = os.open(args.verification_evidence_out, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(fd, "w", encoding="utf-8") as stream:
+                json.dump(proof, stream, indent=2, sort_keys=True)
+                stream.write("\n")
+        except OSError:
+            parser.error("Private verification evidence output could not be created")
     encoded = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if args.out:
-        pathlib.Path(args.out).write_text(encoded, encoding="utf-8")
+        try:
+            pathlib.Path(args.out).write_text(encoded, encoding="utf-8")
+        except OSError:
+            parser.error("Sanitized report output could not be written")
     sys.stdout.write(encoded)
     return 0
 
