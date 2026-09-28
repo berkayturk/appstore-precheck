@@ -21,5 +21,11 @@
     "familyControls": false
   },
 
-  "reviewPrepNotes": ""
+  "reviewPrepNotes": "",
+
+  "_dynamic_comment": "Opt-in build/run defaults. This file lives in the scanned repo, so build:true is ONLY honoured when the invoker sets APPSTORE_PRECHECK_TRUST_CONFIG=1 (otherwise it is ignored with a stderr notice; pass --build instead). demoLogin only applies when a build or --app run is already active and launches the app.",
+  "dynamic": {
+    "build": false,
+    "demoLogin": false
+  }
 }
