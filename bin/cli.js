@@ -148,6 +148,13 @@ function main() {
   if (opts.build && opts.app) fail('use --build or --app', 64);
   if (opts.noRuntime && (opts.demoLogin || opts.dynamicBlocking)) fail('--no-runtime conflicts with demo login or dynamic blocking', 64);
 
+  // The scanner child runs with cwd=--dir, so every path option must be made absolute
+  // against the caller's cwd first; otherwise a relative --out/--app/--dir is
+  // re-resolved against the scanned project.
+  opts.dir = path.resolve(opts.dir);
+  if (opts.out) opts.out = path.resolve(opts.out);
+  if (opts.app) opts.app = path.resolve(opts.app);
+
   if (!fs.existsSync(SCAN) || !fs.existsSync(VERDICT)) {
     fail('bundled scanner scripts are missing from the package', 70);
   }
@@ -188,8 +195,9 @@ function main() {
   const scanOut = scan.stdout || '';
   process.stdout.write(scanOut);
 
+  // A non-zero scanner status already exited above, so non-text output is done here.
   if (opts.format !== 'text') {
-    process.exit(scan.status === 0 ? 0 : (scan.status || 0));
+    process.exit(0);
   }
 
   const verdict = spawnSync('bash', [VERDICT], { input: scanOut, encoding: 'utf8' });
