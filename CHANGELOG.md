@@ -36,6 +36,17 @@ All notable changes to this project are documented here. Versioning follows
   cases while current reviews use catalog v3; bind resumed evaluations to both.
 - Report TypeSafe transport attempts and retries, including unknown retry billing.
 
+### Security
+- `.appstore-precheck.json` `dynamic.build: true` no longer triggers a build by itself. The config
+  lives in the scanned repository, so it is honoured only when the invoker sets
+  `APPSTORE_PRECHECK_TRUST_CONFIG=1`; otherwise the scan prints a stderr notice and stays static.
+  `dynamic.demoLogin` applies only while a build or `--app` run is active. The GitHub Action never
+  trusts the config. Default scans remain offline and read-only.
+- Reject symlinks anywhere in the isolated build input, including ones named `Pods`, `build` or
+  `node_modules`.
+- Bound the isolated build with a 2400-second total deadline (2700-second outer cap) and lower the
+  runtime runner's default deadline to 1200 seconds.
+
 ### Maintenance
 - Keep private source archives outside Git and npm packages; exercise the package
   boundary with synthetic private files.

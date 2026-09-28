@@ -97,7 +97,7 @@ and test artifacts are directed there and removed on completion, error or gracef
 cancellation. Persistent geometry/exploration screenshots after credential entry
 are suppressed. These output flags follow the [Maestro artifact documentation](https://docs.maestro.dev/maestro-flows/workspace-management/test-reports-and-artifacts).
 
-The runner uses a process-group supervisor (default deadline 1800 seconds;
+The runner uses a process-group supervisor (default deadline 1200 seconds;
 `PRECHECK_RUNTIME_DEADLINE_SECONDS` overrides it). Timeout returns 124; cancellation
 returns 143. TERM allows up to 15 seconds for child cleanup before KILL. The runner
 records `owned-simulators.txt`, successful `deleted-simulators.txt`, and any
