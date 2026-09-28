@@ -103,3 +103,20 @@ its authority depends on the trusted collecting environment. Recollect mutable l
 information whenever it changes. Local fastlane observations remain separate from ASC;
 local presence cannot repair a failed remote request. Missing live credentials means
 `NOT_RUN`; no undocumented privacy endpoint is invented.
+
+## Mandatory positive documents
+
+A condition may add `required_positive_evidence_kinds`, a unique subset of its
+accepted evidence kinds. A PASS proof must actually cite substantive evidence of
+every mandatory kind. An uncited document elsewhere in the manifest is insufficient.
+The rule applies to automatic and reviewed positives. It does not require someone
+to supply a missing license or approval before proving a FINDING. Accepted kinds
+otherwise remain alternatives, subject to the complete criterion and review scope.
+Bare yes/no/approved review rationales are attestations and cannot grant closure.
+
+For example, an ethics-approval condition requires an ethics-approval document;
+a generic feature inventory plus reviewer authority cannot substitute for it.
+Document types and hashes still do not authenticate an institution, license or
+semantic conclusion. An authorized reviewer must substantiate actual content,
+validity, applicable scope and authority. These requirements never grant approval
+on behalf of a developer, institution or Apple.

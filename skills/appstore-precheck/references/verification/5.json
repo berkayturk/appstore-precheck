@@ -452,7 +452,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Provide the named law, jurisdiction, balancing/necessity assessment and evidence of each relied-on legal condition and safeguard for collection without consent. Legal authority must come from a qualified reviewer with the relevant documents. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Provide the named law, jurisdiction, balancing/necessity assessment and evidence of each relied-on legal condition and safeguard for collection without consent. Legal authority must come from a qualified reviewer with the relevant documents. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "legal-assessment"
+          ]
         }
       ]
     },
@@ -1308,7 +1311,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Record explicit permission before the first transfer to each disclosed third party, including AI providers; test refusal and withdrawal against app and backend traces. A provider API key or system permission is not sharing consent. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Record explicit permission before the first transfer to each disclosed third party, including AI providers; test refusal and withdrawal against app and backend traces. A provider API key or system permission is not sharing consent. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "consent-records"
+          ]
         }
       ]
     },
@@ -1982,7 +1988,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Provide the study consent protocol, participant age/capacity determination and actual consent-before-enrollment records; for minors verify parent/guardian authority and consent rather than treating a parental gate as consent. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Provide the study consent protocol, participant age/capacity determination and actual consent-before-enrollment records; for minors verify parent/guardian authority and consent rather than treating a parental gate as consent. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "consent-records"
+          ]
         }
       ]
     },
@@ -2174,7 +2183,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Provide authentic independent ethics-board approval naming the study, investigator, protocol version, sites, dates and approved consent materials; establish independence and approval before recruitment or research begins. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Provide authentic independent ethics-board approval naming the study, investigator, protocol version, sites, dates and approved consent materials; establish independence and approval before recruitment or research begins. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "ethics-approval"
+          ]
         }
       ]
     },
@@ -2202,11 +2214,16 @@
             "consent-records",
             "ethics-approval",
             "provider-records",
-            "runtime-transcript"
+            "runtime-transcript",
+            "review-correspondence"
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Inspect App Review correspondence for an approval-proof request and the actual supplied document/receipt; match it to the current study and independent board. If no request exists, document that scoped applicability evidence. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Inspect App Review correspondence for an approval-proof request and the actual supplied document/receipt; match it to the current study and independent board. If no request exists, document that scoped applicability evidence. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "ethics-approval",
+            "review-correspondence"
+          ]
         }
       ]
     },
@@ -2366,7 +2383,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Provide a jurisdiction/age/data-capability matrix, privacy policy, verified parental-consent process and qualified legal assessment of all relevant children's privacy statutes. Include sharing capability even if no child account has yet been observed; a parental gate is not statutory consent. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Provide a jurisdiction/age/data-capability matrix, privacy policy, verified parental-consent process and qualified legal assessment of all relevant children's privacy statutes. Include sharing capability even if no child account has yet been observed; a parental gate is not statutory consent. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "legal-assessment"
+          ]
         }
       ]
     },
@@ -2686,7 +2706,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Match developer-account identity to assignment, ownership or license documents covering app IP and relevant distribution rights. Verify document scope and signatory authority; the agent cannot sign on behalf of an owner. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Match developer-account identity to assignment, ownership or license documents covering app IP and relevant distribution rights. Verify document scope and signatory authority; the agent cannot sign on behalf of an owner. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "rights-records"
+          ]
         }
       ]
     },
@@ -2746,7 +2769,11 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Review App Review requests and evidence actually provided for each named service/operation, including the provider's authorization and submission receipt; document no-request scope separately from underlying usage rights. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Review App Review requests and evidence actually provided for each named service/operation, including the provider's authorization and submission receipt; document no-request scope separately from underlying usage rights. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "rights-records",
+            "review-correspondence"
+          ]
         }
       ]
     },
@@ -2836,7 +2863,11 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Inspect review correspondence and supplied rights documents for the identified source and streaming/saving/conversion/download operations; verify authenticity, scope and receipt, keeping missing requests distinct from missing authorization. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Inspect review correspondence and supplied rights documents for the identified source and streaming/saving/conversion/download operations; verify authenticity, scope and receipt, keeping missing requests distinct from missing authorization. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "rights-records",
+            "review-correspondence"
+          ]
         }
       ]
     },
@@ -3238,7 +3269,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Match each gambling/lottery activity and location of use to current licenses, permits, licensee identity and conditions; require qualified review of validity and scope, including expiry and renewal dependencies. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Match each gambling/lottery activity and location of use to current licenses, permits, licensee identity and conditions; require qualified review of validity and scope, including expiry and renewal dependencies. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "license-records"
+          ]
         }
       ]
     },
@@ -3506,7 +3540,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Compare current Developer Program organization enrollment and legal identity with the VPN provider and submitted app; a company name in metadata is not organization enrollment evidence. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Compare current Developer Program organization enrollment and legal identity with the VPN provider and submitted app; a company name in metadata is not organization enrollment evidence. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "organization-records"
+          ]
         }
       ]
     },
@@ -3772,7 +3809,11 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "For each territory requiring a VPN license, verify the current license, licensee and service scope and match its information to submitted App Review Notes for the selected release. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "For each territory requiring a VPN license, verify the current license, licensee and service scope and match its information to submitted App Review Notes for the selected release. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "license-records",
+            "submitted-metadata"
+          ]
         }
       ]
     },
@@ -3808,7 +3849,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Inventory MDM service and configuration-profile features, then match Apple's capability approval and distribution entitlements to the provider and release before service is offered; a profile file or entitlement string is not approval. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Applicability includes configuration-profile offerings even when no MDM service is marketed. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Inventory MDM service and configuration-profile features, then match Apple's capability approval and distribution entitlements to the provider and release before service is offered; a profile file or entitlement string is not approval. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. Applicability includes configuration-profile offerings even when no MDM service is marketed. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "apple-approval"
+          ]
         }
       ]
     },
@@ -3844,7 +3888,10 @@
           ],
           "full_positive_verifiers": [],
           "decisive_finding_verifiers": [],
-          "review_requirement": "Provide organization identity and evidence of qualifying enterprise, educational or government status; for a limited parental-control/security-company case require documented eligibility and Apple approval tied to the service. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. If relying on atom-41c18cc519fa43f8b5ba78d65daa888f, document the exception and every prerequisite: In limited cases a company offering MDM for parental control or device security may qualify. Applicability includes configuration-profile offerings even when no MDM service is marketed. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient."
+          "review_requirement": "Provide organization identity and evidence of qualifying enterprise, educational or government status; for a limited parental-control/security-company case require documented eligibility and Apple approval tied to the service. Verify document authenticity, issuer, legal entity, scope and expiry with the responsible authorized reviewer; missing authority remains an owner-evidence gap, never an agent-created approval. If relying on atom-41c18cc519fa43f8b5ba78d65daa888f, document the exception and every prerequisite: In limited cases a company offering MDM for parental control or device security may qualify. Applicability includes configuration-profile offerings even when no MDM service is marketed. Bind the review to the submitted build, backend, platforms, storefronts and review date. Unknown feature or exception facts remain unresolved; missing source signals do not establish non-applicability. Identify the evidence reviewed and its coverage; an unverified owner answer is not sufficient.",
+          "required_positive_evidence_kinds": [
+            "organization-records"
+          ]
         }
       ]
     },

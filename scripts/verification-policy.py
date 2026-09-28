@@ -50,6 +50,12 @@ def load_policies(directory, catalog, capabilities):
                 seen.add(cid)
                 if not condition.get('description') or not condition.get('evidence_kinds') or not condition.get('review_requirement'):
                     raise ValueError('condition needs description, evidence kinds and review requirements: ' + ident)
+                kinds = condition['evidence_kinds']
+                mandatory = condition.get('required_positive_evidence_kinds', [])
+                if (not isinstance(kinds, list) or any(not isinstance(k, str) or not k for k in kinds) or
+                        not isinstance(mandatory, list) or any(not isinstance(k, str) or not k for k in mandatory) or
+                        len(mandatory) != len(set(mandatory)) or not set(mandatory) <= set(kinds)):
+                    raise ValueError('required evidence kinds must be a subset of accepted kinds: ' + ident)
                 for field, direction in [('full_positive_verifiers', 'positive'), ('decisive_finding_verifiers', 'finding')]:
                     names = condition.get(field)
                     if not isinstance(names, list) or any(not isinstance(n, str) for n in names):

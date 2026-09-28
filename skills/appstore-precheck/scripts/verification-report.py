@@ -70,6 +70,13 @@ def nonempty(value):
     return isinstance(value, str) and bool(value.strip())
 
 
+def substantive_rationale(value):
+    # Bare answers are attestations, even when wrapped in a review record.
+    return nonempty(value) and value.strip().rstrip('.!').lower() not in {
+        'yes', 'no', 'ok', 'pass', 'finding', 'approved', 'compliant',
+        'not applicable', 'n/a', 'evet', 'hayır'}
+
+
 def trusted_policies():
     result = {}
     for path in sorted((REF / 'verification').glob('*.json')):
@@ -119,7 +126,7 @@ def fallback(item):
                             'review_requirement': 'Independent criterion-specific evidence review'}]}
 
 
-def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, source_ids=None, allowed_kinds=None):
+def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, source_ids=None, allowed_kinds=None, required_kinds=None):
     """Review is explicit provenance, never inferred from a yes answer or file presence.
 
     Human authority documents remain supplied evidence, not cryptographic proof of
@@ -134,7 +141,7 @@ def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, 
             continue
         if (record.get('schema_version') != 1 or record.get('obligation_id') != obligation or
                 record.get('condition_id') != condition or record.get('outcome') != outcome or
-                record.get('reviewer') != reviewer or not nonempty(record.get('rationale')) or
+                record.get('reviewer') != reviewer or not substantive_rationale(record.get('rationale')) or
                 not contract.scope_matches(profile['target'], record.get('scope', {})) or
                 record.get('reviewed_at') != profile['reviewed_at']):
             continue
@@ -145,6 +152,8 @@ def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, 
                 not isinstance(observations, list) or not observations):
             continue
         if allowed_kinds and not any(index[i]['kind'] in allowed_kinds for i in substantive):
+            continue
+        if outcome == 'PASS' and not set(required_kinds or []) <= {index[i]['kind'] for i in substantive}:
             continue
         observed = set()
         for observation in observations:
@@ -182,7 +191,8 @@ def review_proof(ids, index, profile, obligation, condition, outcome, reviewer, 
 def evaluate_condition(condition, claims, index, profile, item, errors):
     result = {'condition_id': condition['id'], 'description': condition['description'],
               'status': 'UNKNOWN', 'mode': None, 'evidence_ids': [], 'reasons': [],
-              'limitations': [], 'review_requirement': condition.get('review_requirement')}
+              'limitations': [], 'review_requirement': condition.get('review_requirement'),
+              'required_positive_evidence_kinds': condition.get('required_positive_evidence_kinds', [])}
     outcomes = []
     claims = list(claims)
     # Evidence cannot be concealed by omitting its decision row or claiming PASS.
@@ -210,8 +220,9 @@ def evaluate_condition(condition, claims, index, profile, item, errors):
             continue
         if claim['mode'] == 'reviewed':
             proof = review_proof(ids, index, profile, item['id'], condition['id'], claim['status'], claim.get('reviewer'),
-                                 allowed_kinds=condition.get('evidence_kinds'))
-            if proof and nonempty(claim.get('rationale')):
+                                 allowed_kinds=condition.get('evidence_kinds'),
+                                 required_kinds=condition.get('required_positive_evidence_kinds'))
+            if proof and substantive_rationale(claim.get('rationale')):
                 outcomes.append((claim['status'], 'reviewed', proof['evidence_ids']))
                 result['limitations'].append(proof['limitation'])
                 result['reviewer'] = proof['reviewer']
@@ -236,6 +247,9 @@ def evaluate_condition(condition, claims, index, profile, item, errors):
         supported = evaluated.get('evidence_ids', [])
         if (actual in ('PASS', 'FINDING') and capabilities[verifier].get(direction) is True and
                 verifier in condition.get(policy_key, []) and strings(supported) and set(supported) <= set(ids)):
+            if actual == 'PASS' and not set(condition.get('required_positive_evidence_kinds', [])) <= {index[i]['kind'] for i in supported}:
+                result['reasons'].append('Required positive evidence kinds are missing')
+                continue
             outcomes.append((actual, 'automatic', supported))
             result['verifier'] = verifier
         result['reasons'].append(evaluated.get('reason', 'No sufficient condition proof'))

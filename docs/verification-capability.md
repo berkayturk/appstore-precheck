@@ -5,7 +5,7 @@ Generated from condition policies and implemented verifier directions. This is t
 | Measure | Count |
 |---|---:|
 | Obligations | 580 |
-| Explicit condition policies | 208 |
+| Explicit condition policies | 580 |
 | Full positive automatic capability | 1 |
 | Decisive negative automatic capability | 1 |
 | Unknown applicability without an app profile | 580 |

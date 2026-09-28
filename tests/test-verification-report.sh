@@ -73,6 +73,17 @@ with tempfile.TemporaryDirectory() as td:
  add('review-ap','review-record',review_record('applicability','APPLICABLE',['req-one']))
  good=copy.deepcopy(decision);good['applicability']={'status':'APPLICABLE','rationale':'Scoped criterion applies','source_ids':['req-one'],'reviewer':'Synthetic reviewer','evidence_ids':['review-ap']};good['conditions']=[{'condition_id':c,'status':'PASS','mode':'reviewed','reviewer':'Synthetic reviewer','rationale':'Substantive criterion review','evidence_ids':['review-'+c]} for c in ['a','b']]
  assert status(report([good],ps=ps))=='VERIFIED_PASS'
+ mandatory=copy.deepcopy(ps);mandatory['req-one']['conditions'][0]['required_positive_evidence_kinds']=['approval-document']
+ mandatory['req-one']['conditions'][0]['evidence_kinds'].append('approval-document')
+ assert status(report([good],ps=mandatory))=='UNRESOLVED', 'feature evidence cannot replace a mandatory approval document'
+ bare=review_record('a','PASS');bare['rationale']='yes';add('bare-review','review-record',bare)
+ bare_claim=copy.deepcopy(good);bare_claim['conditions'][0]['evidence_ids']=['bare-review']
+ assert status(report([bare_claim],ps=ps))=='UNRESOLVED', 'a bare answer cannot become a substantive review'
+ add('approval-document','approval-document',{'description':'Synthetic study-specific approval fixture, not a real permission'})
+ with_doc=review_record('a','PASS');with_doc['evidence_ids'].append('approval-document');with_doc['observations'].append({'evidence_id':'approval-document','location':'description','observation':'Synthetic scope matches this synthetic condition'})
+ add('review-a-approved','review-record',with_doc)
+ approved=copy.deepcopy(good);approved['conditions'][0]['evidence_ids']=['review-a-approved']
+ assert status(report([approved],ps=mandatory))=='VERIFIED_PASS'
  unproven=copy.deepcopy(good);unproven['applicability']={'status':'APPLICABLE'}
  assert status(report([unproven],ps=ps))=='UNRESOLVED', 'applicability needs evidence too'
  assert report([good],ps=ps)['summary']['reviewed_decisions']==1

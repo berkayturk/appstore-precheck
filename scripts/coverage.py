@@ -119,11 +119,12 @@ def markdown(summary):
     percent = lambda n: (100 * n / total) if total else 0
     rows = ['# Guideline obligation coverage', '',
             'This counts available routes, not checks that ran for an app. Routes can overlap.', '',
+            'Condition-based executable capability is reported separately in [verification-capability.md](verification-capability.md). Legacy full-route labels do not establish evidence-bound readiness.', '',
             '| Measure | Count | Share |', '|---|---:|---:|',
             '| Obligations | {} | 100% |'.format(total),
             '| Routed | {} | {:.1f}% |'.format(summary['routed_obligations'], percent(summary['routed_obligations'])),
             '| Without route | {} | {:.1f}% |'.format(summary['obligations_without_route'], percent(summary['obligations_without_route'])),
-            '| Potential automatic decision | {} | {:.1f}% |'.format(summary['automatic_possible'], percent(summary['automatic_possible'])),
+            '| Legacy full-route declarations | {} | {:.1f}% |'.format(summary['automatic_possible'], percent(summary['automatic_possible'])),
             '| Semantic route | {} | {:.1f}% |'.format(summary['semantic_possible'], percent(summary['semantic_possible'])),
             '| Attestation only | {} | {:.1f}% |'.format(summary['attestation_only'], percent(summary['attestation_only'])),
             '', '## Route counts', '', '| Route | Obligations |', '|---|---:|']

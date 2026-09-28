@@ -58,3 +58,10 @@ Demo login additionally requires `--demo-login`, `PRECHECK_DEMO_AUTHORIZED_TEST=
 `PRECHECK_DEMO_ENVIRONMENT=test|sandbox`, and credentials/selectors supplied privately
 through environment variables. Neither a button nor a successful UI selector proves a
 backend transaction, receipt, entitlement or completed account deletion.
+
+[Manual evidence packets](../skills/appstore-precheck/references/manual-evidence-review.md)
+group criterion-specific requests by owner and reusable document package. They retain
+observed, inferred and attested notes separately from verified results, including
+scope-incomplete observations. Where a positive decision needs an actual approval,
+license or consent record, generic feature inventory and reviewer authority cannot
+replace that document. The packet never supplies a reviewer signature or owner approval.

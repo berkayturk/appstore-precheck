@@ -53,6 +53,10 @@ SUITE=(
   "test-verification-safety-policy.sh" # Safety evidence and exceptions
   "test-verification-section2.sh" # Performance scope and metadata proof
   "test-verification-metadata.sh" # exact ASC identity and limited name proof
+  "test-verification-business-policy.sh" # commerce scope and exceptions
+  "test-section4-verification.sh" # design and login evidence conditions
+  "test-verification-legal-policy.sh" # privacy, licenses and authority
+  "test-verification-intro-policy.sh" # submission scope and alias preservation
   "test-verification-report.sh" # scoped decisions and independent proof
   "test-verification-contract.sh" # versioned evidence and decision invariants
   "test-coverage.sh"   # obligation schema, registry, and route coverage

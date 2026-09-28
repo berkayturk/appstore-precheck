@@ -1,5 +1,6 @@
 """Audited verifier dispatch. A policy label cannot create executable capability."""
 import importlib.util
+from functools import lru_cache
 from pathlib import Path
 
 VERIFIERS = {
@@ -9,14 +10,21 @@ VERIFIERS = {
 MODULES = ('verification-artifact.py', 'verification-metadata.py', 'verification-runtime.py')
 
 
-def extensions():
+@lru_cache(maxsize=1)
+def extension_modules():
+    modules = []
     for filename in MODULES:
         path = Path(__file__).parent / filename
         if path.is_file():
             spec = importlib.util.spec_from_file_location(filename.replace('-', '_'), path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)
-            yield module
+            modules.append(module)
+    return tuple(modules)
+
+
+def extensions():
+    return iter(extension_modules())
 
 
 def capabilities():
