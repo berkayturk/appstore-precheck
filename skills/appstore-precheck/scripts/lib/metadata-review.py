@@ -6,6 +6,7 @@ keys, demo credentials, raw review notes, URLs, or product names.
 """
 import argparse
 import base64
+import http.client
 import ipaddress
 import importlib.util
 import json
@@ -13,6 +14,7 @@ import os
 import pathlib
 import shutil
 import socket
+import ssl
 import subprocess
 import sys
 import time
@@ -343,15 +345,62 @@ def valid_url(value):
     return parsed.scheme in ("https", "http") and bool(parsed.hostname) and not parsed.username and not parsed.password
 
 
-def public_url(value):
-    if not valid_url(value):
-        return False
-    host = urllib.parse.urlparse(value).hostname
+def checked_addresses(host, port):
+    """Resolve once and return the address records only if every answer is global."""
     try:
-        addrs = socket.getaddrinfo(host, None)
+        infos = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
+        if infos and all(ipaddress.ip_address(x[4][0]).is_global for x in infos):
+            return infos
     except (OSError, ValueError):
-        return False
-    return bool(addrs) and all(ipaddress.ip_address(x[4][0]).is_global for x in addrs)
+        pass
+    return []
+
+
+def public_url(value):
+    """Cheap pre-check (used to vet redirect targets); the connection itself re-validates."""
+    return valid_url(value) and bool(checked_addresses(urllib.parse.urlparse(value).hostname, None))
+
+
+def connect_pinned(host, port, timeout):
+    """Connect to an address from the SAME lookup that was validated.
+
+    Resolving here, checking the answers, and dialling one of those answers closes the
+    DNS-rebinding window: no second lookup can return a private address between the
+    check and the connect. The hostname is kept for the Host header and TLS SNI.
+    """
+    last_error = OSError("URL host does not resolve to a public address")
+    for family, socktype, proto, _canonical, sockaddr in checked_addresses(host, port):
+        sock = socket.socket(family, socktype, proto)
+        try:
+            if timeout is not None and timeout is not getattr(socket, "_GLOBAL_DEFAULT_TIMEOUT", None):
+                sock.settimeout(timeout)
+            sock.connect(sockaddr)
+            return sock
+        except OSError as error:
+            sock.close()
+            last_error = error
+    raise last_error
+
+
+class PinnedHTTPConnection(http.client.HTTPConnection):
+    def connect(self):
+        self.sock = connect_pinned(self.host, self.port, self.timeout)
+
+
+class PinnedHTTPSConnection(http.client.HTTPSConnection):
+    def connect(self):
+        sock = connect_pinned(self.host, self.port, self.timeout)
+        self.sock = self._context.wrap_socket(sock, server_hostname=self.host)
+
+
+class PinnedHTTPHandler(urllib.request.HTTPHandler):
+    def http_open(self, request):
+        return self.do_open(PinnedHTTPConnection, request)
+
+
+class PinnedHTTPSHandler(urllib.request.HTTPSHandler):
+    def https_open(self, request):
+        return self.do_open(PinnedHTTPSConnection, request, context=ssl.create_default_context())
 
 
 class SafeRedirect(urllib.request.HTTPRedirectHandler):
@@ -362,13 +411,17 @@ class SafeRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def head_reachable(value):
-    if not public_url(value):
+    if not valid_url(value):
         return False
     request = urllib.request.Request(value, method="HEAD", headers={"User-Agent": "appstore-precheck/metadata-review"})
+    # Environment proxies are disabled on purpose: a proxy would resolve the name
+    # itself, so the address we validated would not be the one contacted.
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), PinnedHTTPHandler,
+                                         PinnedHTTPSHandler, SafeRedirect)
     try:
-        with urllib.request.build_opener(SafeRedirect()).open(request, timeout=8) as response:
+        with opener.open(request, timeout=8) as response:
             return 200 <= response.status < 400
-    except (urllib.error.URLError, OSError, ValueError):
+    except (urllib.error.URLError, http.client.HTTPException, OSError, ValueError):
         return False
 
 

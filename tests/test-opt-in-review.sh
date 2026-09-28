@@ -48,13 +48,48 @@ PY
 rm -rf "$auto_out"
 echo 'automatic opt-in evidence retained: OK'
 printf '{"dynamic":{"build":true}}\n' > "$repo/.appstore-precheck.json"
-bash "$ROOT/skills/appstore-precheck/scripts/scan.sh" --dir "$repo" --dry-run \
-  --dynamic-blocking --out "$tmp/config-report" --format json > "$tmp/config.json"
+scan="$ROOT/skills/appstore-precheck/scripts/scan.sh"
+# The config lives in the scanned repo, so it must never start a build by itself.
+env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir "$repo" \
+  --dry-run --out "$tmp/config-report" --format json > "$tmp/config.json" 2> "$tmp/config.err"
 python3 - "$tmp/config.json" <<'PY'
+import json,sys
+assert 'opt_in' not in json.load(open(sys.argv[1])), 'untrusted config entered the build tier'
+PY
+grep -qF 'appstore-precheck: config requests dynamic.build; ignored (pass --build or set APPSTORE_PRECHECK_TRUST_CONFIG=1)' "$tmp/config.err" \
+  || { echo 'missing ignored-config notice'; cat "$tmp/config.err"; exit 1; }
+[[ ! -e "$tmp/config-report" ]] || { echo 'untrusted config ran the opt-in runner'; exit 1; }
+if env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir "$repo" \
+  --dry-run --dynamic-blocking >/dev/null 2>&1; then
+  echo 'untrusted config permitted --dynamic-blocking without a build'; exit 1
+fi
+echo 'untrusted config build is ignored with a notice: OK'
+APPSTORE_PRECHECK_TRUST_CONFIG=1 bash "$scan" --dir "$repo" --dry-run \
+  --dynamic-blocking --out "$tmp/trusted-report" --format json > "$tmp/trusted.json" 2> "$tmp/trusted.err"
+python3 - "$tmp/trusted.json" <<'PY'
 import json,sys
 assert json.load(open(sys.argv[1]))['opt_in']['tiers']['build'] == 'PLAN'
 PY
-echo 'config build opt-in permits dynamic blocking: OK'
+! grep -q 'ignored' "$tmp/trusted.err" || { echo 'trusted config printed the ignored notice'; exit 1; }
+echo 'trusted config build opt-in permits dynamic blocking: OK'
+# dynamic.demoLogin is only a default for an already-active build or app.
+printf '{"dynamic":{"demoLogin":true}}\n' > "$repo/.appstore-precheck.json"
+env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir "$repo" > "$tmp/demo-plain.txt" 2> "$tmp/demo-plain.err" \
+  || { echo 'config demoLogin broke a plain scan'; cat "$tmp/demo-plain.err"; exit 1; }
+env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir "$repo" --no-runtime > /dev/null 2>&1 \
+  || { echo 'config demoLogin broke --no-runtime'; exit 1; }
+env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir "$repo" --build --dry-run --no-runtime \
+  --out "$tmp/demo-nr" --format json > "$tmp/demo-nr.json" \
+  || { echo 'config demoLogin conflicted with an explicit --no-runtime'; exit 1; }
+env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir "$repo" --build --dry-run \
+  --out "$tmp/demo-build" --format json > "$tmp/demo-build.json" \
+  || { echo 'config demoLogin broke an explicit build'; exit 1; }
+python3 - "$tmp/demo-nr.json" "$tmp/demo-build.json" <<'PY'
+import json,sys
+for path in sys.argv[1:]: assert json.load(open(path))['opt_in']['tiers']['build'] == 'PLAN'
+PY
+rm -f "$repo/.appstore-precheck.json"
+echo 'config demoLogin never fails a scan by itself: OK'
 
 python3 - "$ROOT" <<'PY'
 import importlib.util, json, pathlib, sys
@@ -91,3 +126,4 @@ assert checks['dyn-account-deletion']['status'] == 'REVIEW_REQUIRED'
 assert engine.validate_run_results({'checks': {'dyn-launch': {'status': 'NEEDS_REVIEW', 'reason': 'alias'}}}, registry)['dyn-launch']['status'] == 'REVIEW_REQUIRED'
 print('dynamic subcheck aggregation and registry validation: OK')
 PY
+bash "$ROOT/tests/test-orchestration-hardening.sh"

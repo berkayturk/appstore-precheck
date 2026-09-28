@@ -4,7 +4,9 @@
 import argparse
 import importlib.util
 import json
+import os
 import re
+import stat
 import subprocess
 import sys
 from pathlib import Path
@@ -13,22 +15,68 @@ HERE = Path(__file__).resolve().parent
 _process_spec = importlib.util.spec_from_file_location('dyn_process', HERE / 'lib/dyn-process.py')
 _process = importlib.util.module_from_spec(_process_spec)
 _process_spec.loader.exec_module(_process)
+_safe_spec = importlib.util.spec_from_file_location('safe_write', HERE / 'lib/safe_write.py')
+safe_write = importlib.util.module_from_spec(_safe_spec)
+_safe_spec.loader.exec_module(safe_write)
 ARTIFACT_IDS = (
     "artifact-entitlements", "artifact-reason-api", "artifact-private-api",
     "artifact-url-schemes", "artifact-ats", "artifact-sdk",
     "artifact-embedded-sdk", "artifact-executable-loading", "artifact-debug",
 )
+# Fixed-name files this runner (re)writes inside --out-dir. A reused report directory
+# may hold last run's copies; they are removed first so nothing stale can be imported
+# or reported as this run's evidence. Only these names are ever touched.
+OWN_OUTPUTS = ("summary.json", "run-results.json", "artifact-review.json", "metadata-review.json") + \
+    tuple("section{}.json".format(n) for n in range(1, 7))
+INVENTORY = ("runtime", "screen-inventory.json")
 DYNAMIC = re.compile(r"^DYNAMIC-(PASS|FINDING|SKIP): \S+ \[([^]]+)\] — (.*)$")
 
 
-def run(command, timeout):
+class Budget(float):
+    """Outer wall-clock cap in seconds that also carries the TERM->KILL grace period
+    and any extra environment for the child. It is a plain float everywhere a timeout
+    is expected, so the two-argument ``run(command, timeout)`` seam stays stable."""
+
+    def __new__(cls, seconds, grace=_process.DEFAULT_GRACE, env=None):
+        value = super().__new__(cls, seconds)
+        value.grace = grace
+        value.env = dict(env or {})
+        return value
+
+
+# The inner deadline (build-run.sh --deadline / PRECHECK_RUNTIME_DEADLINE_SECONDS)
+# always fires first and cleans up; the outer cap only waits out its grace period.
+BUILD_DEADLINE = 2400
+BUILD_BUDGET = Budget(2700, grace=240)
+RUNTIME_DEADLINE = 1200
+RUNTIME_BUDGET = Budget(1380, grace=180, env={"PRECHECK_RUNTIME_DEADLINE_SECONDS": str(RUNTIME_DEADLINE)})
+
+
+def run(command, timeout, grace=None, env=None):
+    grace = getattr(timeout, "grace", _process.DEFAULT_GRACE) if grace is None else grace
+    extra = dict(getattr(timeout, "env", {}), **(env or {}))
+    kwargs = {"env": dict(os.environ, **extra)} if extra else {}
     try:
-        return _process.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                            text=True, timeout=timeout)
+        return _process.run(command, grace=grace, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            text=True, timeout=timeout, **kwargs)
     except InterruptedError:
         raise
     except (OSError, subprocess.TimeoutExpired):
         return None
+
+
+def remove_stale_outputs(out):
+    """Unlink (never follow) this runner's own previous outputs; leave everything else."""
+    paths = [out / name for name in OWN_OUTPUTS]
+    if not (out / INVENTORY[0]).is_symlink():
+        paths.append(out.joinpath(*INVENTORY))
+    for path in paths:
+        try:
+            mode = os.lstat(str(path)).st_mode
+        except (FileNotFoundError, NotADirectoryError):
+            continue
+        if not stat.S_ISDIR(mode):
+            os.unlink(str(path))
 
 
 def skip_reason(process, fallback):
@@ -61,32 +109,58 @@ def normalize(status):
     return {"NEEDS_REVIEW": "REVIEW_REQUIRED"}.get(status, status)
 
 
+VALID_STATUSES = frozenset({"NOT_RUN", "SKIP", "PASS", "REVIEW_REQUIRED", "WARN", "FINDING"})
+# Statuses that dominate a merge, weakest first. PASS/SKIP/NOT_RUN carry no defect.
+DEFECT_RANK = {"REVIEW_REQUIRED": 1, "WARN": 2, "FINDING": 3}
+
+
+def merge_status(previous, status):
+    """Order-independent aggregate of results sharing one check id.
+
+    A defect (FINDING > WARN > REVIEW_REQUIRED) dominates. PASS survives only when
+    every sibling passed: a PASS next to a SKIP/NOT_RUN sibling means part of the
+    check never ran, so the aggregate needs review instead of reading as clean.
+    """
+    if previous is None or previous == status:
+        return status
+    worst = max(previous, status, key=lambda value: DEFECT_RANK.get(value, 0))
+    if DEFECT_RANK.get(worst, 0):
+        return worst
+    return "REVIEW_REQUIRED" if "PASS" in (previous, status) else "SKIP"
+
+
+def merge_result(checks, check_id, status, reason, evidence):
+    previous = checks.get(check_id)
+    merged = merge_status(previous["status"] if previous else None, status)
+    if merged == status:
+        record(checks, check_id, status, reason, evidence)
+    elif merged != previous["status"]:
+        gap = reason if status != "PASS" else previous.get("reason", "")
+        record(checks, check_id, merged, "Partial evidence: a sibling check did not run (" +
+               single_line(gap, "no reason given") + ")", evidence)
+
+
 def import_records(checks, rows, evidence):
     errors = []
     if not isinstance(rows, list):
         return ["Optional result collection must be a list"]
-    rank = {"NOT_RUN": 0, "SKIP": 1, "PASS": 2, "REVIEW_REQUIRED": 3, "WARN": 4, "FINDING": 5}
     for row in rows:
         if not isinstance(row, dict) or not isinstance(row.get("check_id"), str) or not row["check_id"]:
             errors.append("Malformed optional result ignored")
             continue
-        check_id = row["check_id"]
         raw_status = row.get("status")
         status = normalize(raw_status) if isinstance(raw_status, str) else None
-        if status not in rank:
+        if status not in VALID_STATUSES:
             errors.append("Invalid optional result status ignored")
             continue
-        previous = checks.get(check_id)
-        if previous and rank.get(previous["status"], -1) > rank[status]:
-            continue
-        record(checks, check_id, status, row.get("reason", ""), evidence + "#" + check_id)
+        merge_result(checks, row["check_id"], status, row.get("reason", ""), evidence + "#" + row["check_id"])
     return errors
 
 
 def import_dynamic(checks, content, evidence):
     # Bundle subchecks include a plist key suffix. Aggregate under the registered
-    # parent ID, retaining an advisory defect over a later bundle summary PASS.
-    rank = {"SKIP": 0, "PASS": 1, "WARN": 2, "FINDING": 3}
+    # parent ID: a defect beats a later bundle summary PASS, and one skipped key
+    # keeps the parent from reading as a full PASS.
     for line in content.splitlines():
         match = DYNAMIC.match(line)
         if not match:
@@ -95,10 +169,7 @@ def import_dynamic(checks, content, evidence):
         check_id = raw_id.split(":", 1)[0]
         if state == "FINDING" and "quorum 3/3" not in reason:
             state = "WARN"
-        previous = checks.get(check_id)
-        if previous and rank.get(previous["status"], -1) > rank[state]:
-            continue
-        record(checks, check_id, state, reason, evidence + "#" + raw_id)
+        merge_result(checks, check_id, state, reason, evidence + "#" + raw_id)
 
 
 def main():
@@ -134,6 +205,7 @@ def main():
     if out == repo or repo in out.parents:
         parser.error("--out-dir must be outside the user project")
     out.mkdir(parents=True, exist_ok=True)
+    remove_stale_outputs(out)
     checks, tiers, blocking, input_errors = {}, {}, [], []
     app = args.app.resolve() if args.app else None
 
@@ -147,7 +219,7 @@ def main():
             try:
                 payload = json.loads(process.stdout)
                 output = out / (label + ".json")
-                output.write_text(json.dumps(payload, indent=2) + "\n")
+                safe_write.write_text(output, json.dumps(payload, indent=2) + "\n")
                 input_errors.extend(import_records(checks, payload.get("checks", []), str(output)))
                 tiers[label] = "RAN"
             except (ValueError, TypeError):
@@ -157,10 +229,10 @@ def main():
 
     if args.build:
         cmd = ["bash", str(HERE / "build-run.sh"), "--repo", str(repo),
-               "--out", str(out / "artifact")]
+               "--out", str(out / "artifact"), "--deadline", str(BUILD_DEADLINE)]
         if args.dry_run:
             cmd.append("--dry-run")
-        process = run(cmd, 1250)
+        process = run(cmd, BUILD_BUDGET)
         if process is None:
             tiers["build"] = "SKIP: tool or deadline unavailable"
         elif process.returncode == 0:
@@ -179,7 +251,7 @@ def main():
         try:
             payload = json.loads(process.stdout)
             artifact_output = out / "artifact-review.json"
-            artifact_output.write_text(json.dumps(payload, indent=2) + "\n")
+            safe_write.write_text(artifact_output, json.dumps(payload, indent=2) + "\n")
             input_errors.extend(import_records(checks, payload.get("checks", []), str(artifact_output)))
             tiers["artifact"] = "RAN" if app and not args.dry_run else "NOT_RUN"
         except (ValueError, TypeError):
@@ -197,7 +269,7 @@ def main():
             cmd.append("--dynamic-blocking")
         if args.demo_login:
             cmd.append("--demo-login")
-        process = run(cmd, 900)
+        process = run(cmd, RUNTIME_BUDGET)
         if process is None:
             tiers["runtime"] = "SKIP: simulator driver or deadline unavailable"
         else:
@@ -206,8 +278,9 @@ def main():
             for line in process.stdout.splitlines():
                 if line.startswith("FAIL: ") and args.dynamic_blocking:
                     blocking.append(line)
-            inventory = out / "runtime" / "screen-inventory.json"
-            if inventory.is_file():
+            inventory = out.joinpath(*INVENTORY)
+            # Anything here was written by this run: stale copies were removed at startup.
+            if inventory.is_file() and not inventory.is_symlink() and not inventory.parent.is_symlink():
                 try:
                     input_errors.extend(import_records(checks, json.loads(inventory.read_text()).get("checks", []), str(inventory)))
                 except (OSError, ValueError, TypeError):
@@ -230,7 +303,7 @@ def main():
             try:
                 payload = json.loads(process.stdout)
                 metadata_output = out / "metadata-review.json"
-                metadata_output.write_text(json.dumps(payload, indent=2) + "\n")
+                safe_write.write_text(metadata_output, json.dumps(payload, indent=2) + "\n")
                 input_errors.extend(import_records(checks, payload.get("results", []), str(metadata_output)))
                 tiers["metadata"] = "RAN"
             except (ValueError, TypeError):
@@ -240,10 +313,10 @@ def main():
     else:
         tiers["metadata"] = "NOT_RUN"
 
-    (out / "run-results.json").write_text(json.dumps({"checks": checks}, indent=2) + "\n")
+    safe_write.write_text(out / "run-results.json", json.dumps({"checks": checks}, indent=2) + "\n")
     summary = {"schema_version": 1, "tiers": tiers, "blocking": blocking,
                "run_results": str(out / "run-results.json"), "input_errors": input_errors}
-    (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    safe_write.write_text(out / "summary.json", json.dumps(summary, indent=2) + "\n")
     json.dump(summary, sys.stdout)
     sys.stdout.write("\n")
     return 0
@@ -254,3 +327,6 @@ if __name__ == "__main__":
         sys.exit(main())
     except InterruptedError:
         sys.exit(143)
+    except OSError as error:
+        print("opt-in-review: cannot write reports safely: " + str(error), file=sys.stderr)
+        sys.exit(2)

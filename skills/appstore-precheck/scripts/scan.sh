@@ -17,6 +17,9 @@ FORMAT="text"
 SCAN_DIR=""
 OPT_NO_RUNTIME=0 OPT_DEMO=0 OPT_ASC_VERSION="" OPT_ASC_INFO=""
 OPT_BUILD=0 OPT_APP="" OPT_METADATA=0 OPT_ASC="" OPT_URLS=0 OPT_DYN_BLOCK=0 OPT_DRY=0 OPT_OUT="" OPT_TEMP=""
+# 1 only when opt-in-review.py exited successfully in THIS run; a reused --out may
+# hold last run's run-results.json/summary.json, which must never be merged.
+OPT_RAN_OK=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --format)
@@ -96,8 +99,19 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   fi
   echo "false"
 }
-if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then OPT_BUILD=1; fi
-if [[ "$(cfg_bool '.dynamic.demoLogin')" == true ]]; then OPT_DEMO=1; fi
+# The config lives in the SCANNED repository, so it must never execute that
+# project's code on its own: dynamic.build is honoured only when the invoker vouches
+# for the config with APPSTORE_PRECHECK_TRUST_CONFIG=1 (or passes --build/--app).
+if [[ "$OPT_BUILD" != 1 && -z "$OPT_APP" && "$(cfg_bool '.dynamic.build')" == true ]]; then
+  if [[ "${APPSTORE_PRECHECK_TRUST_CONFIG:-}" == 1 ]]; then
+    OPT_BUILD=1
+  else
+    echo "appstore-precheck: config requests dynamic.build; ignored (pass --build or set APPSTORE_PRECHECK_TRUST_CONFIG=1)" >&2
+  fi
+fi
+# dynamic.demoLogin is only a default for a run that is already active (flags or
+# trusted config) and launches the app; on its own it must never fail a scan.
+if [[ ( "$OPT_BUILD" == 1 || -n "$OPT_APP" ) && "$OPT_NO_RUNTIME" != 1 && "$(cfg_bool '.dynamic.demoLogin')" == true ]]; then OPT_DEMO=1; fi
 if [[ "$OPT_NO_RUNTIME" == 1 && ( "$OPT_DEMO" == 1 || "$OPT_DYN_BLOCK" == 1 ) ]]; then echo "scan.sh: --no-runtime conflicts with --demo-login or --dynamic-blocking" >&2; exit 64; fi
 if [[ "$OPT_DEMO" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --demo-login needs --build or --app" >&2; exit 64; fi
 if [[ "$OPT_DYN_BLOCK" == 1 && "$OPT_BUILD" != 1 && -z "$OPT_APP" ]]; then echo "scan.sh: --dynamic-blocking needs --build or --app" >&2; exit 64; fi
@@ -1682,6 +1696,7 @@ if [[ "$OPT_BUILD" == 1 || -n "$OPT_APP" || "$OPT_METADATA" == 1 ]]; then
     [[ -n "$OPT_ASC_VERSION" ]] && OPT_ARGS+=( --asc-version-id "$OPT_ASC_VERSION" )
     [[ -n "$OPT_ASC_INFO" ]] && OPT_ARGS+=( --asc-info-id "$OPT_ASC_INFO" )
     if python3 "$SCRIPT_DIR/opt-in-review.py" "${OPT_ARGS[@]}" >/dev/null; then
+      OPT_RAN_OK=1
       if [[ "$FORMAT" == text ]]; then
         python3 - "$OPT_OUT/summary.json" <<'PY'
 import json,sys
@@ -1715,7 +1730,7 @@ fi
 if [[ "$FORMAT" == json ]]; then
   exec 1>&4 4>&-
   if command -v python3 >/dev/null 2>&1; then
-    if [[ -n "$OPT_OUT" && -f "$OPT_OUT/run-results.json" ]]; then
+    if [[ "$OPT_RAN_OK" == 1 && -n "$OPT_OUT" && -f "$OPT_OUT/run-results.json" ]]; then
       render_json | python3 "$SCRIPT_DIR/augment-json.py" --config "$CONFIG" \
         --run-results "$OPT_OUT/run-results.json" --opt-summary "$OPT_OUT/summary.json"
     else

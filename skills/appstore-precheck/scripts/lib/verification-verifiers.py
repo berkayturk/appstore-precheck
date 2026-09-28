@@ -7,19 +7,19 @@ VERIFIERS = {
     'runtime.launch-crash.v1': {'positive': False, 'finding': True, 'applicability': True,
                               'evidence_kinds': ['runtime-transcript']},
 }
-MODULES = ('verification-artifact.py', 'verification-metadata.py', 'verification-runtime.py')
+MODULES = ('verification-metadata.py', 'verification-runtime.py')
 
 
 @lru_cache(maxsize=1)
 def extension_modules():
     modules = []
     for filename in MODULES:
+        # A listed module that is missing is a broken install: fail loudly, never skip.
         path = Path(__file__).parent / filename
-        if path.is_file():
-            spec = importlib.util.spec_from_file_location(filename.replace('-', '_'), path)
-            module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
-            modules.append(module)
+        spec = importlib.util.spec_from_file_location(filename.replace('-', '_'), path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        modules.append(module)
     return tuple(modules)
 
 
