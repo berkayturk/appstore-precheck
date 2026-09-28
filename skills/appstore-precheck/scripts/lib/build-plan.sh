@@ -46,7 +46,7 @@ PY
 build_check_symlinks() { # reject links; a build script could otherwise follow one into the source
   python3 - "$1" <<'PY'
 import fnmatch, os, sys
-excluded = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData'}
+excluded = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData', '.build', '.dart_tool', '__pycache__'}
 for base, dirs, files in os.walk(sys.argv[1], followlinks=False):
     dirs[:] = [d for d in dirs if d not in excluded]
     for name in dirs + files:

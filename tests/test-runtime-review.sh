@@ -33,7 +33,7 @@ assert rc['dyn-external-payment']['status']=='NEEDS_REVIEW'
 assert rc['dyn-navigation-crash']['status']=='SKIP'
 assert rc['dyn-layout-review']['status']=='NEEDS_REVIEW'
 assert all(x['status']=='SKIP' for x in dc.values())
-assert clean['screens'][0]['actions'][0]['safe_to_tap']
+assert not any(x['safe_to_tap'] for x in clean['screens'][0]['actions'])
 assert not any(x['safe_to_tap'] for x in risky['screens'][0]['actions'] if x['label']=='Delete Account')
 assert clean['screen_budget']==25 and clean['time_budget_seconds']==360
 PY
@@ -90,12 +90,14 @@ mkdir "$TMP/bin"
 cat > "$TMP/bin/maestro" <<'SH'
 #!/bin/sh
 case "$*" in
-  *test*) exit 0 ;;
+  *test*) touch .demo-submitted; exit 0 ;;
   *hierarchy*)
-    if [ "$FAKE_DEMO_KIND" = success ]; then
-      printf '%s\n' '{"attributes":{"text":"Dashboard"},"children":[]}'
+    if [ ! -f .demo-submitted ]; then
+      printf '%s\n' '{"children":[{"attributes":{"text":"Email"}},{"attributes":{"text":"Password"}},{"attributes":{"text":"Sign In"}},{"attributes":{"text":"Welcome"}}]}'
+    elif [ "$FAKE_DEMO_KIND" = success ]; then
+      printf '%s\n' '{"children":[{"attributes":{"text":"Dashboard"}},{"attributes":{"text":"Home"}},{"attributes":{"text":"Settings"}},{"attributes":{"text":"Help"}}]}'
     else
-      printf '%s\n' '{"attributes":{"text":"Invalid credentials"},"children":[]}'
+      printf '%s\n' '{"children":[{"attributes":{"text":"Invalid credentials"}},{"attributes":{"text":"Email"}},{"attributes":{"text":"Password"}},{"attributes":{"text":"Sign In"}}]}'
     fi ;;
 esac
 SH
@@ -104,12 +106,13 @@ DEMO="$ROOT/skills/appstore-precheck/scripts/lib/dyn-demo-login.py"
 export PRECHECK_DEMO_USERNAME=reviewer@example.invalid PRECHECK_DEMO_PASSWORD=fixture-secret
 export PRECHECK_DEMO_SUCCESS_TEXT=Dashboard PRECHECK_DEMO_FAILURE_TEXT='Invalid credentials'
 export PRECHECK_DEMO_BACKEND_READY=1 FAKE_DEMO_KIND=success
+export PRECHECK_DEMO_AUTHORIZED_TEST=1 PRECHECK_DEMO_ENVIRONMENT=sandbox
 result="$(PATH="$TMP/bin:$PATH" python3 "$DEMO" FIXTURE-UDID org.example.app)"
 [[ "$result" == PASS$'\t'* ]]
 [[ "$result" != *fixture-secret* && "$result" != *reviewer@example.invalid* ]]
 export FAKE_DEMO_KIND=failure
 result="$(PATH="$TMP/bin:$PATH" python3 "$DEMO" FIXTURE-UDID org.example.app)"
-[[ "$result" == FINDING$'\t'* ]]
+[[ "$result" == SKIP$'\t'* ]]
 unset PRECHECK_DEMO_BACKEND_READY
 result="$(PATH="$TMP/bin:$PATH" python3 "$DEMO" FIXTURE-UDID org.example.app)"
 [[ "$result" == SKIP$'\t'* ]]
@@ -161,3 +164,39 @@ test "$(grep -c 'simctl erase' "$FAKE_CALLS")" -eq 2
 
 bash "$REVIEW" --screens "$FIX/clean" --max-screens 26 --out "$TMP/invalid" >/dev/null 2>&1 && exit 1
 printf 'runtime review fixtures passed\n'
+
+# Child driver output, credentials flow and debug artifacts stay inside a private
+# disposable directory on success and driver error. No credential enters argv.
+cat > "$TMP/bin/maestro" <<'PY'
+#!/usr/bin/env python3
+import json, os, pathlib, sys
+args = sys.argv[1:]
+assert os.environ['PRECHECK_DEMO_PASSWORD'] not in ' '.join(args)
+if 'test' in args:
+    flow = pathlib.Path(args[-1])
+    assert flow.stat().st_mode & 0o777 == 0o600
+    debug = pathlib.Path(args[args.index('--debug-output') + 1])
+    output = pathlib.Path(args[args.index('--test-output-dir') + 1])
+    assert debug.parent == output.parent == flow.parent
+    debug.mkdir(); output.mkdir()
+    (debug / 'secret.log').write_text(os.environ['PRECHECK_DEMO_PASSWORD'])
+    (output / 'commands.json').write_text(os.environ['PRECHECK_DEMO_USERNAME'])
+    pathlib.Path(os.environ['FAKE_PRIVATE_DIR']).write_text(str(flow.parent))
+    sys.exit(int(os.environ.get('FAKE_DRIVER_FAIL', '0')))
+print(json.dumps({'children': [{'attributes': {'text': x}} for x in ['Email', 'Password', 'Sign In', 'Welcome']]}))
+PY
+chmod +x "$TMP/bin/maestro"
+export FAKE_PRIVATE_DIR="$TMP/private-location"
+for FAKE_DRIVER_FAIL in 0 1; do
+  export FAKE_DRIVER_FAIL
+  PATH="$TMP/bin:$PATH" python3 "$DEMO" FIXTURE-UDID org.example.app > "$TMP/demo-output"
+  test ! -e "$(cat "$FAKE_PRIVATE_DIR")"
+  ! grep -Eq 'fixture-secret|reviewer@example.invalid' "$TMP/demo-output"
+done
+unset PRECHECK_DEMO_AUTHORIZED_TEST
+PATH="$TMP/bin:$PATH" python3 "$DEMO" FIXTURE-UDID org.example.app > "$TMP/demo-output"
+grep -q '^SKIP' "$TMP/demo-output"
+python3 "$ROOT/tests/test-runtime-transitions.py"
+python3 "$ROOT/tests/test-runtime-process.py"
+
+python3 "$ROOT/tests/test-runtime-navigation.py"

@@ -1,15 +1,143 @@
 {
   "schema_version": 1,
   "cases": [
-    {"framework": "swiftui", "variant": "clean", "expected_launch": "PASS", "defects": []},
-    {"framework": "swiftui", "variant": "broken", "expected_launch": "FINDING", "defects": ["deterministic launch crash"]},
-    {"framework": "rn-bare", "variant": "clean", "expected_launch": "PASS", "defects": []},
-    {"framework": "rn-bare", "variant": "broken", "expected_launch": "PASS", "expected_checks": {"dyn-account-deletion": "NEEDS_REVIEW", "dyn-siwa-parity": "NEEDS_REVIEW", "dyn-restore-response": "NEEDS_REVIEW", "dyn-ugc-safety": "NEEDS_REVIEW"}, "defects": ["missing account deletion", "third-party login without Sign in with Apple", "inert restore action", "UGC report unavailable"]},
-    {"framework": "expo", "variant": "clean", "expected_launch": "PASS", "expected_bundle": {"NSCameraUsageDescription": "nonempty"}, "defects": []},
-    {"framework": "expo", "variant": "broken", "expected_launch": "PASS", "expected_bundle": {"NSCameraUsageDescription": "absent"}, "expected_checks": {"dyn-placeholder": "NEEDS_REVIEW", "dyn-restore-response": "NEEDS_REVIEW", "dyn-ugc-safety": "NEEDS_REVIEW"}, "defects": ["placeholder copy", "inert restore action", "UGC report unavailable", "missing camera purpose string in shipped bundle"]},
-    {"framework": "flutter", "variant": "clean", "expected_launch": "PASS", "defects": []},
-    {"framework": "flutter", "variant": "broken", "expected_launch": "PASS", "expected_checks": {"dyn-placeholder": "NEEDS_REVIEW"}, "defects": ["placeholder copy", "missing account deletion", "UGC report unavailable"]},
-    {"framework": "kmp", "variant": "clean", "expected_launch": "PASS", "defects": []},
-    {"framework": "kmp", "variant": "broken", "expected_launch": "PASS", "expected_checks": {"dyn-placeholder": "NEEDS_REVIEW"}, "defects": ["placeholder copy", "missing account deletion", "UGC report unavailable", "unused HealthKit entitlement"]}
+    {
+      "framework": "swiftui",
+      "variant": "clean",
+      "expected_launch": "PASS",
+      "defects": [],
+      "expected_runtime_labels": [
+        "Precheck Clean"
+      ]
+    },
+    {
+      "framework": "swiftui",
+      "variant": "broken",
+      "expected_launch": "FINDING",
+      "defects": [
+        "deterministic launch crash"
+      ],
+      "expected_runtime_labels": []
+    },
+    {
+      "framework": "rn-bare",
+      "variant": "clean",
+      "expected_launch": "PASS",
+      "defects": [],
+      "expected_runtime_labels": [
+        "Precheck RN Clean"
+      ]
+    },
+    {
+      "framework": "rn-bare",
+      "variant": "broken",
+      "expected_launch": "PASS",
+      "expected_checks": {
+        "dyn-account-deletion": "NEEDS_REVIEW",
+        "dyn-siwa-parity": "NEEDS_REVIEW",
+        "dyn-restore-response": "NEEDS_REVIEW",
+        "dyn-ugc-safety": "NEEDS_REVIEW"
+      },
+      "defects": [
+        "missing account deletion",
+        "third-party login without Sign in with Apple",
+        "inert restore action",
+        "UGC report unavailable"
+      ],
+      "expected_runtime_labels": [
+        "Precheck RN Broken",
+        "Sign in with Example",
+        "Restore Purchases"
+      ]
+    },
+    {
+      "framework": "expo",
+      "variant": "clean",
+      "expected_launch": "PASS",
+      "expected_bundle": {
+        "NSCameraUsageDescription": "nonempty"
+      },
+      "defects": [],
+      "expected_runtime_labels": [
+        "Precheck Expo Clean"
+      ]
+    },
+    {
+      "framework": "expo",
+      "variant": "broken",
+      "expected_launch": "PASS",
+      "expected_bundle": {
+        "NSCameraUsageDescription": "absent"
+      },
+      "expected_checks": {
+        "dyn-placeholder": "NEEDS_REVIEW",
+        "dyn-restore-response": "NEEDS_REVIEW",
+        "dyn-ugc-safety": "NEEDS_REVIEW"
+      },
+      "defects": [
+        "placeholder copy",
+        "inert restore action",
+        "UGC report unavailable",
+        "missing camera purpose string in shipped bundle"
+      ],
+      "expected_runtime_labels": [
+        "Precheck Expo Broken",
+        "Lorem ipsum dolor sit amet.",
+        "Restore Purchases"
+      ]
+    },
+    {
+      "framework": "flutter",
+      "variant": "clean",
+      "expected_launch": "PASS",
+      "defects": [],
+      "expected_runtime_labels": [
+        "Precheck Flutter Clean"
+      ]
+    },
+    {
+      "framework": "flutter",
+      "variant": "broken",
+      "expected_launch": "PASS",
+      "expected_checks": {
+        "dyn-placeholder": "NEEDS_REVIEW"
+      },
+      "defects": [
+        "placeholder copy",
+        "missing account deletion",
+        "UGC report unavailable"
+      ],
+      "expected_runtime_labels": [
+        "Precheck Flutter Broken",
+        "Lorem ipsum dolor sit amet."
+      ]
+    },
+    {
+      "framework": "kmp",
+      "variant": "clean",
+      "expected_launch": "PASS",
+      "defects": [],
+      "expected_runtime_labels": [
+        "KMP Clean"
+      ]
+    },
+    {
+      "framework": "kmp",
+      "variant": "broken",
+      "expected_launch": "PASS",
+      "expected_checks": {
+        "dyn-placeholder": "NEEDS_REVIEW"
+      },
+      "defects": [
+        "placeholder copy",
+        "missing account deletion",
+        "UGC report unavailable",
+        "unused HealthKit entitlement"
+      ],
+      "expected_runtime_labels": [
+        "KMP Broken",
+        "Lorem ipsum dolor sit amet"
+      ]
+    }
   ]
 }

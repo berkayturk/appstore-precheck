@@ -5,6 +5,9 @@ Results describe evidence, not a blanket App Store approval. Missing build/tool
 evidence is explicitly NOT_RUN/SKIP. No application code is launched.
 """
 import argparse
+import datetime
+import hashlib
+import fnmatch
 import json
 import pathlib
 import plistlib
@@ -89,19 +92,25 @@ def select_app(path, temp):
     return None, None, "Expected .app, .ipa, or .xcarchive"
 
 
+def code_bundles(app):
+    """Include extension and App Clip executable boundaries, not just the main app."""
+    return [app] + sorted(p for p in app.rglob('*') if p.is_dir() and
+                         p.suffix in ('.appex', '.framework', '.app'))
+
+
 def embedded_frameworks(app):
-    return sorted((app / "Frameworks").glob("*.framework"))
+    return [p for p in code_bundles(app)[1:] if p.suffix == '.framework']
 
 
 def executable(app, info):
     name = info.get("CFBundleExecutable")
-    path = app / name if isinstance(name, str) else None
+    path = app / name if isinstance(name, str) and pathlib.Path(name).name == name else None
     return path if path and path.is_file() else None
 
 
 def machos(app, main_binary):
     binaries = [main_binary] if main_binary else []
-    for framework in embedded_frameworks(app):
+    for framework in code_bundles(app)[1:]:
         framework_info = plist(framework / "Info.plist")
         if isinstance(framework_info, dict):
             binary = executable(framework, framework_info)
@@ -114,6 +123,8 @@ def entitlements(app):
     result = tool("codesign", "-d", "--entitlements", ":-", str(app))
     if result is None:
         return None, "codesign unavailable (install Xcode Command Line Tools)"
+    if result.returncode != 0:
+        return None, "Code-signing entitlements unavailable; signature not verified"
     raw = result.stdout or result.stderr
     start = raw.find(b"<?xml")
     if start < 0:
@@ -154,40 +165,72 @@ def review_entitlements(info, ents, error, binary):
     return record(CHECKS[0], "PASS", "No checked entitlement/Info.plist mismatch observed")
 
 
+# Identifiers checked against Apple's required-reason API documentation, 2026-09-27.
+# Membership does not prove that the declared reason matches actual use.
+REASON_SOURCE = "https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacyaccessedapitypes/nsprivacyaccessedapitype"
+APPROVED_REASONS = {
+    "NSPrivacyAccessedAPICategoryFileTimestamp": {"DDA9.1", "C617.1", "3B52.1", "0A2A.1"},
+    "NSPrivacyAccessedAPICategorySystemBootTime": {"35F9.1", "8FFB.1", "3D61.1"},
+    "NSPrivacyAccessedAPICategoryDiskSpace": {"85F4.1", "E174.1", "7D9E.1", "B728.1"},
+    "NSPrivacyAccessedAPICategoryActiveKeyboards": {"3EC4.1", "54BD.1"},
+    "NSPrivacyAccessedAPICategoryUserDefaults": {"CA92.1", "1C8F.1", "C56D.1", "AC6B.1"},
+}
+
+
 def review_reasons(app, binary):
     if not binary:
         return record(CHECKS[1], "SKIP", "CFBundleExecutable is missing")
     categories = {
-        "NSPrivacyAccessedAPICategoryFileTimestamp": ("_stat", "_fstat", "_lstat", "_getattrlist"),
-        "NSPrivacyAccessedAPICategoryDiskSpace": ("_statfs", "_fstatfs"),
+        "NSPrivacyAccessedAPICategoryFileTimestamp": ("_stat", "_fstat", "_lstat", "_fstatat", "_getattrlist"),
+        "NSPrivacyAccessedAPICategoryDiskSpace": ("_statfs", "_fstatfs", "_statvfs", "_fstatvfs"),
         "NSPrivacyAccessedAPICategoryUserDefaults": ("_OBJC_CLASS_$_NSUserDefaults",),
-        "NSPrivacyAccessedAPICategorySystemBootTime": ("kern.boottime",),
+        "NSPrivacyAccessedAPICategorySystemBootTime": ("_mach_absolute_time",),
     }
-    declared = set()
-    for bundle in [app] + embedded_frameworks(app):
+    issues, unavailable = [], []
+    for bundle in code_bundles(app):
+        label = str(bundle.relative_to(app))
+        info = plist(bundle / 'Info.plist')
+        candidate = executable(bundle, info) if isinstance(info, dict) else None
         manifest = plist(bundle / "PrivacyInfo.xcprivacy")
-        if isinstance(manifest, dict):
-            for item in manifest.get("NSPrivacyAccessedAPITypes", []):
-                if isinstance(item, dict):
-                    declared.add(item.get("NSPrivacyAccessedAPIType"))
-    missing = []
-    unavailable = []
-    for candidate in machos(app, binary):
+        declared = set()
+        if manifest is not None:
+            rows = manifest.get('NSPrivacyAccessedAPITypes', []) if isinstance(manifest, dict) else None
+            if not isinstance(rows, list):
+                issues.append(label + ': malformed required-reason API array')
+                rows = []
+            for item in rows:
+                if not isinstance(item, dict):
+                    issues.append(label + ': malformed required-reason API entry')
+                    continue
+                category = item.get('NSPrivacyAccessedAPIType')
+                reasons = item.get('NSPrivacyAccessedAPITypeReasons')
+                if not isinstance(category, str) or category not in APPROVED_REASONS:
+                    issues.append(label + ': unknown API category; compare current Apple documentation')
+                elif not isinstance(reasons, list) or not reasons or any(
+                        not isinstance(reason, str) or reason not in APPROVED_REASONS[category] for reason in reasons):
+                    issues.append(label + ':' + category + ': empty, malformed or unrecognized reason identifier')
+                else:
+                    declared.add(category)
+        elif (bundle / 'PrivacyInfo.xcprivacy').exists():
+            issues.append(label + ': unreadable privacy manifest')
+        if not candidate:
+            unavailable.append(label + ': executable unavailable')
+            continue
         result = tool("nm", "-u", str(candidate))
         if result is None or result.returncode != 0:
-            unavailable.append(candidate.name)
+            unavailable.append(label + ': nm unavailable')
             continue
         symbols = output(result)
         observed = {category for category, needles in categories.items()
-                    if any(re.search(re.escape(s) + r"(?:\s|$)", symbols, re.M) for s in needles)}
-        missing.extend(candidate.name + ":" + category for category in sorted(observed - declared))
-    if missing:
+                    if any(re.search(re.escape(needle) + r"(?:\s|$)", symbols, re.M) for needle in needles)}
+        issues.extend(label + ':' + category + ': no valid reason in this code bundle manifest'
+                      for category in sorted(observed - declared))
+    if issues:
         return record(CHECKS[1], "NEEDS_REVIEW",
-                      "Undefined symbols suggest required-reason API use absent from app manifest; inspect linked SDKs and approved reasons",
-                      missing + ["nm unavailable: " + x for x in unavailable])
+                      "Bundle-local API/reason mismatch; applicability and actual API purpose require review", issues + unavailable)
     if unavailable:
-        return record(CHECKS[1], "SKIP", "nm -u unavailable or unable to inspect every Mach-O (install Xcode Command Line Tools)", unavailable)
-    return record(CHECKS[1], "PASS", "No manifest mismatch found among mapped nm symbols; dynamic calls remain unverified")
+        return record(CHECKS[1], "SKIP", "Could not inspect every code bundle", unavailable)
+    return record(CHECKS[1], "PASS", "Mapped bundle-local symbols/reason identifiers are consistent; dynamic use and reason eligibility remain unverified")
 
 
 def review_private(app, binary):
@@ -300,7 +343,7 @@ def review_loading(binary):
 
 def review_debug(app, ents):
     paths = [str(p.relative_to(app)) for p in app.rglob("*") if p.is_file() and
-             (p.suffix in (".mobileprovision", ".dSYM", ".xctest") or
+             ((p.suffix == ".mobileprovision" and p.name != "embedded.mobileprovision") or p.suffix in (".dSYM", ".xctest") or
               p.name in (".DS_Store", "debug.log"))]
     if ents and ents.get("get-task-allow") is True:
         paths.append("get-task-allow=true")
@@ -311,31 +354,160 @@ def review_debug(app, ents):
     return record(CHECKS[8], "PASS", "No mapped debug artifacts or get-task-allow entitlement observed")
 
 
-def inspect(app):
+def inspect(app, signatures):
     info = plist(app / "Info.plist")
     if not isinstance(info, dict):
         return [record(c, "SKIP", "App Info.plist is absent or unreadable") for c in CHECKS]
     binary = executable(app, info)
-    ents, error = entitlements(app)
-    return [review_entitlements(info, ents, error, binary), review_reasons(app, binary),
-            review_private(app, binary), review_schemes(info), review_ats(info), review_sdk(info),
-            review_frameworks(app, info), review_loading(binary), review_debug(app, ents)]
+    records, main_ents = [], None
+    for bundle, signed in zip(code_bundles(app), signatures):
+        if bundle.suffix == '.framework':
+            continue
+        bundle_info = plist(bundle / 'Info.plist')
+        if not isinstance(bundle_info, dict):
+            records.append(record(CHECKS[0], 'SKIP', 'Bundle Info.plist unavailable'))
+            continue
+        ents, error = entitlements(bundle)
+        if signed['signature_status'] != 'VERIFIED':
+            ents, error = None, 'Signature unavailable or invalid; entitlement inspection cannot establish signed consistency'
+        if bundle == app:
+            main_ents = ents
+        row = review_entitlements(bundle_info, ents, error, executable(bundle, bundle_info))
+        if signed['profile_issues']:
+            row = record(CHECKS[0], 'NEEDS_REVIEW', 'Decoded provisioning profile and signed entitlement mismatch',
+                         row['evidence'] + signed['profile_issues'])
+        row['evidence'] = [signed['bundle'] + ': ' + entry for entry in row['evidence']]
+        records.append(row)
+    issues = [entry for row in records if row['status'] == 'NEEDS_REVIEW' for entry in row['evidence']]
+    gaps = [row['reason'] for row in records if row['status'] == 'SKIP']
+    combined = (record(CHECKS[0], 'NEEDS_REVIEW', 'App/extension entitlement or profile mismatch requires review', issues + gaps)
+                if issues else record(CHECKS[0], 'SKIP', 'App/extension signed entitlement inspection incomplete', gaps)
+                if gaps else record(CHECKS[0], 'PASS', 'No checked app/extension entitlement or decoded profile mismatch observed'))
+    return [combined, review_reasons(app, binary), review_private(app, binary),
+            review_schemes(info), review_ats(info), review_sdk(info), review_frameworks(app, info),
+            review_loading(binary), review_debug(app, main_ents)]
+
+
+def digest_file(path):
+    if not path or not path.is_file():
+        return None
+    digest = hashlib.sha256()
+    with path.open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def identity(app):
+    info = plist(app / 'Info.plist') or {}
+    if not isinstance(info, dict):
+        info = {}
+    binary = executable(app, info)
+    return {'bundle_id': info.get('CFBundleIdentifier'), 'version': info.get('CFBundleShortVersionString'),
+            'build': info.get('CFBundleVersion'), 'binary_sha256': digest_file(binary),
+            'info_plist_sha256': digest_file(app / 'Info.plist'), 'sdk': info.get('DTSDKName')}
+
+
+def permitted(value, allowed):
+    if isinstance(value, str) and isinstance(allowed, str):
+        return fnmatch.fnmatchcase(value, allowed)
+    if isinstance(value, list) and isinstance(allowed, list):
+        return all(any(permitted(item, rule) for rule in allowed) for item in value)
+    return type(value) is type(allowed) and value == allowed
+
+
+def signing_evidence(app):
+    rows = []
+    for bundle in code_bundles(app):
+        info = plist(bundle / 'Info.plist') or {}
+        if not isinstance(info, dict):
+            info = {}
+        verified = tool('codesign', '--verify', '--strict', str(bundle))
+        details = tool('codesign', '-d', str(bundle))
+        # Verification errors alone cannot distinguish unsigned code from invalid signatures.
+        present = details is not None and details.returncode == 0
+        status = ('UNAVAILABLE' if verified is None else 'UNSIGNED' if not present else
+                  'VERIFIED' if verified.returncode == 0 else 'INVALID')
+        ents, _ = entitlements(bundle)
+        issues, gaps = [], []
+        if status != 'VERIFIED':
+            gaps.append('Code signature not verified')
+        if ents is None:
+            gaps.append('Entitlements not readable')
+        profile_path = bundle / 'embedded.mobileprovision'
+        profile = None
+        if profile_path.is_file():
+            decoded = tool('security', 'cms', '-D', '-i', str(profile_path))
+            if decoded is not None and decoded.returncode == 0:
+                try:
+                    profile = plistlib.loads(decoded.stdout)
+                except (ValueError, TypeError, OverflowError):
+                    pass
+        if isinstance(profile, dict) and isinstance(profile.get('Entitlements'), dict) and ents is not None:
+            allowed = profile['Entitlements']
+            for key, value in ents.items():
+                if key not in allowed or not permitted(value, allowed[key]):
+                    issues.append('Entitlement not authorized by decoded profile: ' + key)
+            app_id = ents.get('application-identifier')
+            bundle_id = info.get('CFBundleIdentifier')
+            if not isinstance(app_id, str) or not isinstance(bundle_id, str) or not app_id.endswith('.' + bundle_id):
+                issues.append('Signed application identifier does not match bundle identifier')
+            expiration = profile.get('ExpirationDate')
+            if isinstance(expiration, datetime.datetime):
+                if expiration.replace(tzinfo=datetime.timezone.utc) <= datetime.datetime.now(datetime.timezone.utc):
+                    issues.append('Decoded provisioning profile has expired')
+            else:
+                gaps.append('Profile expiry unavailable')
+        else:
+            gaps.append('Embedded provisioning profile consistency not inspected')
+        rows.append({'bundle': str(bundle.relative_to(app)), 'signature_status': status,
+                     'identity': identity(bundle), 'profile_issues': issues, 'gaps': gaps})
+    return rows
+
+
+def scope_report(app, args):
+    observed = identity(app)
+    mismatches = [key for key, value in (('bundle_id', args.expected_bundle),
+                  ('version', args.expected_version), ('build', args.expected_build))
+                  if value is not None and observed.get(key) != value]
+    simulator = str(observed.get('sdk') or '').startswith('iphonesimulator')
+    signatures = signing_evidence(app)
+    return {'identity': observed, 'identity_matches_expected': not mismatches,
+            'identity_expectations_supplied': any(x is not None for x in
+                                                (args.expected_bundle, args.expected_version, args.expected_build)),
+            'identity_mismatches': mismatches,
+            'evidence_kind': 'simulator_app' if simulator else 'device_artifact',
+            'signing': signatures, 'distribution_status': 'NOT_VERIFIED',
+            'physical_device_status': 'NOT_RUN', 'source_binding_status': 'NOT_PROVIDED',
+            'limitations': ['Signature verification is not App Store distribution eligibility or certificate/profile authority verification.',
+                            'No physical-device behavior was executed.',
+                            'API symbols and network domains do not prove complete privacy or tracking compliance.',
+                            'No source provenance was inferred from the supplied artifact.']}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--app", help="Existing .app, .ipa, or .xcarchive")
     parser.add_argument("--format", choices=("json", "text"), default="text")
+    parser.add_argument('--expected-bundle', help='Expected CFBundleIdentifier; mismatch invalidates identity binding')
+    parser.add_argument('--expected-version', help='Expected CFBundleShortVersionString')
+    parser.add_argument('--expected-build', help='Expected CFBundleVersion')
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="appstore-precheck-artifact-") as scratch:
         app, kind, gap = select_app(pathlib.Path(args.app) if args.app else None,
                                     pathlib.Path(scratch))
-        checks = inspect(app) if app else [record(c, "NOT_RUN", gap) for c in CHECKS]
+        scope = scope_report(app, args) if app else None
+        checks = inspect(app, scope["signing"]) if app else [record(c, "NOT_RUN", gap) for c in CHECKS]
         result = {"artifact_type": kind, "artifact": args.app, "executed": False,
-                  "checks": checks}
+                  "checks": checks, "scope": scope}
         if args.format == "json":
             print(json.dumps(result, indent=2, sort_keys=True))
         else:
+            if app:
+                scope = result['scope']
+                print('ARTIFACT-SCOPE: {} distribution=NOT_VERIFIED physical=NOT_RUN source=NOT_PROVIDED'.format(scope['evidence_kind']))
+                if scope['identity_mismatches']:
+                    print('ARTIFACT-SKIP: identity mismatch — ' + ', '.join(scope['identity_mismatches']))
             for item in checks:
                 print("ARTIFACT-{}: [{}] {} — {}".format(item["status"], item["check_id"],
                                                          item["reason"], "; ".join(item["evidence"])))

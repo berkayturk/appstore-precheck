@@ -87,7 +87,7 @@ dyn_device_container() {
 dyn_device_teardown() {
   [[ -n "${1:-}" ]] || return 0
   dyn_cmd xcrun simctl shutdown "$1" >/dev/null 2>&1 || true
-  dyn_cmd xcrun simctl delete "$1" >/dev/null 2>&1 || true
+  dyn_cmd xcrun simctl delete "$1" >/dev/null 2>&1
 }
 
 # dyn_device_appearance <udid> light|dark ; dyn_device_content_size <udid> <size>

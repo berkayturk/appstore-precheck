@@ -16,8 +16,21 @@ import time
 
 
 def classify(output):
+    # Xcode prints configuration exports and successful task headings even when a
+    # later, unrelated step fails. Neither CodeSignContext nor a TLS certificate
+    # error is evidence of an application signing failure.
+    output = "\n".join(line for line in output.splitlines()
+                       if not re.match(r"^\s*(?:export\s+)?[A-Z][A-Z0-9_]*\\?=", line)
+                       and not re.search(r"\bwarning:", line, re.IGNORECASE))
+    signing = (
+        r"command\s+codesign\s+failed|errSecInternalComponent|"
+        r"(?:error|failed|failure)[^\n]*(?:code[ -]?sign(?:ing)?|provisioning profile|development team|signing certificate)|"
+        r"(?:code[ -]?signing|signing for|provisioning profile|development team)[^\n]*"
+        r"(?:requires|required|not found|missing|expired|doesn't|does not|invalid|failed)|"
+        r"no signing certificate|no profiles for[^\n]*(?:found|available)"
+    )
     patterns = (
-        ("SIGNING", r"(code sign|codesign|provisioning profile|development team|certificate)"),
+        ("SIGNING", signing),
         ("MISSING_POD", r"(no such module|unable to find a specification|pod install|pods/.*not found)"),
         ("MISSING_SDK", r"(sdk .*not found|unable to find a destination|iphoneos.*not found|iphonesimulator.*not found|xcode-select)"),
         ("MISSING_FRAMEWORK", r"(framework .* not found|could not find.*framework|no such module.*shared)"),
@@ -34,6 +47,14 @@ def kill_group(proc):
         os.killpg(proc.pid, signal.SIGKILL)
     except ProcessLookupError:
         pass
+
+
+class BuildCancelled(Exception):
+    pass
+
+
+def cancelled(signum, frame):
+    raise BuildCancelled()
 
 
 def main():
@@ -53,6 +74,11 @@ def main():
     env = {
         "PATH": os.environ.get("PATH", "/usr/bin:/bin"),
         "HOME": a.home,
+        "CFFIXED_USER_HOME": a.home,
+        "XDG_CACHE_HOME": os.path.join(a.home, '.cache'),
+        "npm_config_cache": os.path.join(a.home, '.npm'),
+        "GRADLE_USER_HOME": os.path.join(a.home, '.gradle'),
+        "PUB_CACHE": os.path.join(a.home, '.pub-cache'),
         "TMPDIR": a.temp,
         "LANG": "C.UTF-8",
         "LC_ALL": "C.UTF-8",
@@ -64,6 +90,8 @@ def main():
         env["DEVELOPER_DIR"] = os.environ["DEVELOPER_DIR"]
     if os.environ.get("GEM_PATH"):
         env["GEM_PATH"] = os.environ["GEM_PATH"]
+    for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
+        signal.signal(sig, cancelled)
     start = time.monotonic()
     status = "OK"
     result = bytearray()
@@ -102,6 +130,11 @@ def main():
                 status = "TIMEOUT"
         if status == "OK" and proc.returncode:
             status = classify(result.decode("utf-8", "replace"))
+    except BuildCancelled:
+        if proc is not None:
+            kill_group(proc)
+            proc.wait()
+        status = 'CANCELLED'
     except FileNotFoundError:
         status = "MISSING_TOOL"
     except OSError:

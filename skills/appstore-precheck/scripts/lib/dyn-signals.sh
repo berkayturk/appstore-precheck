@@ -25,12 +25,7 @@ DYN_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # coreutils timeout). Exit 124 on expiry, else the command's status.
 dyn_with_timeout() {
   local secs="$1"; shift
-  "$@" & local pid=$! waited=0
-  while kill -0 "$pid" 2>/dev/null; do
-    if (( waited >= secs )); then kill -9 "$pid" 2>/dev/null; wait "$pid" 2>/dev/null; return 124; fi
-    sleep 1; waited=$((waited + 1))
-  done
-  wait "$pid"
+  python3 "$DYN_LIB_DIR/dyn-process.py" --timeout "$secs" -- "$@"
 }
 
 DYN_LOG_PID=""

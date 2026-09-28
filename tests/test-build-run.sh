@@ -7,6 +7,32 @@ source "$HERE/_assert.sh"
 RUN="$ROOT/skills/appstore-precheck/scripts/build-run.sh"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
+mkdir -p "$TMP/build-temp"
+export TMPDIR="$TMP/build-temp"
+
+section "failure classification ignores Xcode configuration chatter"
+python3 - "$ROOT" <<'PYTEST'
+import importlib.util, pathlib, sys
+sys.dont_write_bytecode=True
+path=pathlib.Path(sys.argv[1])/'skills/appstore-precheck/scripts/lib/build-exec.py'
+spec=importlib.util.spec_from_file_location('build_exec',path)
+m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
+noise='    export CODE_SIGN_CONTEXT_CLASS\\=XCiPhoneSimulatorCodeSignContext\n'
+cases=[
+    (noise+'FAILURE: Build failed with an exception.\nExecution failed for task :shared:compileKotlin.', 'BUILD_FAILED'),
+    ('CodeSign /tmp/Example.app\nFAILURE: Gradle compilation failed.', 'BUILD_FAILED'),
+    ('certificate verify failed while fetching a Maven dependency', 'BUILD_FAILED'),
+    (noise+"ld: warning: framework 'OptionalKit' not found\nUndefined symbols for architecture x86_64", 'BUILD_FAILED'),
+    ('error: Signing for "Example" requires a development team.', 'SIGNING'),
+    ('Command CodeSign failed with a nonzero exit code', 'SIGNING'),
+    ('error: No signing certificate "iOS Distribution" found', 'SIGNING'),
+    ('SDK iphonesimulator not found', 'MISSING_SDK'),
+]
+for sample, expected in cases:
+    actual=m.classify(sample)
+    assert actual==expected, (expected,actual)
+PYTEST
+assert_eq "$?" 0 "environment, warnings and TLS errors are not code-signing failures"
 
 hash_tree() {
   python3 - "$1" <<'PY'
@@ -111,7 +137,10 @@ if [[ -e .env || -e .appstore-precheck.json || -e dev-asc-key-1.json || -e .git/
 printf 'never-print-this-secret\n'
 if [[ -f "$(dirname "$0")/missing-sdk" ]]; then printf 'SDK iphonesimulator not found\n'; exit 65; fi
 if [[ -f "$(dirname "$0")/sleep-build" ]]; then sleep 2; fi
-printf 'tool ran\n' > tool-wrote-here
+mkdir -p build
+printf 'tool ran\n' > build/tool-wrote-here
+if [[ -f "$(dirname "$0")/mutate-copy" ]]; then printf 'changed\n' >> ios/App/App.swift; fi
+if [[ -f "$(dirname "$0")/mutate-original" ]]; then printf 'concurrent fixture change\n' >> "$(cat "$(dirname "$0")/mutate-original")"; fi
 dd=''; cfg=''
 while [[ $# -gt 0 ]]; do
   case "$1" in -derivedDataPath) dd="$2"; shift 2;; -configuration) cfg="$2"; shift 2;; *) shift;; esac
@@ -143,8 +172,40 @@ assert_eq "$st" 0 "--keep-build succeeds"
 workspace="$(printf '%s\n' "$out" | sed -n 's/^build_workspace=//p')"
 [[ -d "$workspace/project" ]] || { echo '  FAIL: --keep-build retained copy'; fails=$((fails+1)); }
 [[ -e "$workspace/project/.env" || -e "$workspace/project/.appstore-precheck.json" ]] && { echo '  FAIL: secret file copied'; fails=$((fails+1)); }
-assert_absent "$(cat "$workspace/build-events.jsonl")" 'never-print-this-secret' "persistent event log contains no credential"
+assert_absent "$(cat "$(printf '%s\n' "$out" | sed -n 's/^event_log=//p')")" 'never-print-this-secret' "persistent event log contains no credential"
 rm -rf "$workspace"
+
+section "copied source mutation prevents proof binding"
+: > "$TMP/bin/mutate-copy"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "copied input mutation is SKIP"
+assert_contains "$out" 'provenance binding unavailable' "copy mutation is an evidence gap"
+report="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+python3 - "$report" <<'PYTEST'
+import json, sys
+r=json.load(open(sys.argv[1]))
+assert r['source_integrity']['source']['unchanged']
+assert not r['source_integrity']['copy']['unchanged']
+assert not r['source_binding_eligible']
+PYTEST
+assert_eq "$?" 0 "mutation report preserves original integrity and rejects binding"
+rm "$TMP/bin/mutate-copy"
+
+section "concurrent original source change is an evidence gap"
+printf '%s\n' "$TMP/native/ios/App/App.swift" > "$TMP/bin/mutate-original"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/native" --out "$TMP/output" --timeout 20)"; st=$?
+assert_eq "$st" 3 "external source change exits SKIP"
+report="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+python3 - "$report" <<'PYTEST'
+import json, sys
+r=json.load(open(sys.argv[1]))
+assert not r['source_integrity']['source']['unchanged']
+assert r['source_integrity']['copy']['unchanged']
+assert not r['source_binding_eligible']
+assert any('External source change' in x for x in r['limitations'])
+PYTEST
+assert_eq "$?" 0 "external change does not become an app finding"
+rm "$TMP/bin/mutate-original"
 
 section "failure classes and deadlines stay SKIP"
 rm -f "$TMP/bin/fail-release"
@@ -189,5 +250,73 @@ out="$(GEM_PATH="$TMP/gems" python3 "$ROOT/skills/appstore-precheck/scripts/lib/
   --home "$TMP/probe-home" --temp "$TMP/probe-tmp" -- "$TMP/bin/gem-probe")"; st=$?
 assert_eq "$st" 0 "temporary CocoaPods gem path and UTF-8 locale reach the child tool"
 assert_contains "$out" 'STATUS=OK' "gem path probe completes"
+
+section "retained provenance and cleanup after success, error and timeout"
+python3 - "$TMP/output" <<'PYTEST'
+import json, pathlib, sys
+root=pathlib.Path(sys.argv[1])
+reports=[json.loads(p.read_text()) for p in root.glob('build-evidence.*/build-provenance.json')]
+assert reports and any(r['source_binding_eligible'] for r in reports)
+assert any(r['build_exit_status']==3 for r in reports)
+for r in reports:
+    assert r['distribution']=='simulator'
+    assert r['signed_distribution_verified'] is False
+    assert r['physical_device_verified'] is False
+for p in root.glob('build-evidence.*/build-events.jsonl'):
+    assert 'never-print-this-secret' not in p.read_text()
+PYTEST
+assert_eq "$?" 0 "all build outcomes retain sanitized evidence and limited scope"
+remaining="$(find "$TMP/build-temp" -maxdepth 1 -type d -name 'appstore-precheck-build.*' -print)"
+assert_eq "$remaining" '' "owned build workspaces cleaned on success, error and timeout"
+
+section "runner deadline kills descendants and retains no raw output"
+cat > "$TMP/bin/child-probe" <<'SH'
+#!/bin/sh
+(sleep 2; touch "$HOME/escaped-child") &
+sleep 5
+SH
+chmod +x "$TMP/bin/child-probe"
+out="$(python3 "$ROOT/skills/appstore-precheck/scripts/lib/build-exec.py" \
+  --step child-probe --cwd "$TMP" --timeout 1 --log "$TMP/probe-events.jsonl" \
+  --home "$TMP/probe-home" --temp "$TMP/probe-tmp" -- "$TMP/bin/child-probe")"; st=$?
+assert_eq "$st" 3 "descendant deadline returns SKIP"
+sleep 2
+[[ ! -f "$TMP/probe-home/escaped-child" ]] || { echo '  FAIL: timed out child survived'; fails=$((fails+1)); }
+assert_contains "$out" 'TIMEOUT' "descendant timeout classified"
+
+section "Flutter generated configuration is prepared before the compilation snapshot"
+cat > "$TMP/bin/flutter" <<'SH'
+#!/usr/bin/env bash
+if [[ "$1 $2" == 'pub get' ]]; then exit 0; fi
+if [[ "$1 $2" != 'build ios' ]]; then exit 9; fi
+mkdir -p ios/Flutter/ephemeral
+for f in ios/Flutter/Generated.xcconfig ios/Flutter/ephemeral/flutter_native_integration.env ios/Flutter/flutter_export_environment.sh; do
+  printf 'generated simulator configuration\n' > "$f"
+done
+if [[ " $* " == *' --config-only '* ]]; then exit 0; fi
+if [[ -f "$(dirname "$0")/mutate-flutter-config" ]]; then printf 'compiler mutated configuration\n' >> ios/Flutter/Generated.xcconfig; fi
+mkdir -p build/ios/iphonesimulator/Runner.app
+printf '<?xml version="1.0"?><plist><dict><key>CFBundleIdentifier</key><string>test.flutter</string></dict></plist>\n' > build/ios/iphonesimulator/Runner.app/Info.plist
+SH
+chmod +x "$TMP/bin/flutter"
+before="$(hash_tree "$TMP/flutter")"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/flutter" --framework flutter --out "$TMP/flutter-artifact" --timeout 20)"; st=$?
+assert_eq "$st" 0 "Flutter prepared configuration leaves compiler snapshot unchanged"
+assert_eq "$(hash_tree "$TMP/flutter")" "$before" "Flutter preparation never writes to original source"
+report="$(printf '%s\n' "$out" | sed -n 's/^build_evidence=//p')"
+python3 - "$report" <<'PYTEST'
+import json, pathlib, sys
+p=pathlib.Path(sys.argv[1]);r=json.loads(p.read_text())
+assert r['source_binding_eligible'] is True
+assert r['source_integrity']['copy']['unchanged'] is True
+assert set(r['preparation']['changed_paths']) == {'ios/Flutter/Generated.xcconfig','ios/Flutter/ephemeral/flutter_native_integration.env','ios/Flutter/flutter_export_environment.sh'}
+steps=[json.loads(line)['step'] for line in (p.parent/'build-events.jsonl').read_text().splitlines()]
+assert steps==['flutter-pub','flutter-config','flutter-build']
+PYTEST
+assert_eq "$?" 0 "Flutter provenance distinguishes generated preparation from compilation"
+: > "$TMP/bin/mutate-flutter-config"
+out="$(PATH="$TMP/bin:$PATH" bash "$RUN" --repo "$TMP/flutter" --framework flutter --out "$TMP/flutter-artifact" --timeout 20)"; st=$?
+assert_eq "$st" 3 "Flutter compiler-time source mutation still rejects binding"
+assert_contains "$out" 'provenance binding unavailable' "Flutter generated files were not excluded from integrity checks"
 
 exit "$fails"

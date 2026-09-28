@@ -129,6 +129,8 @@ assert_eq "debug" "$(jq -r .build_config "$OUT1/run.json")" "run.json: build_con
 assert_eq "true" "$(jq -r .device.created_by_this_run "$OUT1/run.json")" "run.json: device ownership"
 assert_eq "3" "$(jq -r .launch.pass "$OUT1/run.json")" "run.json: launch tally"
 assert_eq "3" "$(jq -r '.d1_d2_seconds | length' "$OUT1/run.json")" "run.json: D1+D2 durations recorded per repeat"
+assert_eq "3" "$(jq -r '.timing.observation_seconds | length' "$OUT1/run.json")" "run.json: separate pure observation durations recorded"
+assert_eq "true" "$(jq '[range(0;3) as $i | .d1_d2_seconds[$i] >= .timing.observation_seconds[$i]] | all' "$OUT1/run.json")" "legacy duration retains lifecycle overhead"
 assert_contains "$(jq -r .next "$OUT1/run.json")" "--build-config debug" "run.json: the dynamic.sh command carries the config"
 assert_eq "$(grep -c '^DYNAMIC-' "$OUT1/transcript.txt")" "$(grep -c '^DYNAMIC-' <<<"$tx")" "transcript file mirrors stdout"
 
@@ -174,14 +176,15 @@ tx="$(FAKE_APP="$T/Release-iphonesimulator/Installed.app" bash "$RUN" --app "$T/
 assert_eq "2" "$(count 'simctl launch')" "with main.jsbundle the launches happen (and --repeats 2 is honoured)"
 assert_eq "release" "$(jq -r .build_config "$T/out5/run.json")" "Release-iphonesimulator -> release"
 
-section "Flutter: selector-based checks are SKIPped up front"
+section "Flutter: unexecuted selector checks retain measured accessibility scope"
 reset_calls
 FL="$T/fl"; cp -R "$FX/flutter-app" "$FL"
 tx="$(bash "$RUN" --app "$APP" --repo "$FL" --repeats 1 --window 1 --out "$T/out6" 2>/dev/null)"; kill_fakes
-assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — not driveable on flutter" "D3b pre-SKIP"
+assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — flutter accessibility tree observed" "D3b scoped SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-demo-login]" "D5 pre-SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 5.1.1(ii) [dyn-permission-prompt]" "D4 trigger half pre-SKIP"
-assert_contains "$tx" "no semantics to Maestro" "…with the reason"
+assert_contains "$tx" "dedicated selector flows were not executed" "…with the actual flow limitation"
+assert_absent "$tx" "not driveable on flutter" "healthy tree is not labeled undriveable"
 assert_contains "$tx" "DYNAMIC-PASS: 2.1 [dyn-launch]" "observation-based D1 still runs"
 assert_contains "$tx" "Dart HttpClient bypasses CFNetwork" "empty host list on Flutter names the CFNetwork blind spot"
 assert_contains "$tx" "--pktap" "…and the opt-in remedy"
@@ -222,6 +225,37 @@ bash "$RUN" >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "no --app / --udid reje
 bash "$RUN" --udid X >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "--udid without --bundle-id rejected"
 bash "$RUN" --app "$T/nonexistent.app" >/dev/null 2>&1; st=$?; assert_eq "66" "$st" "missing .app is exit 66"
 bash "$RUN" --app "$APP" --framework cordova >/dev/null 2>&1; st=$?; assert_eq "64" "$st" "unknown framework rejected"
+
+section "live observation-only exploration works without a navigation authorization file"
+reset_calls
+bash "$RUN" --app "$APP" --repeats 1 --window 1 --explore --explore-seconds 1 \
+  --out "$T/observe-only" > "$T/observe-only.txt" 2> "$T/observe-only.err"
+st=$?
+assert_eq "0" "$st" "empty optional navigation array works under Bash nounset"
+[[ -f "$T/observe-only/run.json" ]] || { echo "  FAIL: observation-only run metadata missing"; fails=$((fails+1)); }
+[[ -f "$T/observe-only/screen-inventory.json" ]] || { echo "  FAIL: observation-only screen inventory missing"; fails=$((fails+1)); }
+assert_absent "$(cat "$T/observe-only.err")" "unbound variable" "no Bash 3.2 empty-array expansion error"
+kill_fakes
+
+section "deadline and cancellation clean the owned simulator"
+reset_calls
+PRECHECK_RUNTIME_DEADLINE_SECONDS=3 bash "$RUN" --app "$APP" --window 60 --out "$T/deadline" > "$T/deadline.txt" 2>/dev/null
+st=$?
+assert_eq "124" "$st" "deadline has an explicit timeout status"
+assert_eq "1" "$(count 'simctl delete')" "deadline runs owned-device cleanup"
+assert_eq "$(cat "$T/deadline/owned-simulators.txt")" "$(cat "$T/deadline/deleted-simulators.txt")" "deadline ownership ledger matches successful deletion"
+kill_fakes
+reset_calls
+bash "$RUN" --app "$APP" --window 60 --out "$T/cancel" > "$T/cancel.txt" 2>/dev/null & runner_pid=$!
+for _ in {1..100}; do
+  [[ -s "$T/cancel/owned-simulators.txt" ]] && grep -q 'simctl launch' "$FAKE_CALLS" && break
+  sleep 0.05
+done
+kill -TERM "$runner_pid"
+wait "$runner_pid"; st=$?
+assert_eq "143" "$st" "cancel has an explicit cancellation status"
+assert_eq "1" "$(count 'simctl delete')" "cancel runs owned-device cleanup"
+kill_fakes
 
 section "the runner never contains a build invocation"
 assert_eq "0" "$(grep -vE '^\s*#' "$RUN" "$S"/lib/dyn-*.sh | grep -E '(^|[;&|] *|\$\()(xcodebuild|flutter build|gradle)' | grep -c . | tr -d ' ')" "no xcodebuild / flutter build / gradle command in the runner or its libs"

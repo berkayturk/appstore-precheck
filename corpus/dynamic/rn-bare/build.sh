@@ -10,14 +10,15 @@ shift
 command -v npx >/dev/null 2>&1 || { echo "SKIP: RN bootstrap needs Node.js and npx"; exit 3; }
 STAGE="$(mktemp -d "${TMPDIR:-/tmp}/precheck-rn-corpus.XXXXXX")" || exit 3
 trap 'rm -rf "$STAGE"' EXIT
+source "$HERE/../bootstrap.sh"
 export npm_config_fetch_retries=0 npm_config_fetch_timeout=15000 npm_config_cache="$STAGE/npm-cache"
-if ! (cd "$STAGE" && npx --yes @react-native-community/cli@latest init PrecheckRN --directory project --skip-install --install-pods false --pm npm --skip-git-init true >/dev/null 2>&1); then
+if ! corpus_bootstrap rn-template "$STAGE" npx --yes @react-native-community/cli@latest init PrecheckRN --directory project --skip-install --install-pods false --pm npm --skip-git-init true; then
   echo "SKIP: RN template unavailable; install Node.js and allow npm registry access"
   exit 3
 fi
 cp "$HERE/$VARIANT/App.js" "$STAGE/project/App.js"
 rm -f "$STAGE/project/App.tsx"
-if ! (cd "$STAGE/project" && npm install --package-lock-only --ignore-scripts --no-audit --no-fund >/dev/null 2>&1); then
+if ! corpus_bootstrap dependency-lock "$STAGE/project" npm install --package-lock-only --ignore-scripts --no-audit --no-fund; then
   echo "SKIP: RN dependency lock could not be resolved from npm"
   exit 3
 fi

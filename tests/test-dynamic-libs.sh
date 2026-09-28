@@ -46,6 +46,33 @@ v="$(dyn_launch_verdict alive unread unread unread)"
 assert_eq "PASS" "$(kind "$v")" "one readable healthy signal is a PASS with three caveats"
 assert_contains "$(detail "$v")" "log stream" "caveat names the log"
 
+section "no-crash log without a positive app signal is not a healthy launch"
+# The real RN panel left a one-byte hierarchy, no screenshot, no process PID,
+# and only SpringBoard bookkeeping. This anonymized fixture reproduces that shape.
+source "$L/dyn-signals.sh"
+UNREAD_FIXTURE="$FX/runtime/unread-launch"
+[[ ! -e "$UNREAD_FIXTURE/launch.png" ]] || { echo "  FAIL: unread-launch fixture unexpectedly has a screenshot"; fails=$((fails+1)); }
+assert_eq "1" "$(wc -c < "$UNREAD_FIXTURE/hierarchy.json" | tr -d ' ')" "recorded hierarchy is one newline"
+lg="$(dyn_signal_log "$UNREAD_FIXTURE/log.txt" FixtureApp)"
+assert_eq "clean" "$lg" "SpringBoard-only bookkeeping contains no app crash"
+v="$(dyn_launch_verdict "$(dyn_signal_process "")" unread "$lg" unread)"
+assert_eq "SKIP" "$(kind "$v")" "clean log alone cannot prove app launch"
+assert_eq "SKIP" "$(kind "$(dyn_launch_verdict unread unread clean 1)")" "clean log and degenerate tree still have no positive app signal"
+assert_eq "SKIP" "$(kind "$(dyn_launch_verdict unread unread clean malformed)")" "malformed node count is not a positive signal"
+assert_eq "FINDING" "$(kind "$(dyn_launch_verdict unread unread crash unread)")" "explicit crash detection still wins without positive signals"
+assert_eq "PASS" "$(kind "$(dyn_launch_verdict unread varied clean unread)")" "real screenshot remains a positive signal"
+assert_eq "PASS" "$(kind "$(dyn_launch_verdict unread unread clean 4)")" "usable app tree remains a positive signal"
+
+section "toolkit selector scope follows measured trees, not framework stereotypes"
+reason="$(dyn_selector_scope kmp 72)"
+assert_contains "$reason" "72 nodes" "healthy measured KMP tree is reported"
+assert_contains "$reason" "not executed" "available tree does not imply dedicated flow completion"
+assert_absent "$reason" "not driveable" "framework name cannot overrule measured capability"
+reason="$(dyn_selector_scope flutter 1)"
+assert_contains "$reason" "degenerate" "actual tiny tree keeps its limitation"
+reason="$(dyn_selector_scope kmp unread)"
+assert_contains "$reason" "not measured" "missing tree evidence does not mean no semantics"
+
 section "quorum: FINDING only on N/N, mixed carries its ratio, all-SKIP is SKIP"
 q="$(dyn_quorum 3 0 0)"; assert_eq "PASS" "$(kind "$q")" "3/3 pass -> PASS"; assert_contains "$(detail "$q")" "3/3" "ratio shown"
 q="$(dyn_quorum 0 3 0)"; assert_eq "FINDING" "$(kind "$q")" "0/3 -> FINDING"; assert_contains "$(detail "$q")" "quorum 3/3" "unanimous ratio"

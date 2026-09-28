@@ -31,6 +31,19 @@ command -v xcrun >/dev/null 2>&1 || { echo "SKIP: Xcode command line tools unava
 mkdir -p "$OUT" || usage "cannot create output directory"
 OUT="$(cd "$OUT" && pwd -P)"
 echo "dynamic panel artifacts: $OUT"
+# Never mix a previous app/runtime transcript with a new failed attempt.
+for fw in swiftui rn-bare expo flutter kmp; do
+  [[ -z "$FILTER_FW" || "$FILTER_FW" == "$fw" ]] || continue
+  for variant in clean broken; do
+    [[ -z "$FILTER_VARIANT" || "$FILTER_VARIANT" == "$variant" ]] || continue
+    prior="$OUT/$fw/$variant"
+    if [[ -d "$prior" && -n "$(find "$prior" -mindepth 1 -print -quit)" ]]; then
+      usage "$fw/$variant output is not empty; choose a fresh --out directory"
+    fi
+  done
+done
+python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$OUT/integrity.json" before
+xcrun simctl list devices --json > "$OUT/simulators-before.json" 2>/dev/null || :
 
 # One status record per case; the Python summary reads these and the transcript.
 for fw in swiftui rn-bare expo flutter kmp; do
@@ -39,6 +52,7 @@ for fw in swiftui rn-bare expo flutter kmp; do
     [[ -z "$FILTER_VARIANT" || "$FILTER_VARIANT" == "$variant" ]] || continue
     case_dir="$OUT/$fw/$variant"
     mkdir -p "$case_dir/artifact" "$case_dir/runtime"
+    python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" before
     echo "== $fw/$variant =="
     bash "$CORPUS/$fw/build.sh" "$variant" --out "$case_dir/artifact" --timeout "$BUILD_TIMEOUT" > "$case_dir/build.txt" 2>&1
     build_status=$?
@@ -46,16 +60,21 @@ for fw in swiftui rn-bare expo flutter kmp; do
       if [[ "$build_status" -eq 3 ]]; then state=SKIP; else state=ERROR; fi
       printf '%s\n' "$state" > "$case_dir/state"
       sed -n '/^SKIP:/p' "$case_dir/build.txt" | tail -1
+      python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
       continue
     fi
     app="$(sed -n 's/^app_path=//p' "$case_dir/build.txt" | tail -1)"
     if [[ -z "$app" || ! -f "$app/Info.plist" ]]; then
       printf '%s\n' ERROR > "$case_dir/state"
       echo "ERROR: build exported no simulator app"
+      python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
       continue
     fi
     case "$fw" in swiftui) runtime_fw=native ;; rn-bare|expo) runtime_fw=rn ;; *) runtime_fw="$fw" ;; esac
     extra=()
+    if [[ -f "$CORPUS/$fw/$variant/navigation.json" ]]; then
+      extra+=(--authorized-navigation "$CORPUS/$fw/$variant/navigation.json")
+    fi
     if grep -q -- '--explore' "$SCRIPTS/dynamic-run.sh"; then extra+=(--explore --explore-seconds "$EXPLORE_SECONDS"); fi
     bash "$SCRIPTS/dynamic-run.sh" --app "$app" --repo "$CORPUS/$fw/$variant" \
       --framework "$runtime_fw" --out "$case_dir/runtime" --repeats "$REPEATS" \
@@ -72,97 +91,11 @@ for fw in swiftui rn-bare expo flutter kmp; do
     else
       printf '%s\n' ERROR > "$case_dir/state"
     fi
+    python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$case_dir/integrity.json" after
+    xcrun simctl list devices --json > "$case_dir/simulators-after.json" 2>/dev/null || :
   done
 done
 
-python3 - "$CORPUS/manifest.json" "$OUT" <<'PY'
-import json, os, plistlib, re, sys
-from pathlib import Path
-
-manifest = json.loads(Path(sys.argv[1]).read_text())
-out = Path(sys.argv[2])
-rows = []
-for case in manifest['cases']:
-    d = out / case['framework'] / case['variant']
-    if not (d / 'state').exists():
-        continue
-    state = (d / 'state').read_text().strip()
-    transcript = (d / 'runtime/transcript.txt')
-    content = transcript.read_text(errors='replace') if transcript.exists() else ''
-    matches = re.findall(r'^DYNAMIC-(PASS|FINDING|SKIP):[^\n]*\[dyn-launch\]', content, re.M)
-    observed = matches[-1] if matches else 'NOT_RUN'
-    expected = case['expected_launch']
-    if state == 'RAN' and observed != 'NOT_RUN':
-        matched = observed == expected
-    else:
-        matched = None
-    records = []
-    for kind, rule in re.findall(r'^DYNAMIC-([A-Z_]+):[^\n]*\[([^]]+)\]', content, re.M):
-        records.append({'rule': rule, 'result': kind})
-    inventory = d / 'runtime/screen-inventory.json'
-    checks = {}
-    if inventory.exists():
-        try:
-            data = json.loads(inventory.read_text())
-            checks = {c['check_id']: c.get('status', 'NOT_RUN')
-                      for c in data.get('checks', []) if 'check_id' in c}
-        except (OSError, ValueError, TypeError):
-            pass
-    expected_checks = case.get('expected_checks', {})
-    observed_checks = {check_id: checks.get(check_id, 'NOT_RUN')
-                       for check_id in expected_checks}
-    check_matches = {
-        check_id: (observed_checks[check_id] == wanted
-                   if state == 'RAN' and observed_checks[check_id] != 'NOT_RUN'
-                   else None)
-        for check_id, wanted in expected_checks.items()
-    }
-    expected_bundle = case.get('expected_bundle', {})
-    bundle_matches = {key: None for key in expected_bundle}
-    build_log = d / 'build.txt'
-    if state == 'RAN' and expected_bundle and build_log.exists():
-        app_paths = re.findall(r'^app_path=(.*)$', build_log.read_text(), re.M)
-        if app_paths:
-            try:
-                info = plistlib.loads((Path(app_paths[-1]) / 'Info.plist').read_bytes())
-                bundle_matches = {
-                    key: (key not in info if wanted == 'absent'
-                          else isinstance(info.get(key), str) and bool(info[key].strip()))
-                    for key, wanted in expected_bundle.items()
-                }
-            except (OSError, ValueError, plistlib.InvalidFileException):
-                pass
-    reason = ''
-    if state != 'RAN':
-        for log in (d / 'build.txt', d / 'runtime.txt'):
-            if log.exists():
-                for line in log.read_text(errors='replace').splitlines():
-                    if line.startswith(('SKIP:', 'ERROR:')):
-                        reason = line[:300]
-                        break
-            if reason:
-                break
-    rows.append({'framework': case['framework'], 'variant': case['variant'],
-                 'state': state, 'expected_launch': expected,
-                 'observed_launch': observed, 'launch_matched': matched,
-                 'targeted_defects': case['defects'], 'observations': records,
-                 'expected_checks': expected_checks, 'observed_checks': observed_checks,
-                 'check_matches': check_matches,
-                 'expected_bundle': expected_bundle, 'bundle_matches': bundle_matches,
-                 'reason': reason})
-(out / 'panel.json').write_text(json.dumps({'schema_version': 1, 'cases': rows}, indent=2) + '\n')
-with (out / 'panel.tsv').open('w') as f:
-    f.write('framework\tvariant\tstate\texpected_launch\tobserved_launch\tlaunch_matched\tcheck_matches\tbundle_matches\treason\n')
-    for r in rows:
-        values = [r['framework'], r['variant'], r['state'], r['expected_launch'],
-                  r['observed_launch'], str(r['launch_matched']),
-                  str(sum(v is True for v in r['check_matches'].values())) + '/' +
-                  str(sum(v is not None for v in r['check_matches'].values())) +
-                  ' of ' + str(len(r['check_matches'])),
-                  str(sum(v is True for v in r['bundle_matches'].values())) + '/' +
-                  str(len(r['bundle_matches'])),
-                  r['reason'].replace('\t', ' ')]
-        f.write('\t'.join(values) + '\n')
-print((out / 'panel.tsv').read_text(), end='')
-print('report=' + str(out / 'panel.json'))
-PY
+python3 "$ROOT/tests/local/corpus-integrity.py" "$ROOT" "$OUT/integrity.json" after
+xcrun simctl list devices --json > "$OUT/simulators-after.json" 2>/dev/null || :
+python3 "$ROOT/tests/local/dynamic-panel-report.py" "$CORPUS/manifest.json" "$OUT"
