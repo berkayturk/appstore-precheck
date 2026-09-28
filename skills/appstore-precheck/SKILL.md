@@ -414,7 +414,7 @@ then dark-mode / Dynamic Type layout heuristics, the installed bundle (`Info.pli
 strings, `DTXcode`, `otool -L`), and hosts contacted, writing `<tmp>/transcript.txt` and
 `<tmp>/run.json` (which carries the `build_config` to pass on). Add `--ipad` for the iPad pass. On
 React Native without Metro on port 8081 it SKIPs the launch checks instead of reporting a false
-crash; on Flutter / KMP it pre-SKIPs the selector-based checks (no accessibility semantics). Then
+crash; selector flows require measured accessibility and explicit test authorization. Then
 drive the selector-based checks (D3 paywall, D3b Restore tap, D4 prompts, D5 demo login, D6
 parity) with the Maestro MCP tools — **one flow per `mcp__maestro__run` call**, labels read from
 `accessibilityText` — appending `DYNAMIC-*` lines to the same transcript.
@@ -444,6 +444,7 @@ from, and leave it `unknown` if you do not know.
 See [`references/guideline-verification.md`](references/guideline-verification.md) for
 versioned external profiles, scoped evidence, and a readiness decision separate from GREEN.
 Attestations alone never establish verified compliance; do not infer absent features from missing signals.
+Run `appstore-precheck verify --help`; `--no-runtime` collects build evidence without launch.
 
 ## Known limits
 

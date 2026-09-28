@@ -591,3 +591,13 @@ Things the scanner cannot verify; confirm by hand before you submit:
 [ ] If user data goes to a third-party AI provider: consent screen names the provider
 [ ] IPv6-only run: Internet Sharing > "Create NAT64 Network" on a Mac, every network feature works (2.5.5 — GUI-only, not automatable; §55 only greps the IPv4-literal subset)
 ```
+
+### Evidence-bound readiness
+
+The optional `appstore-precheck verify` report follows
+[guideline-verification.md](guideline-verification.md). It requires scoped applicability
+and all required conditions for a positive closure; a decisive negative condition can
+establish a finding only in proven applicable scope. Legacy GREEN, static hints and
+owner answers cannot substitute for these proofs. Unknown obligations remain in the
+denominator. Source, artifact, runtime, store and human records keep their limitations;
+a simulator result cannot establish distribution entitlement or physical-device behavior.

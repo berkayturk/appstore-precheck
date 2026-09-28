@@ -6,6 +6,13 @@ All notable changes to this project are documented here. Versioning follows
 ## [Unreleased]
 
 ### Added
+- Offline `verify` CLI with versioned external profiles, hash/date/scope-bound evidence,
+  criterion conditions and authorized review records. Capability, review completion and
+  verified compliance are separate; unproven applicability stays unresolved.
+- Recorded runtime state transitions, explicit sandbox navigation authorization, process
+  group cancellation and owned-device cleanup ledgers; build source/artifact provenance.
+- Real Flutter and ARM64 KMP corpus runs, guarded panel lineage and benchmark reporting.
+  The unchanged lifecycle speed gate remains unmet (80-second median versus 60 seconds).
 - Public, reviewed guideline obligation records with route and fixture validation; generated coverage and per-run evidence reports separate available routes from checks that executed.
 - Explicit isolated simulator builds, artifact inspection, bounded runtime exploration, read-only metadata/App Store Connect review, and developer attestation. Default scans remain offline and read-only.
 - A five-framework clean/broken simulator corpus and local scorecard runner. Runtime blocking is opt-in and limited to repeated launch or demo-login failure.

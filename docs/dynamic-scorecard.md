@@ -1,31 +1,66 @@
 # Local dynamic scorecard
 
-Run date: 2026-09-26 (Europe/Istanbul). Host: macOS 27.0 (26A428), Xcode 27.0 (27A266a), iOS Simulator 26.5 (23F77), Maestro 2.8.0. These are simulator observations; a simulator is not a physical device or an App Store review environment.
+Run date: 2026-09-27 (UTC). macOS 27.0, Xcode 27.0 (27A266a),
+iOS Simulator 26.5 (23F77), Maestro 2.8.0. Isolated toolchains include
+Flutter 3.47.5, Gradle 9.1.0 and Kotlin Native 2.2.20; official distribution
+checksums were verified. These are synthetic corpus simulator observations.
 
-The corpus panel builds each variant into a disposable copy, creates and deletes its own simulator, runs launch health three times, and records bounded screen exploration when the app stays up. `SKIP` means the required tool or package source was unavailable; `ERROR` is a harness/build/runtime failure. The machine-readable `panel.json` is local and is not packaged; regenerate it with `bash tests/local/dynamic-panel.sh --out /tmp/precheck-panel`.
+The panel builds temporary copies, checks source/artifact identity, creates its own
+simulators and deletes them. Launch repetitions retain a five-second observation
+window and fresh environments. Discovery results request review; they are not
+whole-guideline decisions. Regenerate with
+`bash tests/local/dynamic-panel.sh --out /tmp/precheck-verification-panel-new`.
+Use an empty output directory; stale case outputs are refused.
 
-| Framework | Clean state | Clean launch expected → observed | Broken state | Broken launch expected → observed | Evidence / gap |
-|---|---|---|---|---|---|
-| SwiftUI | RAN | PASS → PASS | RAN | FINDING → FINDING | Release builds; clean launch passed 3/3 and broken launch failed 3/3. Clean exploration captured four screens (one check PASS, five NEEDS_REVIEW, seven SKIP). |
-| React Native bare | RAN | PASS → PASS | RAN | PASS → PASS | Both Release builds launched 3/3. Broken live capture matched three of four targeted review signals; after the provider-name fix, replaying that captured hierarchy matched all four. |
-| Expo | RAN | PASS → PASS | RAN | PASS → PASS | Both final Release bundles launched 3/3; clean captured three screens, broken four. Broken matched all three targeted review signals and the missing-purpose bundle expectation. |
-| Flutter | SKIP | PASS → NOT_RUN | SKIP | PASS → NOT_RUN | Flutter SDK is absent. |
-| Kotlin Multiplatform | SKIP | PASS → NOT_RUN | SKIP | PASS → NOT_RUN | Gradle is absent. |
+| Framework | Clean | Broken | Scope |
+|---|---|---|---|
+| SwiftUI | Release; launch and first screen 10/10 PASS | Release; deterministic crash 3/3 FINDING | Initial frozen panel |
+| React Native bare | Release; fresh launch/first screen 3/3 PASS | Release; fresh launch/first screen 3/3 PASS; 4/4 expected discovery statuses | Exact source-bound artifacts reused for new runtime; unfamiliar provider observed live, separately from earlier replay |
+| Expo | Release; launch/first screen 3/3 PASS | Release; launch/first screen 3/3 PASS; 3/3 discovery statuses | Shipped camera purpose present in clean and absent in broken |
+| Flutter | Debug; new source-bound build; launch/first screen 3/3 PASS | Debug; new build and fresh launch/first screen 3/3 PASS; 1/1 discovery status | Simulator Debug only |
+| Kotlin Multiplatform | ARM64 Release; launch/first screen 3/3 PASS | ARM64 Release; launch/first screen 3/3 PASS; 1/1 discovery status | Static Shared archive; corrected artifacts reused for fresh runtime |
 
-Initial React Native and Expo attempts stopped during dependency setup. A temporary Homebrew Ruby `ffi` gem, forwarding its explicit `GEM_PATH`, a UTF-8 locale for CocoaPods, and preferring the app's Xcode scheme enabled the later React Native builds. The panel used three repeats, a five-second launch window, and a 90-second exploration budget. React Native's generated template also contained an empty location purpose string; this artifact advisory appeared in both variants and does not change the launch expectation. The original broken live inventory skipped the unfamiliar identity provider; the corrected check was verified against the same recorded screen and a local-credentials negative fixture. Its four NEEDS_REVIEW results request manual validation, rather than proving account deletion, restore, login parity, or UGC completion.
+The selected ten cases matched all ten expected launch outcomes: zero launch false
+positives, misses or mixed results. Nine of nine expected discovery statuses matched.
+These denominators are scoped to manifest expectations; they are not a measure of
+all possible defects. Two additional empty location purpose strings in generated
+React Native templates remain recorded outside the launch metric. KMP HealthKit
+is a source signal; unsigned simulator output does not prove distribution entitlement
+or whether the capability is unused.
 
-Expo initially restored the default camera purpose text after the broken fixture removed it. The final fixture sets the camera plugin's `cameraPermission` option to `false`, which the [official plugin source](https://github.com/expo/expo/blob/main/packages/expo-camera/plugin/src/withCamera.ts) supports. A new Release build omitted `NSCameraUsageDescription`; the clean build retained its specific purpose text. The local panel now compares those bundle expectations so future template defaults cannot silently erase this seed.
+All selected artifacts were rehashed against build provenance. Source binding was
+valid for all ten; final six cases have case-local source/runner snapshots. Initial
+SwiftUI and Expo records retain their older frozen batch identity, not a fabricated
+new per-case collector history. Thirteen owned runs, including failed attempts,
+matched deletion ledgers and were absent from the final simulator inventory. The
+initial whole-batch before inventory was not retained, limiting broader device-state
+claims. Raw application/device records remain private.
 
-The final broken Expo bundle passed three launches, produced three of three expected NEEDS_REVIEW signals, and matched the missing camera purpose expectation (one of one). Its four captured screens produced six NEEDS_REVIEW and seven SKIP checks. The combined final local panel is `/private/tmp/appstore-dynamic-panel-delivery/panel.json`; its React Native broken record preserves the original live miss separately from the corrected recorded-screen reanalysis. Ten recorded simulator IDs from these validation runs were absent from the final simulator inventory, confirming cleanup.
+Initial failures remain part of the record: SwiftUI installation SKIP, an unexplained
+RN dependency-install failure, a deficient RN launch observation, Flutter source-binding
+failures and KMP packaging/architecture build failures. A later Flutter driver error
+was rerun in a new directory after the Bash 3 empty-array fix. Its earlier ERROR was
+not relabeled successful. The deficient RN observation had only a clean log and no
+positive app signal; the corrected evaluator returns SKIP. A fresh live run then
+provided complete observations. No failed or slow samples were silently discarded.
 
-## Real app: ControlDopamine
+Selected restore/UGC/login UI transitions retain hashed start/action/postcondition
+records. Receipt, entitlement and backend completion remain UNRESOLVED. Observed
+Flutter/KMP accessibility trees had useful nodes; dedicated selector checks that were
+not executed remain SKIP. No framework-wide absence of accessibility is assumed.
 
-The source at `/Users/bt/claude/controldopamine` was read without writing to it. An isolated Release simulator build produced a `.app`; artifact review ran, followed by three simulator launches and bounded screen exploration. Launch health passed 3/3 and the first screen was nonblank. The inventory captured one screen and thirteen pattern checks; most paths needed further interaction or were skipped. The Dynamic Type hierarchy showed one possible overlapping label and CFNetwork diagnostics observed attribution hosts that need a privacy manifest review. These are advisory signals, not a rejection conclusion. Artifact inspection reported partial clean signals for direct private linkage, URL scheme declarations, ATS, and mapped required-reason API symbols; signing entitlements were unreadable in the unsigned simulator bundle.
+## Timing gate
 
-Local fastlane metadata was detected under `ios/fastlane/metadata`; its review produced three PASS, two NEEDS_REVIEW, one SKIP, and five NOT_RUN records without App Store Connect credentials. No App Store Connect request or URL HEAD check was made.
+SwiftUI clean lifecycle samples in seconds were
+`47, 101, 83, 72, 67, 71, 93, 98, 82, 78`: median **80.0 seconds**.
+The historical **70.5 seconds** and this measurement both include repeat
+reset/boot/install where performed. The unchanged **60-second gate fails**.
+Pure observation samples `47, 41, 29, 29, 26, 31, 32, 47, 37, 34` have a
+33-second median and do not satisfy that lifecycle gate. Early samples overlapped
+SDK preparation and suite completion; all samples are retained. Bounded process
+waiting removes polling overhead without reducing windows or fresh repetitions;
+this experiment does not demonstrate a speed improvement.
 
-A final integrated `scan.sh --app --metadata --format json` run executed all six section reviews, artifact, runtime, and metadata, with no coverage errors. Its 66 optional check records were all registered: fifteen partial PASS, thirteen REVIEW_REQUIRED, two WARN, thirty-one SKIP, and five NOT_RUN. Launch passed 3/3; all 585 attestations remained pending and zero whole obligations were automatically decided. The source hash changed during this final run while Git status stayed the same; one tracked campaign-measurement document had a modification time after the baseline. That concurrent edit prevents claiming unchanged whole-project content from this real run. The controlled build fixtures provide the before/after source hash proof, and the scanner reports were written outside the user project.
-
-## Acceptance and limits
-
-The broken SwiftUI variant met the 3/3 detection gate. A separate clean run passed 10/10 launches, with zero launch FINDINGs or SKIPs, so it did not hit the false-positive abandonment condition. Per-repeat D1+D2 durations were 27, 68, 61, 77, 74, 82, 71, 66, 71, and 70 seconds; the median was **70.5 seconds**, above the 60-second threshold. The timing includes the reset/boot/install between repeats as well as launch and first-screen observation; it is not an app startup benchmark. This latency gate is **not met** on this host. A clean or broken result outside the simulator cannot be inferred from these runs.
+These runs do not establish signed distribution, physical-device, live store,
+production-backend or full App Review compliance. Reference-app evidence and its
+remaining developer inputs are maintained privately, outside this public scorecard.

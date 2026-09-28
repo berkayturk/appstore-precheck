@@ -357,7 +357,7 @@ def build_report(profile, manifest, decisions, catalog, policies, base, config=N
         rows.append(row)
     summary = contract.summarize(rows)
     summary['ready'] = summary['ready'] and not errors and not any(r['conflict'] for r in rows)
-    summary['automatic_decisions'] = sum(r['status'] in contract.CLOSED and r['status'] != 'NOT_APPLICABLE_VERIFIED' and all(c['mode'] != 'reviewed' for c in r['conditions']) for r in rows)
+    summary['automatic_decisions'] = sum(r['status'] in contract.CLOSED and r['status'] != 'NOT_APPLICABLE_VERIFIED' and all(c['mode'] != 'reviewed' for c in r['conditions']) and any('verifier' in proof for proof in r.get('applicability_evidence', [])) for r in rows)
     summary['reviewed_decisions'] = sum(r['status'] in contract.CLOSED for r in rows) - summary['automatic_decisions']
     return redact({'schema_version': 1, 'profile': profile, 'summary': summary, 'input_errors': errors,
             'policy_sha256': hashlib.sha256(json.dumps(policies, sort_keys=True).encode()).hexdigest(),

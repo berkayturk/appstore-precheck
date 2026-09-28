@@ -73,6 +73,7 @@ SUITE=(
   "test-section5-review.sh" # Privacy and legal evidence routes and explicit abstention
   "test-section6-review.sh" # Intro and submission evidence routes and explicit abstention
   "test-runtime-review.sh" # bounded screen discovery and opt-in blocking
+  "test-corpus-panel.sh" # live panel scope, seed and benchmark regressions
   "test-opt-in-review.sh" # temporary build orchestration and CLI opt-in
 )
 

@@ -76,6 +76,10 @@ with tempfile.TemporaryDirectory() as td:
  unproven=copy.deepcopy(good);unproven['applicability']={'status':'APPLICABLE'}
  assert status(report([unproven],ps=ps))=='UNRESOLVED', 'applicability needs evidence too'
  assert report([good],ps=ps)['summary']['reviewed_decisions']==1
+ manual_app=copy.deepcopy(policy);manual_app['req-one']['applicability_verifiers']=[]
+ hybrid=copy.deepcopy(decision);hybrid['applicability']=good['applicability']
+ assert report([hybrid],ps=manual_app)['summary']['automatic_decisions']==0
+ assert report([hybrid],ps=manual_app)['summary']['reviewed_decisions']==1
  partial=copy.deepcopy(good);partial['conditions'].pop();assert status(report([partial],ps=ps))=='UNRESOLVED'
  assert status(report([good,decision],ps=policy))=='VERIFIED_FINDING'
  assert status(report([good],es=evidence,ps=policy))=='VERIFIED_FINDING', 'contradictory evidence cannot be hidden by omitting its claim'
@@ -102,6 +106,7 @@ with tempfile.TemporaryDirectory() as td:
   (base/(name+'.json')).write_text(json.dumps(value))
  args=['python3','-B','skills/appstore-precheck/scripts/verification-report.py','--profile',str(base/'profile.json'),'--evidence',str(base/'evidence.json'),'--decisions',str(base/'decisions.json'),'--out',str(base/'report.json'),'--markdown',str(base/'report.md')]
  assert subprocess.run(args,stdout=subprocess.PIPE,stderr=subprocess.PIPE).returncode==1
+ assert subprocess.run(['node','bin/cli.js','verify']+args[3:],stdout=subprocess.PIPE,stderr=subprocess.PIPE).returncode==1
  actual=json.loads((base/'report.json').read_text());cat=json.loads(Path('skills/appstore-precheck/references/guideline-obligations.json').read_text())
  assert actual['summary']['total_obligations']==sum(r['kind']=='obligation' for r in cat['obligations'])
  assert (base/'report.md').is_file()

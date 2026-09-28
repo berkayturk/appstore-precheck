@@ -2,6 +2,7 @@
 """Coordinate explicitly requested build, artifact, runtime, and metadata tiers."""
 
 import argparse
+import importlib.util
 import json
 import re
 import subprocess
@@ -9,6 +10,9 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+_process_spec = importlib.util.spec_from_file_location('dyn_process', HERE / 'lib/dyn-process.py')
+_process = importlib.util.module_from_spec(_process_spec)
+_process_spec.loader.exec_module(_process)
 ARTIFACT_IDS = (
     "artifact-entitlements", "artifact-reason-api", "artifact-private-api",
     "artifact-url-schemes", "artifact-ats", "artifact-sdk",
@@ -19,8 +23,8 @@ DYNAMIC = re.compile(r"^DYNAMIC-(PASS|FINDING|SKIP): \S+ \[([^]]+)\] — (.*)$")
 
 def run(command, timeout):
     try:
-        return subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                              text=True, timeout=timeout, check=False)
+        return _process.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                            text=True, timeout=timeout)
     except (OSError, subprocess.TimeoutExpired):
         return None
 

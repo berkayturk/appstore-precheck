@@ -32,6 +32,12 @@ It ships as a portable [Agent Skill](https://agentskills.io): the same `SKILL.md
 Claude Code, OpenAI Codex, Cursor, Gemini CLI, and Grok Build. The scanner is plain Bash, so you can
 also run it by hand or wire it into CI.
 
+Evidence-bound review is available through `npx appstore-precheck verify --help`.
+It keeps applicability, verified decisions and missing evidence separate from the static
+GREEN verdict. See the [verification guide](docs/guideline-verification.md) and
+[capability report](docs/verification-capability.md). Use `--no-runtime` with an opt-in
+build when collecting package evidence without launching the app.
+
 ## Meet Pierre
 
 <img src="assets/mascot.png" align="right" width="124" alt="Pierre, the French app reviewer">

@@ -121,7 +121,7 @@ under-detect on those toolkits). This tier uses it for two things:
 |---|---|---|---|
 | native | — | agent-driven | run |
 | rn | A Debug `.app` without an embedded `main.jsbundle` needs **Metro on port 8081**. If Metro is not listening, D1/D2 are `DYNAMIC-SKIP: 2.1 [dyn-launch] — Metro bundler not running …` — otherwise every RN app "crashes on launch" for a reason that is not the app's. | agent-driven | run |
-| flutter, kmp (Compose Multiplatform) | — | **SKIPped up front**: `dyn-restore-tap`, `dyn-demo-login` and the trigger half of `dyn-permission-prompt` are `DYNAMIC-SKIP … no accessibility semantics exposed to Maestro` (the tree is empty or single-node on a healthy screen). D3 and D6 can still be judged from screenshots. | pre-SKIP | run — but a degenerate tree is never a failure signal on its own, and D7–D9 are SKIP when the tree is degenerate (judge the screenshot by eye) |
+| flutter, kmp | — | Dedicated selector flows remain SKIP unless explicitly driven; the reason reports measured accessibility or unknown capability. Authorized navigation is recorded separately. | Run; a small or unreadable tree alone is never an app failure. |
 
 ## Per-check procedure
 
@@ -182,12 +182,12 @@ not be read is written into the line as such — never assumed healthy, never as
   error` line for the app in the window, and no new `<Executable>-*.ips` in
   `~/Library/Logs/DiagnosticReports`;
 - **accessibility tree ≥ N nodes:** `maestro --device <udid> hierarchy` (one call). **Degenerate
-  tree caveat:** Flutter and Compose Multiplatform apps return an empty or single-node tree on a
-  perfectly healthy screen, so a small tree on its own is **never** a FINDING; it only counts when
+  tree caveat:** Any framework may expose an empty or single-node tree on a
+  healthy screen, so a small tree on its own is **never** a FINDING; it only counts when
   another signal also fails.
 
 Per repeat: process gone, a crash line, or a flat screenshot → failed; every readable signal
-healthy → passed; nothing readable → skipped. Across the N=3 repeats
+healthy with a positive process, image or tree signal → passed; clean logs alone → skipped. Across the N=3 repeats
 ([`lib/dyn-quorum.sh`](../scripts/lib/dyn-quorum.sh)): every repeat failed → `DYNAMIC-FINDING …
 quorum 3/3`; some failed → `DYNAMIC-FINDING … quorum k/3 … (not unanimous; advisory, never
 blocking)`; every repeat skipped (driver timeouts) → `DYNAMIC-SKIP`; otherwise `DYNAMIC-PASS`
@@ -225,7 +225,7 @@ does something.
 1. On the paywall (or settings) screen, find the Restore control by **`accessibilityText`** in
    the `mcp__maestro__inspect_screen` hierarchy — that is the field Maestro exposes the label in,
    not `text`. No such control → `DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — no Restore Purchases
-   control found`. On Flutter / KMP this is pre-SKIPped (no semantics).
+   control found`. An unexecuted dedicated selector flow remains SKIP; report the measured tree capability.
 2. `tapOn` it and wait up to 3 s for a **non-inert response**: an alert, a spinner / progress
    indicator, or any change in the accessibility tree or screenshot.
 3. A response → `DYNAMIC-PASS`. No visible reaction at all within 3 s → `DYNAMIC-FINDING` (a
@@ -243,7 +243,7 @@ resolve it (see the reconciliation table in `dynamic.sh`).
    (`[dyn-permission-prompt:NSCameraUsageDescription]`): that is what lets a PASS resolve the
    matching static §2 finding for that key. A permission whose trigger cannot be found →
    `DYNAMIC-SKIP` for that key. A keyless line (`[dyn-permission-prompt]`) is treated as partial.
-   On Flutter / KMP the trigger half is pre-SKIPped; the OS prompt itself is native and visible in
+   An unexecuted trigger remains SKIP; the OS prompt itself is native and visible in
    a screenshot if the agent reaches the feature by coordinates.
 
 ### D5 — Demo / login path (`dyn-demo-login`)
@@ -382,3 +382,10 @@ partial, a keyless D10 line aims at nothing); `att-usage ↔ dyn-shipped-bundle:
 `release` claim over a transcript whose D0 line says `Debug-iphonesimulator` is degraded to
 `unknown`, loudly. `dynamic.sh --not-run --findings <static.json>` produces the
 `runtime-not-audited` gap record for a run where the tier was not used.
+
+### Authorized exploration and transition evidence
+
+Default exploration captures one screen without tapping. Explicit sandbox/test navigation
+uses an exact-label allowlist and records hashed start/action/postcondition evidence.
+See [runtime-transition-evidence.md](runtime-transition-evidence.md). Selected UI state
+observations are distinct from backend/StoreKit/OS outcomes; unresolved flows remain open.
