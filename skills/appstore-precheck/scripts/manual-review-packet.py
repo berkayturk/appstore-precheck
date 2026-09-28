@@ -64,7 +64,19 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
     notes, annotation_errors = annotation_index(observations or {'schema_version': 1, 'observations': []},
                                                catalog, policies, candidates, {e['id'] for e in report['evidence']})
     indexed = {r['obligation_id']: r for r in report['obligations']}
-    rows, requests, shared = [], {}, {}
+    reviewed_rationales = {}
+    for evidence in report['evidence']:
+        if evidence['kind'] != 'review-record':
+            continue
+        try:
+            content = Path(evidence['path']).read_bytes()
+            record = json.loads(content)
+            if (hashlib.sha256(content).hexdigest() == evidence['sha256'] and
+                    isinstance(record, dict) and reporter.nonempty(record.get('rationale'))):
+                reviewed_rationales[evidence['id']] = record['rationale']
+        except (OSError, ValueError):
+            pass
+    rows, requests, shared, findings = [], {}, {}, []
     for item in catalog['obligations']:
         if item['kind'] != 'obligation':
             continue
@@ -101,6 +113,15 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
                       'result': evaluated, 'needed': needed}
             row['conditions'].append(detail)
             requirements.append(detail)
+            if evaluated['status'] == 'FINDING':
+                findings.append({'obligation_id': ident, 'condition_id': condition['id'],
+                    'owner': policy['owner'], 'description': condition['description'],
+                    'obligation_status': result['status'], 'applicability': result['applicability'],
+                    'evidence_ids': evaluated['evidence_ids'], 'mode': evaluated.get('mode'),
+                    'reviewer': evaluated.get('reviewer'),
+                    'reasons': evaluated['reasons'] + [reviewed_rationales[i] for i in evaluated['evidence_ids'] if i in reviewed_rationales],
+                    'limitations': evaluated['limitations'],
+                    'next_action': 'Resolve or investigate the evidenced condition violation within authorized scope, then collect fresh proof and re-run verification. Risk acceptance does not establish PASS.'})
         row['applicability_review'] = requirements[0]
         rows.append(row)
         pending = [r for r in requirements if r['needed']]
@@ -132,6 +153,7 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
         shared_rows.append(dict(value, owners=sorted(value['owners']), request_ids=sorted(value['request_ids'])))
     backlog = {'schema_version': 1, 'scope': profile['target'], 'reviewed_at': profile['reviewed_at'],
                'requests': sorted(requests.values(), key=lambda r: (r['owner'], r['document_group'])),
+               'remediation_findings': findings,
                'shared_evidence': shared_rows,
                'review_authority_request': {'owner': 'product owner / responsible organization',
                     'required': bool(requests), 'obligation_ids': sorted({r for v in requests.values() for r in v['obligation_ids']}),
@@ -140,7 +162,8 @@ def make_packet(profile, manifest, decisions, catalog, policies, base, config=No
               'catalog_sha256': report['catalog_sha256'], 'policy_sha256': report['policy_sha256'],
               'summary': dict(report['summary'], attestation_only_obligations=sum(r['attestation_only'] for r in rows),
                               policy_gap_count=sum(not r['policy_defined'] for r in rows),
-                              request_groups=len(requests), shared_evidence_kinds=len(shared_rows)),
+                              request_groups=len(requests), shared_evidence_kinds=len(shared_rows),
+                              remediation_findings=len(findings)),
               'evidence': report['evidence'], 'observation_evidence_candidates': candidates, 'input_errors': report['input_errors'] + annotation_errors,
               'basis_definitions': {
                   'observed': 'A cited local observation; limited to the evidence scope and sampled content. It is not a compliance result.',
@@ -172,6 +195,14 @@ def markdown(packet, backlog):
                 requirement['obligation_id'], requirement['condition_id'], requirement['description'],
                 ', '.join(requirement['accepted_evidence_kinds']) or 'policy gap', ', '.join(requirement['required_positive_evidence_kinds']) or 'see criterion review scope', requirement['required_review'])]
         lines.append('')
+    lines += ['## Evidenced findings requiring action', '']
+    if not backlog['remediation_findings']:
+        lines += ['No evaluated condition findings recorded; this does not establish compliance.', '']
+    for finding in backlog['remediation_findings']:
+        lines += ['- `{}` / `{}` — owner: {}; obligation result: {}; applicability: {}. {} Evidence: {}. Reasons: {}. {}'.format(
+            finding['obligation_id'], finding['condition_id'], finding['owner'],
+            finding['obligation_status'], finding['applicability'], finding['description'],
+            ', '.join(finding['evidence_ids']), '; '.join(finding['reasons']) or 'See cited condition proof', finding['next_action']), '']
     lines += ['## Review provenance', '', backlog['review_authority_request']['content'], '',
               'The JSON packet includes every obligation and all required conditions, evidence IDs, verified results, annotations and gaps. The JSON backlog deduplicates reusable evidence kinds without merging criterion-specific judgments.', '']
     return '\n'.join(lines)

@@ -38,6 +38,11 @@ The three output files are:
   separately in requests and in the shared index's `mandatory_positive_for` mappings.
   They do not require a missing license/approval to be supplied before a violation
   can be established, and their presence does not guarantee authenticity.
+  A separate `remediation_findings` list preserves evaluated violations with exact
+  obligation/condition IDs, owner, description, proof IDs and reasons. Completed
+  review of a violation remains actionable even when no evidence inputs are missing.
+  An unresolved applicability result stays explicit; no finding implies automatic
+  remediation or approval. Re-check authorized changes with fresh evidence.
 - `manual-review-packet.md`: the grouped questions and evidence requirements for
   reviewers. The JSON remains the complete condition/result record.
 

@@ -92,6 +92,28 @@ with tempfile.TemporaryDirectory() as temp:
     assert p['obligations'][1]['status'] == 'UNRESOLVED'
     assert b['requests'][0]['obligation_ids'] == ['two']
     assert len(p['obligations'][0]['conditions']) == 1
+    assert b['remediation_findings'] == []
+    # Completed review of a violation still creates an actionable finding,
+    # independently of missing-input requests for the other obligation.
+    finding_manifest = copy.deepcopy(valid_evidence)
+    review_path = root / 'review-inventory.json'
+    finding_record = json.loads(review_path.read_text())
+    finding_record['outcome'] = 'FINDING'
+    finding_record['rationale'] = 'Synthetic complete inventory contains a prohibited entry.'
+    review_path.write_text(json.dumps(finding_record))
+    next(e for e in finding_manifest if e['id'] == 'review-inventory')['sha256'] = hashlib.sha256(review_path.read_bytes()).hexdigest()
+    p, b = packet(target=known_profile, evidence={'schema_version': 1, 'evidence': finding_manifest})
+    assert p['obligations'][0]['status'] == 'VERIFIED_FINDING'
+    assert not p['summary']['ready'] and p['summary']['verified_pass_percent'] == 0
+    assert b['requests'][0]['obligation_ids'] == ['two']
+    assert len(b['remediation_findings']) == 1
+    finding = b['remediation_findings'][0]
+    assert (finding['obligation_id'], finding['condition_id'], finding['owner']) == ('one', 'inventory', 'content owner')
+    assert 'review-inventory' in finding['evidence_ids'] and finding['description'] == condition['description']
+    assert finding_record['rationale'] in finding['reasons']
+    assert 'Risk acceptance does not establish PASS' in finding['next_action']
+    assert 'VERIFIED_FINDING' in m.markdown(p, b)
+
     # Credential text is redacted, including in narrative observations and paths.
     os.environ['PRECHECK_DEMO_PASSWORD'] = 'synthetic-secret-value'
     changed = dict(observation, summary='synthetic-secret-value https://user:pass@example.test/?token=hidden')
