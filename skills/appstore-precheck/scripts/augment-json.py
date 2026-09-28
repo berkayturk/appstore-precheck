@@ -127,6 +127,7 @@ def main():
             opt = json.loads(args.opt_summary.read_text())
             envelope["opt_in"] = {"tiers": opt.get("tiers", {}),
                                   "blocking": opt.get("blocking", []),
+                                  "input_errors": opt.get("input_errors", []),
                                   "run_results": opt.get("run_results"),
                                   "report_dir": str(args.opt_summary.parent)}
         if errors:

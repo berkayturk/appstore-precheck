@@ -25,6 +25,8 @@ def run(command, timeout):
     try:
         return _process.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             text=True, timeout=timeout)
+    except InterruptedError:
+        raise
     except (OSError, subprocess.TimeoutExpired):
         return None
 
@@ -248,4 +250,7 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except InterruptedError:
+        sys.exit(143)

@@ -37,6 +37,8 @@ file has `schema_version: 1`. Unknown facts stay `null`, not `false`.
 Versioned policy fragments live in `references/verification/`. Each section file
 contains `{schema_version: 1, section, obligations: [...]}`. Each policy row names
 `obligation_id`, `conditions`, `applicability_evidence`, `owner`, and `document_group`.
+Optional `applicability_verifiers` names implemented predicates; caller labels alone
+cannot establish either applicability or a verified exclusion.
 Each condition has `id`, `description`, `evidence_kinds`, `full_positive_verifiers`,
 `decisive_finding_verifiers`, and `review_requirement`. These separate the scope of
 positive proof from the narrower proof of a decisive violation. An absent policy
@@ -67,3 +69,37 @@ conflicts or invalid required evidence. Errors in one record must not erase othe
 Changing build, source, backend, platform, storefront, policy or evidence invalidates
 relevant closure. A risk acceptance is not compliance. Evidence file integrity is
 not document authenticity or institutional approval; record that owner review gap.
+
+## App Store metadata collector
+
+The narrow `metadata.app-name-length.v1` verifier covers only the app-name limit.
+It requires an integrity-bound live ASC projection for the exact app/version/build,
+complete App Info/localization pagination and every localized name. Short names
+across every candidate App Info can pass; a sole App Info with an ASCII name above
+30 characters can establish a finding. Ambiguous Unicode counts, missing pages,
+wrong identities and fixture snapshots remain unresolved. This implementation has
+synthetic transport and boundary tests; it is not evidence of a live application review.
+
+Supply ASC credentials privately through `ASC_KEY_ID`, `ASC_ISSUER_ID` and
+`ASC_KEY_PATH`. The following identifiers are synthetic and must be replaced with
+confirmed values. This direct wrapper, rather than the scan CLI, accepts the capture
+and expected-identity flags:
+
+```sh
+bash skills/appstore-precheck/scripts/metadata-review.sh \
+  --repo /path/to/read-only-app --asc-app-id 1234567890 \
+  --asc-version-id 11111111-2222-3333-4444-555555555555 \
+  --bundle-id org.example.app --version 1.2 --build-number 7 \
+  --out /tmp/review/metadata.json \
+  --verification-evidence-out /tmp/review/metadata-name-proof.json
+```
+
+The capture path must be new and outside the app source; permissions are 0600.
+The projection excludes review/demo fields, URLs and JWTs. Register its actual file
+hash in the evidence manifest as kind `metadata-asc-snapshot`, with the true collection
+date, full target scope and provenance. Collection does not prove signed artifact
+identity or privacy-label accuracy. A local snapshot is not an Apple-signed transcript;
+its authority depends on the trusted collecting environment. Recollect mutable listing
+information whenever it changes. Local fastlane observations remain separate from ASC;
+local presence cannot repair a failed remote request. Missing live credentials means
+`NOT_RUN`; no undocumented privacy endpoint is invented.

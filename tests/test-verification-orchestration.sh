@@ -6,6 +6,10 @@ import contextlib,importlib.util,io,json,sys,tempfile,types
 from pathlib import Path
 from unittest import mock
 s=importlib.util.spec_from_file_location('runner','skills/appstore-precheck/scripts/opt-in-review.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)
+with mock.patch.object(m._process,'run',side_effect=InterruptedError('cancelled')):
+ try:m.run(['synthetic'],1)
+ except InterruptedError:pass
+ else:raise AssertionError('cancellation must stop remaining tiers')
 checks={}
 errors=m.import_records(checks,[None,{'check_id':'x','status':{}},{'check_id':'x','status':'FINDING'},{'check_id':'x','status':'PASS'}],'synthetic')
 assert len(errors)==2 and checks['x']['status']=='FINDING'

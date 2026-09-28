@@ -50,6 +50,9 @@ SUITE=(
   "test-source-snapshot.sh" # private source content binding
   "test-verification-orchestration.sh" # opt-in runtime boundaries and selector forwarding
   "test-verification-policy.sh" # implemented condition capability, independent of route labels
+  "test-verification-safety-policy.sh" # Safety evidence and exceptions
+  "test-verification-section2.sh" # Performance scope and metadata proof
+  "test-verification-metadata.sh" # exact ASC identity and limited name proof
   "test-verification-report.sh" # scoped decisions and independent proof
   "test-verification-contract.sh" # versioned evidence and decision invariants
   "test-coverage.sh"   # obligation schema, registry, and route coverage
