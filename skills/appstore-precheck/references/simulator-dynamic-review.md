@@ -1,4 +1,4 @@
-# Local dynamic simulator tier (agent-mode, opt-in, non-blocking)
+# Local dynamic simulator tier (opt-in, advisory unless `--dynamic-blocking`)
 
 The fourth, opt-in tier: a **local dynamic** review that runs the app on a simulator and observes
 real behavior — the class of checks a static scan cannot make (does it launch without crashing, does
@@ -9,14 +9,33 @@ to). It is the free/local alternative to a paid cloud device farm, built from `x
 Maestro (the MCP tools `mcp__maestro__*` for the agent-driven checks, the `maestro` CLI for the
 runner's hierarchy reads) already available on a Mac with Xcode.
 
-**Identity:** runs ONLY in agent-skill mode, ONLY when the user explicitly asks for it and supplies a
-built app (or a booted simulator UDID + bundle id). It is NOT part of the offline CLI / npx /
-GitHub-Action scan, and it never runs by default. Requires macOS + Xcode + a simulator runtime; it
-cannot run in this project's `ubuntu-latest` CI and is permanently local-only.
+**Identity:** never runs by default. The default `scan.sh` / `npx appstore-precheck` scan stays
+offline, static and read-only. The tier runs only on an explicit opt-in:
 
-**This tier never changes the verdict.** GREEN/YELLOW/RED comes only from the static scan counts
-(Phases 0–2). This tier emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines,
-like Pierre deep-review's `REVIEW-*` lines.
+- `scan.sh --build` or `npx appstore-precheck dynamic --build` (also `npx appstore-precheck
+  --build`) builds a simulator app in a disposable project copy, then runs it;
+- `scan.sh --app <path>.app` or `npx appstore-precheck --app <path>.app` runs a simulator build
+  the user already made; `--no-runtime` inspects the build or bundle without launching it;
+- in agent mode, the user asks for it and supplies a built app (or a booted simulator UDID +
+  bundle id), and the agent drives the selector-based checks below.
+
+`dynamic.build: true` in `.appstore-precheck.json` is honoured **only** when the invoker also sets
+`APPSTORE_PRECHECK_TRUST_CONFIG=1`: that config lives in the scanned repository, and a scanned
+repository must not be able to make the scanner execute its code. Without the variable the scan
+prints a notice on stderr and stays static. `dynamic.demoLogin` applies only while a build or
+`--app` run is active. The GitHub Action never trusts the config. Requires macOS + Xcode + a
+simulator runtime; it cannot run in this project's `ubuntu-latest` CI and is local-only.
+
+**Advisory by default.** GREEN/YELLOW/RED comes from the static scan counts (Phases 0–2). This
+tier emits `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines, like Pierre deep-review's
+`REVIEW-*` lines, and they do not change the verdict. The single exception is explicit
+`--dynamic-blocking` (it needs `--build` or `--app`): it adds a `FAIL:` only for a unanimous 3/3
+launch crash (`dyn-launch`) or a 3/3 demo-login failure (`dyn-demo-login`). A mixed ratio, a
+SKIP, or any other runtime observation never blocks.
+
+**Time budget.** The isolated build has a total deadline of 2400 s (outer cap 2700 s); the
+runtime runner's process-group supervisor stops at 1200 s by default
+(`PRECHECK_RUNTIME_DEADLINE_SECONDS`). A deadline yields `SKIP` / `NOT_RUN`, never a PASS.
 
 **No-write, but it executes your application code.** The tier never modifies the user's repo,
 and it **creates its own throwaway device** (`xcrun simctl create`, a unique name), erases it before
@@ -36,15 +55,19 @@ the static scan never has. Say so before the first launch:
   shows them to the user and never uploads them anywhere. Mask or skip a screenshot that shows
   a secret the user did not intend to expose.
 
-**It never builds.** No `xcodebuild`, `flutter build`, `gradle` — ever. The `.app` must already
-exist. [`scripts/app-discover.sh`](../scripts/app-discover.sh) lists the simulator apps the user
+**Builds only on explicit `--build`.** Without it, no `xcodebuild`, `flutter build` or `gradle`
+runs and the `.app` must already exist. With it, [`scripts/build-run.sh`](../scripts/build-run.sh)
+copies the project into a temporary directory and builds there (see SECURITY.md: build scripts are
+arbitrary project code). A symlink anywhere in the build input — including one named `Pods`,
+`build` or `node_modules` — is rejected rather than followed. Discovery never builds:
+[`scripts/app-discover.sh`](../scripts/app-discover.sh) lists the simulator apps the user
 already built (DerivedData, `build/ios/iphonesimulator`), with their **build time**, their
 **configuration read from the directory name** (`Debug-iphonesimulator` → `debug`,
 `Release-iphonesimulator` → `release`, anything else → `unknown`) and their bundle id, and
 recommends the newest. **Obtain the user's explicit confirmation of one candidate before installing
 or launching anything.** If nothing is found, the report carries the `runtime-not-audited` gap
-record and the discovery output prints the build command **for the user to run** — this tool will
-not run it.
+record and the discovery output prints the build command **for the user to run**; discovery does
+not run it (an explicit `--build` is the only path that builds).
 
 **Machine-readable:** every observation line carries a **rule id** (`[dyn-…]`, table below) so
 [`scripts/dynamic.sh`](../scripts/dynamic.sh) can turn the transcript into the same JSONL records
@@ -58,8 +81,9 @@ reporter, or real-device QA.
 
 ## Rules
 
-- Advisory only: every check reports `DYNAMIC-PASS:`, `DYNAMIC-FINDING:` or `DYNAMIC-SKIP:` — never
-  `FAIL`, never a verdict contribution.
+- Advisory by default: every check reports `DYNAMIC-PASS:`, `DYNAMIC-FINDING:` or `DYNAMIC-SKIP:`,
+  which never contribute to the verdict. Only explicit `--dynamic-blocking` turns a unanimous 3/3
+  `dyn-launch` or `dyn-demo-login` failure into a `FAIL:`.
 - Evidence-based: cite a screenshot filename + what was observed.
 - **A check that could not be driven is a `DYNAMIC-SKIP`, never a PASS and never an invented
   FINDING.** No paywall in this app, a UI selector that cannot be found, no permissions declared, an
@@ -68,8 +92,8 @@ reporter, or real-device QA.
   counts an unobserved behaviour as observed.
 - **Determinism before findings.** The launch checks run **N=3 times**, each on a freshly erased
   device; a `DYNAMIC-FINDING` for a crash needs **3/3**. A mixed result is a FINDING that carries its
-  ratio (`quorum 1/3: failed on 1 of 3 launches (not unanimous; advisory, never blocking)`) — the
-  Phase 3 blocking channel reads that ratio and never blocks on it.
+  ratio (`quorum 1/3: failed on 1 of 3 launches (not unanimous; advisory, never blocking)`) —
+  `--dynamic-blocking` reads that ratio and never blocks on it.
 - **One flow per Maestro invocation.** The iOS 26 driver misbehaves in batch mode (Maestro issues
   #3254 / #3318): every `mcp__maestro__run` call carries exactly one flow; the runner reads the
   hierarchy with one `maestro hierarchy` call at a time.
@@ -340,7 +364,12 @@ SKIP is listed under "Not audited" in Phase 5, next to the static `SKIP:` lines.
 ## Running it
 
 ```bash
-# 1. find a build the user already made (never builds); the user confirms ONE candidate
+# 0. scripted end to end instead (opt-in): isolated build + runtime, or an existing .app
+bash skills/appstore-precheck/scripts/scan.sh --dir /path/to/app --build --out /tmp/precheck-review
+npx appstore-precheck dynamic --build --dir /path/to/app --out /tmp/precheck-review
+#    add --dynamic-blocking to FAIL on a 3/3 launch crash or demo-login failure; --dry-run plans only
+
+# 1. or find a build the user already made (discovery never builds); the user confirms ONE candidate
 bash skills/appstore-precheck/scripts/app-discover.sh --repo /path/to/app --json
 
 # 2. the observation-based checks on a throwaway device (3 repeats, 10 s window)
