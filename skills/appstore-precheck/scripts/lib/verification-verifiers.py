@@ -3,7 +3,7 @@ import importlib.util
 from pathlib import Path
 
 VERIFIERS = {
-    'runtime.launch-crash.v1': {'positive': False, 'finding': True,
+    'runtime.launch-crash.v1': {'positive': False, 'finding': True, 'applicability': True,
                               'evidence_kinds': ['runtime-transcript']},
 }
 MODULES = ('verification-artifact.py', 'verification-metadata.py', 'verification-runtime.py')
@@ -62,7 +62,7 @@ def launch_crash(payloads, context):
             failures += 1
         if failures == 3:
             return {'status': 'FINDING', 'reason': 'Three independent fresh launches exited abnormally',
-                    'evidence_ids': [evidence['id']]}
+                    'evidence_ids': [evidence['id']], 'applicability': 'APPLICABLE'}
     return {'status': 'UNKNOWN', 'reason': 'No complete unanimous fresh launch-crash evidence',
             'evidence_ids': []}
 

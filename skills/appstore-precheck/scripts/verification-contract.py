@@ -21,6 +21,8 @@ def iso_date(value):
 
 def scope_matches(target, scope):
     """Unknown identity never acts as wildcard, and target arrays match exactly."""
+    if not isinstance(target, dict) or not isinstance(scope, dict):
+        return False
     return all(target.get(k) not in (None, '', [], 'unknown') and
                scope.get(k) == target[k] for k in SCOPE_FIELDS)
 
@@ -95,7 +97,7 @@ def evidence_errors(row, profile, base, max_age_days=30):
 
 def reduce_status(applicability, required, satisfied, violated, na_verified=False, conflict=False):
     """Inputs are evaluator-proven condition IDs, never raw caller status labels."""
-    if violated:
+    if violated and applicability == 'APPLICABLE':
         return 'VERIFIED_FINDING'
     if conflict:
         return 'UNRESOLVED'

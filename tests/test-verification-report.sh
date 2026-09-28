@@ -11,7 +11,7 @@ target={k:'synthetic' for k in m.contract.SCOPE_FIELDS}
 target.update(bundle_id='test.fixture',devices=['phone'],storefronts=['US'],artifact_sha256='a'*64,source_sha256='b'*64,distribution='simulator')
 profile={'schema_version':1,'target':target,'reviewed_at':today,'facts':{}}
 catalog={'obligations':[{'id':'req-one','kind':'obligation','criterion':'Synthetic two-part requirement','section':'1','exceptions':['exc-one']},{'id':'exc-one','kind':'exception','criterion':'Synthetic exception'}]}
-policy={'req-one':{'obligation_id':'req-one','owner':'developer','document_group':'fixture','applicability_evidence':['document'],'conditions':[{'id':'a','description':'first','evidence_kinds':['runtime-transcript'],'full_positive_verifiers':[],'decisive_finding_verifiers':['runtime.launch-crash.v1'],'review_requirement':'independent evidence review'},{'id':'b','description':'second','evidence_kinds':['document'],'full_positive_verifiers':[],'decisive_finding_verifiers':[],'review_requirement':'independent evidence review'}]}}
+policy={'req-one':{'obligation_id':'req-one','owner':'developer','document_group':'fixture','applicability_evidence':['document'],'applicability_verifiers':['runtime.launch-crash.v1'],'conditions':[{'id':'a','description':'first','evidence_kinds':['runtime-transcript'],'full_positive_verifiers':[],'decisive_finding_verifiers':['runtime.launch-crash.v1'],'review_requirement':'independent evidence review'},{'id':'b','description':'second','evidence_kinds':['document'],'full_positive_verifiers':[],'decisive_finding_verifiers':[],'review_requirement':'independent evidence review'}]}}
 with tempfile.TemporaryDirectory() as td:
  base=Path(td); evidence=[]
  def add(ident,kind,payload):
@@ -70,8 +70,11 @@ with tempfile.TemporaryDirectory() as td:
   return record
  ps=copy.deepcopy(policy); ps['req-one']['conditions'][0]['evidence_kinds']=['document']
  add('review-a','review-record',review_record('a','PASS'));add('review-b','review-record',review_record('b','PASS'))
- good=copy.deepcopy(decision);good['conditions']=[{'condition_id':c,'status':'PASS','mode':'reviewed','reviewer':'Synthetic reviewer','rationale':'Substantive criterion review','evidence_ids':['review-'+c]} for c in ['a','b']]
+ add('review-ap','review-record',review_record('applicability','APPLICABLE',['req-one']))
+ good=copy.deepcopy(decision);good['applicability']={'status':'APPLICABLE','rationale':'Scoped criterion applies','source_ids':['req-one'],'reviewer':'Synthetic reviewer','evidence_ids':['review-ap']};good['conditions']=[{'condition_id':c,'status':'PASS','mode':'reviewed','reviewer':'Synthetic reviewer','rationale':'Substantive criterion review','evidence_ids':['review-'+c]} for c in ['a','b']]
  assert status(report([good],ps=ps))=='VERIFIED_PASS'
+ unproven=copy.deepcopy(good);unproven['applicability']={'status':'APPLICABLE'}
+ assert status(report([unproven],ps=ps))=='UNRESOLVED', 'applicability needs evidence too'
  assert report([good],ps=ps)['summary']['reviewed_decisions']==1
  partial=copy.deepcopy(good);partial['conditions'].pop();assert status(report([partial],ps=ps))=='UNRESOLVED'
  assert status(report([good,decision],ps=policy))=='VERIFIED_FINDING'
@@ -80,7 +83,7 @@ with tempfile.TemporaryDirectory() as td:
  na={'obligation_id':'req-one','conditions':[],'applicability':{'status':'NOT_APPLICABLE','rationale':'Exception verified','source_ids':['exc-one'],'reviewer':'Synthetic reviewer','evidence_ids':['review-na']}}
  assert status(report([na]))=='NOT_APPLICABLE_VERIFIED'
  assert report([na])['summary']['verified_not_applicable']==1
- bad=copy.deepcopy(na);bad['applicability']['source_ids']=['unregistered-exception'];assert status(report([bad]))=='UNRESOLVED'
+ bad=copy.deepcopy(na);bad['applicability']['source_ids']=['unregistered-exception'];assert status(report([bad]))=='NOT_APPLICABLE_VERIFIED' and report([bad])['input_errors'] and not report([bad])['summary']['ready']
  assert status(report([na,decision]))=='VERIFIED_FINDING'
  # Invalid typed rows stay isolated, and errors block readiness even for unrelated rows.
  assert status(report([{'obligation_id':[]},decision]))=='VERIFIED_FINDING'

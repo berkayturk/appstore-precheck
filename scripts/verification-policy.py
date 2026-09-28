@@ -36,6 +36,9 @@ def load_policies(directory, catalog, capabilities):
                 raise ValueError('policy section mismatch: ' + ident)
             if not row.get('owner') or not row.get('document_group') or not row.get('applicability_evidence'):
                 raise ValueError('policy needs owner, document group and applicability evidence: ' + ident)
+            for name in row.get('applicability_verifiers', []):
+                if name not in capabilities or not capabilities[name].get('applicability'):
+                    raise ValueError('unsupported applicability verifier: ' + str(name))
             conditions = row.get('conditions')
             if not isinstance(conditions, list) or not conditions:
                 raise ValueError('policy needs required conditions: ' + ident)

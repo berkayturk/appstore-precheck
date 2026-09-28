@@ -227,7 +227,7 @@ def evaluate_condition(condition, claims, index, profile, item, errors):
         payloads = [index[i] for i in ids if index[i]['kind'] in allowed]
         try:
             evaluated = verifiers.evaluate(verifier, payloads, {'profile': profile, 'obligation': item, 'condition': condition})
-        except (ValueError, TypeError, KeyError, OSError):
+        except (ValueError, TypeError, KeyError, OSError, AttributeError):
             result['reasons'].append('Verifier could not evaluate malformed payload')
             continue
         actual = evaluated.get('status')
@@ -291,21 +291,48 @@ def build_report(profile, manifest, decisions, catalog, policies, base, config=N
                     continue
                 claims.setdefault(claim['condition_id'], []).append(claim)
         evaluated = [evaluate_condition(c, claims.get(c['id'], []), index, profile, item, errors) for c in conditions]
-        states = {a['status'] for a in applicability}
-        app_status = next(iter(states)) if len(states) == 1 else 'UNKNOWN'
-        na, na_proof = False, None
+        # Applicability labels are requests; only scoped review or a trusted
+        # executable applicability predicate establishes them.
+        for evidence in index.values():
+            record = evidence.get('data')
+            if (evidence['kind'] == 'review-record' and isinstance(record, dict) and
+                    record.get('obligation_id') == ident and record.get('condition_id') == 'applicability' and
+                    record.get('outcome') in ('APPLICABLE', 'NOT_APPLICABLE')):
+                applicability.append({'status': record['outcome'], 'rationale': record.get('rationale'),
+                                      'source_ids': record.get('source_ids'), 'reviewer': record.get('reviewer'),
+                                      'evidence_ids': [evidence['id']]})
+        proven_app, na, na_proof = [], False, None
         for app in applicability:
             sources = app.get('source_ids')
             applicable_sources = {ident} | set(item.get('exceptions', []))
-            if (app['status'] == 'NOT_APPLICABLE' and nonempty(app.get('rationale')) and strings(sources) and
+            if sources is not None and (not strings(sources) or not set(sources) <= applicable_sources):
+                errors.append({'type': 'applicability', 'errors': ['unknown or unrelated source criterion']})
+            if (app['status'] in ('APPLICABLE', 'NOT_APPLICABLE') and nonempty(app.get('rationale')) and strings(sources) and
                     set(sources) <= valid_sources and set(sources) <= applicable_sources):
-                na_proof = review_proof(app.get('evidence_ids'), index, profile, ident, 'applicability',
-                                        'NOT_APPLICABLE', app.get('reviewer'), sources,
-                                        allowed_kinds=policy.get('applicability_evidence'))
-                na = na or bool(na_proof)
+                proof = review_proof(app.get('evidence_ids'), index, profile, ident, 'applicability',
+                                     app['status'], app.get('reviewer'), sources,
+                                     allowed_kinds=policy.get('applicability_evidence'))
+                if proof and app['status'] == 'APPLICABLE':
+                    proven_app.append(proof)
+                elif proof:
+                    na, na_proof = True, proof
+        caps = verifiers.capabilities()
+        for name in policy.get('applicability_verifiers', []):
+            if not isinstance(name, str) or not caps.get(name, {}).get('applicability'):
+                continue
+            kinds = caps[name].get('evidence_kinds', [])
+            payloads = [e for e in index.values() if e['kind'] in kinds]
+            try:
+                proof = verifiers.evaluate(name, payloads, {'profile': profile, 'obligation': item, 'condition': None})
+                ids = proof.get('evidence_ids')
+                if proof.get('applicability') == 'APPLICABLE' and strings(ids) and set(ids) <= set(index):
+                    proven_app.append({'verifier': name, 'evidence_ids': ids})
+            except (ValueError, TypeError, KeyError, OSError, AttributeError):
+                pass
+        app_status = 'APPLICABLE' if proven_app else 'NOT_APPLICABLE' if na else 'UNKNOWN'
         satisfied = [c['condition_id'] for c in evaluated if c['status'] == 'PASS']
         violated = [c['condition_id'] for c in evaluated if c['status'] == 'FINDING']
-        conflict = len(states) > 1 or any(c['conflict'] for c in evaluated) or (na and bool(violated))
+        conflict = bool(proven_app and na) or any(c['conflict'] for c in evaluated) or (na and bool(violated))
         status = contract.reduce_status(app_status, required, satisfied, violated, na, conflict)
         if app_status == 'UNKNOWN':
             gaps.append('Applicability evidence or scoped decision required')
@@ -320,6 +347,9 @@ def build_report(profile, manifest, decisions, catalog, policies, base, config=N
                'attestation': 'ATTESTED_YES' if isinstance(legacy, dict) and legacy.get('answer') == 'yes' else None,
                'limitations': sorted(set(x for c in evaluated for x in c['limitations'])),
                'evidence_ids': sorted(set(i for c in evaluated for i in c['evidence_ids']))}
+        if proven_app:
+            row['applicability_evidence'] = proven_app
+            row['evidence_ids'] = sorted(set(row['evidence_ids'] + [i for proof in proven_app for i in proof['evidence_ids']]))
         if na_proof:
             row['applicability_review'] = na_proof
             row['evidence_ids'] = sorted(set(row['evidence_ids'] + na_proof['evidence_ids']))

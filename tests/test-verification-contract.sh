@@ -19,6 +19,8 @@ target={k:'synthetic' for k in m.SCOPE_FIELDS}
 target.update(devices=['synthetic phone'],storefronts=['US'],artifact_sha256='a'*64,source_sha256='b'*64,distribution='simulator')
 p=m.validate_profile({'schema_version':1,'target':target,'facts':{'ugc':{'value':None}},'reviewed_at':datetime.date.today().isoformat()})
 assert m.scope_matches(target,target)
+assert not m.scope_matches(target,[])
+assert not m.scope_matches([],target)
 assert not m.scope_matches(dict(target,backend=None),target)
 with tempfile.TemporaryDirectory() as d:
  Path(d,'proof').write_bytes(b'synthetic proof')
