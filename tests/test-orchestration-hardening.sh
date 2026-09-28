@@ -285,4 +285,16 @@ server.shutdown()
 print('DNS pinning: single validated resolution, Host/SNI preserved: OK')
 PY
 
+echo '== verifier module list has no dead entries =='
+py "$SCRIPTS" <<'PY'
+import importlib.util, sys
+from pathlib import Path
+lib = Path(sys.argv[1]) / 'lib'
+spec = importlib.util.spec_from_file_location('verifiers', lib / 'verification-verifiers.py')
+verifiers = importlib.util.module_from_spec(spec); spec.loader.exec_module(verifiers)
+missing = [name for name in verifiers.MODULES if not (lib / name).is_file()]
+assert not missing, 'listed verifier modules do not exist: ' + ', '.join(missing)
+assert len(verifiers.extension_modules()) == len(verifiers.MODULES)
+print('verifier modules: OK')
+PY
 exit "$fails"
