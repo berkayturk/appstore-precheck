@@ -1,66 +1,81 @@
 # Local dynamic scorecard
 
-Run date: 2026-09-27 (UTC). macOS 27.0, Xcode 27.0 (27A266a),
-iOS Simulator 26.5 (23F77), Maestro 2.8.0. Isolated toolchains include
-Flutter 3.47.5, Gradle 9.1.0 and Kotlin Native 2.2.20; official distribution
-checksums were verified. These are synthetic corpus simulator observations.
+Run date: 2026-09-28 UTC (finished after midnight in Europe/Istanbul). macOS 27.0,
+Xcode 27.0 (27A266a), iPhone 17 Simulator with iOS 26.5 (23F77), Maestro 2.8.0.
+Isolated build toolchains include Flutter 3.47.5, Gradle 9.1.0 and Kotlin Native
+2.2.20; official distribution checksums were verified. These are synthetic corpus
+observations, not reference-app or App Review compliance results.
 
-The panel builds temporary copies, checks source/artifact identity, creates its own
-simulators and deletes them. Launch repetitions retain a five-second observation
-window and fresh environments. Discovery results request review; they are not
-whole-guideline decisions. Regenerate with
+All ten cases ran fresh against one frozen collector revision. They reused exact
+previously built, source-bound artifacts after checking full artifact hashes,
+configuration, source and retained toolchain evidence. This is a new runtime panel,
+not ten new builds. The direct collector, corpus and build-provenance code matched
+the integrated feature branch; its verification/metadata integration had a separate
+passing full test suite.
+
+Launch repetitions retain a five-second observation window and fresh environments.
+Regenerate builds and runtime with
 `bash tests/local/dynamic-panel.sh --out /tmp/precheck-verification-panel-new`.
 Use an empty output directory; stale case outputs are refused.
 
 | Framework | Clean | Broken | Scope |
 |---|---|---|---|
-| SwiftUI | Release; launch and first screen 10/10 PASS | Release; deterministic crash 3/3 FINDING | Initial frozen panel |
-| React Native bare | Release; fresh launch/first screen 3/3 PASS | Release; fresh launch/first screen 3/3 PASS; 4/4 expected discovery statuses | Exact source-bound artifacts reused for new runtime; unfamiliar provider observed live, separately from earlier replay |
-| Expo | Release; launch/first screen 3/3 PASS | Release; launch/first screen 3/3 PASS; 3/3 discovery statuses | Shipped camera purpose present in clean and absent in broken |
-| Flutter | Debug; new source-bound build; launch/first screen 3/3 PASS | Debug; new build and fresh launch/first screen 3/3 PASS; 1/1 discovery status | Simulator Debug only |
-| Kotlin Multiplatform | ARM64 Release; launch/first screen 3/3 PASS | ARM64 Release; launch/first screen 3/3 PASS; 1/1 discovery status | Static Shared archive; corrected artifacts reused for fresh runtime |
+| SwiftUI | Release; launch and first screen 10/10 PASS | Release; deliberate crash 3/3 FINDING | Fresh owned environments; unchanged lifecycle benchmark |
+| React Native bare | Release; launch and first screen 3/3 PASS | Release; launch and first screen 3/3 PASS; 4/4 expected discovery statuses | Unfamiliar sign-in provider observed in the new live hierarchy |
+| Expo | Release; launch and first screen 3/3 PASS | Release; launch and first screen 3/3 PASS; 3/3 expected discovery statuses | Shipped camera purpose present in clean and absent in broken |
+| Flutter | Debug; launch and first screen 3/3 PASS | Debug; launch and first screen 3/3 PASS; 1/1 expected discovery status | Simulator Debug only; retained Runner debug-library lineage |
+| Kotlin Multiplatform | ARM64 Release; launch and first screen 3/3 PASS | ARM64 Release; launch and first screen 3/3 PASS; 1/1 expected discovery status | Static Shared archive; source-bound artifact reuse |
 
-The selected ten cases matched all ten expected launch outcomes: zero launch false
-positives, misses or mixed results. Nine of nine expected discovery statuses matched.
-These denominators are scoped to manifest expectations; they are not a measure of
-all possible defects. Two additional empty location purpose strings in generated
-React Native templates remain recorded outside the launch metric. KMP HealthKit
-is a source signal; unsigned simulator output does not prove distribution entitlement
-or whether the capability is unused.
+All ten expected launch outcomes matched: zero launch false positives, misses or
+mixed outcomes, and no final case SKIP/NOT_RUN. Nine of nine expected discovery
+statuses matched. These are manifest expectation denominators, not recall across all
+possible defects. Discovery statuses remain NEEDS_REVIEW, not verified guideline
+violations. Two additional empty location purpose strings in the generated React
+Native templates remain recorded separately. KMP HealthKit is a source signal;
+unsigned simulator output does not prove a distribution entitlement or unused access.
 
-All selected artifacts were rehashed against build provenance. Source binding was
-valid for all ten; final six cases have case-local source/runner snapshots. Initial
-SwiftUI and Expo records retain their older frozen batch identity, not a fabricated
-new per-case collector history. Thirteen owned runs, including failed attempts,
-matched deletion ledgers and were absent from the final simulator inventory. The
-initial whole-batch before inventory was not retained, limiting broader device-state
-claims. Raw application/device records remain private.
+All ten cases have before/after source and runner snapshots, full artifact rehashes,
+configuration binding and owned-device deletion records. An independent review
+rehashed the completed evidence inventory with no mismatch. All ten owned simulators
+were absent from an independent final inventory; all nine initial device IDs remained.
+The current panel retains its whole-run before inventory. Older attempts with missing
+whole-run inventory retain that limitation; the new inventory does not repair them.
 
-Initial failures remain part of the record: SwiftUI installation SKIP, an unexplained
-RN dependency-install failure, a deficient RN launch observation, Flutter source-binding
-failures and KMP packaging/architecture build failures. A later Flutter driver error
-was rerun in a new directory after the Bash 3 empty-array fix. Its earlier ERROR was
-not relabeled successful. The deficient RN observation had only a clean log and no
-positive app signal; the corrected evaluator returns SKIP. A fresh live run then
-provided complete observations. No failed or slow samples were silently discarded.
+## Flow evidence and limits
 
-Selected restore/UGC/login UI transitions retain hashed start/action/postcondition
-records. Receipt, entitlement and backend completion remain UNRESOLVED. Observed
-Flutter/KMP accessibility trees had useful nodes; dedicated selector checks that were
-not executed remain SKIP. No framework-wide absence of accessibility is assumed.
+Nine transition packets retain actual start/action/postcondition evidence and a
+separate replay result. Six selected UI attempts passed and seven stayed UNKNOWN.
+All thirteen recorded flows remain UNRESOLVED: UI observations do not prove receipt,
+entitlement, completed deletion or backend/operational outcomes. Flutter broken has
+an empty flow packet and does not receive a flow PASS. Missing postconditions remain
+gaps; no flow was declared complete merely because a button existed.
+
+Useful Flutter/KMP accessibility nodes were observed. Dark Mode and Dynamic Type
+checks are limited geometric observations. This panel does not cover a complete iPad,
+offline/slow-network, permission grant/deny, HIG or accessibility matrix. There were
+no signed distribution, physical-device, live store or independent test-backend
+completion checks. Raw records and reference-app evidence remain private.
+
+Historical failures remain recorded: SwiftUI installation SKIP, RN dependency-install
+failure and deficient observation, Flutter source-binding/driver errors, and KMP
+packaging/architecture failures. The log-only RN observation was disqualified as SKIP;
+new live evidence replaced it without relabeling the old run. Earlier replay and the
+current live provider observation are separate. No failed or slow sample was discarded.
 
 ## Timing gate
 
 SwiftUI clean lifecycle samples in seconds were
-`47, 101, 83, 72, 67, 71, 93, 98, 82, 78`: median **80.0 seconds**.
-The historical **70.5 seconds** and this measurement both include repeat
-reset/boot/install where performed. The unchanged **60-second gate fails**.
-Pure observation samples `47, 41, 29, 29, 26, 31, 32, 47, 37, 34` have a
-33-second median and do not satisfy that lifecycle gate. Early samples overlapped
-SDK preparation and suite completion; all samples are retained. Bounded process
-waiting removes polling overhead without reducing windows or fresh repetitions;
-this experiment does not demonstrate a speed improvement.
+`47, 74, 95, 90, 76, 74, 81, 76, 74, 73`: median **75.0 seconds**.
+The historical **70.5 seconds**, interim **80.0 seconds**, and current measurement
+include per-repeat reset/boot/install where performed. The unchanged **60-second
+lifecycle gate fails**. Pure observation samples
+`47, 31, 38, 43, 32, 33, 34, 35, 32, 32` have a **33.5-second** median and do not
+satisfy that lifecycle gate.
 
-These runs do not establish signed distribution, physical-device, live store,
-production-backend or full App Review compliance. Reference-app evidence and its
-remaining developer inputs are maintained privately, outside this public scorecard.
+Our heavy builds and full suite did not overlap the clean ten-repeat timing loop;
+other user-owned simulator activity was present, so the whole host was not claimed
+idle. Later validation work overlapped parts of the remaining panel. Expo retained
+long wall-clock samples, including 503 seconds in a clean repeat; no cause was
+established and those three-repeat cases do not replace the benchmark. Bounded
+process waiting removes polling overhead without reducing observation windows or
+fresh repetitions; these measurements do not establish a speed improvement.
