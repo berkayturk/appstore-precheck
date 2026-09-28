@@ -31,6 +31,7 @@ function printHelp() {
     `  npx appstore-precheck [options]\n` +
     `  npx appstore-precheck dynamic --build [options]\n` +
     `  npx appstore-precheck verify --profile <json> --evidence <json> --decisions <json> --out <json>\n` +
+    `  npx appstore-precheck review-packet --source-root <path> --profile <json> --out <directory>\n` +
     `  npx appstore-precheck review --repo <path> --prepare\n` +
     `  npx appstore-precheck review --bundle <json> --live\n` +
     `\n` +
@@ -123,6 +124,12 @@ function parseArgs(argv) {
 }
 
 function main() {
+  if (process.argv[2] === 'review-packet') {
+    const script = path.join(PKG_ROOT, 'skills', 'appstore-precheck', 'scripts', 'manual-review-packet.py');
+    const result = spawnSync('python3', ['-B', script, ...process.argv.slice(3)], { stdio: 'inherit' });
+    if (result.error) fail('python3 is required for manual evidence packets', 70);
+    process.exit(result.signal ? 70 : (result.status || 0));
+  }
   if (process.argv[2] === 'verify') {
     const script = path.join(PKG_ROOT, 'skills', 'appstore-precheck', 'scripts', 'verification-report.py');
     const result = spawnSync('python3', ['-B', script, ...process.argv.slice(3)], { stdio: 'inherit' });

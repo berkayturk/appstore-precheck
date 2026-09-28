@@ -19,5 +19,13 @@ with tempfile.TemporaryDirectory() as d:
  try:m.load_policies(d,catalog,cap)
  except ValueError:pass
  else:raise AssertionError('unimplemented verifier accepted')
+ p['obligations'][0]['conditions'][0]['full_positive_verifiers']=['bounded']
+ for invalid in (['invented-kind'], ['artifact', 'artifact'], 'artifact'):
+  p['obligations'][0]['conditions'][0]['required_positive_evidence_kinds']=invalid;f.write_text(json.dumps(p))
+  try:m.load_policies(d,catalog,cap)
+  except ValueError:pass
+  else:raise AssertionError('invalid mandatory evidence kinds accepted')
+ p['obligations'][0]['conditions'][0]['required_positive_evidence_kinds']=['artifact'];f.write_text(json.dumps(p))
+ assert m.load_policies(d,catalog,cap)['synthetic']['conditions'][0]['required_positive_evidence_kinds']==['artifact']
 print('policy capability: full routes cannot promote verification; missing conditions and unknown verifiers rejected')
 PY

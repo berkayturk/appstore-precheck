@@ -65,3 +65,13 @@ observed, inferred and attested notes separately from verified results, includin
 scope-incomplete observations. Where a positive decision needs an actual approval,
 license or consent record, generic feature inventory and reviewer authority cannot
 replace that document. The packet never supplies a reviewer signature or owner approval.
+
+```sh
+node bin/cli.js review-packet --source-root /path/to/read-only-app \
+  --profile /tmp/review/profile.json --evidence /tmp/review/evidence.json \
+  --decisions /tmp/review/decisions.json --out /tmp/review/manual-packet
+```
+
+The output directory must be new and outside the application. Packet exit 0 means
+the private files were created; use `verify` for the separate readiness result.
+Missing evidence requests and evidenced findings remain separate actionable lists.

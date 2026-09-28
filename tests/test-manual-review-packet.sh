@@ -155,5 +155,10 @@ with tempfile.TemporaryDirectory() as temp:
     proc = subprocess.run(['python3', '-B', str(m.HERE / 'manual-review-packet.py'), '--profile', str(root / 'profile.json'), '--source-root', str(app), '--out', str(root / 'cli-output')], capture_output=True, text=True)
     assert proc.returncode == 0, proc.stderr
     assert json.loads(proc.stdout)['ready'] is False
+    proc = subprocess.run(['node', 'bin/cli.js', 'review-packet', '--profile', str(root / 'profile.json'), '--source-root', str(app), '--out', str(root / 'node-output')], capture_output=True, text=True)
+    assert proc.returncode == 0, proc.stderr
+    assert json.loads(proc.stdout)['ready'] is False
+    proc = subprocess.run(['node', 'bin/cli.js', 'review-packet', '--profile', str(root / 'profile.json'), '--source-root', str(app), '--out', str(app / 'blocked-output')], capture_output=True, text=True)
+    assert proc.returncode == 2 and not (app / 'blocked-output').exists()
 print('manual review packet tests passed')
 PY

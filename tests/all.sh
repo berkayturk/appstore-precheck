@@ -58,6 +58,7 @@ SUITE=(
   "test-verification-legal-policy.sh" # privacy, licenses and authority
   "test-verification-intro-policy.sh" # submission scope and alias preservation
   "test-verification-report.sh" # scoped decisions and independent proof
+  "test-manual-review-packet.sh" # criterion-specific private evidence requests and findings
   "test-verification-contract.sh" # versioned evidence and decision invariants
   "test-coverage.sh"   # obligation schema, registry, and route coverage
   "test-copyright-boundary.sh" # source-text and npm package boundary
