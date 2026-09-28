@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "section": "intro",
+  "obligations": [
+    {
+      "obligation_id": "atom-aa8284569e164afb823d07720c3ca324",
+      "owner": "release owner / QA and support reviewer",
+      "document_group": "release-maintenance",
+      "applicability_evidence": [
+        "submission-scope",
+        "release-history",
+        "supported-platform-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "current-functionality",
+          "description": "Existing users can still use the functionality promised for the released app.",
+          "evidence_kinds": [
+            "release-history",
+            "feature-inventory",
+            "runtime-transcript",
+            "support-incident-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Which promised functions remain available on supported devices and OS versions? Reconcile released listing promises, regression results, backend availability and unresolved support incidents, including upgrades from prior versions and existing accounts. A successful launch does not establish continuing functionality. A first-release N/A claim requires release-history evidence. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "maintenance-response",
+          "description": "Maintenance responds to relevant platform changes and observed product defects.",
+          "evidence_kinds": [
+            "supported-platform-matrix",
+            "maintenance-record",
+            "support-incident-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Provide dated compatibility reviews, completed maintenance records and support/defect triage showing how relevant platform and product changes are handled. An unexecuted plan or a single snapshot cannot establish ongoing support; record the period covered and unresolved defects without promising future compliance. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-c44cce19b9104b2ca5f658e0dd2a93a5",
+      "owner": "content and child-safety owner / age-suitability reviewer",
+      "document_group": "age-appropriate-experience",
+      "applicability_evidence": [
+        "submission-scope",
+        "audience-access-review",
+        "feature-inventory",
+        "content-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "age-suitability",
+          "description": "Content and flows reachable by children and teens are appropriate to their ages and maturity.",
+          "evidence_kinds": [
+            "audience-access-review",
+            "content-inventory",
+            "runtime-transcript",
+            "content-suitability-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Which age groups can actually reach each flow and content surface? Inspect bundled, remote, user-generated and third-party content and interactions across relevant locales and account states; record contextual age/maturity judgments and inventory coverage. A store age rating, a non-Kids category or an adult intended audience alone does not demonstrate that minors cannot access the app. Support any N/A with verified audience access restrictions. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "age-protections",
+          "description": "Age-appropriate protections work across the reachable app experience.",
+          "evidence_kinds": [
+            "age-control-design",
+            "runtime-transcript",
+            "content-operations-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise child/teen access paths and any age gates, account transitions or bypass paths with authorized test data; inspect remote content controls and response procedures. Device parental controls do not replace app responsibilities. Check applicable age-specific content restrictions against actual behavior; a visible gate label or one benign sample cannot establish coverage. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-a386ca273c58478cb0f5608babab9a81",
+      "owner": "content owner / contextual content reviewer",
+      "document_group": "respectful-expression",
+      "applicability_evidence": [
+        "submission-scope",
+        "content-inventory",
+        "feature-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "respectful-content",
+          "description": "App expression treats people with differing views respectfully.",
+          "evidence_kinds": [
+            "content-inventory",
+            "content-suitability-review",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review viewpoints, depictions and language in their actual context, across bundled and remotely delivered content, locales and user-generated surfaces where present. Identify who is addressed and whether the experience attacks or humiliates users for differing opinions. A keyword scan, lack of political vocabulary or a small sample does not prove respectful treatment throughout the app. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "respectful-behavior",
+          "description": "App interactions and content operations preserve respectful treatment.",
+          "evidence_kinds": [
+            "interaction-design-review",
+            "runtime-transcript",
+            "content-operations-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Exercise flows that express, filter or respond to user views, including relevant community interactions, personalization and enforcement decisions. Inspect moderation and complaint handling where present; distinguish legitimate contextual disagreement from disrespectful treatment. Document coverage limitations and operating evidence instead of inferring conduct from written policy alone. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-240f52a443aa466f840ab6ee91f0811d",
+      "owner": "product owner / design and QA reviewer",
+      "document_group": "overall-experience-quality",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "supported-platform-matrix"
+      ],
+      "conditions": [
+        {
+          "id": "complete-useful-experience",
+          "description": "The submitted experience delivers usable and meaningful functionality.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "runtime-transcript",
+            "product-quality-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace the promised user tasks from entry to actual completion, including access gates, empty/error/offline states, remote dependencies and feature variants. Evaluate usefulness and overall completeness in context; a launch PASS, one working screen or a minimum-functionality heuristic cannot establish app-wide quality. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "presentation-and-interaction",
+          "description": "Presentation and interaction quality hold across the supported app scope.",
+          "evidence_kinds": [
+            "supported-platform-matrix",
+            "runtime-transcript",
+            "visual-review",
+            "accessibility-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect navigation, readable content, control operation, layout and feedback across the supported devices, OS versions, orientations and relevant accessibility and appearance settings. Record the inspected screen/flow matrix and unresolved defects. Dark mode, Dynamic Type or layout checks cover only their observed surfaces; simulator results do not substitute for required physical behavior. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f7d015611dde4efda35fcf052340c2f6",
+      "owner": "release and business owners / conduct and rights reviewers",
+      "document_group": "ecosystem-conduct",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "distribution-configuration",
+        "business-practice-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "review-and-distribution-integrity",
+          "description": "Review and distribution are not intentionally deceived.",
+          "evidence_kinds": [
+            "source-review",
+            "distribution-configuration",
+            "runtime-transcript",
+            "apple-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Compare review-account and ordinary-user behavior, remote feature switches, submitted disclosures and release configuration for concealed functionality or deliberate evasion. Inspect relevant Apple review correspondence and corrective actions; do not infer deceptive intent merely from a crash or different legitimate account permissions. A bug-fix processing allowance does not turn an unresolved guideline issue into a PASS. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "data-and-intellectual-property-integrity",
+          "description": "User data and others' work are not deliberately misappropriated.",
+          "evidence_kinds": [
+            "data-flow-review",
+            "rights-inventory",
+            "authorization-record",
+            "business-practice-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Trace collected and transferred user data to consent, purpose and recipient evidence; inspect provenance and rights for incorporated code, assets and content. Ask the responsible owner for missing authorizations and inspect their scope and authenticity. A claimed license or owner yes answer cannot establish ownership, permission or honest use. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "ratings-and-discovery-integrity",
+          "description": "Ratings and store discovery are not manipulated.",
+          "evidence_kinds": [
+            "listing-snapshot",
+            "campaign-inventory",
+            "rating-flow-review",
+            "business-practice-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Review rating prompts, incentives, review acquisition, keywords, paid campaigns and third-party marketing instructions against actual user and listing behavior. Inspect operator and vendor records for manipulation and intentional misleading promotion. An absence of suspicious source strings cannot establish off-app business conduct; keep unexplained inconsistencies open for qualified review. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f65a3e371c2c49229e0449753fef6859",
+      "owner": "integration owner / privacy, security and content reviewers",
+      "document_group": "third-party-diligence",
+      "applicability_evidence": [
+        "submission-scope",
+        "component-inventory",
+        "service-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "integration-assessment",
+          "description": "External components and services are assessed for their actual integrated behavior.",
+          "evidence_kinds": [
+            "component-inventory",
+            "service-inventory",
+            "signed-artifact-review",
+            "integration-assessment",
+            "data-flow-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inventory shipped SDKs, ad networks, analytics and externally operated services, including transitive dependencies, binary frameworks, remote scripts and backend integrations. Reconcile source manifests with the submitted artifact and service configuration, then inspect version-specific data/content/functionality behavior and selection assessments. A lockfile or vendor compliance statement alone does not establish compliance. Verified absence requires a complete component and service inventory, not an empty manifest. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "distributed-component-monitoring",
+          "description": "The developer monitors external behavior and retains responsibility while distributed.",
+          "evidence_kinds": [
+            "component-monitoring-record",
+            "vendor-change-review",
+            "incident-response-record"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Provide dated monitoring and vendor-change reviews for distributed versions, observed incidents and remediation decisions, including remote ads/content and data handling. Identify accountable owners and actual controls for stopping or correcting noncompliant behavior. A vendor contract, future monitoring promise or single clean sample cannot establish that ongoing responsibility is exercised. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-e7ac52bbed6742cea1216b232bf01b1a",
+      "owner": "submission owner / hardware integration and QA reviewers",
+      "document_group": "review-resources",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "review-resource-inventory"
+      ],
+      "conditions": [
+        {
+          "id": "resource-coverage",
+          "description": "Every resource needed to exercise submitted features is identified.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "review-resource-inventory",
+            "runtime-transcript"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Which features need specialized hardware, accessories, sample data, QR codes, location conditions or other resources beyond ordinary app access? Map each feature to working review prerequisites and supported hardware/OS/backend combinations. A hardware API hint only selects questions; no hint cannot support N/A. Establish a no-special-resource case from a complete feature and access review. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "resource-access",
+          "description": "Reviewers have a working and timely way to use necessary resources.",
+          "evidence_kinds": [
+            "review-resource-inventory",
+            "resource-access-record",
+            "metadata-asc-snapshot",
+            "runtime-transcript",
+            "apple-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Inspect delivery or access arrangements, setup instructions and successful execution with the resources for the selected submission. Confirm review-period availability, working nonexpired sample codes/data and environment prerequisites; protect credentials in private evidence. A shipping intention, public URL response or statement that hardware exists does not establish reviewer access. Account/demo access and backend duties remain with their canonical section 2 obligations. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "hardware-demonstration-exception",
+          "description": "A demonstration substitute has appropriate Apple acceptance and satisfies subsequent resource requests.",
+          "evidence_kinds": [
+            "review-resource-inventory",
+            "demonstration-record",
+            "apple-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "If direct hardware access is difficult and a demonstration is proposed, inspect its coverage of the actual submitted build and hardware flow and the Apple correspondence accepting that approach for this submission. A self-produced video or developer assertion is not Apple acceptance. Check later reviewer requests and provide requested hardware/resources; an earlier acceptance does not override a later request. If no substitute is used, document direct working access and explicitly establish that this exception is unused. Missing correspondence for a claimed exception remains unresolved. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    },
+    {
+      "obligation_id": "atom-f9a98fc9b0544658a3b9a4b0152a160e",
+      "owner": "submission owner / feature and QA reviewers",
+      "document_group": "review-notes",
+      "applicability_evidence": [
+        "submission-scope",
+        "feature-inventory",
+        "review-discoverability-assessment"
+      ],
+      "conditions": [
+        {
+          "id": "feature-explanation-coverage",
+          "description": "Review notes explain features whose discovery or operation is not obvious.",
+          "evidence_kinds": [
+            "feature-inventory",
+            "review-discoverability-assessment",
+            "metadata-asc-snapshot",
+            "supporting-document-review"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Map every non-obvious, gated, hardware-dependent or unusual feature to the App Review notes and supporting documents for the exact selected app version/build. Include navigation, prerequisites, expected behavior and any relevant entitlement justification. A nonempty notes field, local fastlane draft or generic description cannot prove complete submitted explanations. Establish N/A by reviewing the complete feature inventory and discoverability, not by finding no source keyword. Purchase-note aliases stay linked to the canonical section 2 purchase disclosure obligation. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        },
+        {
+          "id": "instructions-reproducible",
+          "description": "A reviewer can follow the supplied explanations and supporting material.",
+          "evidence_kinds": [
+            "metadata-asc-snapshot",
+            "runtime-transcript",
+            "supporting-document-review",
+            "apple-review-correspondence"
+          ],
+          "full_positive_verifiers": [],
+          "decisive_finding_verifiers": [],
+          "review_requirement": "Have an identified reviewer follow the submitted steps to the expected outcomes using the intended review environment and permitted test data. Verify attachment readability and relevance, accessible resource links and consistency with the actual build. Reconcile subsequent Apple clarification requests and responses; a successful URL HEAD or supplied yes answer does not demonstrate correct or understandable instructions. Bind the review to the submitted build, platform/devices, storefronts, backend configuration and review date. Unknown scope or missing evidence remains unresolved; absence of a source signal is not exclusion evidence. Record the actual reviewer and inspected evidence; a generic yes answer or an agent-created owner approval is insufficient."
+        }
+      ]
+    }
+  ]
+}
