@@ -22,8 +22,12 @@ def load_attestation_engine():
 
 
 def normalize_static(findings, registry):
-    rank = {"FINDING": 4, "WARN": 3, "PASS": 2, "SKIP": 1}
-    normalized = {}
+    """Aggregate scanner lines per routed static rule.
+
+    FINDING and WARN dominate. PASS is kept only when every line of the rule passed:
+    a PASS next to a SKIP means part of the rule never ran, so it needs review.
+    """
+    seen = {}
     for row in findings:
         check_id = row.get("rule_id")
         if not check_id or registry.get("checks", {}).get(check_id, {}).get("route") != "static":
@@ -32,17 +36,25 @@ def normalize_static(findings, registry):
             continue
         severity = row.get("severity")
         status = "FINDING" if severity == "FAIL" else severity
-        if status not in rank:
+        if status not in {"FINDING", "WARN", "PASS", "SKIP"}:
             continue
-        previous = normalized.get(check_id)
-        if previous and rank[previous["status"]] >= rank[status]:
-            continue
-        if status == "SKIP":
-            result = {"status": status, "reason": "Static scanner did not complete this check"}
+        seen.setdefault(check_id, []).append((status, "finding:" + str(row.get("id") or check_id)))
+    normalized = {}
+    for check_id, rows in seen.items():
+        statuses = {status for status, _ in rows}
+        for status in ("FINDING", "WARN"):
+            if status in statuses:
+                normalized[check_id] = {"status": status,
+                                        "evidence": next(ptr for st, ptr in rows if st == status)}
+                break
         else:
-            pointer = "finding:" + str(row.get("id") or check_id)
-            result = {"status": status, "evidence": pointer}
-        normalized[check_id] = result
+            if statuses == {"PASS", "SKIP"}:
+                normalized[check_id] = {"status": "REVIEW_REQUIRED",
+                                        "reason": "Partial static coverage: a sibling check of this rule was skipped"}
+            elif statuses == {"SKIP"}:
+                normalized[check_id] = {"status": "SKIP", "reason": "Static scanner did not complete this check"}
+            else:
+                normalized[check_id] = {"status": "PASS", "evidence": rows[0][1]}
     return normalized
 
 

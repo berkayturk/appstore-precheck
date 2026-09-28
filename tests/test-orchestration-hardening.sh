@@ -90,4 +90,50 @@ assert not any('stale' in json.dumps(o.get('evidence', '')) for o in data['oblig
 print('scan.sh ignores stale run-results after a failed runner: OK')
 PY
 
+echo '== SKIP is never masked by a sibling PASS =='
+py "$SCRIPTS" <<'PY'
+import importlib.util, json, sys
+from pathlib import Path
+scripts = Path(sys.argv[1])
+def load(name, file):
+    spec = importlib.util.spec_from_file_location(name, scripts / file)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); return module
+runner, engine, augment = load('runner', 'opt-in-review.py'), load('engine', 'attestation-report.py'), load('augment', 'augment-json.py')
+registry = json.loads((scripts.parent / 'references/check-registry.json').read_text())
+SKIP = 'DYNAMIC-SKIP: 5.1.1 [dyn-permission-prompt:NSCameraUsageDescription] — camera prompt could not be triggered'
+PASS = 'DYNAMIC-PASS: 5.1.1 [dyn-permission-prompt:NSLocationWhenInUseUsageDescription] — location prompt shown'
+FIND = 'DYNAMIC-FINDING: 5.1.1 [dyn-permission-prompt:NSMicrophoneUsageDescription] — purpose string empty (quorum 3/3)'
+def dyn(*lines):
+    checks = {}; runner.import_dynamic(checks, '\n'.join(lines), 'transcript.txt'); return checks
+for order in ((SKIP, PASS), (PASS, SKIP)):
+    result = dyn(*order)['dyn-permission-prompt']
+    assert result['status'] not in {'PASS'}, (order, result)
+    assert result['status'] in {'REVIEW_REQUIRED', 'SKIP'} and result.get('reason'), result
+    engine.validate_run_results({'checks': {'dyn-permission-prompt': result}}, registry)
+for order in ((SKIP, PASS, FIND), (FIND, PASS, SKIP), (PASS, FIND, SKIP)):
+    assert dyn(*order)['dyn-permission-prompt']['status'] == 'FINDING', order
+assert dyn(PASS, PASS.replace('Location', 'Camera'))['dyn-permission-prompt']['status'] == 'PASS'
+assert dyn(SKIP, SKIP.replace('Camera', 'Photo'))['dyn-permission-prompt']['status'] == 'SKIP'
+
+def records(*rows):
+    checks = {}; runner.import_records(checks, list(rows), 'inv.json'); return checks
+rows = ({'check_id': 'dyn-first-screen', 'status': 'PASS'}, {'check_id': 'dyn-first-screen', 'status': 'SKIP', 'reason': 'no screen'})
+for order in (rows, rows[::-1]):
+    result = records(*order)['dyn-first-screen']
+    assert result['status'] == 'REVIEW_REQUIRED' and result['reason'], result
+    engine.validate_run_results({'checks': {'dyn-first-screen': result}}, registry)
+assert records(*rows, {'check_id': 'dyn-first-screen', 'status': 'FINDING'})['dyn-first-screen']['status'] == 'FINDING'
+assert records(rows[0], rows[0])['dyn-first-screen']['status'] == 'PASS'
+
+def static(*severities):
+    findings = [{'rule_id': 'ats', 'severity': s, 'id': 'f%d' % i, 'suppressed': False} for i, s in enumerate(severities)]
+    return augment.normalize_static(findings, {'checks': {'ats': {'route': 'static'}}})['ats']
+for order in (('PASS', 'SKIP'), ('SKIP', 'PASS')):
+    result = static(*order)
+    assert result['status'] == 'REVIEW_REQUIRED' and result['reason'], result
+assert static('PASS', 'SKIP', 'WARN')['status'] == 'WARN' and static('SKIP', 'PASS', 'FAIL')['status'] == 'FINDING'
+assert static('PASS', 'PASS')['status'] == 'PASS' and static('SKIP', 'SKIP')['status'] == 'SKIP'
+print('aggregation: PASS only when every sibling passed, defects dominate: OK')
+PY
+
 exit "$fails"

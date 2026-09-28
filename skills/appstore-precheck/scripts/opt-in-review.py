@@ -83,32 +83,58 @@ def normalize(status):
     return {"NEEDS_REVIEW": "REVIEW_REQUIRED"}.get(status, status)
 
 
+VALID_STATUSES = frozenset({"NOT_RUN", "SKIP", "PASS", "REVIEW_REQUIRED", "WARN", "FINDING"})
+# Statuses that dominate a merge, weakest first. PASS/SKIP/NOT_RUN carry no defect.
+DEFECT_RANK = {"REVIEW_REQUIRED": 1, "WARN": 2, "FINDING": 3}
+
+
+def merge_status(previous, status):
+    """Order-independent aggregate of results sharing one check id.
+
+    A defect (FINDING > WARN > REVIEW_REQUIRED) dominates. PASS survives only when
+    every sibling passed: a PASS next to a SKIP/NOT_RUN sibling means part of the
+    check never ran, so the aggregate needs review instead of reading as clean.
+    """
+    if previous is None or previous == status:
+        return status
+    worst = max(previous, status, key=lambda value: DEFECT_RANK.get(value, 0))
+    if DEFECT_RANK.get(worst, 0):
+        return worst
+    return "REVIEW_REQUIRED" if "PASS" in (previous, status) else "SKIP"
+
+
+def merge_result(checks, check_id, status, reason, evidence):
+    previous = checks.get(check_id)
+    merged = merge_status(previous["status"] if previous else None, status)
+    if merged == status:
+        record(checks, check_id, status, reason, evidence)
+    elif merged != previous["status"]:
+        gap = reason if status != "PASS" else previous.get("reason", "")
+        record(checks, check_id, merged, "Partial evidence: a sibling check did not run (" +
+               single_line(gap, "no reason given") + ")", evidence)
+
+
 def import_records(checks, rows, evidence):
     errors = []
     if not isinstance(rows, list):
         return ["Optional result collection must be a list"]
-    rank = {"NOT_RUN": 0, "SKIP": 1, "PASS": 2, "REVIEW_REQUIRED": 3, "WARN": 4, "FINDING": 5}
     for row in rows:
         if not isinstance(row, dict) or not isinstance(row.get("check_id"), str) or not row["check_id"]:
             errors.append("Malformed optional result ignored")
             continue
-        check_id = row["check_id"]
         raw_status = row.get("status")
         status = normalize(raw_status) if isinstance(raw_status, str) else None
-        if status not in rank:
+        if status not in VALID_STATUSES:
             errors.append("Invalid optional result status ignored")
             continue
-        previous = checks.get(check_id)
-        if previous and rank.get(previous["status"], -1) > rank[status]:
-            continue
-        record(checks, check_id, status, row.get("reason", ""), evidence + "#" + check_id)
+        merge_result(checks, row["check_id"], status, row.get("reason", ""), evidence + "#" + row["check_id"])
     return errors
 
 
 def import_dynamic(checks, content, evidence):
     # Bundle subchecks include a plist key suffix. Aggregate under the registered
-    # parent ID, retaining an advisory defect over a later bundle summary PASS.
-    rank = {"SKIP": 0, "PASS": 1, "WARN": 2, "FINDING": 3}
+    # parent ID: a defect beats a later bundle summary PASS, and one skipped key
+    # keeps the parent from reading as a full PASS.
     for line in content.splitlines():
         match = DYNAMIC.match(line)
         if not match:
@@ -117,10 +143,7 @@ def import_dynamic(checks, content, evidence):
         check_id = raw_id.split(":", 1)[0]
         if state == "FINDING" and "quorum 3/3" not in reason:
             state = "WARN"
-        previous = checks.get(check_id)
-        if previous and rank.get(previous["status"], -1) > rank[state]:
-            continue
-        record(checks, check_id, state, reason, evidence + "#" + raw_id)
+        merge_result(checks, check_id, state, reason, evidence + "#" + raw_id)
 
 
 def main():
