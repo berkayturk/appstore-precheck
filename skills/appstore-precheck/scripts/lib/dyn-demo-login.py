@@ -15,6 +15,9 @@ _process = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_process)
 
 
+MAESTRO_EXPR = "${"
+
+
 def hierarchy(udid, dirname, env):
     result = _process.run(["maestro", "--device", udid, "hierarchy"],
                           stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
@@ -54,6 +57,15 @@ def main():
     if (os.getenv("PRECHECK_DEMO_AUTHORIZED_TEST") != "1" or
             os.getenv("PRECHECK_DEMO_ENVIRONMENT") not in ("test", "sandbox")):
         return "SKIP\tdemo login requires explicit authorized test/sandbox environment"
+    # Maestro evaluates ${...} as JavaScript inside string parameters and documents no
+    # escape, so a value carrying the marker would be evaluated or mangled. Refuse it.
+    # Only the field NAME is reported, never the value.
+    for what, value in (("username", user), ("password", password), ("username field label", user_field),
+                        ("password field label", password_field), ("submit label", submit),
+                        ("bundle id", bundle)):
+        if MAESTRO_EXPR in value:
+            return ("SKIP\tdemo " + what + " contains '${', which Maestro would evaluate as JavaScript; "
+                    "login not attempted (choose a demo value without that marker)")
     flow = ("appId: " + json.dumps(bundle) + "\n---\n" +
             "- tapOn: " + json.dumps("^" + re.escape(user_field) + "$") + "\n" +
             "- inputText: " + json.dumps(user) + "\n" +

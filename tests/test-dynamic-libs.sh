@@ -274,6 +274,64 @@ mkdir -p "$T/noexe.app"; cp "$B/Installed.app/Info.plist" "$T/noexe.app/"
 assert_contains "$(PATH="$shim:$PATH" dyn_bundle_links_line "$T/noexe.app")" "DYNAMIC-SKIP" "missing executable -> SKIP"
 rm -rf "$shim"
 
+section "Maestro \${...} markers are refused, never evaluated or echoed"
+DEMO="$L/dyn-demo-login.py"; EXPLORE="$L/dyn-explore.py"
+mb="$T/mbin"; mkdir -p "$mb"
+printf '#!/bin/sh\necho "$@" >> "%s/maestro-calls"\nexit 0\n' "$T" > "$mb/maestro"; chmod +x "$mb/maestro"
+demo() { # demo <username> <password> [submit-label]
+  PATH="$mb:$PATH" PRECHECK_DEMO_USERNAME="$1" PRECHECK_DEMO_PASSWORD="$2" PRECHECK_DEMO_SUBMIT="${3:-Sign In}" \
+    PRECHECK_DEMO_SUCCESS_TEXT=Dashboard PRECHECK_DEMO_FAILURE_TEXT=Invalid \
+    PRECHECK_DEMO_AUTHORIZED_TEST=1 PRECHECK_DEMO_ENVIRONMENT=sandbox python3 "$DEMO" UDID org.example.app
+}
+rm -f "$T/maestro-calls"
+r="$(demo reviewer@example.invalid 'pa${process.env.HOME}ss')"
+assert_eq "SKIP" "$(kind "$r")" "a password containing \${ is a SKIP"
+assert_contains "$r" "password" "…the reason names the field"
+assert_absent "$r" 'process.env' "…and never echoes the credential value"
+assert_absent "$r" 'pa${' "…not even a prefix of it"
+r="$(demo 'me${1+1}@example.invalid' 'plain-pass')"
+assert_eq "SKIP" "$(kind "$r")" "a username containing \${ is a SKIP"
+assert_contains "$r" "username" "…named as the username"
+assert_absent "$r" '1+1' "…without echoing it"
+r="$(demo reviewer@example.invalid plain-pass '${label}')"
+assert_eq "SKIP" "$(kind "$r")" "a submit label containing \${ is a SKIP"
+[[ ! -e "$T/maestro-calls" ]] && echo "  ok: Maestro was never invoked for any refused value" || { echo "  FAIL: Maestro ran with a \${ value"; fails=$((fails+1)); }
+r="$(demo reviewer@example.invalid 'pa$$w{0}rd')"
+assert_absent "$r" "Maestro would evaluate" "a bare \$ or { is not refused"
+[[ -e "$T/maestro-calls" ]] && echo "  ok: the guard is not over-broad (Maestro is reached for a plain \$ / {)" || { echo "  FAIL: benign special characters were refused"; fails=$((fails+1)); }
+explore_probe="$(python3 - "$EXPLORE" <<'PY'
+import importlib.util, pathlib, sys, tempfile
+spec = importlib.util.spec_from_file_location('explore', sys.argv[1])
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+calls = []
+m.command = lambda argv, timeout, cwd=None: calls.append(argv) or '{"children":[]}'
+def auth(selector):
+    return {'schema_version': 1, 'authorized': True, 'environment': 'sandbox', 'selectors': [selector]}
+with tempfile.TemporaryDirectory() as tmp:
+    try:
+        m.live_explore('owned', 'org.example.app', pathlib.Path(tmp), 25, 1, auth('Sett${ings}'))
+        print('accepted-marker')
+    except ValueError:
+        print('refused-marker calls=%d' % len(calls))
+    try:
+        m.live_explore('owned', 'org.example.app', pathlib.Path(tmp), 25, 1, auth('Settings'))
+        print('accepted-plain')
+    except ValueError:
+        print('refused-plain')
+PY
+)"
+assert_contains "$explore_probe" "refused-marker calls=0" "an authorized navigation selector containing \${ is refused before Maestro runs"
+assert_contains "$explore_probe" "accepted-plain" "a plain selector is still accepted"
+
+section "dyn-explore.py: --out must not be inside --repo"
+mkdir -p "$T/xrepo" "$T/xscreens"
+python3 "$EXPLORE" --screens "$T/xscreens" --out "$T/xrepo/inner/out" --repo "$T/xrepo" >/dev/null 2>"$T/xerr"; st=$?
+assert_eq "64" "$st" "--out inside --repo is a usage error (64)"
+assert_contains "$(cat "$T/xerr")" "--out must not be inside --repo" "…with a clear message"
+[[ ! -e "$T/xrepo/inner" ]] && echo "  ok: nothing was created inside the repo" || { echo "  FAIL: created under the repo"; fails=$((fails+1)); }
+python3 "$EXPLORE" --screens "$T/xscreens" --out "$T/xout-outside" --repo "$T/xrepo" >/dev/null 2>&1; st=$?
+assert_eq "0" "$st" "an --out outside --repo works"
+
 section "every generated line is accepted by dynamic.sh under a catalogued id"
 all="$( { dyn_bundle_plist_lines "$B/Installed.app/Info.plist" "$B/repo/Info.plist"; dyn_bundle_sdk_line "$B/Installed.app/Info.plist"; dyn_hosts_line "$(dyn_hosts_parity "$T/hosts.txt" "")"; dyn_geometry_line "$(dyn_geometry_report "$H/clipped.json" 393 852)" 4.0 dyn-dark-mode dark; } )"
 recs="$(printf '%s\n' "$all" | bash "$S/dynamic.sh" --format jsonl --build-config debug)"
