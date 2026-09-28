@@ -52,6 +52,12 @@ ACTION_WORDS = re.compile(
 _spec = importlib.util.spec_from_file_location("dyn_process", pathlib.Path(__file__).with_name("dyn-process.py"))
 _process = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_process)
+_paths_spec = importlib.util.spec_from_file_location("dyn_paths", pathlib.Path(__file__).with_name("dyn-paths.py"))
+_paths = importlib.util.module_from_spec(_paths_spec)
+_paths_spec.loader.exec_module(_paths)
+# Maestro evaluates ${...} as JavaScript inside string parameters and documents no escape,
+# so a value carrying the marker is refused rather than mangled.
+MAESTRO_EXPR = "${"
 SECRET_WORDS = re.compile(r"password|token|secret|credential|api.?key", re.I)
 
 
@@ -215,6 +221,9 @@ def live_explore(udid, bundle_id, out, max_screens, seconds, authorization=None)
                 not isinstance(authorization.get("selectors"), list) or
                 any(not isinstance(x, str) or not x for x in authorization["selectors"])):
             raise ValueError("Navigation requires explicit test/sandbox authorization and exact selectors")
+        if any(MAESTRO_EXPR in x for x in authorization["selectors"]):
+            raise ValueError("Navigation selector contains '${', which Maestro would evaluate as JavaScript; "
+                             "a selector with that marker cannot be tapped safely")
         allowed = set(authorization["selectors"])
     deadline = time.monotonic() + seconds
     todo = collections.deque([()])
@@ -294,6 +303,7 @@ def main():
     p.add_argument("--udid")
     p.add_argument("--bundle-id")
     p.add_argument("--out", required=True, type=pathlib.Path)
+    p.add_argument("--repo", type=pathlib.Path, help="Project repository; --out must not be inside it")
     p.add_argument("--max-screens", type=int, default=25)
     p.add_argument("--seconds", type=int, default=360)
     p.add_argument("--hosts", type=pathlib.Path)
@@ -305,6 +315,9 @@ def main():
         p.error("screen and time budgets must be within 25 screens and 360 seconds")
     if bool(a.screens) == bool(a.udid):
         p.error("choose exactly one of --screens or --udid")
+    if a.repo is not None and _paths.inside(str(a.out), str(a.repo)):
+        sys.stderr.write("dyn-explore.py: --out must not be inside --repo (the runtime tier never writes under the repo)\n")
+        return 64
     a.out.mkdir(parents=True, exist_ok=True)
     a.out = a.out.resolve()
     if a.screens:
@@ -329,4 +342,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
