@@ -388,8 +388,10 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
 **This phase does not run by default.** An explicit `scan.sh --build` (or
 `appstore-precheck dynamic --build`) builds in a disposable project copy; `--app <path>.app`
 inspects a supplied build. `--metadata` adds local/optional read-only ASC review.
-`dynamic.build: true` in `.appstore-precheck.json` also enables the build. The runner creates a
-disposable simulator and observes real behavior. See
+`dynamic.build: true` in `.appstore-precheck.json` enables the build only when the invoker sets
+`APPSTORE_PRECHECK_TRUST_CONFIG=1` (the config lives in the scanned repo, so it cannot opt itself
+into running project code); otherwise the scan prints a notice and stays static. The runner
+creates a disposable simulator and observes real behavior. See
 [`references/guideline-coverage.md`](references/guideline-coverage.md) for route and result rules.
 
 It emits advisory `DYNAMIC-PASS:` / `DYNAMIC-FINDING:` / `DYNAMIC-SKIP:` lines, each tagged with a
@@ -404,8 +406,10 @@ It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA re
 
 **Build selection.** `scripts/app-discover.sh --repo <repo> --json` lists existing simulator
 bundles. `scripts/build-run.sh --repo <repo> --out <tmp>` performs an explicitly requested
-isolated build and records its configuration. Missing tools or failed setup produce SKIP and
-`--app` remains available. `--dry-run` shows the plan without building.
+isolated build and records its configuration; symlinks in the build input are rejected. The
+build has a 2400 s deadline and the runtime runner 1200 s, so opt-in runs take minutes. Missing
+tools or failed setup produce SKIP and `--app` remains available. `--dry-run` shows the plan
+without building.
 
 **Observation-based checks are scripted.** `bash <skill-dir>/scripts/dynamic-run.sh --app <path>.app
 --repo <repo> --out <tmp>` creates a throwaway device, runs the launch checks **three times on an
@@ -434,7 +438,8 @@ from, and leave it `unknown` if you do not know.
 - **READ-ONLY:** never change code or assets. Only report and write the token. (The optional Phase 6
   simulator tier touches disposable simulator state only — never the user's project — but it does
   execute the user's app; see Phase 6.)
-- **Speed > exhaustiveness:** `scan.sh` uses parallel grep/jq and finishes in seconds.
+- **Speed > exhaustiveness:** the default static `scan.sh` uses parallel grep/jq and finishes in
+  seconds; the opt-in build/runtime tiers take minutes.
 - **No error swallowing:** if any scan command fails, that line is reported as FAIL and the scan continues.
 - **Token location:** `.precheck-pass` at the repo root; the guard tests it with an `mmin -60` filter.
 - **Local-only:** designed for manual, local runs; keep it out of CI to avoid false signals.

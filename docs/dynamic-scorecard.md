@@ -13,10 +13,13 @@ not ten new builds. The direct collector, corpus and build-provenance code match
 the integrated feature branch; its verification/metadata integration had a separate
 passing full test suite.
 
-Launch repetitions retain a five-second observation window and fresh environments.
-Regenerate builds and runtime with
-`bash tests/local/dynamic-panel.sh --out /tmp/precheck-verification-panel-new`.
-Use an empty output directory; stale case outputs are refused.
+Launch repetitions used a five-second observation window (every run record has
+`window_seconds: 5`) and fresh environments; the panel and `dynamic-run.sh` default
+to 10 seconds, so pass the window explicitly. Regenerate builds and runtime with
+`bash tests/local/dynamic-panel.sh --window 5 --out /tmp/precheck-verification-panel-new`.
+The SwiftUI clean timing benchmark used ten repeats (`--framework swiftui --variant clean
+--repeats 10`); the other cases used the default three. Use an empty output directory;
+stale case outputs are refused.
 
 | Framework | Clean | Broken | Scope |
 |---|---|---|---|

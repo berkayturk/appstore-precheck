@@ -14,7 +14,15 @@ assert report['routes']['static'] > 0
 assert report['routes']['runtime'] > 0
 assert report['routes']['semantic'] > 0
 assert report['unrouted_checks'] == [], report['unrouted_checks']
+# The routed headline includes the generic attestation route; the narrower rows are derived.
+assert 0 < report['automated_route'] <= report['non_attestation_route'] < report['routed_obligations']
+assert report['non_attestation_route'] + report['attestation_only'] <= report['total_obligations']
+assert isinstance(report['full_positive_automatic'], int)
+assert report['full_positive_automatic'] <= report['automated_route']
 PY
+grep -q '| Routed (including developer attestation) |' "$tmp/coverage.md"
+grep -q '| Full positive automatic decision capability |' "$tmp/coverage.md"
+grep -q 'does not certify App Store compliance' "$tmp/coverage.md"
 python3 - <<'PY'
 import importlib.util,json
 from pathlib import Path
