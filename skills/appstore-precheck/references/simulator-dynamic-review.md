@@ -206,9 +206,9 @@ setting applied by Xcode. `xcrun simctl launch` (and a Maestro `launchApp`) does
 default** for an app launched by this tier. An empty or price-less paywall is therefore never
 evidence of a 3.1.2 problem here.
 
-1. If a paywall exists (per the static scan / app structure), navigate to it with a
+1. After establishing paywall applicability and authorized test scope, navigate to it with a
    `mcp__maestro__run` flow (`tapOn` steps; check `mcp__maestro__cheat_sheet` for selector syntax).
-   No paywall → `DYNAMIC-SKIP: 3.1.2 — not applicable: no paywall in this app`.
+   A source hint cannot establish absence; unconfirmed applicability remains unresolved.
 2. Look for a rendered price (a currency amount) on the paywall screen.
    - **No price visible** → `DYNAMIC-SKIP: 3.1.2 — StoreKit products are not loaded under simctl
      launch; paywall prices cannot be observed on a local simulator. Launch the app from Xcode with
@@ -226,15 +226,17 @@ does something.
    the `mcp__maestro__inspect_screen` hierarchy — that is the field Maestro exposes the label in,
    not `text`. No such control → `DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — no Restore Purchases
    control found`. An unexecuted dedicated selector flow remains SKIP; report the measured tree capability.
-2. `tapOn` it and wait up to 3 s for a **non-inert response**: an alert, a spinner / progress
-   indicator, or any change in the accessibility tree or screenshot.
-3. A response → `DYNAMIC-PASS`. No visible reaction at all within 3 s → `DYNAMIC-FINDING` (a
-   dead Restore button is a 3.1.2 rejection). StoreKit products are not loaded under `simctl
-   launch`, so "restore found nothing" *with* an alert is still a PASS: the control works.
+2. Only in an explicitly authorized test environment, capture the starting state, perform
+   the allowlisted action and capture its actual postcondition. Record a bounded timeout,
+   missing selector or unavailable StoreKit as a driver/evidence gap.
+3. A visible response is a UI observation. Restore completion additionally requires the
+   corresponding receipt/transaction and restored entitlement/content in the intended
+   sandbox or device environment. An alert or spinner cannot prove that completion.
 
-This is a **partial** test of §10 (`subscription-links-restore`), which also wants terms and
-privacy links on the paywall — so a PASS here can downgrade a static FAIL to WARN but never
-resolve it (see the reconciliation table in `dynamic.sh`).
+This remains a **partial** test of §10 (`subscription-links-restore`). A delayed or invisible
+response alone cannot establish a rejection; it stays unresolved without causal evidence.
+UI observations never close whole-guideline conditions. See the transition contract for
+`OBSERVED_PASS`, `OBSERVED_FAILURE` and `UNRESOLVED` packet semantics.
 
 ### D4 — Permission prompt vs purpose string (`dyn-permission-prompt:<KEY>`)
 1. For each `NS*UsageDescription` in `Info.plist`, trigger the feature that requests it.
@@ -247,9 +249,15 @@ resolve it (see the reconciliation table in `dynamic.sh`).
    a screenshot if the agent reaches the feature by coordinates.
 
 ### D5 — Demo / login path (`dyn-demo-login`)
-1. For a login-gated app, look for a guest/demo entry, or enter the declared review demo credentials.
-2. Confirm a reachable path to core features; `DYNAMIC-FINDING` if the only path is a wall with no
-   working demo. Not login-gated → `DYNAMIC-SKIP: 2.1 — not applicable`.
+
+Use `--demo-login` only with private test credentials/selectors,
+`PRECHECK_DEMO_AUTHORIZED_TEST=1` and `PRECHECK_DEMO_ENVIRONMENT=test|sandbox`.
+Record the initial fields, completed action and new success state in three fresh runs.
+Missing credentials, backend unavailability, ambiguous selectors and insufficient trees
+produce `DYNAMIC-SKIP`, not an app violation. A backend-ready assertion alone cannot
+attribute a rejection to the app. UI success remains partial until the authenticated
+session and reviewer feature access have independent evidence. No account-gate signal
+in source is insufficient for verified N/A.
 
 ### D6 — Live UI vs marketing screenshots (`dyn-screenshot-parity`)
 1. Capture live screenshots of key screens.
