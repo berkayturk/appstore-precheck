@@ -15,6 +15,9 @@ HERE = Path(__file__).resolve().parent
 _process_spec = importlib.util.spec_from_file_location('dyn_process', HERE / 'lib/dyn-process.py')
 _process = importlib.util.module_from_spec(_process_spec)
 _process_spec.loader.exec_module(_process)
+_safe_spec = importlib.util.spec_from_file_location('safe_write', HERE / 'lib/safe_write.py')
+safe_write = importlib.util.module_from_spec(_safe_spec)
+_safe_spec.loader.exec_module(safe_write)
 ARTIFACT_IDS = (
     "artifact-entitlements", "artifact-reason-api", "artifact-private-api",
     "artifact-url-schemes", "artifact-ats", "artifact-sdk",
@@ -193,7 +196,7 @@ def main():
             try:
                 payload = json.loads(process.stdout)
                 output = out / (label + ".json")
-                output.write_text(json.dumps(payload, indent=2) + "\n")
+                safe_write.write_text(output, json.dumps(payload, indent=2) + "\n")
                 input_errors.extend(import_records(checks, payload.get("checks", []), str(output)))
                 tiers[label] = "RAN"
             except (ValueError, TypeError):
@@ -225,7 +228,7 @@ def main():
         try:
             payload = json.loads(process.stdout)
             artifact_output = out / "artifact-review.json"
-            artifact_output.write_text(json.dumps(payload, indent=2) + "\n")
+            safe_write.write_text(artifact_output, json.dumps(payload, indent=2) + "\n")
             input_errors.extend(import_records(checks, payload.get("checks", []), str(artifact_output)))
             tiers["artifact"] = "RAN" if app and not args.dry_run else "NOT_RUN"
         except (ValueError, TypeError):
@@ -277,7 +280,7 @@ def main():
             try:
                 payload = json.loads(process.stdout)
                 metadata_output = out / "metadata-review.json"
-                metadata_output.write_text(json.dumps(payload, indent=2) + "\n")
+                safe_write.write_text(metadata_output, json.dumps(payload, indent=2) + "\n")
                 input_errors.extend(import_records(checks, payload.get("results", []), str(metadata_output)))
                 tiers["metadata"] = "RAN"
             except (ValueError, TypeError):
@@ -287,10 +290,10 @@ def main():
     else:
         tiers["metadata"] = "NOT_RUN"
 
-    (out / "run-results.json").write_text(json.dumps({"checks": checks}, indent=2) + "\n")
+    safe_write.write_text(out / "run-results.json", json.dumps({"checks": checks}, indent=2) + "\n")
     summary = {"schema_version": 1, "tiers": tiers, "blocking": blocking,
                "run_results": str(out / "run-results.json"), "input_errors": input_errors}
-    (out / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    safe_write.write_text(out / "summary.json", json.dumps(summary, indent=2) + "\n")
     json.dump(summary, sys.stdout)
     sys.stdout.write("\n")
     return 0
@@ -301,3 +304,6 @@ if __name__ == "__main__":
         sys.exit(main())
     except InterruptedError:
         sys.exit(143)
+    except OSError as error:
+        print("opt-in-review: cannot write reports safely: " + str(error), file=sys.stderr)
+        sys.exit(2)

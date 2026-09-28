@@ -176,4 +176,59 @@ for reason in reasons:
 print('silent static reason is not self-contradictory: OK')
 PY
 
+echo '== output paths are written safely =='
+py "$SCRIPTS" <<'PY'
+import contextlib, importlib.util, io, json, os, sys, tempfile, types
+from pathlib import Path
+from unittest import mock
+scripts = Path(sys.argv[1])
+def load(name, file):
+    spec = importlib.util.spec_from_file_location(name, scripts / file)
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); return module
+safe = load('safe_write', 'lib/safe_write.py')
+with tempfile.TemporaryDirectory() as d:
+    root = Path(d); victim = root / 'victim.txt'; victim.write_text('precious')
+    target = root / 'a' / 'out.json'
+    target.parent.mkdir(); safe.write_text(target, 'one\n'); assert target.read_text() == 'one\n'
+    safe.write_text(target, 'two\n'); assert target.read_text() == 'two\n'
+    assert sorted(p.name for p in target.parent.iterdir()) == ['out.json'], 'temp file left behind'
+    link = root / 'link.json'; os.symlink(victim, link)
+    try: safe.write_text(link, 'pwned'); raise AssertionError('symlink write accepted')
+    except OSError: pass
+    dangling = root / 'dangling.json'; os.symlink(root / 'nowhere', dangling)
+    try: safe.write_text(dangling, 'pwned'); raise AssertionError('dangling symlink write accepted')
+    except OSError: pass
+    assert not (root / 'nowhere').exists()
+    try: safe.write_text(root, 'x'); raise AssertionError('directory write accepted')
+    except OSError: pass
+    assert victim.read_text() == 'precious'
+
+    report = load('report', 'verification-report.py')
+    for name in ('profile', 'evidence', 'decisions'): (root / (name + '.json')).write_text('{}')
+    def verify(*extra):
+        argv = ['verify', '--profile', str(root / 'profile.json'), '--evidence', str(root / 'evidence.json'),
+                '--decisions', str(root / 'decisions.json'), *extra]
+        with mock.patch.object(report, 'build_report', return_value={'summary': {'ready': True}}), \
+             mock.patch.object(report, 'markdown', return_value='md\n'), \
+             mock.patch.object(sys, 'argv', argv), contextlib.redirect_stderr(io.StringIO()):
+            return report.main()
+    assert verify('--out', str(root / 'r.json'), '--markdown', str(root / 'r.md')) == 0
+    assert (root / 'r.md').read_text() == 'md\n'
+    assert verify('--out', str(link)) == 2 and victim.read_text() == 'precious'
+    assert verify('--out', str(root / 'ok.json'), '--markdown', str(link)) == 2 and victim.read_text() == 'precious'
+
+    runner = load('runner', 'opt-in-review.py')
+    repo = root / 'source'; repo.mkdir(); out = root / 'report'; out.mkdir()
+    for name in ('summary.json', 'run-results.json'): os.symlink(victim, out / name)
+    def fake(argv, timeout):
+        return types.SimpleNamespace(returncode=0, stdout=json.dumps({'checks': [], 'results': []}))
+    argv = ['runner', '--repo', str(repo), '--out-dir', str(out), '--metadata']
+    with mock.patch.object(runner, 'run', fake), mock.patch.object(sys, 'argv', argv), \
+         contextlib.redirect_stdout(io.StringIO()):
+        assert runner.main() == 0
+    assert victim.read_text() == 'precious', 'runner followed a planted symlink'
+    assert not (out / 'summary.json').is_symlink() and json.loads((out / 'summary.json').read_text())['schema_version'] == 1
+print('safe writes refuse symlinks and replace atomically: OK')
+PY
+
 exit "$fails"

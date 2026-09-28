@@ -24,6 +24,7 @@ def module(name, path):
 
 contract = module('verification_contract', HERE / 'verification-contract.py')
 verifiers = module('verification_verifiers', HERE / 'lib/verification-verifiers.py')
+safe_write = module('safe_write', HERE / 'lib/safe_write.py')
 
 
 def redact(value):
@@ -418,10 +419,10 @@ def main():
                               object_file(REF / 'guideline-obligations.json'), trusted_policies(),
                               args.evidence.parent, object_file(args.config) if args.config else {})
         args.out.parent.mkdir(parents=True, exist_ok=True)
-        args.out.write_text(json.dumps(report, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+        safe_write.write_text(args.out, json.dumps(report, indent=2, sort_keys=True) + '\n')
         if args.markdown:
             args.markdown.parent.mkdir(parents=True, exist_ok=True)
-            args.markdown.write_text(markdown(report), encoding='utf-8')
+            safe_write.write_text(args.markdown, markdown(report))
     except (ValueError, TypeError, KeyError, OSError):
         print('Verification input or output error: invalid top-level schema, policy or unreadable file', file=sys.stderr)
         return 2
