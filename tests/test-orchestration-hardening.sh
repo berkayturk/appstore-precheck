@@ -231,4 +231,58 @@ with tempfile.TemporaryDirectory() as d:
 print('safe writes refuse symlinks and replace atomically: OK')
 PY
 
+echo '== --check-urls connects to the address it validated =='
+py "$SCRIPTS" <<'PY'
+import http.server, importlib.util, socket, ssl, sys, threading
+from pathlib import Path
+from unittest import mock
+spec = importlib.util.spec_from_file_location('metadata', Path(sys.argv[1]) / 'lib/metadata-review.py')
+metadata = importlib.util.module_from_spec(spec); spec.loader.exec_module(metadata)
+hosts = []
+class Handler(http.server.BaseHTTPRequestHandler):
+    def do_HEAD(self):
+        hosts.append(self.headers.get('Host')); self.send_response(200); self.end_headers()
+    def log_message(self, *args): pass
+server = http.server.HTTPServer(('127.0.0.1', 0), Handler); port = server.server_port
+threading.Thread(target=server.serve_forever, daemon=True).start()
+PUBLIC = '93.184.216.34'
+real_connect = socket.socket.connect
+def scenario(answers, connect):
+    state = {'n': 0}; attempted = []
+    def getaddrinfo(host, port_, *args, **kwargs):
+        ip = answers[min(state['n'], len(answers) - 1)]; state['n'] += 1
+        return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (ip, port_ or 0))]
+    def fake_connect(self, address):
+        attempted.append(address[0]); return connect(self, address)
+    with mock.patch.object(socket, 'getaddrinfo', getaddrinfo), mock.patch.object(socket.socket, 'connect', fake_connect):
+        return metadata.head_reachable('http://rebind.example:%d/' % port), attempted
+def refuse(self, address):
+    if address[0] != '127.0.0.1': raise OSError('blocked')
+    return real_connect(self, address)
+# Rebinding: the first lookup is public, every later lookup is loopback.
+reachable, attempted = scenario([PUBLIC, '127.0.0.1'], refuse)
+assert not reachable and not hosts, ('rebinding reached loopback', attempted, hosts)
+assert '127.0.0.1' not in attempted and PUBLIC in attempted, attempted
+# Legit path: the validated IP is the one dialled, Host keeps the original name.
+def redirect(self, address): return real_connect(self, ('127.0.0.1', port))
+reachable, attempted = scenario([PUBLIC], redirect)
+assert reachable and hosts == ['rebind.example:%d' % port] and attempted == [PUBLIC], (reachable, hosts, attempted)
+# Private answers are refused outright.
+reachable, attempted = scenario(['127.0.0.1'], refuse)
+assert not reachable and attempted == []
+# HTTPS: TLS server name stays the hostname, not the pinned IP.
+seen = []
+def fake_wrap(self, sock, *args, **kwargs):
+    seen.append(kwargs.get('server_hostname')); raise ssl.SSLError('stop')
+state = {'n': 0}
+def getaddrinfo(host, port_, *args, **kwargs):
+    return [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (PUBLIC, port_ or 443))]
+with mock.patch.object(socket, 'getaddrinfo', getaddrinfo), mock.patch.object(socket.socket, 'connect', lambda self, a: None), \
+     mock.patch.object(ssl.SSLContext, 'wrap_socket', fake_wrap):
+    assert not metadata.head_reachable('https://secure.example/')
+assert seen == ['secure.example'], seen
+server.shutdown()
+print('DNS pinning: single validated resolution, Host/SNI preserved: OK')
+PY
+
 exit "$fails"
