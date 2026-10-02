@@ -59,7 +59,7 @@ section "scan.sh: a non-native repo gets a framework-not-audited gap record"
 source "$S/findings.sh"
 # shellcheck source=skills/appstore-precheck/scripts/evidence.sh
 source "$S/evidence.sh"
-src_n="$(rules_with_evidence source | grep -c .)"
+src_n="$(rules_with_evidence source 55 | grep -c .)"
 assert_gt "$src_n" "20" "(precondition) the source-evidence class is the largest"
 for fx in rn-app flutter-app kmp-app; do
   d="$(mktemp -d)"; cp -R "$FX/$fx/." "$d/"
