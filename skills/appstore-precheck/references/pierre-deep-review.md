@@ -1,18 +1,18 @@
-# Phase 4: Pierre deep review (31 semantic checks)
+# Phase 4: Pierre deep review (56 semantic checks)
 
 After Phase 3 (explaining every scan FAIL/WARN), Pierre runs a **read-only, project-wide
-semantic review** of 31 guideline areas the static scanner cannot fully judge. The **23 Tier A**
-checks (all 31 except the Tier B items below) are high-confidence; the **8 Tier B v1** checks
-**4, 5, 7, 10, 15, 29, 30, and 31** are heuristic advisory (higher false-positive risk, still useful
-pre-submit signals).
+semantic review** of 56 catalog checks the static scanner cannot fully judge: **23 Tier A**,
+**26 Tier B**, and **7 Tier C**. The original 31 identities and procedures are retained;
+checks 32–56 add bounded advisory questions. Tier B needs contextual judgment, and Tier C
+requires direct host vision observations. These counts describe review routes, not automated approvals.
 
 This is the **Review Simulator** layer: Pierre reads Swift, metadata, entitlements, screenshots,
 xcstrings, paywall views, review notes, and fetches live privacy/support URLs — then cross-checks
 claims against evidence.
 
 **This phase does not change the GREEN/YELLOW/RED verdict.** Verdict counts come only from
-Phases 0–2 (`FAIL:` / `WARN:` lines). Phase 4 emits `REVIEW-PASS:` or `REVIEW-FINDING:` lines
-that Pierre explains in Phase 5 presentation.
+Phases 0–2 (`FAIL:` / `WARN:` lines). Phase 4 emits advisory review lines
+that Pierre explains in Phase 5 presentation; checks 32–56 never emit PASS.
 
 ## Rules
 
@@ -25,10 +25,10 @@ typed judgments nor their advisory output changes the scanner verdict or upload 
 - **Read-only:** never modify project files.
 - **Evidence-based:** cite `file:line`, metadata path, screenshot filename, or fetched URL text.
   If you cannot read something (private URL, missing file), say so — do not invent findings.
-- **All 31 checks, every run:** report an outcome for every item. Missing evidence is `REVIEW-NEEDS-REVIEW`, unsupported inspection is `REVIEW-UNSUPPORTED`, and unexecuted checks are `REVIEW-NOT-RUN`; none is PASS.
+- **All 56 checks, every run:** report an outcome for every item. Missing evidence is `REVIEW-NEEDS-REVIEW`, unsupported inspection is `REVIEW-UNSUPPORTED`, and unexecuted checks are `REVIEW-NOT-RUN`; none is PASS. For checks 32–56, use `REVIEW-SKIP` for these gaps.
 - **REVIEW-FINDING severity:** always `WARN` (advisory). Never emit `REVIEW-FINDING: … FAIL`.
   A deep-review issue informs the human; it does not block the token by itself.
-- **Tier B checks (4, 5, 7, 10, 15, 29, 30, 31):** require affirmative applicability evidence; absent repository signals alone do not prove non-applicability;
+- **Tier B checks (see catalog tier fields):** require affirmative applicability evidence; absent repository signals alone do not prove non-applicability;
   when flagging, use cautious language ("may trigger review questions") — these are heuristics.
 - **Deepen scan hits:** when Phase 1 already flagged a guideline, Phase 4 still runs the matching
   deep check and adds semantic context (do not repeat the machine line verbatim — add what the
@@ -41,7 +41,7 @@ typed judgments nor their advisory output changes the scanner verdict or upload 
 
 ## Output format
 
-For each of the 31 checks (in table order), preserve the legacy PASS/FINDING forms
+For the original checks 1–31 (in table order), preserve the legacy PASS/FINDING forms
 for supported conclusions. Use REVIEW-NEEDS-REVIEW, REVIEW-NOT-RUN, REVIEW-UNSUPPORTED
 or REVIEW-NOT-APPLICABLE when inspection is blocked, unexecuted or provably outside
 the applicable scope. Report those counts separately from PASS and FINDING;
@@ -71,9 +71,19 @@ material a check inspects exists and is clean — release notes present but free
 language, a review prompt present but using the system API — report a plain
 `REVIEW-PASS` with the evidence pointer, not "not applicable".
 
+
+For checks 32–56, use only `REVIEW-FINDING: <guideline> WARN — ...`,
+`REVIEW-NO-SIGNAL: <guideline> — ...`, or `REVIEW-SKIP: <guideline> — <missing input/reason>`.
+No signal means the supplied scope yielded no concrete concern; it is not a compliance pass.
+Read every catalog `evidence_inputs` and `required_context` field as a mandatory gate.
+Unknown applicability, storefront, age declaration, source authority, licensing or ownership
+must remain SKIP; source presence never establishes these external facts.
+Jev is text-only and must SKIP every Tier C check even if a bundle names image files.
+A host with image access must directly inspect the supplied images and cite its observations.
+
 ---
 
-## The 31 checks (guideline order)
+## The 56 checks (stable catalog order)
 
 | # | Guideline | Deep question | Primary sources |
 |---|---|---|---|
@@ -108,6 +118,31 @@ language, a review prompt present but using the system API — report a plain
 | 29 | **5.6.1 / 5.6.3** | Rating/review manipulation dark patterns (withhold features until 5 stars, direct write-review links without `requestReview`)? | Swift, metadata, §25 scan context |
 | 30 | **4.3** | In a category Apple names as saturated (4.3(b)), is the app meaningfully different from the incumbents, and free of 4.3(a) per-variant bundle ids? | entry point, main views, `project.pbxproj` targets, §54 scan context |
 | 31 | **4.0** | Would the app pass Apple's minimum design bar: usable iPad / large-text layout, no clipped, overlapping or placeholder UI, no degraded or non-functional screens? | SwiftUI/UIKit layout code, `Info.plist` device family + orientations, screenshot assets |
+| 32 | **1.1.1** | Does observed content attack or humiliate a named person or protected group? | screenshots, metadata, source-strings |
+| 33 | **1.1.2** | Does realistic violent imagery conflict with the documented game context and age declaration? | screenshots, metadata |
+| 34 | **1.1.3** | Does the observed offering encourage harmful use of weapons or hazardous substances? | screenshots, metadata |
+| 35 | **1.1.4** | Does observed sexual content or the advertised matching purpose warrant a content-policy review? | screenshots, metadata |
+| 36 | **1.1.5** | Does the supplied text contain inflammatory religious targeting or a quotation contradicted by its supplied source? | metadata, source-strings |
+| 37 | **1.1.6** | Does a concrete implementation mismatch support a deceptive capability claim such as fabricated scanning or sensor data? | metadata, source-strings, source |
+| 38 | **1.2.1** | Does a creator-content offering mislabel its content or move it outside the described in-app experience? | metadata, source |
+| 39 | **1.4.2** | Does a dosage-calculation offering lack the documented institutional source appropriate to its claims? | metadata, source-strings |
+| 40 | **1.4.3** | Does the supplied offering promote or sell tobacco, vaping goods, or illegal drugs within its documented context? | metadata, source-strings, SDK |
+| 41 | **1.4.4** | Does a checkpoint-location feature use a source other than the documented law-enforcement source? | metadata, source-strings |
+| 42 | **1.4.5** | Does the observed challenge or wagering copy encourage actions likely to physically harm participants? | metadata, source-strings |
+| 43 | **2.3.6** | Does visible content materially contradict the supplied current age-rating declaration? | screenshots, metadata |
+| 44 | **2.5.8** | Does the product promise to replace the device home screen beyond a clearly described in-app simulation? | metadata, source-strings, source |
+| 45 | **2.5.9** | Does implemented behavior or user-facing copy override system controls outside the documented app-local context? | source, source-strings |
+| 46 | **3.1.3** | Does the supplied external-purchase flow contradict the documented offering, storefront, and claimed exception? | source, metadata |
+| 47 | **3.1.4** | Does a hardware-gated content unlock exceed the documented relationship between the hardware and its function? | source, metadata |
+| 48 | **3.2.1** | Does the documented promotion, gift-card, or wallet model contradict the bounded permitted purpose claimed by the developer? | metadata, source |
+| 49 | **4.2.6** | Do observed template reuse and the supplied ownership relationship support concern about a generic third-party app submission? | screenshots, metadata, source |
+| 50 | **4.5.1** | Does the implementation use an Apple store feed beyond its documented display purpose? | source, source-strings |
+| 51 | **4.7.1** | Do documented mini-app data practices contradict the containing app privacy declaration? | source, privacy-manifest |
+| 52 | **4.7.3** | Does a mini-app bridge transfer host permissions or personal data beyond the supplied consent boundary? | source |
+| 53 | **4.10** | Does the paywall charge solely for access to a built-in device capability rather than a documented added service? | source-strings, source |
+| 54 | **5.2.3** | Does the offered media-downloading or sharing flow conflict with the documented authorization for third-party content? | source, metadata |
+| 55 | **5.2.5** | Do the observed icon, name, and interface create a concrete misleading resemblance to an Apple product? | icon, name, screenshots |
+| 56 | **5.3.3** | Does the supplied StoreKit flow sell credits used for documented real-money gambling or lottery participation? | source, metadata |
 
 ---
 
@@ -349,6 +384,206 @@ the layout code with the reviewer's eyes. Heuristic by nature — report missing
 What this check cannot do: see the running app. iPad rotation, real Dynamic Type rendering and
 actual crashes belong to Phase 6 (the local simulator tier), not to a source read.
 
+### 32 — 1.1.1 content-defamatory *(Tier C)*
+
+1. Read screenshots, metadata, source-strings; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does observed content attack or humiliate a named person or protected group?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 33 — 1.1.2 content-graphic-violence *(Tier C)*
+
+1. Read screenshots, metadata; record concrete evidence pointers.
+2. Establish age_rating, content_context; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does realistic violent imagery conflict with the documented game context and age declaration?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 34 — 1.1.3 content-weapons *(Tier C)*
+
+1. Read screenshots, metadata; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the observed offering encourage harmful use of weapons or hazardous substances?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 35 — 1.1.4 content-sexual *(Tier C)*
+
+1. Read screenshots, metadata; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does observed sexual content or the advertised matching purpose warrant a content-policy review?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 36 — 1.1.5 content-religious *(Tier B)*
+
+1. Read metadata, source-strings; record concrete evidence pointers.
+2. Establish quotation_context; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the supplied text contain inflammatory religious targeting or a quotation contradicted by its supplied source?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 37 — 1.1.6 content-false-features *(Tier B)*
+
+1. Read metadata, source-strings, source; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does a concrete implementation mismatch support a deceptive capability claim such as fabricated scanning or sensor data?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 38 — 1.2.1 creator-content-boundary *(Tier B)*
+
+1. Read metadata, source; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does a creator-content offering mislabel its content or move it outside the described in-app experience?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 39 — 1.4.2 drug-dosage-source *(Tier B)*
+
+1. Read metadata, source-strings; record concrete evidence pointers.
+2. Establish publisher_source; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does a dosage-calculation offering lack the documented institutional source appropriate to its claims?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 40 — 1.4.3 tobacco-vape-drugs *(Tier B)*
+
+1. Read metadata, source-strings, SDK; record concrete evidence pointers.
+2. Establish sales_context; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the supplied offering promote or sell tobacco, vaping goods, or illegal drugs within its documented context?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 41 — 1.4.4 dui-checkpoints *(Tier B)*
+
+1. Read metadata, source-strings; record concrete evidence pointers.
+2. Establish checkpoint_source; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does a checkpoint-location feature use a source other than the documented law-enforcement source?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 42 — 1.4.5 physical-risk-bets *(Tier B)*
+
+1. Read metadata, source-strings; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the observed challenge or wagering copy encourage actions likely to physically harm participants?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 43 — 2.3.6 age-rating-consistency *(Tier C)*
+
+1. Read screenshots, metadata; record concrete evidence pointers.
+2. Establish age_rating; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does visible content materially contradict the supplied current age-rating declaration?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 44 — 2.5.8 alternate-home-screen *(Tier B)*
+
+1. Read metadata, source-strings, source; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the product promise to replace the device home screen beyond a clearly described in-app simulation?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 45 — 2.5.9 system-switch-override *(Tier B)*
+
+1. Read source, source-strings; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does implemented behavior or user-facing copy override system controls outside the documented app-local context?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 46 — 3.1.3 other-purchase-eligibility *(Tier B)*
+
+1. Read source, metadata; record concrete evidence pointers.
+2. Establish storefront, purchase_exception, offering; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the supplied external-purchase flow contradict the documented offering, storefront, and claimed exception?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 47 — 3.1.4 hardware-specific-content *(Tier B)*
+
+1. Read source, metadata; record concrete evidence pointers.
+2. Establish hardware_relationship; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does a hardware-gated content unlock exceed the documented relationship between the hardware and its function?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 48 — 3.2.1 business-model-acceptable *(Tier B)*
+
+1. Read metadata, source; record concrete evidence pointers.
+2. Establish business_model; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the documented promotion, gift-card, or wallet model contradict the bounded permitted purpose claimed by the developer?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 49 — 4.2.6 template-app *(Tier C)*
+
+1. Read screenshots, metadata, source; record concrete evidence pointers.
+2. Establish content_owner, publisher_relationship; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Do observed template reuse and the supplied ownership relationship support concern about a generic third-party app submission?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 50 — 4.5.1 apple-rss-usage *(Tier B)*
+
+1. Read source, source-strings; record concrete evidence pointers.
+2. Establish feed_purpose; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the implementation use an Apple store feed beyond its documented display purpose?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 51 — 4.7.1 miniapp-privacy-parity *(Tier B)*
+
+1. Read source, privacy-manifest; record concrete evidence pointers.
+2. Establish miniapp_present, miniapp_data_practices; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Do documented mini-app data practices contradict the containing app privacy declaration?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 52 — 4.7.3 miniapp-data-sharing *(Tier B)*
+
+1. Read source; record concrete evidence pointers.
+2. Establish miniapp_present, sharing_consent; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does a mini-app bridge transfer host permissions or personal data beyond the supplied consent boundary?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 53 — 4.10 monetize-builtin-capability *(Tier B)*
+
+1. Read source-strings, source; record concrete evidence pointers.
+2. Establish paid_feature; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the paywall charge solely for access to a built-in device capability rather than a documented added service?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 54 — 5.2.3 media-download-facilitation *(Tier B)*
+
+1. Read source, metadata; record concrete evidence pointers.
+2. Establish media_authorization; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the offered media-downloading or sharing flow conflict with the documented authorization for third-party content?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 55 — 5.2.5 apple-product-confusion *(Tier C)*
+
+1. Read icon, name, screenshots; record concrete evidence pointers.
+2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Do the observed icon, name, and interface create a concrete misleading resemblance to an Apple product?
+4. Inspect the images directly as a host; text-only inference must SKIP.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
+### 56 — 5.3.3 iap-for-gambling-credit *(Tier B)*
+
+1. Read source, metadata; record concrete evidence pointers.
+2. Establish gambling_context; if unknown or conflicting, emit `REVIEW-SKIP`.
+3. Does the supplied StoreKit flow sell credits used for documented real-money gambling or lottery participation?
+4. Do not infer observed behavior or external facts from source symbols alone.
+5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
+
 ---
 
 ## Phase 5 presentation
@@ -357,6 +592,10 @@ After Phase 4, include in the final report:
 
 1. Trilingual verdict block (from scan counts only).
 2. Phase 3 commentary (every scan FAIL/WARN).
-3. Phase 4 summary table: 31 checks → separate counts for PASS, FINDING, NEEDS-REVIEW, UNSUPPORTED, NOT-RUN and NOT-APPLICABLE (note Tier B items 4, 5, 7, 10, 15, 29, 30, 31 if any fired). The 5 screenshot-vision checks (S1–S5) report as a separate "+5 vision checks" sub-block, outside the "of 31" count.
+3. Phase 4 summary table: 56 checks → separate counts for PASS (legacy checks only), FINDING, NO-SIGNAL, SKIP, NEEDS-REVIEW, UNSUPPORTED, NOT-RUN and NOT-APPLICABLE. The 5 screenshot-vision checks (S1–S5) remain a separate "+5 vision checks" sub-block, outside the catalog count.
 4. Phase 4 detail: every `REVIEW-FINDING` with Pierre explanation; optionally list `REVIEW-PASS` lines compactly.
 5. Verbatim Phase 1 scan output + verdict/token action.
+
+Host visual inputs in new checks require explicit `host_screenshots`, `host_icon` or
+`host_runtime_screenshots` context, as applicable, plus the actual host visual observation.
+Filenames alone are not observations; absent context or images produces REVIEW-SKIP.

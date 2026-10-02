@@ -7,6 +7,7 @@ import tempfile
 import time
 from pathlib import Path
 
+from .review_v4 import is_v4, evidence_gaps, compose_host_review
 from .client import ServiceError, evaluate, validate_response
 from .questions import MODEL, PRICE_PER_MILLION, VERSION, WORKFLOWS, questions_for
 
@@ -59,24 +60,28 @@ def validate_bundle(bundle):
                     or not isinstance(e.get('text'), str) or not e['text'].strip()):
                 raise ValueError('invalid evidence span')
             ids.add(e['id'])
-        context = job['context']
-        if job['workflow'] == 'rerank':
-            candidates = context['candidates']
-            if (not isinstance(candidates, list) or not 1 <= len(candidates) <= 32
-                    or any(not isinstance(c, dict) or not isinstance(c.get('id'), str)
-                           or not isinstance(c.get('text'), str) or not c['text'].strip() for c in candidates)
-                    or len({c['id'] for c in candidates}) != len(candidates)):
-                raise ValueError('rerank needs 1..32 unique text candidates')
-        if job['workflow'] == 'drift':
-            if not isinstance(context['rule_catalog'], list) or len(context['rule_catalog']) > 64:
-                raise ValueError('drift rule_catalog must be an array of at most 64 entries')
-        if job['workflow'] == 'verify' and context['source_id'] not in ids:
-            raise ValueError('verification source_id is not a supplied evidence ID')
-        if job['workflow'] == 'disclosure':
-            terms = context['product_terms']
-            if not isinstance(terms, dict) or type(terms.get('trial')) is not bool:
-                raise ValueError('product_terms.trial must be a boolean')
+        validate_workflow_context(job, ids)
     return bundle
+
+
+def validate_workflow_context(job, ids):
+    context = job['context']
+    if job['workflow'] == 'rerank':
+        candidates = context['candidates']
+        if (not isinstance(candidates, list) or not 1 <= len(candidates) <= 32
+                or any(not isinstance(c, dict) or not isinstance(c.get('id'), str)
+                       or not isinstance(c.get('text'), str) or not c['text'].strip() for c in candidates)
+                or len({c['id'] for c in candidates}) != len(candidates)):
+            raise ValueError('rerank needs 1..32 unique text candidates')
+    if job['workflow'] == 'drift':
+        if not isinstance(context['rule_catalog'], list) or len(context['rule_catalog']) > 64:
+            raise ValueError('drift rule_catalog must be an array of at most 64 entries')
+    if job['workflow'] == 'verify' and context['source_id'] not in ids:
+        raise ValueError('verification source_id is not a supplied evidence ID')
+    if job['workflow'] == 'disclosure':
+        terms = context['product_terms']
+        if not isinstance(terms, dict) or type(terms.get('trial')) is not bool:
+            raise ValueError('product_terms.trial must be a boolean')
 
 
 def request_for(job, model=MODEL):
@@ -94,17 +99,104 @@ def fallback(job, reason):
     return {'id': job['id'], 'workflow': job['workflow'], 'advisory': True,
             'check_key': job.get('check_key'),
             'guideline': definition.get('guideline') if isinstance(definition, dict) else None,
+            'catalog_version': 4 if is_v4(job) else job.get('catalog_version'),
+            'advisory_only': is_v4(job),
             'outcome': 'insufficient_evidence', 'action': 'pierre_review', 'reason': reason,
             'evidence': [], 'model_probability': None, 'model_confidence': None}
 
 
+def categorical(answers, result, key):
+    answer = answers[key]
+    probability = answer['probabilities'][answer['choice']]
+    result['model_probability'] = probability
+    result['model_confidence'] = answer['confidence']
+    return answer['choice'] if probability >= THRESHOLDS['positive'] and answer['confidence'] >= THRESHOLDS['confidence'] else None
+
+
+def binary(answers, keys, positive=True):
+    values = [answers[k]['noul'] for k in keys]
+    if positive:
+        return 'finding' if any(v >= THRESHOLDS['positive'] for v in values) else (
+            'pass' if all(v <= THRESHOLDS['negative'] for v in values) else None)
+    return 'finding' if any(v <= THRESHOLDS['negative'] for v in values) else (
+        'pass' if all(v >= THRESHOLDS['support'] for v in values) else None)
+
+
+def disclosure_outcome(job, answers, result):
+    keys = ['renewal', 'cancellation']
+    if job['context']['product_terms']['trial']:
+        keys.append('trial_charge')
+    outcome = binary(answers, keys, positive=False)
+    if job['context'].get('locale_pair'):
+        relation = categorical(answers, result, 'locale_relation')
+        if relation in ('omission', 'contradiction'):
+            outcome = 'finding'
+        elif relation != 'equivalent' and outcome != 'finding':
+            outcome = None
+    return outcome
+
+
+def simple_outcome(job, answers, result):
+    workflow = job['workflow']
+    if workflow == 'review':
+        return categorical(answers, result, 'outcome')
+    if workflow == 'copy':
+        return binary(answers, [k for k in answers if k != 'evidence'])
+    if workflow == 'purpose':
+        poor = sum(answers['specificity']['probabilities'][str(i)] for i in (0, 1))
+        match = answers['feature_match']['noul']
+        return 'finding' if poor >= .90 or match <= .10 else ('pass' if poor <= .10 and match >= .95 else None)
+    if workflow == 'disclosure':
+        return disclosure_outcome(job, answers, result)
+    if workflow == 'consistency':
+        return {'supported': 'pass', 'contradicted': 'finding'}.get(categorical(answers, result, 'relation'))
+    if workflow == 'verify':
+        source = next(e for e in job['evidence'] if e['id'] == job['context']['source_id'])
+        result['evidence'] = [source]
+        supported, over = answers['supported']['noul'], answers['overstatement']['noul']
+        return 'finding' if supported <= .10 or over >= .90 else ('pass' if supported >= .95 and over <= .10 else None)
+    return None
+
+
+def descriptive_result(job, answers, result):
+    workflow = job['workflow']
+    if workflow == 'routing':
+        offering = categorical(answers, result, 'offering')
+        result['route'] = {'digital': 'digital_purchase_review', 'physical': 'physical_service_review',
+                           'mixed': 'combined_purchase_review'}.get(offering, 'pierre_review')
+        result['reason'] = 'routing hint only; exemption and account signals never waive a finding'
+        result['action'] = result['route']
+    elif workflow == 'rerank':
+        candidates = job['context']['candidates']
+        ranked = [{**c, 'model_score': answers['candidate_%d' % i]['score'],
+                   'model_confidence': answers['candidate_%d' % i]['confidence']}
+                  for i, c in enumerate(candidates)]
+        confident = all(c['model_confidence'] >= THRESHOLDS['confidence'] for c in ranked)
+        result['ranking'] = sorted(ranked, key=lambda c: -c['model_score']) if confident else ranked
+        result['action'] = 'ranked' if confident else 'original_order'
+        result['reason'] = 'ranking only; all candidate sections retained'
+    elif workflow == 'drift':
+        change = categorical(answers, result, 'change')
+        result['affected_rules'] = [r for i, r in enumerate(job['context']['rule_catalog'])
+                                    if answers['affected_%d' % i]['noul'] >= .10]
+        result['change_type'] = change or 'unclear'
+        result['reason'] = 'human reconciliation required; deterministic drift warning retained'
+    elif workflow == 'functionality':
+        result['functional_completeness_score'] = answers['completeness']['score']
+        result['category'] = categorical(answers, result, 'category') or 'unknown'
+        result['reason'] = 'functional evidence for Pierre; not a compliance or rejection score'
+    else:
+        return False
+    return True
+
+
 def compose(job, body):
     """Thresholds are experimental; conclusions never resolve scanner findings."""
+    if is_v4(job):
+        return compose_host_review(job, body, text_only=True)
     result = fallback(job, 'uncertain judgment')
     answers = body['answers']
-    result['judgments'] = answers
-    result['model'] = body['model']
-    result['usage'] = body['usage']
+    result.update(judgments=answers, model=body['model'], usage=body['usage'])
     if not job['coverage']['complete'] or job['coverage']['missing']:
         result['reason'] = 'incomplete evidence coverage'
         return result
@@ -113,83 +205,9 @@ def compose(job, body):
         selected = evidence_answer['choice']
         if evidence_answer['probabilities'][selected] >= THRESHOLDS['positive']:
             result['evidence'] = [e for e in job['evidence'] if e['id'] == selected]
-
-    def categorical(key):
-        a = answers[key]
-        p = a['probabilities'][a['choice']]
-        result['model_probability'] = p
-        result['model_confidence'] = a['confidence']
-        return a['choice'] if p >= THRESHOLDS['positive'] and a['confidence'] >= THRESHOLDS['confidence'] else None
-
-    def binary(keys, positive=True):
-        values = [answers[k]['noul'] for k in keys]
-        if positive:
-            return 'finding' if any(v >= THRESHOLDS['positive'] for v in values) else (
-                'pass' if all(v <= THRESHOLDS['negative'] for v in values) else None)
-        return 'finding' if any(v <= THRESHOLDS['negative'] for v in values) else (
-            'pass' if all(v >= THRESHOLDS['support'] for v in values) else None)
-
-    workflow = job['workflow']
-    outcome = None
-    if workflow == 'review':
-        outcome = categorical('outcome')
-    elif workflow == 'copy':
-        outcome = binary([k for k in answers if k != 'evidence'])
-    elif workflow == 'purpose':
-        a = answers['specificity']
-        poor = sum(a['probabilities'][str(i)] for i in (0, 1))
-        match = answers['feature_match']['noul']
-        outcome = 'finding' if poor >= 0.90 or match <= 0.10 else (
-            'pass' if poor <= 0.10 and match >= 0.95 else None)
-    elif workflow == 'disclosure':
-        keys = ['renewal', 'cancellation']
-        if job['context']['product_terms']['trial']:
-            keys.append('trial_charge')
-        outcome = binary(keys, positive=False)
-        if job['context'].get('locale_pair'):
-            relation = categorical('locale_relation')
-            if relation in ('omission', 'contradiction'):
-                outcome = 'finding'
-            elif relation != 'equivalent' and outcome != 'finding':
-                outcome = None
-    elif workflow == 'consistency':
-        outcome = {'supported': 'pass', 'contradicted': 'finding'}.get(categorical('relation'))
-    elif workflow == 'routing':
-        offering = categorical('offering')
-        result['route'] = {'digital': 'digital_purchase_review', 'physical': 'physical_service_review',
-                           'mixed': 'combined_purchase_review'}.get(offering, 'pierre_review')
-        result['reason'] = 'routing hint only; exemption and account signals never waive a finding'
-        result['action'] = result['route']
+    if descriptive_result(job, answers, result):
         return result
-    elif workflow == 'rerank':
-        candidates = job['context']['candidates']
-        ranked = [{**c, 'model_score': answers['candidate_%d' % i]['score'],
-                   'model_confidence': answers['candidate_%d' % i]['confidence']}
-                  for i, c in enumerate(candidates)]
-        # Keep the original candidate set and ordering if any rank is uncertain.
-        confident = all(c['model_confidence'] >= THRESHOLDS['confidence'] for c in ranked)
-        result['ranking'] = sorted(ranked, key=lambda c: -c['model_score']) if confident else ranked
-        result['action'] = 'ranked' if confident else 'original_order'
-        result['reason'] = 'ranking only; all candidate sections retained'
-        return result
-    elif workflow == 'verify':
-        source = next(e for e in job['evidence'] if e['id'] == job['context']['source_id'])
-        result['evidence'] = [source]
-        supported, over = answers['supported']['noul'], answers['overstatement']['noul']
-        outcome = 'finding' if supported <= 0.10 or over >= 0.90 else (
-            'pass' if supported >= 0.95 and over <= 0.10 else None)
-    elif workflow == 'drift':
-        change = categorical('change')
-        result['affected_rules'] = [r for i, r in enumerate(job['context']['rule_catalog'])
-                                    if answers['affected_%d' % i]['noul'] >= 0.10]
-        result['change_type'] = change or 'unclear'
-        result['reason'] = 'human reconciliation required; deterministic drift warning retained'
-        return result
-    elif workflow == 'functionality':
-        result['functional_completeness_score'] = answers['completeness']['score']
-        result['category'] = categorical('category') or 'unknown'
-        result['reason'] = 'functional evidence for Pierre; not a compliance or rejection score'
-        return result
+    outcome = simple_outcome(job, answers, result)
     if outcome and outcome != 'insufficient_evidence':
         if outcome == 'finding' and not result['evidence']:
             result['reason'] = 'concern has no confidently selected evidence span'
@@ -213,63 +231,74 @@ def atomic_json(path, value):
             os.unlink(name)
 
 
+def preflight_result(job, key):
+    gaps = evidence_gaps(job)
+    result = None
+    if gaps or not job['coverage']['complete'] or job['coverage']['missing']:
+        result = fallback(job, '; '.join(gaps) if gaps else 'incomplete evidence coverage; complete the bundle or continue with Pierre')
+    context = job['context']
+    if result is None and job['workflow'] == 'verify' and context.get('quote'):
+        source = next(e for e in job['evidence'] if e['id'] == context['source_id'])
+        if ' '.join(context['quote'].split()) not in ' '.join(source['text'].split()):
+            result = fallback(job, 'quoted text is absent from the cited source; use original finding template')
+            result.update(outcome='finding', action='advisory_finding', evidence=[source])
+    if result is not None:
+        result.update(cached=False, request_sha256=key, latency_ms=0, estimated_cost_usd=0,
+                      billed_input_tokens=0, request_attempted=False, transport_attempts=0,
+                      retry_count=0, retry_billing_unknown=False)
+    return result
+
+
+def load_response(path, key, request):
+    if path and path.is_file():
+        try:
+            record = json.loads(path.read_text(encoding='utf-8'))
+            if record['request_sha256'] != key or record['request'] != request:
+                raise ServiceError('cache request mismatch')
+            return validate_response(record['response'], request)
+        except (OSError, ValueError, KeyError, ServiceError):
+            pass  # Bad cache is never trusted as a result.
+    return None
+
+
+def get_response(request, path, key, live, call, transport, state):
+    body = load_response(path, key, request)
+    state['cached'] = body is not None
+    if body is not None:
+        return body
+    if not live:
+        raise ServiceError('no valid cached result; live inference not enabled')
+    if call is evaluate and not os.environ.get('TYPESAFE_API_KEY'):
+        raise ServiceError('TYPESAFE_API_KEY is not set')
+    state['attempted'] = True
+    body = validate_response(call(request, telemetry=transport) if call is evaluate else call(request), request)
+    if path:
+        try:
+            atomic_json(path, {'request_sha256': key, 'request': request, 'response': body})
+        except OSError:
+            pass  # A cache failure never discards a valid answer.
+    return body
+
+
 def run_job(job, model=MODEL, live=False, cache_dir=None, call=evaluate):
     request = request_for(job, model)
     key = digest({'request': request, 'questions_version': VERSION, 'thresholds': THRESHOLDS})
     path = Path(cache_dir) / (key + '.json') if cache_dir else None
     started = time.monotonic()
-    transport = {'attempts': 0}
-    context = job['context']
-    if not job['coverage']['complete'] or job['coverage']['missing']:
-        result = fallback(job, 'incomplete evidence coverage; complete the bundle or continue with Pierre')
-        result.update(cached=False, request_sha256=key, latency_ms=0,
-                      estimated_cost_usd=0, billed_input_tokens=0, request_attempted=False,
-                      transport_attempts=0, retry_count=0, retry_billing_unknown=False)
-        return result
-    if job['workflow'] == 'verify' and context.get('quote'):
-        source = next(e for e in job['evidence'] if e['id'] == context['source_id'])
-        if ' '.join(context['quote'].split()) not in ' '.join(source['text'].split()):
-            result = fallback(job, 'quoted text is absent from the cited source; use original finding template')
-            result.update(outcome='finding', action='advisory_finding', evidence=[source], cached=False,
-                          request_sha256=key, latency_ms=0, estimated_cost_usd=0, billed_input_tokens=0,
-                          request_attempted=False, transport_attempts=0,
-                          retry_count=0, retry_billing_unknown=False)
-            return result
+    early = preflight_result(job, key)
+    if early is not None:
+        return early
+    transport, state = {'attempts': 0}, {'attempted': False, 'cached': False}
     try:
-        cached = False
-        attempted = False
-        body = None
-        if path and path.is_file():
-            try:
-                record = json.loads(path.read_text(encoding='utf-8'))
-                if record['request_sha256'] != key or record['request'] != request:
-                    raise ServiceError('cache request mismatch')
-                body = validate_response(record['response'], request)
-                cached = True
-            except (OSError, ValueError, KeyError, ServiceError):
-                body = None  # Bad cache is never trusted as a result.
-        if body is None:
-            if not live:
-                raise ServiceError('no valid cached result; live inference not enabled')
-            if call is evaluate and not os.environ.get('TYPESAFE_API_KEY'):
-                raise ServiceError('TYPESAFE_API_KEY is not set')
-            attempted = True
-            body = validate_response(call(request, telemetry=transport) if call is evaluate else call(request), request)
-            if path:
-                try:
-                    atomic_json(path, {'request_sha256': key, 'request': request, 'response': body})
-                except OSError:
-                    path = None  # Preserve a valid answer even if optional cache persistence fails.
+        body = get_response(request, path, key, live, call, transport, state)
         result = compose(job, body)
-        result['response'] = body
-        result['cached'] = cached
-        result['request_attempted'] = attempted
-        result['billed_input_tokens'] = 0 if cached else body['usage']['input_tokens']
+        result.update(response=body, cached=state['cached'], request_attempted=state['attempted'])
+        result['billed_input_tokens'] = 0 if state['cached'] else body['usage']['input_tokens']
         result['estimated_cost_usd'] = result['billed_input_tokens'] * PRICE_PER_MILLION / 1_000_000
     except ServiceError as exc:
         result = fallback(job, str(exc))
-        result.update(cached=False, estimated_cost_usd=None if attempted else 0,
-                      billed_input_tokens=None if attempted else 0, request_attempted=attempted)
+        result.update(cached=False, estimated_cost_usd=None if state['attempted'] else 0,
+                      billed_input_tokens=None if state['attempted'] else 0, request_attempted=state['attempted'])
     result['transport_attempts'] = transport['attempts'] if call is evaluate else (1 if result.get('request_attempted') else 0)
     result['retry_count'] = max(0, result['transport_attempts'] - 1)
     result['retry_billing_unknown'] = result['retry_count'] > 0
@@ -283,6 +312,9 @@ def render_text(result):
     pointer = ', '.join('%s:%s' % (e['path'], e['line']) for e in result['evidence'])
     message = ' '.join(('%s — %s %s' % (result['id'], result['reason'], pointer)).split())
     guideline = ' '.join(str(result.get('guideline') or 'semantic/' + result['workflow']).split())
+    if result.get('advisory_only') and result['outcome'] in ('insufficient_evidence', 'no_signal'):
+        label = 'REVIEW-SKIP' if result['outcome'] == 'insufficient_evidence' else 'REVIEW-NO-SIGNAL'
+        return label + ': ' + guideline + ' — ' + message
     if result['outcome'] in ('pass', 'not_applicable'):
         return 'REVIEW-PASS: ' + guideline + ' — ' + message + (' — not applicable' if result['outcome'] == 'not_applicable' else '')
     return 'REVIEW-FINDING: ' + guideline + ' WARN — ' + message

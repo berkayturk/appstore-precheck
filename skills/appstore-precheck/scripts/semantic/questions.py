@@ -1,5 +1,7 @@
 """Versioned, bounded semantic judgments. These never control the upload gate."""
-VERSION = 1
+from .review_v4 import is_v4, outcome_question
+
+VERSION = 2
 MODEL = 'jev-1.13.0'
 PRICE_PER_MILLION = 0.042  # USD/input Mtok, documentation checked 2026-09-18
 
@@ -132,6 +134,8 @@ WORKFLOWS = {
 def questions_for(job):
     questions = dict(WORKFLOWS[job['workflow']]['questions'])
     context = job['context']
+    if is_v4(job):
+        questions['outcome'] = outcome_question(context['check_definition'], BOUNDARY)
     if job['workflow'] == 'rerank':
         for i, _ in enumerate(context['candidates']):
             questions['candidate_%d' % i] = score(
