@@ -3,6 +3,7 @@
 import copy
 import importlib.util
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -42,6 +43,47 @@ class GuidelineChecks(unittest.TestCase):
         self.assertEqual(m.aggregate(repeats, 'dyn-cpu-idle')[0], 'SKIP')
         self.assertEqual(m.aggregate([repeat] * 3, 'dyn-cpu-idle')[0], 'SKIP')
 
+    def test_cpu_installed_container_shims(self):
+        spec = importlib.util.spec_from_file_location('capture', LIB / 'dyn-guideline-capture.py')
+        c = importlib.util.module_from_spec(spec); spec.loader.exec_module(c)
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp); tools = base / 'bin'; tools.mkdir()
+            container = Path.home() / 'Library/Developer/CoreSimulator/Devices/OWNED/data/Containers/Bundle/Application/UUID/App.app'
+            for name, body in {
+                'xcrun': 'import os,sys; assert sys.argv[1:] == ["simctl","get_app_container","OWNED","com.example.app","app"]; print(os.environ["CPU_CONTAINER"])',
+                'ps': 'import os,sys; print(os.environ["CPU_COMM"] if sys.argv[-1] == "comm=" else os.environ["CPU_VALUE"])',
+            }.items():
+                path = tools / name; path.write_text('#!/usr/bin/env python3\n' + body + '\n'); path.chmod(0o755)
+            env = dict(PATH=str(tools) + os.pathsep + os.environ['PATH'],
+                       CPU_CONTAINER=str(container), CPU_COMM=str(container / 'Demo'), CPU_VALUE='2')
+            with mock.patch.dict(os.environ, env), mock.patch.object(c.time, 'sleep'):
+                for value, kind in [('2', 'PASS'), ('60', 'FINDING')]:
+                    os.environ['CPU_VALUE'] = value
+                    obs = c.cpu_observation('123', 'OWNED', 'com.example.app', 'Demo')
+                    self.assertEqual(m.evaluate('dyn-cpu-idle', obs)[0], kind)
+                    records = [dict(repeat=n, fresh=True, observations={'dyn-cpu-idle': obs}) for n in (1, 2, 3)]
+                    self.assertEqual(m.aggregate(records, 'dyn-cpu-idle')[0], kind)
+                for path in (str(base / 'source/App.app/Demo'), str(container / 'Other'),
+                             str(container).replace('/OWNED/', '/OTHER/') + '/Demo'):
+                    os.environ['CPU_COMM'] = path
+                    self.assertEqual(m.evaluate('dyn-cpu-idle', c.cpu_observation('123', 'OWNED', 'com.example.app', 'Demo'))[0], 'SKIP')
+                os.environ['CPU_CONTAINER'] = str(base / 'source/App.app')
+                os.environ['CPU_COMM'] = str(base / 'source/App.app/Demo')
+                self.assertFalse(c.cpu_observation('123', 'OWNED', 'com.example.app', 'Demo')['usable'])
+                os.environ['CPU_CONTAINER'] = ''
+                self.assertIn('container path unavailable', c.cpu_observation('123', 'OWNED', 'com.example.app', 'Demo')['reason'])
+
+    def test_hierarchy_retries_unread_only_once(self):
+        spec = importlib.util.spec_from_file_location('capture', LIB / 'dyn-guideline-capture.py')
+        c = importlib.util.module_from_spec(spec); spec.loader.exec_module(c)
+        tree = {'attributes': {'text': 'Home'}}
+        for values, expected, count in [(['', json.dumps(tree)], tree, 2),
+                                        (['invalid', 'invalid'], {}, 2),
+                                        ([json.dumps(tree)], tree, 1), (['{}'], {}, 1)]:
+            with mock.patch.object(c, 'command', side_effect=values) as call:
+                self.assertEqual(c.hierarchy('OWNED'), expected)
+                self.assertEqual(call.call_count, count)
+
     def test_capture_producers(self):
         capture_spec = importlib.util.spec_from_file_location('capture', LIB / 'dyn-guideline-capture.py')
         c = importlib.util.module_from_spec(capture_spec)
@@ -68,14 +110,14 @@ class GuidelineChecks(unittest.TestCase):
         c = importlib.util.module_from_spec(capture_spec)
         capture_spec.loader.exec_module(c)
         with tempfile.TemporaryDirectory() as temp:
-            app = Path(temp).resolve() / 'App.app'
-            values = iter([str(app / 'Demo'), str(app / 'Demo'), '55', str(app / 'Demo'), '65', str(app / 'Demo'), '60'])
+            app = Path.home() / 'Library/Developer/CoreSimulator/Devices/OWNED/data/App.app'
+            values = iter([str(app), str(app / 'Demo'), str(app / 'Demo'), '55', str(app / 'Demo'), '65', str(app / 'Demo'), '60'])
             with mock.patch.object(c, 'command', side_effect=lambda _argv: next(values)), mock.patch.object(c.time, 'sleep') as sleep:
-                cpu = c.cpu_observation('123', str(app), 'Demo')
+                cpu = c.cpu_observation('123', 'OWNED', 'com.example.app', 'Demo')
                 self.assertEqual(m.evaluate('dyn-cpu-idle', cpu)[0], 'FINDING')
                 sleep.assert_any_call(20)
             with mock.patch.object(c, 'command', return_value='wrong process'), mock.patch.object(c.time, 'sleep') as sleep:
-                self.assertFalse(c.cpu_observation('123', str(app), 'Demo')['usable'])
+                self.assertFalse(c.cpu_observation('123', 'OWNED', 'com.example.app', 'Demo')['usable'])
                 sleep.assert_not_called()
             self.assertEqual(m.evaluate('dyn-miniapp-index', {'applicable': True, 'usable': False, 'directory_unavailable': True})[0], 'SKIP')
             transcript = Path(temp) / 'records.txt'

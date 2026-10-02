@@ -15,17 +15,29 @@ set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 S="$ROOT/skills/appstore-precheck/scripts"
-REPO="$ROOT" APP="" YES=0 EXTRA=()
+REPO="$ROOT" APP="" YES=0 DRY_RUN=0 EXTRA=()
+usage_err() {
+  echo "run-dynamic.sh: $1" >&2
+  echo 'Usage: run-dynamic.sh [--repo DIR] [--app PATH.app] [--yes] [--dry-run] [--explore] [--authorized-navigation FILE] [--demo-login] [--window N] [--repeats N] [--ipad] [--pktap]' >&2
+  exit 64
+}
+need() { [[ $# -ge 2 && "$2" != --* ]] || usage_err "$1 needs a value"; }
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --repo) REPO="$2"; shift 2 ;;
-    --app)  APP="$2"; shift 2 ;;
+    --repo) need "$@"; REPO="$2"; shift 2 ;;
+    --app)  need "$@"; APP="$2"; shift 2 ;;
     --yes)  YES=1; shift ;;
-    --repeats|--window) EXTRA+=("$1" "$2"); shift 2 ;;
-    --ipad|--pktap) EXTRA+=("$1"); shift ;;
-    *) echo "run-dynamic.sh: unknown option '$1'" >&2; exit 64 ;;
+    --repeats|--window|--authorized-navigation) need "$@"; EXTRA+=("$1" "$2"); shift 2 ;;
+    --explore|--demo-login|--ipad|--pktap) EXTRA+=("$1"); shift ;;
+    --dry-run) DRY_RUN=1; EXTRA+=("$1"); shift ;;
+    *) usage_err "unknown option '$1'" ;;
   esac
 done
+if (( DRY_RUN )); then
+  [[ -n "$APP" ]] || usage_err '--dry-run requires --app (no discovery or launch)'
+  printf 'PLAN: dynamic-run.sh'; printf ' %q' --app "$APP" --repo "$REPO" "${EXTRA[@]+"${EXTRA[@]}"}"; printf '\n'
+  exec bash "$S/dynamic-run.sh" --app "$APP" --repo "$REPO" "${EXTRA[@]+"${EXTRA[@]}"}"
+fi
 [[ "$(uname -s)" == Darwin ]] || { echo "run-dynamic.sh: macOS only (needs xcrun simctl)"; exit 69; }
 command -v xcrun >/dev/null 2>&1 || { echo "run-dynamic.sh: xcrun not found"; exit 69; }
 

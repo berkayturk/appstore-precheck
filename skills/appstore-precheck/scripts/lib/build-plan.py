@@ -6,7 +6,8 @@ import shutil
 import subprocess
 
 EXCLUDED = {'.git', 'node_modules', 'Pods', 'build', 'DerivedData', '.build', '.dart_tool',
-            '__pycache__', '.gradle', '.kotlin', '.idea'}
+            '__pycache__', '.gradle', '.kotlin', '.idea', '.claude', '.cursor', '.agents',
+            '.grok', '.codex', '.planning'}
 SECRETS = ('.env*', '.npmrc', '.netrc', '*.pem', '*.key', '*.jks', '*.keystore',
            'key.properties', '.sentryclirc', '*Secrets*.xcconfig', '*asc-key*.json',
            '*.p8', '*.p12', '*.mobileprovision', '.appstore-precheck.json',

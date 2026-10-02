@@ -18,6 +18,7 @@ def module(name):
 
 
 PLAN, EXEC, EVIDENCE = module('build-plan'), module('build-exec'), module('build-evidence')
+SCHEMES = module('build-schemes')
 
 
 def arguments():
@@ -30,23 +31,6 @@ def arguments():
     parser.add_argument('--deadline', type=int, default=2400)
     parser.add_argument('--dry-run', action='store_true')
     return parser.parse_args()
-
-
-def scheme_list(output):
-    schemes = set()
-    decoder = json.JSONDecoder()
-    for index, char in enumerate(output):
-        if char != '{':
-            continue
-        try:
-            data, _ = decoder.raw_decode(output[index:])
-        except ValueError:
-            continue
-        if isinstance(data, dict):
-            for value in data.values():
-                if isinstance(value, dict) and isinstance(value.get('schemes'), list):
-                    schemes.update(s for s in value['schemes'] if isinstance(s, str))
-    return sorted(schemes)
 
 
 def prepare_framework(args, copy, step):
@@ -87,15 +71,13 @@ def run_steps(args, copy, work, out, project):
         return 'debug', list((copy / 'build/ios/iphonesimulator').glob('*.app'))
     code, output = step(['xcodebuild', '-list', '-json'] + flags)
     if code:
-        raise ValueError('scheme discovery failed; inspect build.log')
-    schemes = scheme_list(output)
-    if len(schemes) != 1:
-        raise ValueError('select one shared scheme; candidates: ' + ', '.join(schemes))
+        raise ValueError('scheme discovery failed; candidates: ' + ', '.join(SCHEMES.scheme_list(output)) + '; inspect build.log')
+    scheme = SCHEMES.select(output, project, copy, PLAN.excluded)
     for config in ('Release', 'Debug'):
         if config == 'Debug' and args.framework == 'kmp' and (copy / 'gradlew').is_file():
             if step(['./gradlew', '--project-cache-dir', str(work / 'gradle-cache'), ':shared:linkDebugFrameworkIosSimulatorArm64'])[0]:
                 raise ValueError('KMP framework preparation failed; inspect build.log')
-        command = ['xcodebuild'] + flags + ['-scheme', schemes[0], '-sdk', 'iphonesimulator', '-configuration', config,
+        command = ['xcodebuild'] + flags + ['-scheme', scheme, '-sdk', 'iphonesimulator', '-configuration', config,
                   '-derivedDataPath', str(work / 'dd'), 'CODE_SIGNING_ALLOWED=NO', 'build']
         if step(command)[0] == 0:
             return config.lower(), list((work / 'dd/Build/Products' / (config + '-iphonesimulator')).glob('*.app'))

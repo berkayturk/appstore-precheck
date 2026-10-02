@@ -136,11 +136,15 @@ def safe_action(value):
 
 
 def hierarchy(udid):
-    raw = command(['maestro', '--device', udid, 'hierarchy'], 15)
-    try:
-        return json.loads(raw)
-    except (ValueError, TypeError):
-        return {}
+    for _ in range(2):
+        raw = command(['maestro', '--device', udid, 'hierarchy'], 15)
+        try:
+            tree = json.loads(raw)
+            if isinstance(tree, (dict, list)):
+                return tree
+        except (ValueError, TypeError):
+            pass
+    return {}
 
 
 def tap(udid, bundle, text):
@@ -208,13 +212,19 @@ def applicability(app, repo):
             'miniapp': source_signal(repo)}
 
 
-def cpu_observation(pid, app, executable):
+def cpu_observation(pid, udid, bundle_id, executable):
     obs = {'applicable': True, 'usable': False}
     if not str(pid).isdigit() or not executable or '/' in executable:
         return obs
-    expected = str(Path(app).resolve() / executable)
+    container = command(['xcrun', 'simctl', 'get_app_container', udid, bundle_id, 'app']).strip()
+    if not container or not Path(container).is_absolute():
+        obs['reason'] = 'container path unavailable; CPU was not sampled'
+        return obs
+    expected = str(Path(container).resolve() / executable)
+    device_data = (Path.home() / 'Library/Developer/CoreSimulator/Devices' / udid / 'data').resolve()
     actual = command(['ps', '-p', str(pid), '-o', 'comm=']).strip()
-    if actual != expected:
+    if (actual != expected or Path(actual).name != executable
+            or device_data not in Path(actual).resolve().parents):
         obs['reason'] = 'Process identity did not match the installed executable; CPU was not sampled'
         return obs
     time.sleep(20)
@@ -262,7 +272,7 @@ def action_observation(args, mode, initial):
 def observe(args):
     signals = applicability(args.app, args.repo)
     initial = screen_facts(load_tree(args.initial_tree))
-    result = {'dyn-cpu-idle': cpu_observation(args.pid, args.app, args.executable)}
+    result = {'dyn-cpu-idle': cpu_observation(args.pid, args.udid, args.bundle_id, args.executable)}
     modes = {'capture': 'dyn-capture-indicator', 'music': 'dyn-musickit-auth',
              'miniapp': 'dyn-miniapp-index', 'location': 'dyn-location-timing'}
     for mode, rule in modes.items():

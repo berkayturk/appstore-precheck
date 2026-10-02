@@ -19,6 +19,7 @@
 
 : "${DYN_DRY_RUN:=0}"
 : "${DYN_MAESTRO_TIMEOUT:=45}"
+: "${DYN_MAESTRO_WARMUP_TIMEOUT:=120}"
 DYN_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # dyn_with_timeout <secs> <argv…> — run with a wall-clock cap (macOS has no
@@ -96,6 +97,34 @@ dyn_signal_tree() {
   command -v maestro >/dev/null 2>&1 || { echo unread; return 0; }
   n="$(python3 -B "$DYN_LIB_DIR/dyn-scrub.py" --udid "$udid" --out "$out" --timeout "$DYN_MAESTRO_TIMEOUT")" || { echo unread; return 0; }
   [[ "$n" =~ ^[0-9]+$ ]] && echo "$n" || echo unread
+}
+
+# Warm-up is a discarded driver read, never observation evidence. Zero disables it.
+dyn_maestro_warmup() {
+  local udid="$1" status=0
+  [[ "$DYN_MAESTRO_WARMUP_TIMEOUT" != 0 ]] || return 0
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then
+    dyn_plan "maestro --device $udid hierarchy   # warm-up; timeout ${DYN_MAESTRO_WARMUP_TIMEOUT}s; result discarded"
+    note 'NOTE: [dyn-maestro-warmup] planned discarded hierarchy read'
+    return 0
+  fi
+  if ! command -v maestro >/dev/null 2>&1; then
+    note 'NOTE: [dyn-maestro-warmup] unavailable: Maestro missing; no observation recorded'
+    return 0
+  fi
+  python3 -B "$DYN_LIB_DIR/dyn-process.py" --timeout "$DYN_MAESTRO_WARMUP_TIMEOUT" --grace 1 -- \
+    maestro --device "$udid" hierarchy >/dev/null 2>&1 || status=$?
+  note "NOTE: [dyn-maestro-warmup] discarded hierarchy read; exit $status; no observation recorded"
+}
+
+# Retry unread geometry once; a readable degenerate tree is still a real SKIP.
+dyn_signal_tree_retry() {
+  local tree
+  tree="$(dyn_signal_tree "$1" "$2")"
+  if [[ "$tree" == unread && "$DYN_DRY_RUN" != 1 ]]; then
+    tree="$(dyn_signal_tree "$1" "$2")"
+  fi
+  printf '%s\n' "$tree"
 }
 
 # dyn_repeat <udid> <bundle-id> <executable> <window-secs> <out-dir> <i>
