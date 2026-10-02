@@ -143,6 +143,20 @@ class CoverageSections(unittest.TestCase):
         self.assertEqual(json.loads(result.stdout)['errors'], [])
         self.assertEqual(subprocess.run(command + ['--bogus'], capture_output=True).returncode, 2)
 
+    def test_f9_table_rows_are_executable_coverage_sources(self):
+        with tempfile.TemporaryDirectory() as directory:
+            skill = copy_repository_inputs(directory)
+            module = skill / 'scripts/lib/scan-guidelines.sh'
+            text = module.read_text()
+            row = 'device-restart-instructions|2.4.4|source'
+            self.assertIn(row, text)
+            self.assertEqual(MODULE.build_report(skill, self.base)['errors'], [])
+            module.write_text(text.replace(row + '\n', ''))
+            result = subprocess.run(['bash', str(skill / 'scripts/coverage-sections.sh'), '--json'],
+                                    capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('covered_by_scan has no check source: 2.4.4', json.loads(result.stdout)['errors'])
+
 
 if __name__ == '__main__':
     unittest.main()
