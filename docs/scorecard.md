@@ -17,14 +17,14 @@ Three independent measurements, three methodologies:
   Measures **correlation with actual review outcomes** (honestly, only once enough data exists).
 
 This scorecard covers the **static scanner** only. Pierre's LLM deep-review layer
-(28 semantic checks) is measured separately in `docs/llm-scorecard.md`, generated
+(56 semantic checks) is measured separately in `docs/llm-scorecard.md`, generated
 by `eval/score.py` from the labelled dataset in `eval/`.
 
 ## Synthetic aggregate
 
 | metric | value |
 |---|---|
-| true positives  | 34 |
+| true positives  | 50 |
 | false positives | 0 |
 | false negatives | 0 |
 | **precision**   | 1.00 |

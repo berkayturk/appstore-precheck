@@ -58,6 +58,8 @@ run_synthetic() {
 }
 
 render_card() {
+  local deep_count
+  deep_count="$(jq -r '.checks | length' "$ROOT/skills/appstore-precheck/references/review-catalog.json")"
   run_synthetic
   local m; m="$(_metrics "$SYN_TP" "$SYN_FP" "$SYN_FN")"
   local prec="${m#precision=}"; prec="${prec%% *}"
@@ -81,7 +83,7 @@ Three independent measurements, three methodologies:
   Measures **correlation with actual review outcomes** (honestly, only once enough data exists).
 
 This scorecard covers the **static scanner** only. Pierre's LLM deep-review layer
-(28 semantic checks) is measured separately in \`docs/llm-scorecard.md\`, generated
+($deep_count semantic checks) is measured separately in \`docs/llm-scorecard.md\`, generated
 by \`eval/score.py\` from the labelled dataset in \`eval/\`.
 
 ## Synthetic aggregate
