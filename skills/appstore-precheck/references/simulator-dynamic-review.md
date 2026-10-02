@@ -171,7 +171,13 @@ hand with `xcrun simctl` when it drives the selector-based checks.
    is optional and off by default.)
 7. Between repeats: `xcrun simctl shutdown <udid>`, `xcrun simctl erase <udid>`, boot, step 2,
    install again — a fresh erase every time, only on the device this run created.
-8. Teardown, always, at the end of the run: `xcrun simctl shutdown <udid>` then
+8. Warm the Maestro driver once after D0 and after each erase + boot + install, including
+   iPad setup and demo repeats: a discarded `maestro --device <udid> hierarchy` read,
+   bounded by `DYN_MAESTRO_WARMUP_TIMEOUT` (default 120 seconds; `0` disables it).
+   The transcript records `# NOTE: [dyn-maestro-warmup]`; this is never PASS/FINDING
+   evidence. Dry-run lists the warm-up without invoking Maestro. When driving MCP
+   checks by hand, do this after installation before the first `inspect_screen`.
+9. Teardown, always, at the end of the run: `xcrun simctl shutdown <udid>` then
    `xcrun simctl delete <udid>` — only for the device this tier created.
 
 ### D1 — Launch without crash (`dyn-launch`)
@@ -200,7 +206,9 @@ observations are SKIP with their counts. Signals that could not be read are name
 
 ### D2 — Core screen reachable (`dyn-first-screen`)
 Derived from the same repeats: a non-uniform screenshot with the process alive at the end of the
-window is a real first screen; a flat frame or a dead process is not. Same quorum. The
+window is a real first screen; a flat frame or a dead process is not. Same quorum.
+If no launch stayed up, D2 is SKIP with `not reached: app did not stay up on any launch`.
+The
 degenerate-tree caveat applies: judge Flutter/Compose screens by the screenshot, not the tree.
 
 ### D3 — Paywall renders (`dyn-paywall-visible`)
@@ -265,7 +273,8 @@ resolve it (see the reconciliation table in `dynamic.sh`).
 
 After the last healthy repeat, `dynamic-run.sh` switches `xcrun simctl ui <udid> appearance dark`
 (D7), then `content_size accessibility-extra-extra-extra-large` (D8), takes a screenshot and one
-hierarchy read each, and applies three heuristics
+hierarchy read each (one retry only when the read is `unread`, never for a readable
+but degenerate tree), and applies three heuristics
 ([`lib/dyn-geometry.sh`](../scripts/lib/dyn-geometry.sh)) over the labelled nodes:
 
 - **clipped** — a labelled frame that leaves the screen rectangle;
@@ -349,7 +358,11 @@ bash skills/appstore-precheck/scripts/dynamic-run.sh --app <path>.app --repo /pa
 ```
 
 `tests/local/run-dynamic.sh` chains discovery → confirmation → runner → `dynamic.sh` on macOS; it is
-not part of `tests/all.sh`.
+not part of `tests/all.sh`. It forwards `--explore`, `--authorized-navigation FILE`,
+`--demo-login`, `--window`, `--repeats`, `--ipad` and `--pktap` unchanged.
+With explicit `--app` and `--dry-run`, it prints the runner arguments and plan without
+requiring macOS/Xcode or performing discovery, scanning or reconciliation; its argument
+and shim regression tests run in the offline suite.
 
 ## Feeding the transcript to dynamic.sh
 
@@ -391,13 +404,19 @@ partial, a keyless D10 line aims at nothing); `att-usage ↔ dyn-shipped-bundle:
 `lib/dyn-guidelines.sh` invokes `dyn-guideline-capture.py` once per healthy launch,
 before demo login, only on a device created and freshly erased by this runner. The
 collector has a 240-second deadline; individual commands have 10–20-second deadlines.
+Unread hierarchy commands retry once; driver failures remain SKIP if the retry fails.
 `dyn-guidelines.py` requires at least three distinct fresh observations with identical
 non-SKIP results. Missing repeats, mixed results, driver errors and degenerate UI
 semantics remain SKIP. Existing `--udid` and `--dry-run` sessions cannot establish this
 freshness. `run.json` links the private `guideline_observations` artifact directory.
 
-The CPU check verifies the PID's executable path against the installed bundle before
-sleeping or sampling. Host `ps` may report averaged process CPU; this is a performance
+The CPU check resolves `xcrun simctl get_app_container <udid> <bundle-id> app` on
+**every fresh repeat**, then compares `ps -p <pid> -o comm=` with that container's
+executable. The basename must equal `CFBundleExecutable`, and the resolved path must
+stay inside `~/Library/Developer/CoreSimulator/Devices/<udid>/data/`. It never compares
+the running process with the original source `.app` path. An unavailable container
+produces SKIP with `container path unavailable`; identity is checked again before each
+sample. Only a verified process is allowed to reach the idle wait or sampling. Host `ps` may report averaged process CPU; this is a performance
 review hint, not a battery-use measurement. Missing tools, PID mismatch or incomplete
 samples remain SKIP. It does not need an accessibility tree.
 

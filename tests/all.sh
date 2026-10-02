@@ -58,6 +58,8 @@ SUITE=(
   "test-app-discover.sh" # app-discover.sh: DerivedData/.app candidates, config from dir name, newest recommended, never builds
   "test-dynamic-libs.sh" # lib/dyn-*: launch-signal verdict, N=3 quorum, png-uniform, geometry heuristics, hosts parity, installed-bundle readers
   "test-dynamic-guidelines.sh"
+  "test-dynamic-warmup.sh"
+  "test-run-dynamic-args.sh"
   "test-dynamic-run.sh" # dynamic-run.sh against a shimmed xcrun/maestro: lifecycle order, erase between repeats, delete-only-created, Metro guard, dry-run plan
   "test-rag-ingest.sh" # eval/rag/ingest.sh full-corpus extraction (RAG eval, no network)
   "test-rag-embed.sh" # eval/rag/embed.py SQL generation (RAG eval, no network)

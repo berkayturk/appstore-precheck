@@ -5,6 +5,13 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Fixed
+- Idle CPU observations resolve the installed simulator container for each fresh repeat and verify the executable and device path before sampling; unavailable containers remain SKIP.
+- Maestro gets a discarded warm-up read after setup and each reinstall (120-second default, configurable or disabled). Unread geometry and guideline hierarchy reads retry once; warm-up emits only a note.
+- The local dynamic runner forwards exploration, authorized navigation, demo login, timing, iPad and packet-capture options, with portable offline argument plans.
+- Builds prefer the project-named scheme, then the sole verified application target's scheme; ambiguous choices list candidates and retain discovery diagnostics. Agent configuration and worktree directories are excluded from discovery and build copies.
+- First-screen checks report SKIP with a not-reached reason when no launch stayed up.
+
 ## [1.20.1] — 2026-10-02
 
 ### Fixed

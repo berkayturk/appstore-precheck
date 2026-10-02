@@ -94,7 +94,7 @@ if [[ -n "$APP" ]]; then
   [[ -f "$APP/Info.plist" ]] || { echo "dynamic-run.sh: $APP has no Info.plist (not an installable bundle)" >&2; exit 66; }
 fi
 [[ -n "$REPO" && ! -d "$REPO" ]] && { echo "dynamic-run.sh: --repo is not a directory: $REPO" >&2; exit 66; }
-command -v xcrun >/dev/null 2>&1 || { echo "dynamic-run.sh: xcrun not found — this tier needs macOS with Xcode (it is permanently local-only)" >&2; exit 69; }
+[[ "$DYN_DRY_RUN" == 1 ]] || command -v xcrun >/dev/null 2>&1 || { echo "dynamic-run.sh: xcrun not found — this tier needs macOS with Xcode (it is permanently local-only)" >&2; exit 69; }
 [[ -z "$FRAMEWORK" ]] && { if [[ -n "$REPO" ]]; then FRAMEWORK="$(detect_framework "$REPO")"; else FRAMEWORK=native; fi; }
 [[ -n "$OUT" ]] || OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic.XXXXXX")"
 if [[ -n "$REPO" ]]; then
@@ -116,6 +116,10 @@ DYN_OWNED_LEDGER="$OUT/owned-simulators.txt"; : > "$DYN_OWNED_LEDGER"; export DY
 DYN_EXT_DIR="$(mktemp -d "$OUT/guideline-observations.XXXXXX")" || { echo "dynamic-run.sh: cannot create private observations directory" >&2; exit 66; }
 TRANSCRIPT="$OUT/transcript.txt"; : > "$TRANSCRIPT"
 DYN_PLAN_FILE="$OUT/plan.txt"; : > "$DYN_PLAN_FILE"; export DYN_PLAN_FILE
+if [[ "$DYN_DRY_RUN" == 1 ]]; then
+  dyn_plan "options: --repeats $REPEATS --window $WINDOW; --explore=$EXPLORE --demo-login=$DEMO --ipad=$IPAD --pktap=$PKTAP"
+  [[ -z "$AUTH_NAV" ]] || dyn_plan "--authorized-navigation $(printf '%q' "$AUTH_NAV")"
+fi
 
 # --- Transcript helpers -------------------------------------------------------------
 emit() { printf '%s\n' "$1" | tee -a "$TRANSCRIPT"; }
@@ -190,6 +194,7 @@ if [[ -n "$APP" ]]; then
 else
   emit "$(dyn_line PASS setup dyn-install "using user-supplied device $UDID for $BID (not created by this run: never erased, reset or deleted; repeats relaunch without a fresh erase, so they are less deterministic; build config unknown)")"
 fi
+dyn_maestro_warmup "$UDID"
 INSTALLED="$(dyn_device_container "$UDID" "$BID")"
 [[ -n "$INSTALLED" && -d "$INSTALLED" ]] || INSTALLED="$APP"
 
@@ -231,6 +236,7 @@ else
         L_SKIP=$((L_SKIP+1)); S_SKIP=$((S_SKIP+1)); i=$((i+1)); continue
       fi
       dyn_device_prepare "$UDID"
+      dyn_maestro_warmup "$UDID"
       [[ "$DYN_DRY_RUN" == 1 ]] || FRESH_ERASES=$((FRESH_ERASES+1))
     fi
     r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "$i")"
@@ -251,6 +257,9 @@ else
   (( FRESH_ERASES == REPEATS && REPEATS >= 3 )) && FRESH_NOTE="fresh erase verified"
   emit "$(dyn_line "$LAUNCH_KIND" 2.1 dyn-launch "$(cut -f2 <<<"$q"); last repeat: $LAST_DETAIL; window ${WINDOW}s; screenshots $OUT/launch-*.png; $FRESH_NOTE")"
   q="$(dyn_quorum "$S_PASS" "$S_FIND" "$S_SKIP")"
+  if (( L_PASS == 0 )); then
+    q="$(printf 'SKIP\tnot reached: app did not stay up on any launch')"
+  fi
   emit "$(dyn_line "$(cut -f1 <<<"$q")" 2.1 dyn-first-screen "$(cut -f2 <<<"$q") (a non-blank screenshot with the process alive after ${WINDOW}s; a splash stuck as a flat frame counts as failed)")"
 fi
 
@@ -262,7 +271,7 @@ geometry_pass() { # geometry_pass <rule-id> <guideline> <label> <tag>
   png="$OUT/$tag.png"; hier="$OUT/$tag.json"
   [[ "$DYN_DRY_RUN" == 1 ]] || sleep 2
   dyn_signal_screenshot "$UDID" "$png" >/dev/null
-  tree="$(dyn_signal_tree "$UDID" "$hier")"
+  tree="$(dyn_signal_tree_retry "$UDID" "$hier")"
   if [[ "$DYN_DRY_RUN" == 1 ]]; then emit "$(dyn_line SKIP "$g" "$id" "dry run: $label not observed")"; return 0; fi
   [[ "$tree" == unread ]] && { emit "$(dyn_line SKIP "$g" "$id" "$label: accessibility tree could not be read (Maestro missing or timed out); screenshot $png for a human eye")"; return 0; }
   emit "$(dyn_geometry_line "$(dyn_geometry_report "$hier" 0 0)" "$g" "$id" "$label" "$png")"
@@ -293,6 +302,7 @@ if (( IPAD )); then
     else
       dyn_device_boot "$CREATED_IPAD"; dyn_device_prepare "$CREATED_IPAD"
       if dyn_device_install "$CREATED_IPAD" "${APP:-}" >/dev/null 2>&1; then
+        dyn_maestro_warmup "$CREATED_IPAD"
         saved="$UDID"; UDID="$CREATED_IPAD"
         r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" ipad)"
         if [[ "$DYN_DRY_RUN" == 1 ]]; then emit "$(dyn_line SKIP 2.4.1 dyn-ipad-layout "dry run: iPad layout not observed")"
@@ -318,6 +328,7 @@ run_demo_phase() {
         DEMO_SKIP=$((DEMO_SKIP+1)); i=$((i+1)); continue
       fi
       dyn_device_prepare "$UDID"
+      dyn_maestro_warmup "$UDID"
       fresh=$((fresh+1))
       r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "demo-$i")"
       kind="$(cut -f1 <<<"$r")"

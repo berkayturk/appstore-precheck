@@ -21,6 +21,61 @@ def load(name):
 
 
 class BuildHarvest(unittest.TestCase):
+    def test_agent_directories_are_not_build_inputs(self):
+        plan = load('build-plan')
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp); repo = base / 'repo'; repo.mkdir()
+            (repo / 'App.xcodeproj').mkdir()
+            names = ('.claude', '.cursor', '.agents', '.grok', '.codex', '.planning')
+            for name in names:
+                (repo / name / 'worktrees/branch/ios/Other.xcodeproj').mkdir(parents=True)
+            self.assertEqual(plan.projects(repo), ['App.xcodeproj'])
+            plan.copy_inputs(repo, base / 'copy')
+            for name in names:
+                self.assertFalse((base / 'copy' / name).exists())
+
+    def test_workspace_scheme_uses_verified_application_target(self):
+        schemes = load('build-schemes')
+        plan = load('build-plan')
+        output = json.dumps({'workspace': {'name': 'Workspace', 'schemes': ['Focus', 'Widget']}})
+        with tempfile.TemporaryDirectory() as temp:
+            copy = Path(temp)
+            with mock.patch.object(schemes, 'application_targets', return_value={'Focus'}):
+                self.assertEqual(schemes.select(output, 'Workspace.xcworkspace', copy, plan.excluded), 'Focus')
+            for targets in ({'Focus', 'Widget'}, set()):
+                with mock.patch.object(schemes, 'application_targets', return_value=targets):
+                    with self.assertRaisesRegex(ValueError, 'candidates: Focus, Widget'):
+                        schemes.select(output, 'Workspace.xcworkspace', copy, plan.excluded)
+
+    def test_multi_scheme_build_selection_and_diagnostics(self):
+        with tempfile.TemporaryDirectory() as temp:
+            base = Path(temp); repo = base / 'repo'; repo.mkdir()
+            project = repo / 'ControlDopamine.xcodeproj'; project.mkdir()
+            (project / 'project.pbxproj').write_text('/* Begin PBXNativeTarget section */\nA /* Focus */ = {\n    isa = PBXNativeTarget;\n    name = Focus;\n    productType = "com.apple.product-type.application";\n};\n/* End PBXNativeTarget section */\n')
+            tools = base / 'bin'; tools.mkdir()
+            shim = tools / 'xcodebuild'
+            shim.write_text("#!/usr/bin/env python3\nimport json,sys\nfrom pathlib import Path\na=sys.argv\nif '-list' in a:\n    print(Path('listing.json').read_text()); sys.exit(0)\nprint('selected scheme=' + a[a.index('-scheme')+1])\np=Path(a[a.index('-derivedDataPath')+1])/'Build/Products/Release-iphonesimulator/App.app'\np.mkdir(parents=True); (p/'Info.plist').write_text('<plist/>')\n"); shim.chmod(0o755)
+            env = dict(os.environ, PATH=str(tools) + os.pathsep + os.environ['PATH'])
+            extras = ['WidgetExtension', 'MonitorExtension', 'RevenueCatUI', 'FocusUITests']
+            for index, (schemes, selected) in enumerate([
+                    (['ControlDopamine', 'Focus'] + extras, 'ControlDopamine'),
+                    (['Focus'] + extras, 'Focus'), (['Unknown', 'Other'] + extras, None)]):
+                listing = json.dumps({'project': {'name': 'ControlDopamine', 'schemes': schemes,
+                                                'targets': ['Focus'] + extras}})
+                (repo / 'listing.json').write_text(listing)
+                out = base / ('out%d' % index)
+                result = subprocess.run(['bash', str(S / 'build-run.sh'), '--repo', str(repo),
+                                         '--out', str(out)], env=env, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0 if selected else 3, result.stdout + result.stderr)
+                log = (out / 'build.log').read_text()
+                self.assertIn(listing, log)
+                if selected:
+                    self.assertIn('selected scheme=' + selected, log)
+                else:
+                    self.assertIn('candidates:', result.stdout)
+                    for name in schemes:
+                        self.assertIn(name, result.stdout)
+
     def test_monorepo_flutter_links_require_trusted_cache_or_sdk(self):
         plan = load('build-plan')
         with tempfile.TemporaryDirectory() as temporary:

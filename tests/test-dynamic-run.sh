@@ -130,6 +130,9 @@ assert_contains "$(grep 'simctl bootstatus' "$FAKE_CALLS" | head -1)" " -b" "boo
 assert_contains "$(grep 'simctl status_bar' "$FAKE_CALLS" | head -1)" "override --time 9:41 --batteryLevel 100" "deterministic status bar"
 assert_contains "$(grep 'simctl privacy' "$FAKE_CALLS" | head -1)" "reset all" "every grant reset"
 assert_contains "$(grep 'simctl launch' "$FAKE_CALLS" | head -1)" "--terminate-running-process" "launch terminates a running instance"
+assert_eq "4" "$(grep -c '# NOTE: \[dyn-maestro-warmup\]' <<<"$tx")" "warm-up after D0 and every reinstall"
+assert_gt "$(first_idx maestro)" "$in" "warm-up follows install"
+assert_gt "$la" "$(first_idx maestro)" "warm-up precedes launch"
 assert_eq "3" "$(count 'simctl launch')" "three launches"
 assert_eq "3" "$(count 'simctl erase')" "erased before every repeat"
 assert_eq "4" "$(count 'simctl install')" "re-installed after each erase"
@@ -162,7 +165,7 @@ reset_calls; FAKE_SCENARIO=crash
 tx="$(bash "$RUN" --app "$APP" --repeats 3 --window 1 --out "$T/out2" 2>/dev/null)"; kill_fakes
 assert_contains "$tx" "DYNAMIC-FINDING: 2.1 [dyn-launch] — quorum 3/3: failed on every launch" "unanimous crash -> FINDING"
 assert_contains "$tx" "process gone" "…with the failing signal"
-assert_contains "$tx" "DYNAMIC-FINDING: 2.1 [dyn-first-screen]" "no first screen either"
+assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-first-screen] — not reached: app did not stay up on any launch" "first screen was not reached"
 assert_contains "$tx" "DYNAMIC-SKIP: 4.0 [dyn-dark-mode] — app did not stay up" "geometry SKIPped, not invented"
 assert_eq "1" "$(count 'simctl delete')" "device still deleted after failures"
 
@@ -258,6 +261,7 @@ assert_contains "$tx" "PLAN: maestro --device UDID-PLAN" "plans the hierarchy re
 assert_contains "$tx" "one Maestro invocation, one flow" "…one flow per call"
 assert_contains "$tx" "PLAN: sleep 5   # observation window" "window honoured"
 assert_contains "$tx" "DYNAMIC-SKIP: 2.4.1 [dyn-ipad-layout] — dry run" "iPad step planned, observed nothing"
+assert_eq "5" "$(grep -c '# warm-up; timeout 120s; result discarded' <<<"$tx")" "plans D0, repeats and iPad warm-up"
 assert_absent "$tx" "xcodebuild" "no build in the plan"
 assert_eq "true" "$(jq -r .dry_run "$T/out8/run.json")" "run.json says dry run"
 
