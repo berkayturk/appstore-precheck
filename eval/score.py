@@ -159,6 +159,21 @@ def run_stats(run_dir, dataset_dir):
     }
 
 
+def _catalog_sentence():
+    """Describe the current review catalog from the JSON itself, never from a constant."""
+    import json as _json
+    from pathlib import Path as _Path
+    catalog = _Path(__file__).resolve().parents[1] / 'skills/appstore-precheck/references/review-catalog.json'
+    try:
+        checks = _json.loads(catalog.read_text())['checks']
+    except (OSError, ValueError, KeyError):
+        return "The current catalog could not be read; counts are not stated."
+    tiers = {}
+    for check in checks:
+        tiers.setdefault(check.get('tier', '?'), []).append(str(check.get('number')))
+    parts = '; '.join('Tier %s: %s' % (tier, ', '.join(tiers[tier])) for tier in sorted(tiers) if tier != 'A')
+    return "The current catalog has %d semantic checks (%s)." % (len(checks), parts)
+
 def _header():
     return [
         "# appstore-precheck — LLM Deep-Review Scorecard",
@@ -167,7 +182,7 @@ def _header():
         "",
         "## Methodology",
         "",
-        "The current catalog has 31 semantic checks (Tier B: 4, 5, 7, 10, 15, 29, 30, 31).",
+        _catalog_sentence(),
         "Historical baselines retain their original 28-check identities and labels.",
         "New runs snapshot cases; historical cases are pinned in `eval/baseline/cases-v1.json`.",
         "Pierre is measured against the labelled dataset in `eval/dataset/`:",

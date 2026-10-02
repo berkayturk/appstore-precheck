@@ -112,10 +112,10 @@ An exact-quote mismatch is caught locally before inference. When verification fa
 retain the original scanner line and evidence pointer, revise the explanation or use
 a factual template; never modify the scanner finding.
 
-For Phase 4, prepare all 31 checks using `review-catalog.json` stable keys. Add narrow
+For Phase 4, prepare every check in the current `review-catalog.json` (56 in catalog v4) using its stable keys. Add narrow
 copy, purpose, disclosure, comparison, and routing jobs as evidence becomes available.
 Keep full Pierre review during the experimental rollout. Supplementary workflow jobs
-are a separate shadow-results block, not extra checks in the "31 checks" denominator.
+are a separate shadow-results block, not extra checks in the catalog-check denominator.
 `action: pierre_review` means
 the host agent continues the original checklist procedure; the standalone CLI does not
 launch an agent or bill a second model. Emit the existing advisory `REVIEW-*` report.
