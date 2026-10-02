@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.20.1] — 2026-10-02
+
 ### Fixed
 - Static readers skip special files without blocking, bound quoted-string matching, and omit absolute paths from input-error reasons. Repository-wide `grep` passes skip FIFOs and devices (`-D skip`), so a stray named pipe no longer hangs the default scan.
 - Empty release notes recognize initial versions from Info.plist or MARKETING_VERSION; document-browser warnings require file access, list UI, and a browser title together.
