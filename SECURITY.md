@@ -43,7 +43,7 @@ operation. The GitHub Action removes that trust variable on every scanner invoca
 The dynamic runner still never builds: it accepts an already-built simulator `.app`.
 
 Demo login runs after normal screenshots and layout observations. Persisted hierarchy
-JSON redacts supplied demo credentials and email addresses before writing. Exploration
+JSON redacts email addresses before writing; demo credential values are redacted verbatim; secure-field detection is not relied on. Exploration
 is separately opt-in; after `--demo-login` it additionally requires an explicit
 `--authorized-navigation` JSON allowlist. In that mode arbitrary text/identity values
 are redacted, only authorized navigation labels remain, and screenshots are withheld.

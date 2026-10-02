@@ -37,9 +37,7 @@ def scrub_tree(value, authenticated=False, allowed=None, key=''):
     if isinstance(value, list):
         return [scrub_tree(x, authenticated, allowed, key) for x in value]
     if isinstance(value, dict):
-        secure = any('securetextfield' in str(value.get(k, '')).lower() for k in ('type', 'class'))
-        return {scrub_text(k): ('[redacted]' if secure and k in ('text', 'value', 'accessibilityText', 'label')
-                               else scrub_tree(v, authenticated, allowed, k)) for k, v in value.items()}
+        return {scrub_text(k): scrub_tree(v, authenticated, allowed, k) for k, v in value.items()}
     return value
 
 
