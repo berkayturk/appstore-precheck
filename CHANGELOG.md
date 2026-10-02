@@ -5,11 +5,15 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.20.0] — 2026-10-02
+
+### Guideline section coverage 45 → 93 of 102 leaf rules (91%)
+
 - Review fixes: custom document browsers and embedded emoji artwork replace inverted policy signals; ordinary metadata emoji, bug-fix notes and system document pickers remain clean.
 - Missing inputs produce visible, suppressible modular SKIP records; run coverage excludes PASS absence claims and deduplicates skipped sections. Present metadata declarations remain unverified.
 - Source reads have a 60-second deadline; face-authentication scanning is linear, UTF-16 strings are supported, and unreadable files produce local gaps.
 - Demo login runs after geometry in fresh sessions; authenticated exploration requires a navigation allowlist and redacts personal text without screenshots. Collector failures retain diagnostics.
-- Build copy validation supports trusted monorepo Flutter caches, rejects overlapping HOME paths, and excludes secret/special files. The stricter HOME boundary also rejects projects underneath HOME.
+- Build copy validation supports trusted monorepo Flutter caches, rejects `/`, `$HOME` and its ancestors as repositories, and excludes secret/special files. Projects underneath `$HOME` remain buildable.
 - Coverage inventory reports 93 touched sections, including 2 partial positive-only dynamic observations; semantic inventory requires procedures, fixtures and producible inputs.
 
 
