@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.20.2] — 2026-10-02
+
 ### Fixed
 - Idle CPU observations resolve the installed simulator container for each fresh repeat and verify the executable and device path before sampling; unavailable containers remain SKIP.
 - Maestro gets a discarded warm-up read after setup and each reinstall (120-second default, configurable or disabled). Unread geometry and guideline hierarchy reads retry once; warm-up emits only a note.
