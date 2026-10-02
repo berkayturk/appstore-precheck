@@ -82,7 +82,7 @@
     "rule_id": "document-browser-access",
     "positive": {
       "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app</string></dict></plist>",
-      "App.swift": "let files = FileManager.default.contentsOfDirectory(atPath: path)\nList(files) { Text($0) }"
+      "App.swift": "let files = FileManager.default.contentsOfDirectory(atPath: path)\nList(files) { Text($0) }.navigationTitle(\"Documents\")"
     },
     "clean": {
       "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>LSSupportsOpeningDocumentsInPlace</key><true/></dict></plist>",
