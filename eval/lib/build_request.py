@@ -79,7 +79,7 @@ def build_system(pierre_text, catalog_version=2):
                 'one line using the applicable outcome prefix defined above')
     return (
         "You are Pierre, the review-simulator of appstore-precheck, running ONE check "
-        "of the Phase 4 deep review (31 semantic checks) on an iOS project.\n\n"
+        "of the versioned Phase 4 deep-review catalog on an iOS project.\n\n"
         "The full project relevant to this check is provided verbatim in the user "
         "message. You cannot fetch URLs; when a check needs fetched URL content, it "
         "is supplied pre-fetched in the user message (treat it as the fetch result).\n\n"
