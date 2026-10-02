@@ -7,7 +7,15 @@ optin_trust() {
   fi
 }
 
+optin_blocking_tools() {
+  if [[ "${OPT_DYN_BLOCK:-0}" == 1 ]] && ! command -v jq >/dev/null 2>&1; then
+    echo 'scan.sh: --dynamic-blocking needs jq' >&2
+    return 64
+  fi
+}
+
 optin_validate() {
+  optin_blocking_tools || return $?
   [[ "$OPT_BUILD" != 1 || -z "$OPT_APP" ]] || { echo 'scan.sh: choose --build or --app' >&2; return 64; }
   if [[ "$OPT_DEMO" == 1 || "$OPT_DYN_BLOCK" == 1 ]]; then
     [[ "$OPT_NO_RUNTIME" != 1 && ( "$OPT_BUILD" == 1 || -n "$OPT_APP" ) ]] || { echo 'scan.sh: runtime flags need --build/--app and cannot use --no-runtime' >&2; return 64; }
@@ -24,6 +32,7 @@ PY
 }
 
 optin_run() {
+  optin_blocking_tools || return $?
   [[ "$OPT_BUILD" == 1 || -n "$OPT_APP" || "$OPT_METADATA" == 1 ]] || return 0
   if ! command -v python3 >/dev/null 2>&1; then
     set_rule 'opt-in-review'; skip 'opt-in review — Python 3 required'; return 0
@@ -50,9 +59,6 @@ optin_run() {
   fi
   OPT_RAN_OK=1
   [[ "$FORMAT" != text ]] || printf 'OPT-IN: report — %s/summary.json\n' "$OPT_OUT"
-  if [[ "$OPT_DYN_BLOCK" == 1 ]] && ! command -v jq >/dev/null 2>&1; then
-    set_rule 'dynamic-blocking'; skip 'dynamic blocking — jq unavailable; no blocking conclusions imported'; return 0
-  fi
   if [[ "$OPT_DYN_BLOCK" == 1 ]]; then
     while IFS= read -r line; do
       [[ -n "$line" ]] || continue

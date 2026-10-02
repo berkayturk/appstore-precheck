@@ -5,6 +5,14 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Fixed
+- Static readers skip special files without blocking, bound quoted-string matching, and omit absolute paths from input-error reasons. Repository-wide `grep` passes skip FIFOs and devices (`-D skip`), so a stray named pipe no longer hangs the default scan.
+- Empty release notes recognize initial versions from Info.plist or MARKETING_VERSION; document-browser warnings require file access, list UI, and a browser title together.
+- Exploration artifacts refuse symlink targets. Demo credentials are redacted by value; secure-field detection is not relied on.
+- Modular SKIP summaries count checks separately from supplemental gaps and group their reasons. A shared execution table remains cross-validated against section coverage.
+- Explicit `--dynamic-blocking` requires jq and exits 64 when it is unavailable.
+- Legacy shell assertions use shared helpers with synthetic failure probes on Bash 3.2.
+
 ## [1.20.0] — 2026-10-02
 
 ### Guideline section coverage 45 → 93 of 102 leaf rules (91%)

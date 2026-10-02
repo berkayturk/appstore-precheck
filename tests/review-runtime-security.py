@@ -40,13 +40,14 @@ class ReviewRuntimeSecurity(unittest.TestCase):
     def test_m6_persisted_hierarchy_is_scrubbed_before_write(self):
         scrub = load('dyn-scrub')
         raw = json.dumps({'attributes': {'text': 'person@example.test'}, 'children': [
-            {'attributes': {'text': 'never-save-password', 'type': 'XCUIElementTypeSecureTextField'}}]}).encode()
+            {'attributes': {'text': 'never-save-password', 'accessibilityText': 'never-save-password'}}]}).encode()
         result = subprocess.CompletedProcess([], 0, stdout=raw)
         process = SimpleNamespace(run=lambda *a, **kw: result)
         safe_write = scrub.sibling('safe_write')
         with tempfile.TemporaryDirectory() as temporary:
             target = Path(temporary) / 'dark.json'
-            with patch.object(scrub, 'sibling', side_effect=lambda name: process if name == 'dyn-process' else safe_write):
+            with patch.dict(os.environ, {'PRECHECK_DEMO_PASSWORD': 'never-save-password'}), \
+                    patch.object(scrub, 'sibling', side_effect=lambda name: process if name == 'dyn-process' else safe_write):
                 self.assertEqual(scrub.capture('owned', target, 1), 2)
             saved = target.read_text()
             self.assertNotIn('person@example.test', saved)
@@ -137,7 +138,7 @@ dyn_extended_capture 1
             self.assertIn('--timeout 240', (Path(temporary) / 'args').read_text())
             self.assertIn('driver deadline reached', (Path(temporary) / 'repeat-1.stderr.log').read_text())
 
-    def test_n3_missing_jq_explains_disabled_blocking(self):
+    def test_f11_missing_jq_rejects_explicit_blocking(self):
         script = '''source "$1/lib/optin-scan.sh"
 OPT_BUILD=0; OPT_APP=app; OPT_METADATA=0; OPT_OUT="$2"; OPT_NO_RUNTIME=0; OPT_DEMO=0; OPT_DYN_BLOCK=1; OPT_DRY=0; OPT_URLS=0; OPT_ASC=""; OPT_ASC_VERSION=""; OPT_ASC_INFO=""; ROOT="$2"; SCRIPT_DIR="$1"; FORMAT=text
 python3() { return 0; }
@@ -147,9 +148,10 @@ optin_run
 '''
         with tempfile.TemporaryDirectory() as temporary:
             result = subprocess.run(['bash', '-c', script, '_', str(S), temporary], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        self.assertIn('SKIP:', result.stdout)
-        self.assertIn('jq unavailable', result.stdout)
-        self.assertNotIn('FAIL:', result.stdout)
+        self.assertEqual(result.returncode, 64)
+        self.assertIn('--dynamic-blocking needs jq', result.stderr)
+        self.assertNotIn('SKIP:', result.stdout)
+        self.assertNotIn('OPT-IN:', result.stdout)
 
     def test_n4_nat64_addresses_are_not_public_fetch_targets(self):
         metadata = load('metadata-review')

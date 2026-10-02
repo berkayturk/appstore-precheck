@@ -31,6 +31,12 @@ def scan_sources(skill):
     result = {}
     for text in [entry] + [(scripts / name).read_text() for name in modules]:
         text = '\n'.join(line for line in text.splitlines() if not line.lstrip().startswith('#'))
+        table = re.search(r"done <<'STATIC_GUIDELINE_TABLE'\n(.*?)\nSTATIC_GUIDELINE_TABLE", text, re.S)
+        if table:
+            for slug, guideline, evidence in re.findall(
+                    r'^([\w-]+)\|([1-5](?:\.\d+)+)\|(source|metadata|resource)$', table[1], re.M):
+                if slug in slugs:
+                    add(result, guideline, '§%d' % slugs[slug])
         chunks = re.split(r'set_rule "([\w-]*)"', text)
         for index in range(1, len(chunks), 2):
             slug = chunks[index]

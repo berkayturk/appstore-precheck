@@ -408,6 +408,8 @@ device and never touches an existing one or the repo, but the launched app reach
 and receives the demo credentials you supplied — tell the user so before the first launch. It
 requires macOS + Xcode + a simulator runtime and is permanently local-only (it cannot run in CI).
 It is a pre-submit local smoke signal, not a TestFlight / crash-reporter / QA replacement.
+The separate `scan.sh --dynamic-blocking` opt-in requires jq; without it the scanner exits 64
+with `--dynamic-blocking needs jq` before optional work.
 
 **Getting a build without building.** Never run `xcodebuild` / `flutter build` / `gradle`. Run
 `bash <skill-dir>/scripts/app-discover.sh --repo <repo> --json`: it lists the simulator `.app`

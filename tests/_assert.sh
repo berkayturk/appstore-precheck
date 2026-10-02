@@ -47,3 +47,19 @@ assert_gt() { # assert_gt <actual> <threshold> <label>
 }
 
 section() { echo "== $1 =="; }
+
+assert_path_absent() { # assert_path_absent <path> <label>
+  if [[ -e "$1" || -L "$1" ]]; then
+    echo "  FAIL: $2 — unexpected path: $1"; fails=$((fails + 1))
+  else
+    echo "  ok: $2"
+  fi
+}
+
+assert_path_exists() { # assert_path_exists <path> <label>
+  if [[ -e "$1" ]]; then
+    echo "  ok: $2"
+  else
+    echo "  FAIL: $2 — missing path: $1"; fails=$((fails + 1))
+  fi
+}

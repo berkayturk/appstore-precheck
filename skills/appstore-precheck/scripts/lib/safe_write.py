@@ -33,6 +33,15 @@ def _current_umask():
 
 def write_text(path, text, encoding="utf-8"):
     """Atomically write ``text`` to ``path``; refuse a symlink or non-regular target."""
+    _write(path, text, "w", encoding)
+
+
+def write_bytes(path, data):
+    """Atomically write binary output under the same regular-file policy."""
+    _write(path, data, "wb", None)
+
+
+def _write(path, content, stream_mode, encoding):
     target = os.path.abspath(os.fspath(path))
     mode = _existing_mode(target)
     if mode is not None and not stat.S_ISREG(mode):
@@ -43,8 +52,8 @@ def write_text(path, text, encoding="utf-8"):
     fd, temporary = tempfile.mkstemp(dir=directory, prefix="." + os.path.basename(target) + ".",
                                      suffix=".tmp")
     try:
-        with os.fdopen(fd, "w", encoding=encoding) as handle:
-            handle.write(text)
+        with os.fdopen(fd, stream_mode, encoding=encoding) as handle:
+            handle.write(content)
             handle.flush()
             os.fsync(handle.fileno())
         if hasattr(os, "chmod"):

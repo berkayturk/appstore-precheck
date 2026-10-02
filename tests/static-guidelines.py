@@ -2,6 +2,7 @@
 """Each contract rule has independent labeled positive and clean evidence."""
 import importlib.util
 import json
+import os
 import pathlib
 import plistlib
 import tempfile
@@ -52,23 +53,23 @@ class StaticRules(unittest.TestCase):
                 self.assertEqual(result['browser-engine']['status'], 'SKIP')
 
     def test_unreadable_source_abstains(self):
-        original = pathlib.Path.read_text
+        original = os.open
         def deny(path, *args, **kwargs):
-            if path.name == 'Blocked.swift':
+            if pathlib.Path(path).name == 'Blocked.swift':
                 raise PermissionError('permission denied')
             return original(path, *args, **kwargs)
-        with mock.patch.object(pathlib.Path, 'read_text', deny):
+        with mock.patch.object(os, 'open', deny):
             result = evaluate({'Blocked.swift': 'import Matter'})
         self.assertEqual(result['matter-extension']['status'], 'SKIP')
         self.assertIn('Blocked.swift', str(result['_input_gaps']))
 
     def test_unreadable_metadata_abstains_for_related_rules(self):
-        original = pathlib.Path.read_text
+        original = os.open
         def deny(path, *args, **kwargs):
-            if path.name in ('description.txt', 'release_notes.txt'):
+            if pathlib.Path(path).name in ('description.txt', 'release_notes.txt'):
                 raise PermissionError('permission denied')
             return original(path, *args, **kwargs)
-        with mock.patch.object(pathlib.Path, 'read_text', deny):
+        with mock.patch.object(os, 'open', deny):
             result = evaluate({'fastlane/metadata/en-US/release_notes.txt': 'Update',
                                'fastlane/metadata/en-US/description.txt': 'A journal'})
         for rule in ('release-notes-specificity', 'apple-endorsement-claims'):

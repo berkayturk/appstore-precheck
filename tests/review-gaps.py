@@ -15,7 +15,7 @@ class ReviewGaps(unittest.TestCase):
     def test_m2_reader_errors_are_visible_for_every_check(self):
         script = r'''SCRIPT_DIR="$1"; ROOT="$2"; META_DIR="$2"; INFO_PLIST="$2/Info.plist"
 GREP_PRUNE=()
-set_rule() { :; }; warn() { printf 'WARN: %s\n' "$1"; }; pass() { :; }
+set_rule() { :; }; set_evidence() { :; }; warn() { printf 'WARN: %s\n' "$1"; }; pass() { :; }
 skip() { printf 'SKIP: %s\n' "$1"; }
 python3() {
   case "$3" in
@@ -61,6 +61,47 @@ printf '%s' "$COVERAGE_GAPS_JSON" | jq -e 'length == 16' >/dev/null
         result = json.loads(result)
         self.assertEqual(result['coverage_sections']['skip'], 1)
         self.assertEqual(result['coverage_sections']['touched'], 0)
+
+    def test_f8_only_checks_are_counted_and_reasons_are_grouped(self):
+        rows = {slug: {'status': 'PASS', 'reason': 'No signal', 'file': ''} for slug in (
+            'release-notes-specificity', 'device-restart-instructions', 'browser-engine',
+            'intent-handler-parity', 'call-filter-controls', 'face-authentication',
+            'document-browser-access', 'extension-bundle-parity', 'matter-extension',
+            'extension-advertising', 'ar-integration-depth', 'companion-app-required',
+            'game-center-id-sharing', 'metadata-emoji', 'miniapp-native-bridge', 'apple-endorsement-claims')}
+        for slug, reason in [('browser-engine', 'reader timeout'), ('call-filter-controls', 'reader timeout'),
+                             ('release-notes-specificity', 'metadata unavailable')]:
+            rows[slug].update(status='SKIP', reason=reason)
+        rows['_input_gaps'] = {'count': 1, 'paths': ['Broken.swift']}
+        script = r'''SCRIPT_DIR="$1"; ROOT="$2"; META_DIR="$2"; INFO_PLIST="$2/Info.plist"
+GREP_PRUNE=()
+set_rule() { :; }; set_evidence() { :; }; warn() { :; }; pass() { :; }; skip() { printf 'SKIP: %s\n' "$1"; }
+python3() { printf '%s' "$ROWS"; }
+source "$SCRIPT_DIR/lib/scan-guidelines.sh"
+'''
+        result = subprocess.run(['bash', '-c', script, '_', str(SCAN.parent), '/tmp'],
+                                env=dict(os.environ, ROWS=json.dumps(rows)), text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('3 check(s) did not run:', result.stdout)
+        self.assertIn('browser-engine, call-filter-controls (reader timeout)', result.stdout)
+        self.assertIn('release-notes-specificity (metadata unavailable)', result.stdout)
+        self.assertIn('source-inputs-not-audited', result.stdout)
+        self.assertIn('metadata-emoji-icon-not-audited', result.stdout)
+
+    def test_f8_supplemental_gap_is_not_presented_as_an_unrun_check(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'App.swift').write_text('Text("Welcome")')
+            (root / 'Info.plist').write_text('<plist><dict><key>CFBundleIdentifier</key><string>org.app</string></dict></plist>')
+            (root / 'Widget').mkdir()
+            (root / 'Widget/Info.plist').write_text('<plist><dict><key>CFBundleIdentifier</key><string>org.app.widget</string><key>NSExtension</key><dict/></dict></plist>')
+            meta = root / 'fastlane/metadata/en-US'
+            meta.mkdir(parents=True)
+            (meta / 'release_notes.txt').write_text('Added a reading list.')
+            text = subprocess.check_output(['bash', str(SCAN), '--dir', folder], text=True)
+            summary = next(line for line in text.splitlines() if line.startswith('SKIP: modular-checks-not-audited'))
+            self.assertNotIn('0 check(s) did not run: ;', summary)
+            self.assertIn('additional coverage gaps:', summary)
 
 
 if __name__ == '__main__':

@@ -69,7 +69,8 @@ reporter, or real-device QA.
 - **Determinism before findings.** The launch checks run **N=3 times**, each on a freshly erased
   device; a `DYNAMIC-FINDING` for a crash needs **3/3**. Mixed evidence is not unanimous and stays SKIP with its counts; fewer than three repeats
   or any unreadable repeat also stays SKIP. Blocking is off by default; explicit `--dynamic-blocking`
-  uses only the documented fresh unanimous launch/login allowlist.
+  uses only the documented fresh unanimous launch/login allowlist. `scan.sh --dynamic-blocking`
+  requires jq; if unavailable it exits 64 with `--dynamic-blocking needs jq` before optional work.
 - **One flow per Maestro invocation.** The iOS 26 driver misbehaves in batch mode (Maestro issues
   #3254 / #3318): every `mcp__maestro__run` call carries exactly one flow; the runner reads the
   hierarchy with one `maestro hierarchy` call at a time.

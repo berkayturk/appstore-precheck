@@ -96,8 +96,7 @@ reset_calls; FAKE_SCENARIO=pass
 OUT1="$T/out1"
 tx="$(bash "$RUN" --app "$APP" --repo "$REPO" --repeats 3 --window 1 --out "$OUT1" 2>"$T/err1")"; st=$?
 kill_fakes
-assert_eq "0" "$st" "exit 0"
-[[ "$st" == 0 ]] || { echo "  runner stderr:"; sed 's/^/    /' "$T/err1"; }
+assert_eq "$st" 0 "runner succeeds: $(cat "$T/err1")"
 assert_contains "$tx" "DYNAMIC-PASS: setup [dyn-install]" "D0 PASS"
 assert_contains "$tx" "Debug-iphonesimulator/Installed.app" "D0 names the parent directory (dynamic.sh corroborates --build-config against it)"
 assert_contains "$tx" "created by this run" "D0 says the device is ours"
@@ -143,7 +142,7 @@ assert_contains "$(grep 'simctl ui' "$FAKE_CALLS")" "appearance dark" "dark appe
 assert_contains "$(grep 'simctl ui' "$FAKE_CALLS")" "appearance light" "…and back"
 assert_contains "$(grep 'simctl ui' "$FAKE_CALLS")" "content_size accessibility-extra-extra-extra-large" "AX5 text size"
 assert_eq "$(count 'maestro')" "$(grep -c 'hierarchy' "$FAKE_CALLS")" "every Maestro invocation is a single hierarchy read (one flow per call)"
-[[ -e "$T/built" ]] && { echo "  FAIL: a build tool ran"; fails=$((fails+1)); } || echo "  ok: no xcodebuild / flutter / gradle invocation"
+assert_path_absent "$T/built" "no xcodebuild / flutter / gradle invocation"
 assert_eq "debug" "$(jq -r .build_config "$OUT1/run.json")" "run.json: build_config from the directory name"
 assert_eq "true" "$(jq -r .device.created_by_this_run "$OUT1/run.json")" "run.json: device ownership"
 assert_eq "3" "$(jq -r .launch.pass "$OUT1/run.json")" "run.json: launch tally"

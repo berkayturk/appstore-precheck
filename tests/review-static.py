@@ -117,7 +117,7 @@ class ReviewStatic(unittest.TestCase):
             self.assertEqual(evaluate({'App.swift': source})['document-browser-access']['status'], 'PASS')
 
     def test_b3_custom_browser_without_system_access_warns(self):
-        result = evaluate({'Browser.swift': 'let files = FileManager.default.contentsOfDirectory(atPath: path)\nList(files) { Text($0) }'})
+        result = evaluate({'Browser.swift': 'let files = FileManager.default.contentsOfDirectory(atPath: path)\nList(files) { Text($0) }.navigationTitle("Documents")'})
         self.assertEqual(result['document-browser-access']['status'], 'WARN')
         self.assertEqual(evaluate({'App.swift': 'Text("Welcome")'})['document-browser-access']['status'], 'PASS')
 
