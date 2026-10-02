@@ -42,4 +42,12 @@ command() {
 source "$SCRIPT_DIR/lib/scan-guidelines.sh"
 unset -f command
 assert_eq "$(printf '%s' "$COVERAGE_GAPS_JSON" | jq length)" 16 'unavailable reader yields 16 unique rule gaps'
+# D1: jq present on PATH but failing must not empty the slug list in the SKIP line.
+stub="$(mktemp -d)"; printf '#!/bin/sh\nexit 127\n' > "$stub/jq"; chmod +x "$stub/jq"
+line="$(PATH="$stub:$PATH" bash "$SCRIPT_DIR/scan.sh" --dir "$(mktemp -d)" 2>/dev/null | grep '^SKIP: modular-checks-not-audited' || true)"
+case "$line" in
+  *"did not run: "*[a-z]*) echo "  ok: broken jq keeps the modular SKIP slug list" ;;
+  *) echo "FAIL: broken jq emptied the modular SKIP slug list: $line"; fails=$((fails + 1)) ;;
+esac
+rm -rf "$stub"
 exit "$fails"
