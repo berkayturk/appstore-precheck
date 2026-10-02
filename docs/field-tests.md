@@ -89,3 +89,89 @@ fixed two real auto-detection bugs (wrong target → IAP false-negative + framew
 purpose-string false-positive) and a `set -u` portability crash, with a regression fixture
 added. The residual FAILs are real findings or architecture-dependent heuristic limits, each
 with a `paywallGlobs` / manual-verification remedy. None are silent scanner errors.
+
+## Earlier coverage groundwork field run (2026-10-02)
+
+ControlDopamine was scanned with the default scanner on macOS with Bash 3.2.
+That earlier snapshot added coverage accounting and launch-evidence corrections,
+before the new static vectors were integrated. The existing source-only findings remain advisory.
+
+| Check | Result | Evidence / interpretation |
+|---|---|---|
+| Default static scan | GREEN: 0 FAIL, 3 WARN, 26 PASS, 0 SKIP | `scan.sh --dir ../controldopamine`; no token applied |
+| New-vector WARN review | Not applicable: zero new static vectors | No new WARN is attributed to this change; this does not validate the planned §56–§71 checks |
+| Source preservation | Before/after `git status --porcelain` identical | Empty status diff; source content hash was not measured |
+| Existing built app discovery | SKIP: zero candidates, exit 3 | `app-discover.sh --repo ../controldopamine --json` |
+| Live dynamic review | NOT_RUN: no existing simulator `.app` found | No build or simulator launch performed; the new launch rules are covered by offline shims only |
+
+The section inventory is separate from the run: optional semantic, vision and dynamic
+routes do not become observed merely because they appear in the baseline.
+
+
+## Guideline expansion field run (2026-10-02)
+
+ControlDopamine was scanned read-only on macOS with Bash 3.2.57, using its existing
+configuration and suppression file. No build, installation, launch, network review,
+or `verdict.sh --apply` was performed. Before/after `git status --porcelain` was
+byte-identical; source content hashes were not measured.
+
+| Command / observation | Result | Scope |
+|---|---|---|
+| `scan.sh --dir ../controldopamine --format json` | Exit 0; 0 FAIL, 3 WARN, 40 PASS, 1 suppressed record | Existing findings remain; none of the new vectors warns after the fix below |
+| Default text scan piped to `verdict.sh` without `--apply` | GREEN; fail=0 warn=3 pass=41 skip=0 | Text also counts the unstructured layout PASS; no token was written |
+| `coverage_sections` | 26/102 sections touched; 2 SKIP records; 9 human-only | Static run only; deep/dynamic/vision remain unexecuted |
+| New §56–§71 results | 15 PASS observations, 1 rule SKIP; additional icon-visual SKIP | PASS means no matched heuristic signal, not policy verification |
+| §63 extension parity | SKIP | Main bundle identifier is build-setting-derived; a resolved archive is required |
+| §69 icon pixels | SKIP | Apple emoji artwork requires visual review; metadata text was checked |
+| `app-discover.sh --repo ../controldopamine --json` | Exit 3, `candidates: []`, `launched: false` | No existing simulator bundle was found; device archives do not qualify |
+| Live dynamic D1–D17 review | NOT_RUN | No simulator `.app`; no build attempted. D9 already covers 2.4.1, so six new checks end at D17 |
+
+### Manual decisions for every new WARN
+
+| Vector | Initial observation | Manual decision and final result |
+|---|---|---|
+| §57 / 2.4.4 `device-restart-instructions` | `ios/ControlDopamineTests/MonotonicClockTests.swift` contains a reboot-related Swift Testing test description | **False positive, narrowed.** It describes a unit test, not user-facing instructions. Files importing Swift Testing/XCTest are excluded from this check. A red then green regression test covers both imports; the real rerun emits PASS. |
+
+No other new-vector WARN appeared. The retained unsuppressed warnings concern
+permission priming copy, trial-first paywall wording and the existing Xcode upgrade
+heuristic; they are outside this expansion. The suppressed privacy-manifest finding
+remains recorded with its existing suppression.
+
+The first integration run also exposed two evidence-reader limits. Compiled
+`.app`/`.xcarchive` resources were being read as source: those bundles are now pruned,
+with a regression fixture. The 5,588,422-byte String Catalog exceeded the generic
+2 MiB read limit: localization resources now have a separate bounded 8 MiB limit,
+with readable-large and too-large abstention tests. Source/manifest limits remain
+2 MiB, and incomplete inputs still produce SKIP rather than absence claims.
+
+Runtime fixtures are synthetic and tool shims, not recordings of this application.
+Capture and MusicKit checks only verify positive observations; missing-indicator and
+missing-authorization defect detection is not implemented. Location review reports
+observed request timing; WhenInUse/Always scope comparison is not implemented.
+See `tests/local/guideline-runtime-notes.md` for exact runtime limits.
+
+
+## Review round 1 field rerun (2026-10-02)
+
+Run from this repository with `--dir ../controldopamine`. Default JSON and text scans
+returned exit 0: 0 FAIL, 3 WARN, 40 structured PASS, 1 suppressed finding. The text
+renderer also includes the existing unstructured layout PASS. The three unsuppressed
+warnings remain permission-priming copy, trial-first paywall copy and the Xcode upgrade
+heuristic; no §56–§71 WARN was produced, so no additional new-vector warning required
+a manual disposition. The earlier reboot-test false positive remains fixed.
+
+Run coverage now counts issue-bearing sections only: **3/102**, with **2 unique skipped
+sections** and **2 unaudited check records** (extension bundle resolution and icon pixels).
+PASS absence observations are excluded. The repository inventory is **93 touched,
+2 positive-only**; it does not describe this application's verified compliance.
+
+The review's emoji check inspects artwork asset names, not metadata characters. The
+document-access check accepts system document pickers and reviews custom browser signals.
+Discovery again returned exit 3 with no simulator app candidates. Live dynamic checks
+remain NOT_RUN; no build or simulator session was started.
+
+Read-only preservation was checked by SHA-256 before/after for 6,646 regular files:
+zero changes. The snapshot excludes .git, dependencies, caches, symlinks and compiled
+bundles. Git status was not rerun under this review's no-Git instruction. Evidence lives
+in `.planning/guideline-91-evidence/review-section6-field-*.log` and
+`review-field-preservation.json` in the review checkout.

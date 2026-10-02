@@ -1,5 +1,7 @@
 # Maintenance
 
+Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+
 This scanner encodes Apple's App Store Review Guidelines, a moving target. The checks are static
 and hand maintained, so they drift out of date unless someone reconciles them on a schedule. This
 file is that schedule. None of it is automated on purpose: drift detection that silently fixes
@@ -20,8 +22,8 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 
 ### Quarterly: vector and pattern review
 
-Walk the 55 vectors in the methodology table and confirm each still matches how Apple reviews
-today. Also spot-check the 31 Pierre deep-review checks in
+Walk the 71 vectors in the methodology table and confirm each still matches how Apple reviews
+today. Also spot-check the 56 Pierre deep-review checks in
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
 
@@ -89,10 +91,16 @@ reconciliation as required, not optional:
   `bash scripts/update-brew-formula.sh` (fetches the published tarball, rewrites the formula's
   `url` + `sha256`, pushes the tap). The guard is the weekly `brew-sync` workflow, which fails
   when the tap drifts from npm latest.
-- **Vector count:** the count appears in the README intro and table, `SKILL.md`,
+- **Vector count:** derive counts and section sources with
+  `bash skills/appstore-precheck/scripts/coverage-sections.sh --json`; regenerate
+  `docs/guideline-coverage.md` with `--markdown`. `tests/test-coverage-sections.sh`
+  checks the generated summary on every current surface.
+  Historical release counts remain historical.
+  The vector count appears in the README intro and table, `SKILL.md`,
   the methodology table, and the changelog. When you add or remove a check, update all of them.
-  The deep-review count (31) lives in the same places plus `pierre-deep-review.md`; the Tier B
-  item list (4, 5, 7, 10, 15, 29, 30, 31) is repeated in SKILL.md, the reference and the README.
+  Run `python3 scripts/update-coverage-docs.py` to update current counts, then
+  `python3 scripts/update-coverage-docs.py --check` to detect stale prose.
+  Tier assignments and stable check numbers come from `review-catalog.json`.
   The **dynamic-check catalogue** is `dyn_catalogue` in `scripts/dynamic.sh`; the reference
   `simulator-dynamic-review.md` must name every id in it (`tests/test-phase6-doc.sh` enforces this),
   and the `runtime-not-audited` count is derived from it, never typed.

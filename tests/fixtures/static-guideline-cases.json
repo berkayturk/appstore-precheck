@@ -1,0 +1,214 @@
+[
+  {
+    "number": 56,
+    "guideline": "2.3.12",
+    "rule_id": "release-notes-specificity",
+    "positive": {
+      "fastlane/metadata/en-US/release_notes.txt": "TODO",
+      "fastlane/metadata/en-US/description.txt": "A daily journal for private notes."
+    },
+    "clean": {
+      "fastlane/metadata/en-US/release_notes.txt": "Adds encrypted journal export and fixes sorting.",
+      "fastlane/metadata/en-US/description.txt": "A daily journal for private notes."
+    },
+    "skip": {}
+  },
+  {
+    "number": 57,
+    "guideline": "2.4.4",
+    "rule_id": "device-restart-instructions",
+    "positive": {
+      "App.swift": "let message = \"Restart your device to continue\""
+    },
+    "clean": {
+      "App.swift": "// restart your device\nlet message = \"Refresh this screen\""
+    },
+    "skip": null
+  },
+  {
+    "number": 58,
+    "guideline": "2.5.6",
+    "rule_id": "browser-engine",
+    "positive": {
+      "Podfile": "pod 'Chromium'",
+      "App.swift": "import Foundation"
+    },
+    "clean": {
+      "App.swift": "import WebKit\nlet blink = true // Chromium"
+    },
+    "skip": null
+  },
+  {
+    "number": 59,
+    "guideline": "2.5.11",
+    "rule_id": "intent-handler-parity",
+    "positive": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>INIntentsSupported</key><array><string>SendIntent</string></array></dict></plist>",
+      "App.swift": "import SwiftUI"
+    },
+    "clean": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>INIntentsSupported</key><array><string>SendIntent</string></array></dict></plist>",
+      "App.swift": "class Handler: INExtension { override func handler(for intent: INIntent) -> Any { self } }"
+    },
+    "skip": {}
+  },
+  {
+    "number": 60,
+    "guideline": "2.5.12",
+    "rule_id": "call-filter-controls",
+    "positive": {
+      "App.swift": "import CallKit\nclass Provider: CXCallDirectoryProvider {}"
+    },
+    "clean": {
+      "App.swift": "import CallKit\nlet settings = Text(\"Blocked numbers\")"
+    },
+    "skip": {}
+  },
+  {
+    "number": 61,
+    "guideline": "2.5.13",
+    "rule_id": "face-authentication",
+    "positive": {
+      "App.swift": "import Vision\nfunc verifyLogin(face: VNFaceObservation) {}"
+    },
+    "clean": {
+      "App.swift": "import Vision\nimport LocalAuthentication\nfunc verifyLogin(face: VNFaceObservation) { let c = LAContext() }"
+    },
+    "skip": {}
+  },
+  {
+    "number": 62,
+    "guideline": "2.5.15",
+    "rule_id": "document-browser-access",
+    "positive": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app</string></dict></plist>",
+      "App.swift": "let files = FileManager.default.contentsOfDirectory(atPath: path)\nList(files) { Text($0) }"
+    },
+    "clean": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>LSSupportsOpeningDocumentsInPlace</key><true/></dict></plist>",
+      "App.swift": "let picker = UIDocumentPickerViewController()"
+    },
+    "skip": {}
+  },
+  {
+    "number": 63,
+    "guideline": "2.5.16",
+    "rule_id": "extension-bundle-parity",
+    "positive": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app</string></dict></plist>",
+      "Widget/Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>org.other.widget</string><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict></dict></plist>",
+      "Widget/Widget.swift": "import WidgetKit"
+    },
+    "clean": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app</string></dict></plist>",
+      "Widget/Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app.widget</string><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict></dict></plist>",
+      "Widget/Widget.swift": "import WidgetKit"
+    },
+    "skip": {}
+  },
+  {
+    "number": 64,
+    "guideline": "2.5.17",
+    "rule_id": "matter-extension",
+    "positive": {
+      "App.swift": "import Matter"
+    },
+    "clean": {
+      "App.swift": "import Matter",
+      "MatterExtension/Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.matter.support.extension</string></dict></dict></plist>"
+    },
+    "skip": {}
+  },
+  {
+    "number": 65,
+    "guideline": "2.5.18",
+    "rule_id": "extension-advertising",
+    "positive": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app</string></dict></plist>",
+      "Widget/Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app.widget</string><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict></dict></plist>",
+      "Widget/Widget.swift": "import GoogleMobileAds"
+    },
+    "clean": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app</string></dict></plist>",
+      "Widget/Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>com.example.app.widget</string><key>NSExtension</key><dict><key>NSExtensionPointIdentifier</key><string>com.apple.widgetkit-extension</string></dict></dict></plist>",
+      "Widget/Widget.swift": "import WidgetKit",
+      "App.swift": "import GoogleMobileAds"
+    },
+    "skip": {}
+  },
+  {
+    "number": 66,
+    "guideline": "4.2.1",
+    "rule_id": "ar-integration-depth",
+    "positive": {
+      "App.swift": "import ARKit\nstruct ARScreen: View { let scene = ARView() }"
+    },
+    "clean": {
+      "App.swift": "import ARKit\nstruct ARScreen: View { let scene = ARView() }",
+      "Detail.swift": "struct DetailScreen: View { let session = ARSession() }"
+    },
+    "skip": {}
+  },
+  {
+    "number": 67,
+    "guideline": "4.2.3",
+    "rule_id": "companion-app-required",
+    "positive": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>LSApplicationQueriesSchemes</key><array><string>partner</string></array></dict></plist>",
+      "App.swift": "let message = \"Install Partner to continue\""
+    },
+    "clean": {
+      "Info.plist": "<?xml version=\"1.0\"?><plist version=\"1.0\"><dict><key>LSApplicationQueriesSchemes</key><array><string>partner</string></array></dict></plist>",
+      "App.swift": "let message = \"Optional: open Partner\""
+    },
+    "skip": null
+  },
+  {
+    "number": 68,
+    "guideline": "4.5.5",
+    "rule_id": "game-center-id-sharing",
+    "positive": {
+      "App.swift": "import GameKit\nlet id = GKLocalPlayer.local.gamePlayerID\nlet request = URLRequest(url: endpoint)"
+    },
+    "clean": {
+      "App.swift": "import GameKit\nlet id = GKLocalPlayer.local.gamePlayerID\nText(id)"
+    },
+    "skip": {}
+  },
+  {
+    "number": 69,
+    "guideline": "4.5.6",
+    "rule_id": "metadata-emoji",
+    "positive": {
+      "Assets.xcassets/emoji-face.imageset/Contents.json": "{}"
+    },
+    "clean": {
+      "fastlane/metadata/en-US/name.txt": "Daily Journal 😀"
+    },
+    "skip": null
+  },
+  {
+    "number": 70,
+    "guideline": "4.7.2",
+    "rule_id": "miniapp-native-bridge",
+    "positive": {
+      "App.swift": "import WebKit\nclass Bridge: WKScriptMessageHandler { let source = \"https://example.org/app.js\"; func run() { web.evaluateJavaScript(\"getLocation()\"); let location = CLLocationManager() } }"
+    },
+    "clean": {
+      "App.swift": "import WebKit\nclass Bridge: WKScriptMessageHandler { func run() { web.evaluateJavaScript(\"document.title\") } }"
+    },
+    "skip": {}
+  },
+  {
+    "number": 71,
+    "guideline": "5.2.4",
+    "rule_id": "apple-endorsement-claims",
+    "positive": {
+      "fastlane/metadata/en-US/description.txt": "Apple recommends this journal."
+    },
+    "clean": {
+      "fastlane/metadata/en-US/description.txt": "A private journal for iPhone."
+    },
+    "skip": {}
+  }
+]

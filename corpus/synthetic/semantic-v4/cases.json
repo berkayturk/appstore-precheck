@@ -1,0 +1,756 @@
+{
+  "version": 1,
+  "description": "Synthetic host and transport composition fixtures, not measured semantic model quality.",
+  "cases": [
+    {
+      "case_id": "content-defamatory-finding",
+      "check_key": "content-defamatory",
+      "check_number": 32,
+      "guideline": "1.1.1",
+      "expected": "finding",
+      "text": "A public card calls a named neighbor a criminal with no context.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-defamatory-no_signal",
+      "check_key": "content-defamatory",
+      "check_number": 32,
+      "guideline": "1.1.1",
+      "expected": "no_signal",
+      "text": "A history exhibit discusses disagreements without targeting a person.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-defamatory-insufficient_evidence",
+      "check_key": "content-defamatory",
+      "check_number": 32,
+      "guideline": "1.1.1",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-graphic-violence-finding",
+      "check_key": "content-graphic-violence",
+      "check_number": 33,
+      "guideline": "1.1.2",
+      "expected": "finding",
+      "text": "The family puzzle listing shows explicit realistic injury scenes.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-graphic-violence-no_signal",
+      "check_key": "content-graphic-violence",
+      "check_number": 33,
+      "guideline": "1.1.2",
+      "expected": "no_signal",
+      "text": "The adult-rated fictional game depicts stylized combat matching its listing.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-graphic-violence-insufficient_evidence",
+      "check_key": "content-graphic-violence",
+      "check_number": 33,
+      "guideline": "1.1.2",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-weapons-finding",
+      "check_key": "content-weapons",
+      "check_number": 34,
+      "guideline": "1.1.3",
+      "expected": "finding",
+      "text": "A tutorial rewards instructions for attacking strangers with improvised weapons.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-weapons-no_signal",
+      "check_key": "content-weapons",
+      "check_number": 34,
+      "guideline": "1.1.3",
+      "expected": "no_signal",
+      "text": "A museum guide describes historical weapon exhibits without operational instruction.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-weapons-insufficient_evidence",
+      "check_key": "content-weapons",
+      "check_number": 34,
+      "guideline": "1.1.3",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-sexual-finding",
+      "check_key": "content-sexual",
+      "check_number": 35,
+      "guideline": "1.1.4",
+      "expected": "finding",
+      "text": "The listing advertises explicit sexual performances visible in screenshots.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-sexual-no_signal",
+      "check_key": "content-sexual",
+      "check_number": 35,
+      "guideline": "1.1.4",
+      "expected": "no_signal",
+      "text": "A dating app shows non-explicit profiles and ordinary messaging.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-sexual-insufficient_evidence",
+      "check_key": "content-sexual",
+      "check_number": 35,
+      "guideline": "1.1.4",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-religious-finding",
+      "check_key": "content-religious",
+      "check_number": 36,
+      "guideline": "1.1.5",
+      "expected": "finding",
+      "text": "The copy invites harassment of worshippers and attributes an invented passage to its cited source.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-religious-no_signal",
+      "check_key": "content-religious",
+      "check_number": 36,
+      "guideline": "1.1.5",
+      "expected": "no_signal",
+      "text": "The study guide accurately attributes its supplied quotation and presents neutral commentary.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-religious-insufficient_evidence",
+      "check_key": "content-religious",
+      "check_number": 36,
+      "guideline": "1.1.5",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-false-features-finding",
+      "check_key": "content-false-features",
+      "check_number": 37,
+      "guideline": "1.1.6",
+      "expected": "finding",
+      "text": "The listing promises physical x-ray scans while the cited handler always returns a bundled random image.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-false-features-no_signal",
+      "check_key": "content-false-features",
+      "check_number": 37,
+      "guideline": "1.1.6",
+      "expected": "no_signal",
+      "text": "The listing calls the randomized image generator a fictional entertainment effect.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "content-false-features-insufficient_evidence",
+      "check_key": "content-false-features",
+      "check_number": 37,
+      "guideline": "1.1.6",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "creator-content-boundary-finding",
+      "check_key": "creator-content-boundary",
+      "check_number": 38,
+      "guideline": "1.2.1",
+      "expected": "finding",
+      "text": "Creator entries are labeled native safety tools but launch unrelated executable tools outside the described experience.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "creator-content-boundary-no_signal",
+      "check_key": "creator-content-boundary",
+      "check_number": 38,
+      "guideline": "1.2.1",
+      "expected": "no_signal",
+      "text": "Creator stories are clearly labeled and read inside the documented reader.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "creator-content-boundary-insufficient_evidence",
+      "check_key": "creator-content-boundary",
+      "check_number": 38,
+      "guideline": "1.2.1",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "drug-dosage-source-finding",
+      "check_key": "drug-dosage-source",
+      "check_number": 39,
+      "guideline": "1.4.2",
+      "expected": "finding",
+      "text": "An anonymous calculator promises personalized drug doses with no identified institutional source.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "drug-dosage-source-no_signal",
+      "check_key": "drug-dosage-source",
+      "check_number": 39,
+      "guideline": "1.4.2",
+      "expected": "no_signal",
+      "text": "A hospital-authored reference identifies its provenance and intended clinical audience.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "drug-dosage-source-insufficient_evidence",
+      "check_key": "drug-dosage-source",
+      "check_number": 39,
+      "guideline": "1.4.2",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "tobacco-vape-drugs-finding",
+      "check_key": "tobacco-vape-drugs",
+      "check_number": 40,
+      "guideline": "1.4.3",
+      "expected": "finding",
+      "text": "A retail checkout sells flavored vaping cartridges to consumers.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "tobacco-vape-drugs-no_signal",
+      "check_key": "tobacco-vape-drugs",
+      "check_number": 40,
+      "guideline": "1.4.3",
+      "expected": "no_signal",
+      "text": "A cessation diary records cravings without sales or promotional offers.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "tobacco-vape-drugs-insufficient_evidence",
+      "check_key": "tobacco-vape-drugs",
+      "check_number": 40,
+      "guideline": "1.4.3",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "dui-checkpoints-finding",
+      "check_key": "dui-checkpoints",
+      "check_number": 41,
+      "guideline": "1.4.4",
+      "expected": "finding",
+      "text": "The feature crowdsources police checkpoints to help impaired drivers evade them.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "dui-checkpoints-no_signal",
+      "check_key": "dui-checkpoints",
+      "check_number": 41,
+      "guideline": "1.4.4",
+      "expected": "no_signal",
+      "text": "The municipal safety feed displays checkpoints provided by its identified police agency.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "dui-checkpoints-insufficient_evidence",
+      "check_key": "dui-checkpoints",
+      "check_number": 41,
+      "guideline": "1.4.4",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "physical-risk-bets-finding",
+      "check_key": "physical-risk-bets",
+      "check_number": 42,
+      "guideline": "1.4.5",
+      "expected": "finding",
+      "text": "Users win cash for filming themselves crossing live motorway traffic.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "physical-risk-bets-no_signal",
+      "check_key": "physical-risk-bets",
+      "check_number": 42,
+      "guideline": "1.4.5",
+      "expected": "no_signal",
+      "text": "Users collect non-monetary badges for supervised low-impact stretching.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "physical-risk-bets-insufficient_evidence",
+      "check_key": "physical-risk-bets",
+      "check_number": 42,
+      "guideline": "1.4.5",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "age-rating-consistency-finding",
+      "check_key": "age-rating-consistency",
+      "check_number": 43,
+      "guideline": "2.3.6",
+      "expected": "finding",
+      "text": "A listing declared for young children shows explicit adult sexual content.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "age-rating-consistency-no_signal",
+      "check_key": "age-rating-consistency",
+      "check_number": 43,
+      "guideline": "2.3.6",
+      "expected": "no_signal",
+      "text": "The declared age category and observed mild puzzle content agree.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "age-rating-consistency-insufficient_evidence",
+      "check_key": "age-rating-consistency",
+      "check_number": 43,
+      "guideline": "2.3.6",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "alternate-home-screen-finding",
+      "check_key": "alternate-home-screen",
+      "check_number": 44,
+      "guideline": "2.5.8",
+      "expected": "finding",
+      "text": "The listing promises to replace the system home screen while shipping a deceptive imitation.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "alternate-home-screen-no_signal",
+      "check_key": "alternate-home-screen",
+      "check_number": 44,
+      "guideline": "2.5.8",
+      "expected": "no_signal",
+      "text": "An in-app launcher demo is clearly labeled a simulation without system replacement claims.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "alternate-home-screen-insufficient_evidence",
+      "check_key": "alternate-home-screen",
+      "check_number": 44,
+      "guideline": "2.5.8",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "system-switch-override-finding",
+      "check_key": "system-switch-override",
+      "check_number": 45,
+      "guideline": "2.5.9",
+      "expected": "finding",
+      "text": "The handler changes private airplane-mode settings after promising to bypass device controls.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "system-switch-override-no_signal",
+      "check_key": "system-switch-override",
+      "check_number": 45,
+      "guideline": "2.5.9",
+      "expected": "no_signal",
+      "text": "The app adjusts only its own playback volume and labels the control accordingly.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "system-switch-override-insufficient_evidence",
+      "check_key": "system-switch-override",
+      "check_number": 45,
+      "guideline": "2.5.9",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "other-purchase-eligibility-finding",
+      "check_key": "other-purchase-eligibility",
+      "check_number": 46,
+      "guideline": "3.1.3",
+      "expected": "finding",
+      "text": "A game sells digital coins through an external checkout outside its documented allowed conditions.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "other-purchase-eligibility-no_signal",
+      "check_key": "other-purchase-eligibility",
+      "check_number": 46,
+      "guideline": "3.1.3",
+      "expected": "no_signal",
+      "text": "A documented reader app links to account management within its supplied allowed storefront conditions.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "other-purchase-eligibility-insufficient_evidence",
+      "check_key": "other-purchase-eligibility",
+      "check_number": 46,
+      "guideline": "3.1.3",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "hardware-specific-content-finding",
+      "check_key": "hardware-specific-content",
+      "check_number": 47,
+      "guideline": "3.1.4",
+      "expected": "finding",
+      "text": "Buying an unrelated plastic token unlocks unrelated digital videos in the app.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "hardware-specific-content-no_signal",
+      "check_key": "hardware-specific-content",
+      "check_number": 47,
+      "guideline": "3.1.4",
+      "expected": "no_signal",
+      "text": "A paired thermometer unlocks only readings produced by that physical instrument.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "hardware-specific-content-insufficient_evidence",
+      "check_key": "hardware-specific-content",
+      "check_number": 47,
+      "guideline": "3.1.4",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "business-model-acceptable-finding",
+      "check_key": "business-model-acceptable",
+      "check_number": 48,
+      "guideline": "3.2.1",
+      "expected": "finding",
+      "text": "A claimed product catalog exists solely to manipulate another app ranking through paid installs.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "business-model-acceptable-no_signal",
+      "check_key": "business-model-acceptable",
+      "check_number": 48,
+      "guideline": "3.2.1",
+      "expected": "no_signal",
+      "text": "A store catalog displays its own products and redeemable goods with a documented business purpose.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "business-model-acceptable-insufficient_evidence",
+      "check_key": "business-model-acceptable",
+      "check_number": 48,
+      "guideline": "3.2.1",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "template-app-finding",
+      "check_key": "template-app",
+      "check_number": 49,
+      "guideline": "4.2.6",
+      "expected": "finding",
+      "text": "An unrelated template reseller submits identical restaurant apps with only a logo change.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "template-app-no_signal",
+      "check_key": "template-app",
+      "check_number": 49,
+      "guideline": "4.2.6",
+      "expected": "no_signal",
+      "text": "The restaurant owner publishes a branded app with distinct booking and loyalty workflows.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "template-app-insufficient_evidence",
+      "check_key": "template-app",
+      "check_number": 49,
+      "guideline": "4.2.6",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "apple-rss-usage-finding",
+      "check_key": "apple-rss-usage",
+      "check_number": 50,
+      "guideline": "4.5.1",
+      "expected": "finding",
+      "text": "The feed importer repackages store assets into an unrelated paid download archive.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "apple-rss-usage-no_signal",
+      "check_key": "apple-rss-usage",
+      "check_number": 50,
+      "guideline": "4.5.1",
+      "expected": "no_signal",
+      "text": "The read-only feed viewer displays linked store entries with their original attribution.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "apple-rss-usage-insufficient_evidence",
+      "check_key": "apple-rss-usage",
+      "check_number": 50,
+      "guideline": "4.5.1",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "miniapp-privacy-parity-finding",
+      "check_key": "miniapp-privacy-parity",
+      "check_number": 51,
+      "guideline": "4.7.1",
+      "expected": "finding",
+      "text": "The mini-app bridge exports advertising identifiers although its manifest and declared practices say none are shared.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "miniapp-privacy-parity-no_signal",
+      "check_key": "miniapp-privacy-parity",
+      "check_number": 51,
+      "guideline": "4.7.1",
+      "expected": "no_signal",
+      "text": "Mini-app processing stays within the data categories and purposes documented by the host.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "miniapp-privacy-parity-insufficient_evidence",
+      "check_key": "miniapp-privacy-parity",
+      "check_number": 51,
+      "guideline": "4.7.1",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "miniapp-data-sharing-finding",
+      "check_key": "miniapp-data-sharing",
+      "check_number": 52,
+      "guideline": "4.7.3",
+      "expected": "finding",
+      "text": "The bridge forwards the contact book to every remote mini-app without a per-recipient consent step.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "miniapp-data-sharing-no_signal",
+      "check_key": "miniapp-data-sharing",
+      "check_number": 52,
+      "guideline": "4.7.3",
+      "expected": "no_signal",
+      "text": "The bridge forwards only explicitly selected fields after consent scoped to the selected mini-app.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "miniapp-data-sharing-insufficient_evidence",
+      "check_key": "miniapp-data-sharing",
+      "check_number": 52,
+      "guideline": "4.7.3",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "monetize-builtin-capability-finding",
+      "check_key": "monetize-builtin-capability",
+      "check_number": 53,
+      "guideline": "4.10",
+      "expected": "finding",
+      "text": "The purchase flag unlocks only the ordinary camera shutter without an added service.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "monetize-builtin-capability-no_signal",
+      "check_key": "monetize-builtin-capability",
+      "check_number": 53,
+      "guideline": "4.10",
+      "expected": "no_signal",
+      "text": "A paid editing suite uses camera input but charges for its documented editing tools.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "monetize-builtin-capability-insufficient_evidence",
+      "check_key": "monetize-builtin-capability",
+      "check_number": 53,
+      "guideline": "4.10",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "media-download-facilitation-finding",
+      "check_key": "media-download-facilitation",
+      "check_number": 54,
+      "guideline": "5.2.3",
+      "expected": "finding",
+      "text": "A downloader explicitly bypasses third-party restrictions for copyrighted videos without permission.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "media-download-facilitation-no_signal",
+      "check_key": "media-download-facilitation",
+      "check_number": 54,
+      "guideline": "5.2.3",
+      "expected": "no_signal",
+      "text": "A downloader saves only the publisher-owned lessons covered by its documented license.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "media-download-facilitation-insufficient_evidence",
+      "check_key": "media-download-facilitation",
+      "check_number": 54,
+      "guideline": "5.2.3",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "apple-product-confusion-finding",
+      "check_key": "apple-product-confusion",
+      "check_number": 55,
+      "guideline": "5.2.5",
+      "expected": "finding",
+      "text": "The icon and name imitate a built-in Apple app and claim to be its official replacement.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "apple-product-confusion-no_signal",
+      "check_key": "apple-product-confusion",
+      "check_number": 55,
+      "guideline": "5.2.5",
+      "expected": "no_signal",
+      "text": "An independently named utility has a distinct icon and clear publisher identity.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "apple-product-confusion-insufficient_evidence",
+      "check_key": "apple-product-confusion",
+      "check_number": 55,
+      "guideline": "5.2.5",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "iap-for-gambling-credit-finding",
+      "check_key": "iap-for-gambling-credit",
+      "check_number": 56,
+      "guideline": "5.3.3",
+      "expected": "finding",
+      "text": "A StoreKit consumable buys stakes redeemable in a real-money casino game.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "iap-for-gambling-credit-no_signal",
+      "check_key": "iap-for-gambling-credit",
+      "check_number": 56,
+      "guideline": "5.3.3",
+      "expected": "no_signal",
+      "text": "A fictional card tutorial uses non-purchasable points with no cash redemption.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    },
+    {
+      "case_id": "iap-for-gambling-credit-insufficient_evidence",
+      "check_key": "iap-for-gambling-credit",
+      "check_number": 56,
+      "guideline": "5.3.3",
+      "expected": "insufficient_evidence",
+      "text": "Evidence unavailable for this synthetic scenario.",
+      "synthetic": true,
+      "transport_fixture_only": true
+    }
+  ]
+}

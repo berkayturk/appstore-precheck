@@ -1,0 +1,1 @@
+let message = "Optional: open Partner"

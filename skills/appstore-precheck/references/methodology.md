@@ -1,5 +1,8 @@
 # Methodology: App Store Precheck
 
+Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+Coverage means sections touched, not automatic verification.
+
 The detailed reference behind the skill. Read the section you need; you do not need to read this
 whole file to run the skill.
 
@@ -8,7 +11,7 @@ whole file to run the skill.
 - [Phase 0: Guideline drift check](#phase-0-guideline-drift-check)
 - [Phase 1: Rejection vectors](#phase-1-rejection-vectors)
 - [Phase 3: Pierre explains every finding](#phase-3-pierre-explains-every-finding)
-- [Phase 4: Pierre deep review (29 checks)](#phase-4-pierre-deep-review-29-semantic-checks)
+- [Phase 4: Pierre deep review (56 checks)](#phase-4-pierre-deep-review-56-semantic-checks)
 - [Auto-detection rules](#auto-detection-rules)
 - [Verdict thresholds](#verdict-thresholds)
 - [Evidence strength and confidence](#evidence-strength-and-confidence)
@@ -134,6 +137,26 @@ citable like any sub-section; every link and citation resolves `N.0` back to `#N
 | 53 | **3.1.2 EULA link in metadata** *(IAP-gated)* | Every locale’s App Store `description.txt` contains a functional Terms of Use (EULA) URL — auto-renewable-subscription apps are rejected without one in the app metadata (a custom EULA set in App Store Connect also satisfies Apple, but the description link is the checkable signal) |
 | 54 | **4.3(b) Saturated category** *(advisory)* | The app name / subtitle / keywords place it in a category Apple names in 4.3(b) (dating, flashlight, sound effects, wallpaper, simple timers, fortune telling, drinking games, kama sutra, fart, burp) — exposure, not a violation; the differentiation question is deep-review check 30 |
 | 55 | **2.5.5 IPv6-only** *(advisory)* | A legacy IPv4-only BSD socket API (`inet_addr`, `inet_aton`, `gethostbyname`, `sockaddr_in`, `AF_INET`) or a hardcoded IPv4 literal in source or a plist. App Review runs on an IPv6-only NAT64 network: DNS64 synthesizes hostnames, but a literal has nothing to synthesize from and the IPv4 API cannot address that network. Excludes loopback, `0.0.0.0`, `255.x` masks, CIDR ranges, version-looking values and comment lines |
+| 56 | **2.3.12 release-notes-specificity** *(advisory)* | Empty update notes, placeholders or duplicated description require review. Bug-fix notes and empty initial 1.0 notes are allowed; unknown version lowers confidence. |
+| 57 | **2.4.4 device-restart-instructions** *(advisory)* | English quoted source strings and String Catalog/resource text only; contextual review remains necessary. |
+| 58 | **2.5.6 browser-engine** *(advisory)* | Dependency-name and deprecated UIWebView type-use signals only; regional browser entitlements and shipping target require review. UIWebView is WARN, not FAIL. |
+| 59 | **2.5.11 intent-handler-parity** *(advisory)* | Legacy declarations and handler parity only; modern AppIntent is deliberately exempt from legacy plist registration. |
+| 60 | **2.5.12 call-filter-controls** *(advisory)* | Filter/directory APIs only: normal VoIP CallKit is deliberately excluded. Labels may exist on unreachable UI. |
+| 61 | **2.5.13 face-authentication** *(advisory)* | Face API and authentication terms must coexist in one file; LocalAuthentication presence elsewhere suppresses the warning, without proving correct authentication. |
+| 62 | **2.5.15 document-browser-access** *(advisory)* | Custom file-browser signals without system Files/iCloud access require review. UIDocumentPicker, fileImporter and UIDocumentBrowser are compliant signals. |
+| 63 | **2.5.16 extension-bundle-parity** *(advisory)* | Discovered extension/App Clip manifests only; absent or variable bundle identifiers are SKIP pending resolved build settings. |
+| 64 | **2.5.17 matter-extension** *(advisory)* | Matter source import or setup entitlement without a discovered Matter extension; generated target settings may need manual inspection. |
+| 65 | **2.5.18 extension-advertising** *(advisory)* | Imports in extension/App Clip manifest directories only; pbxproj link-phase target resolution is not audited. No extension means SKIP. |
+| 66 | **4.2.1 ar-integration-depth** *(advisory)* | Low-confidence source footprint proxy: one AR usage file and fewer than two view declarations; does not establish functionality quality. |
+| 67 | **4.2.3 companion-app-required** *(advisory)* | App query schemes plus a quoted install-to-continue instruction; arbitrary canOpenURL control/data flow is not inferred. |
+| 68 | **4.5.5 game-center-id-sharing** *(advisory)* | Game Center identifier and network/analytics API must coexist in one file; explicitly no assertion of actual data flow. |
+| 69 | **4.5.6 metadata-emoji** *(advisory)* | Low-confidence embedded emoji artwork filenames/assets require visual/license review. Metadata emoji characters are permitted; icon pixels remain unaudited. |
+| 70 | **4.7.2 miniapp-native-bridge** *(advisory)* | All four signals must coexist in one file: handler, remote JS URL, evaluation and native-sensitive API. Does not resolve bridge access control. |
+| 71 | **5.2.4 apple-endorsement-claims** *(advisory)* | Narrow English endorsement/official-product patterns; authorized claims still require human confirmation. Ordinary iPhone compatibility text stays clean. |
+
+New source checks skip compiled bundles and pruned dependencies. Unreadable or incomplete
+inputs produce additive coverage gaps: source/manifest reads are bounded to 2 MiB and
+localization resources to 8 MiB. UTF-16 strings are decoded; unreadable files are skipped individually and reported with relative paths. No readable source yields SKIP; a negative signal among remaining readable files is not proof about skipped files.
 
 Vectors 8–10 only run when in-app-purchase signals are detected (StoreKit / RevenueCat import,
 or a paywall view). Otherwise the scanner emits a single PASS and skips them. Vectors 16–52, 54 and 55 (plus the IAP-gated 53) are
@@ -194,12 +217,10 @@ finds; Pierre explains.
 
 ---
 
-## Phase 4: Pierre deep review (31 semantic checks)
+## Phase 4: Pierre deep review (56 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 31 evidence-based checks the static scanner
-cannot fully judge — **23 Tier A** (high-confidence) plus **8 Tier B v1** heuristic checks (items
-**4, 5, 7, 10, 15, 29, 30, 31** in the checklist: 2.1 review notes, 2.2, 2.3.4, 3.2.2(x)/5.6.3, 2.5.1/4.5.3/4.5.4,
-5.6.1/5.6.3, 4.3 differentiation, 4.0 design minimum). Full procedure, output format, and per-check steps are in
+After Phase 3, Pierre runs the **Review Simulator**: 56 evidence-based checks the static scanner
+cannot fully judge: Tier A cross-reads, Tier B heuristics and Tier C host vision. Full procedure and per-check evidence requirements are in
 [`pierre-deep-review.md`](pierre-deep-review.md).
 
 **Verdict impact:** none. Phase 4 uses the reference outcome definitions, separating missing evidence, unsupported inspection, unexecuted checks and evidence-backed non-applicability from PASS/FINDING.
@@ -210,8 +231,8 @@ These are advisory; FAIL/WARN counts and GREEN/YELLOW/RED come only from Phases 
 5.1.1(i) privacy policy fetch, 2.3 locale consistency, etc.). Guideline numbers touched
 are tracked in `guidelines-baseline.json` → `covered_by_pierre_deep_review`.
 
-**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 31 findings) and
-every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation. Tier B v1 findings are heuristic.
+**Presentation (Phase 5):** after Phase 3 commentary, show Phase 4 summary (N of 56 findings) and
+every `REVIEW-FINDING` with Pierre's 2–3 sentence explanation. Tier B findings are heuristic; new v4 checks emit FINDING, SKIP or no signal, never PASS.
 
 ---
 
@@ -442,6 +463,22 @@ completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
 | 53 | `subscription-eula-metadata` | metadata | review-risk | — |
 | 54 | `saturated-category` | metadata | judgment-call | — |
 | 55 | `ipv4-literal` | source | review-risk | — |
+| 56 | `release-notes-specificity` | metadata | judgment-call | — |
+| 57 | `device-restart-instructions` | source | judgment-call | — |
+| 58 | `browser-engine` | source | judgment-call | — |
+| 59 | `intent-handler-parity` | source | judgment-call | — |
+| 60 | `call-filter-controls` | source | judgment-call | — |
+| 61 | `face-authentication` | source | judgment-call | — |
+| 62 | `document-browser-access` | source | judgment-call | — |
+| 63 | `extension-bundle-parity` | source | judgment-call | — |
+| 64 | `matter-extension` | source | judgment-call | — |
+| 65 | `extension-advertising` | source | judgment-call | — |
+| 66 | `ar-integration-depth` | source | judgment-call | — |
+| 67 | `companion-app-required` | source | judgment-call | — |
+| 68 | `game-center-id-sharing` | source | judgment-call | — |
+| 69 | `metadata-emoji` | resource | judgment-call | — |
+| 70 | `miniapp-native-bridge` | source | judgment-call | — |
+| 71 | `apple-endorsement-claims` | metadata | judgment-call | — |
 
 *Generated from `scripts/evidence.sh`; `tests/test-evidence.sh` keeps it honest.*
 

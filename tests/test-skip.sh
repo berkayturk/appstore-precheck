@@ -88,7 +88,8 @@ assert_eq "store-listing-not-audited" \
   "the store-listing SKIP carries its stable id"
 assert_eq "true" "$(jq -r '[.findings[]|select(.rule_id=="store-listing-not-audited")][0].suppressed' <<<"$j")" \
   "and is recorded as suppressed, not dropped"
-assert_eq "2" "$(jq -r '.summary.not_audited' <<<"$j")" "acknowledging a gap does not remove it from not_audited"
+assert_eq "2" "$(jq -r .coverage_sections.legacy_skip <<<"$j")" "both acknowledged legacy gaps remain counted"
+assert_eq "$(jq -r '2 + (.coverage_sections.gaps | length)' <<<"$j")" "$(jq -r .summary.not_audited <<<"$j")" "acknowledged legacy and modular gaps remain unaudited"
 assert_gt "$(jq -r '.summary.suppressed' <<<"$j")" "1" "both acknowledgments are counted as suppressed"
 rm -rf "$d"
 

@@ -13,13 +13,12 @@ import json
 import re
 import sys
 from pathlib import Path
-from catalog import BY_NUMBER, resolve
+from catalog import resolve
 
-TIER_B_CHECKS = frozenset(n for n, c in BY_NUMBER.items() if c['tier'] == 'B')
 REQUIRED = ("id", "check_id", "tier", "guideline", "expected", "rationale",
             "label_confirmed", "fixture")
 ALLOWED = frozenset(REQUIRED) | {"fetched_urls", "notes", "check_key", "catalog_version"}
-EXPECTED_VALUES = ("finding", "pass", "not-applicable", "insufficient_evidence")
+EXPECTED_VALUES = ("finding", "pass", "not-applicable", "insufficient_evidence", "no_signal")
 ID_RE = re.compile(r"^check[0-9]{2}-[a-z0-9-]+$")
 FIXTURE_RE = re.compile(r"^fixtures/[a-z0-9-]+/$")
 
@@ -43,23 +42,28 @@ def check_case(path, dataset_dir):
     if errors:
         return errors
 
+    errors.extend(identity_errors(case, path))
+    errors.extend(content_errors(case, dataset_dir))
+    return errors
+
+
+def identity_errors(case, path):
+    errors = []
     if not (isinstance(case["id"], str) and ID_RE.match(case["id"])):
-        errors.append(f"id {case['id']!r} does not match ^check[0-9]{{2}}-[a-z0-9-]+$")
-    if case["id"] != path.stem:
-        errors.append(f"id {case['id']!r} != filename stem {path.stem!r}")
+        errors.append("id must match ^check[0-9]{2}-[a-z0-9-]+$")
+    if case['id'] != path.stem:
+        errors.append('id must equal the filename stem')
+    try:
+        check = resolve(case)
+        if case['tier'] != check['tier']:
+            errors.append('tier does not match the versioned catalog')
+    except (ValueError, KeyError, TypeError) as exc:
+        errors.append(str(exc))
+    return errors
 
-    if not (type(case["check_id"]) is int and case["check_id"] in BY_NUMBER):
-        errors.append(f"check_id {case['check_id']!r} must be an integer in 1..31")
-    else:
-        want_tier = "B" if case["check_id"] in TIER_B_CHECKS else "A"
-        if case["tier"] != want_tier:
-            errors.append(f"tier {case['tier']!r} inconsistent with check_id "
-                          f"{case['check_id']} (expected {want_tier!r})")
-        try:
-            resolve(case)
-        except ValueError as exc:
-            errors.append(str(exc))
 
+def content_errors(case, dataset_dir):
+    errors = []
     if not (isinstance(case["guideline"], str) and case["guideline"]):
         errors.append("guideline must be a non-empty string")
     if case["expected"] not in EXPECTED_VALUES:

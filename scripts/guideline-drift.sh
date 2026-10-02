@@ -26,6 +26,11 @@ gd_number_drift() {
 # gd_checks_for_section <scan.sh> <section> -> scan rule-id(s) whose set_rule block
 # cites that guideline number, one per line. Derived, never stored (cannot rot).
 gd_checks_for_section() {
+  local module base files=( "$1" )
+  base="$(dirname "$1")"
+  while IFS= read -r module; do
+    [[ -f "$base/$module" ]] && files+=( "$base/$module" )
+  done < <(sed -nE 's/^[[:space:]]*(source|\.) "\$SCRIPT_DIR\/(lib\/scan-[[:alnum:]_-]+\.sh)".*/\2/p' "$1")
   awk -v want="$2" '
     /set_rule "/ { if (match($0, /set_rule "([^"]+)"/)) slug = substr($0, RSTART+10, RLENGTH-11) }
     slug != "" && $0 !~ /^[[:space:]]*#/ {
@@ -35,7 +40,12 @@ gd_checks_for_section() {
         s = substr(s, RSTART + RLENGTH)
       }
     }
-  ' "$1" | awk '!seen[$0]++'
+  ' "${files[@]}" | awk '!seen[$0]++'
+}
+
+gd_covered_sections() {
+  jq -r '(.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) +
+    (.covered_by_dynamic // []) + (.covered_by_vision // []) | unique[]' "$1"
 }
 
 # gd_main [--html f] [--baseline f] [--fingerprints f] [--scan f] [--reconcile] [--quotes]
@@ -75,8 +85,8 @@ gd_main() {
     [[ -n "$tmp" ]] && rm -f "$tmp"; return 0
   fi
 
-  # Covered sections = covered_by_scan ∪ covered_by_pierre_deep_review.
-  local covered; covered="$(jq -r '(.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) | unique[]' "$baseline" 2>/dev/null)"
+  # Every maintained observation route participates; this is not a compliance claim.
+  local covered; covered="$(gd_covered_sections "$baseline" 2>/dev/null)"
 
   # --quotes: fill in the citable `quote` for each covered section WITHOUT touching
   # fingerprints or reconciled_on. Kept separate from --reconcile on purpose: writing
@@ -105,7 +115,10 @@ gd_main() {
         echo "WARN: quotes — $sec has drifted since the fingerprint baseline; reconcile first, then re-run --quotes"
         skipped=$((skipped + 1)); continue
       fi
-      qtext="$(gd_section_quote "$html" "$sec" "${GD_QUOTE_CHARS:-600}")"
+      # Character overrides may shorten the excerpt, never exceed the word budget.
+      qtext="$(gd_section_quote "$html" "$sec" "${GD_QUOTE_CHARS:-600}" | awk '{
+        for (i = 1; i <= NF && words < 25; i++) { printf "%s%s", (words ? " " : ""), $i; words++ }
+      } END { if (words) printf "\n" }')"
       if [[ -z "$qtext" ]]; then
         echo "WARN: quotes — $sec produced an empty quote; skipping"
         skipped=$((skipped + 1)); continue

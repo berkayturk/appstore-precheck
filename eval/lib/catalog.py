@@ -14,11 +14,13 @@ def resolve(case):
         raise ValueError('catalog_version must be an integer')
     if version == CATALOG['version']:
         checks = BY_NUMBER
-    elif version == 2:
-        frozen = json.loads((Path(__file__).resolve().parents[1] / 'catalog-history/review-catalog-v2.json').read_text())
+    elif version in (2, 3):
+        frozen = json.loads((Path(__file__).resolve().parents[1] / ('catalog-history/review-catalog-v%d.json' % version)).read_text())
         checks = {c['number']: c for c in frozen['checks']}
     else:
         raise ValueError('unsupported historical catalog version; explicit migration required')
+    if type(case.get('check_id')) is not int or case['check_id'] not in checks:
+        raise ValueError('check_id is absent from the selected catalog version')
     check = checks[case['check_id']]
     if case.get('check_key', check['key']) != check['key']:
         raise ValueError('check_key does not match current catalog number')
@@ -26,8 +28,10 @@ def resolve(case):
 
 
 def procedure_path(case):
-    if case.get('catalog_version', 2) == 2:
-        return Path(__file__).resolve().parents[1] / 'catalog-history/pierre-deep-review-v2.md'
+    version = case.get('catalog_version', 2)
+    if version in (2, 3):
+        resolve(case)
+        return Path(__file__).resolve().parents[1] / ('catalog-history/pierre-deep-review-v%d.md' % version)
     resolve(case)
     return CATALOG_PATH.parent / 'pierre-deep-review.md'
 
@@ -37,7 +41,9 @@ def fingerprint():
     import hashlib
     paths = [CATALOG_PATH, CATALOG_PATH.parent / 'pierre-deep-review.md',
              Path(__file__).resolve().parents[1] / 'catalog-history/review-catalog-v2.json',
-             procedure_path({'catalog_version': 2})]
+             procedure_path({'catalog_version': 2, 'check_id': 1}),
+             Path(__file__).resolve().parents[1] / 'catalog-history/review-catalog-v3.json',
+             procedure_path({'catalog_version': 3, 'check_id': 1})]
     content = json.dumps([p.read_text(encoding='utf-8') for p in paths], ensure_ascii=False)
     return hashlib.sha256(content.encode()).hexdigest()
 
