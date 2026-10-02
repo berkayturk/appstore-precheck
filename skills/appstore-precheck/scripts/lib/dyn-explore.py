@@ -9,7 +9,6 @@ import collections
 import hashlib
 import importlib.util
 import json
-import os
 import pathlib
 import re
 import subprocess
@@ -90,6 +89,7 @@ _scrub_spec = importlib.util.spec_from_file_location('dyn_scrub', pathlib.Path(_
 _scrub = importlib.util.module_from_spec(_scrub_spec)
 _scrub_spec.loader.exec_module(_scrub)
 scrub_tree = _scrub.scrub_tree
+_safe_write = _scrub.sibling('safe_write')
 
 
 def summarize(tree, name, screenshot=None, timestamp=None):
@@ -225,7 +225,7 @@ def navigate(udid, bundle_id, path, out, deadline):
         flow = private / 'navigation-flow.yaml'
         content = 'appId: ' + json.dumps(bundle_id) + '\n---\n- launchApp:\n    clearState: false\n'
         content += ''.join('- tapOn:\n    text: ' + json.dumps('^' + re.escape(label) + '$') + '\n' for label in path)
-        flow.write_text(content)
+        _safe_write.write_text(flow, content)
         flow.chmod(0o600)
         command(['maestro', '--device', udid, 'test', '--debug-output', str(private / 'debug'),
                  '--test-output-dir', str(private / 'output'), str(flow)],
@@ -235,11 +235,15 @@ def navigate(udid, bundle_id, path, out, deadline):
 def capture_screen(udid, out, name, deadline, authenticated=False, allowed=None):
     raw = command(['maestro', '--device', udid, 'hierarchy'], min(45, max(.01, deadline-time.monotonic())), cwd=out)
     tree = scrub_tree(json.loads(raw), authenticated=authenticated, allowed=allowed)
-    (out / (name + '.json')).write_text(json.dumps(tree, indent=2))
+    _safe_write.write_text(out / (name + '.json'), json.dumps(tree, indent=2))
     png = None if authenticated else name + '.png'
     try:
         if png:
-            command(['xcrun', 'simctl', 'io', udid, 'screenshot', '--type=png', str(out / png)], min(15, max(.01, deadline-time.monotonic())), cwd=out)
+            with tempfile.TemporaryDirectory(prefix='.screenshot-', dir=str(out)) as temporary:
+                image = pathlib.Path(temporary) / png
+                command(['xcrun', 'simctl', 'io', udid, 'screenshot', '--type=png', str(image)],
+                        min(15, max(.01, deadline-time.monotonic())), cwd=out)
+                _safe_write.write_bytes(out / png, image.read_bytes())
     except (OSError, subprocess.SubprocessError):
         png = None
     screen = summarize(tree, name, png, time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()))
@@ -304,7 +308,7 @@ def main():
         screens = live_explore(args.udid, args.bundle_id, out, args.max_screens, args.seconds, authorization, args.authenticated)
     report = {'schema_version': 1, 'screens': screens, 'checks': evaluate(screens, {}),
               'screen_budget': args.max_screens, 'time_budget_seconds': args.seconds}
-    (out / 'screen-inventory.json').write_text(json.dumps(report, indent=2) + '\n')
+    _safe_write.write_text(out / 'screen-inventory.json', json.dumps(report, indent=2) + '\n')
     print(json.dumps(report)); return 0
 
 
