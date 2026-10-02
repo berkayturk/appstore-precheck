@@ -68,8 +68,10 @@ source "$SCRIPT_DIR/project-model.sh"
 source "$SCRIPT_DIR/image-dims.sh"
 source "$SCRIPT_DIR/sarif.sh"
 source "$SCRIPT_DIR/framework-detect.sh"
+# shellcheck source=skills/appstore-precheck/scripts/lib/coverage-run.sh
 source "$SCRIPT_DIR/lib/coverage-run.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
+# shellcheck source=skills/appstore-precheck/scripts/lib/optin-scan.sh
 source "$SCRIPT_DIR/lib/optin-scan.sh"
 trap optin_cleanup EXIT
 # The envelope `version` is the appstore-precheck TOOL's own version (from this
@@ -1659,6 +1661,7 @@ if [[ -n "$IOS_DIR" ]]; then
   fi
 fi
 
+# shellcheck source=skills/appstore-precheck/scripts/lib/scan-guidelines.sh
 source "$SCRIPT_DIR/lib/scan-guidelines.sh"
 
 optin_run || exit $?
