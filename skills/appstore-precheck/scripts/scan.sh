@@ -146,7 +146,8 @@ PRUNE=( -not -path '*/.git/*' -not -path '*/Pods/*' -not -path '*/Carthage/*'
 
 # Same prune set expressed as grep --exclude-dir globs, for repo-wide grep -r passes
 # (the find-style PRUNE above is not valid grep syntax).
-GREP_PRUNE=( --exclude-dir=.git --exclude-dir=Pods --exclude-dir=Carthage
+# -D skip: never block on FIFOs/sockets/devices that happen to match a source glob.
+GREP_PRUNE=( -D skip --exclude-dir=.git --exclude-dir=Pods --exclude-dir=Carthage
             --exclude-dir=.build --exclude-dir=build --exclude-dir=DerivedData
             --exclude-dir=SourcePackages --exclude-dir=checkouts --exclude-dir=.swiftpm
             --exclude-dir=.claude --exclude-dir=worktrees

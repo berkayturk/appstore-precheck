@@ -7,6 +7,7 @@ import os
 import pathlib
 import plistlib
 import re
+import stat
 from xml.parsers.expat import ExpatError
 
 PRUNE = {'.git', 'Pods', 'Carthage', '.build', 'build', 'DerivedData',
@@ -24,16 +25,25 @@ def uncomment(text):
     return TOKEN.sub(lambda m: '\n' * m[0].count('\n') if m[0].startswith(('/', '/*')) else m[0], text)
 
 
+def checked_bytes(path):
+    limit = (8 if path.suffix in RESOURCE else 2) * 1024 * 1024
+    fd = os.open(str(path), os.O_RDONLY | os.O_NONBLOCK | os.O_NOFOLLOW)
+    with os.fdopen(fd, 'rb') as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode):
+            raise ValueError('special file skipped')
+        if info.st_size > limit:
+            raise ValueError('input exceeds read limit')
+        data = stream.read(limit + 1)
+    if len(data) > limit:
+        raise ValueError('input exceeds read limit')
+    return data
+
+
 def checked_text(path):
-    if path.is_symlink():
-        raise ValueError('symlink input not followed')
-    limit = 8 if path.suffix in RESOURCE else 2
-    if path.stat().st_size > limit * 1024 * 1024:
-        raise ValueError('input exceeds %d MiB read limit' % limit)
-    with path.open('rb') as stream:
-        bom = stream.read(2)
-    encoding = 'utf-16' if path.suffix == '.strings' and bom in (b'\xff\xfe', b'\xfe\xff') else 'utf-8'
-    return path.read_text(encoding=encoding)
+    data = checked_bytes(path)
+    encoding = 'utf-16' if path.suffix == '.strings' and data[:2] in (b'\xff\xfe', b'\xfe\xff') else 'utf-8'
+    return data.decode(encoding)
 
 
 def input_error(path, exc, root=None):
@@ -42,15 +52,12 @@ def input_error(path, exc, root=None):
         name = str(path.relative_to(root)) if root else path.name
     except ValueError:
         name = path.name
-    return name
+    return name + (' (special file skipped)' if isinstance(exc, ValueError) and str(exc) == 'special file skipped' else '')
 
 
 def read_candidate(path):
     if path.suffix in {'.plist', '.entitlements'}:
-        if path.is_symlink() or path.stat().st_size > 2 * 1024 * 1024:
-            raise ValueError('manifest is a symlink or exceeds 2 MiB read limit')
-        with path.open('rb') as stream:
-            value = plistlib.load(stream)
+        value = plistlib.loads(checked_bytes(path))
         if not isinstance(value, dict):
             raise ValueError('manifest root is not a dictionary')
         return plistlib.dumps(value).decode('utf-8')
@@ -115,33 +122,51 @@ def metadata_files(c, names):
         try:
             checked_text(p)
         except (OSError, UnicodeError, ValueError) as exc:
-            raise ValueError(input_error(p, exc)) from exc
+            detail = str(exc) if isinstance(exc, ValueError) else type(exc).__name__
+            err = ValueError(input_error(p, exc, c.get('root')) + ': ' + detail)
+            err.filename = None
+            err.sanitized = True
+            raise err from exc
     return files
+
+
+def app_version(c):
+    version = str(c['main'].get('CFBundleShortVersionString', ''))
+    if re.fullmatch(r'\d+(?:\.\d+){1,2}', version):
+        return version
+    versions = {v for p, text in c['files'].items() if p.suffix == '.pbxproj'
+                for v in re.findall(r'\bMARKETING_VERSION\s*=\s*"?(\d+(?:\.\d+){1,2})"?\s*;', uncomment(text))}
+    if versions:
+        return next(iter(versions)) if len(versions) == 1 else ''
+    version_file = c['metadata'] / 'version.txt'
+    return checked_text(version_file).strip() if version_file.is_file() else ''
 
 
 def release_notes(c):
     files = metadata_files(c, ['release_notes'])
     if not files:
         return outcome(skip=True, reason='Release notes metadata unavailable.')
+    version, initial_empty = app_version(c), False
     for p in files:
         value = checked_text(p).strip()
         desc = p.with_name('description.txt')
         same = desc.is_file() and not desc.is_symlink() and value == checked_text(desc).strip()
-        version_file = c['metadata'] / 'version.txt'
-        version = checked_text(version_file).strip() if version_file.is_file() else ''
-        if not value and version == '1.0':
+        if not value and version in ('1.0', '1.0.0'):
+            initial_empty = True
             continue
         if not value and not version:
             return outcome(True, 'Empty release notes with unknown version; low-confidence update review.', p)
         if not value or re.fullmatch(r'lorem(?: ipsum)?[.!]?|TODO|N[/-]A', value, re.I) or same:
             return outcome(True, 'Release notes are empty, a placeholder, or repeat the description.', p)
+    if initial_empty:
+        return outcome(reason='empty release notes accepted for the initial version')
     return outcome(reason='Release notes contain specific non-placeholder text.')
 
 
 def restart(c):
     source = {p: t for p, t in c['src'].items()
               if not re.search(r'(?m)^\s*(?:@testable\s+)?import\s+(?:Testing|XCTest)\b', t)}
-    p = hit_file(source, r'"[^"\n]*(?:restart your device|reboot|change your settings in Settings\s*>\s*General)[^"\n]*"')
+    p = hit_file(source, r'"[^"\n]{0,512}(?:restart your device|reboot|change your settings in Settings\s*>\s*General)[^"\n]{0,512}"')
     p = p or hit_file(c['resources'], r'restart your device|\breboot\b|change your settings in Settings\s*>\s*General')
     return outcome(bool(p), 'Device restart/settings instruction string; inspect the user-facing context.' if p else '', p)
 
@@ -149,7 +174,7 @@ def restart(c):
 def browser(c):
     deps = {p: uncomment(t) for p, t in c['files'].items() if p.name in {'Podfile', 'Package.swift', 'Package.resolved'} or p.suffix == '.pbxproj'}
     p = next((p for p, text in deps.items()
-              if re.search(r"[\"'][^\"'\n]*\b(?:Chromium|CEF|Gecko|Blink)\b(?![^\"'\n]*\.(?:swift|m|mm|h|storyboard|xib)[\"'])|\b(?:Chromium|CEF|Gecko|Blink)\.framework", text)), None)
+              if re.search(r"[\"'][^\"'\n]{0,512}\b(?:Chromium|CEF|Gecko|Blink)\b(?![^\"'\n]{0,512}\.(?:swift|m|mm|h|storyboard|xib)[\"'])|\b(?:Chromium|CEF|Gecko|Blink)\.framework", text)), None)
     legacy = hit_file(c['src'], r'\bUIWebView\s*(?:\(|[*>])|:\s*UIWebView\b')
     if legacy:
         return outcome(True, 'Deprecated UIWebView reference; verify the shipping target and Xcode SDK before removal.', legacy)
@@ -167,7 +192,7 @@ def intents(c):
 
 def call_filter(c):
     p = hit_file(c['src'], r'\b(?:ILMessageFilterExtension|CXCallDirectoryProvider|CXCallDirectoryManager)\b')
-    ui = hit_file(c['src'], r'"[^"\n]*(?:blocked (?:numbers|callers)|call blocking|spam filter|blocking settings)[^"\n]*"') or hit_file(c['resources'], r'blocked numbers|call blocking|spam filter')
+    ui = hit_file(c['src'], r'"[^"\n]{0,512}(?:blocked (?:numbers|callers)|call blocking|spam filter|blocking settings)[^"\n]{0,512}"') or hit_file(c['resources'], r'blocked numbers|call blocking|spam filter')
     return outcome(bool(p and not ui), 'Call/filter API signal without a visible blocking-control label; inspect reachable settings.' if p and not ui else 'No missing filter-control signal (or APIs not used).', p)
 
 
@@ -185,11 +210,11 @@ def documents(c):
     picker = hit_file(c['src'], r'\bUIDocumentPicker\w*\b|\.fileImporter\s*\(|\bUIDocumentBrowserViewController\b')
     if picker:
         return outcome(reason='System document access is used; inspect custom browser reachability separately.')
+    title = hit_file(c['src'], r'(?:navigationTitle|Text|title\s*=)\s*\(?\s*"(?:My Files|Files|Documents)"')
+    title = title or hit_file(c['resources'], r'"(?:My Files|Files|Documents)"')
     custom = next((p for p, t in c['src'].items()
-                   if re.search(r'FileManager\.default\.contentsOfDirectory', t)
+                   if title and re.search(r'FileManager\.default\.contentsOfDirectory|\benumerator\s*\(\s*at\s*:', t)
                    and re.search(r'\b(?:List|Table|UICollectionView|UITableView)\b', t)), None)
-    custom = custom or hit_file(c['src'], r'(?:navigationTitle|Text|title\s*=)\s*\(?\s*"(?:My Files|Files|Documents)"')
-    custom = custom or hit_file(c['resources'], r'"(?:My Files|Files|Documents)"')
     return outcome(bool(custom), 'Custom file-browser signal without system document access; inspect Files/iCloud availability.' if custom else 'No custom file-browser signal.', custom)
 
 
@@ -239,7 +264,7 @@ def ar_depth(c):
 
 
 def companion(c):
-    p = hit_file(c['src'], r'"[^"\n]*(?:download|install)\s+[^"\n]{1,60}\s+to (?:continue|proceed|use)[^"\n]*"') or hit_file(c['resources'], r'(?:download|install)\s+[^"\n]{1,60}\s+to (?:continue|proceed|use)')
+    p = hit_file(c['src'], r'"[^"\n]{0,512}(?:download|install)[ \t]{1,60}[^"\n]{1,60}[ \t]{1,60}to (?:continue|proceed|use)[^"\n]{0,512}"') or hit_file(c['resources'], r'(?:download|install)[ \t]{1,60}[^"\n]{1,60}[ \t]{1,60}to (?:continue|proceed|use)')
     bad = bool(c['main'].get('LSApplicationQueriesSchemes') and p)
     return outcome(bad, 'App-query schemes coexist with an install-to-continue instruction; inspect whether core functionality requires another app.' if bad else '', p if bad else None)
 
@@ -315,7 +340,11 @@ def evaluate(root, metadata, main, excludes):
         try:
             result[key] = check(c)
         except (OSError, UnicodeError, ValueError) as exc:
-            result[key] = outcome(skip=True, reason='Input could not be completely read: ' + str(exc)[:500])
+            if getattr(exc, 'sanitized', False):
+                detail = str(exc)
+            else:
+                detail = input_error(getattr(exc, 'filename', None) or 'input', exc, root) + ' (' + type(exc).__name__ + ')'
+            result[key] = outcome(skip=True, reason='Input could not be completely read: ' + detail)
     for key, row in result.items():
         if key.startswith('_'):
             continue
@@ -323,7 +352,7 @@ def evaluate(root, metadata, main, excludes):
             try:
                 row['file'] = str(pathlib.Path(row['file']).relative_to(root))
             except ValueError:
-                pass
+                row['file'] = pathlib.Path(row['file']).name
     return result
 
 
