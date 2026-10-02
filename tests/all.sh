@@ -7,6 +7,30 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # The suite: fixture scan tests + focused unit tests. Add new test files here.
 SUITE=(
+  "test-review-round1.sh"
+  "test-review-runtime-security.sh"
+  "test-guideline-quote-bound.sh"
+  "test-build-run.sh"
+  "test-opt-in-review.sh"
+  "test-metadata-review.sh"
+  "test-artifact-review.sh"
+  "test-dyn-explore.sh"
+  "test-dyn-demo-login.sh"
+  "test-runtime-harvest.sh"
+  "test-optin-scan.sh"
+  "test-action-trust.sh"
+  "test-local-corpus.sh"
+  "test-augment-json.sh"
+  "test-eval-catalog-extensions.sh"
+  "test-catalog-provenance.sh"
+  "test-static-guidelines.sh"
+  "test-static-guideline-shell.sh"
+  "test-coverage-docs.sh"
+  "test-coverage-sections.sh"
+  "test-coverage-run.sh"
+  "test-default-golden.sh"
+  "test-copyright-boundary.sh"
+  "test-harvest-launch.sh"
   "run.sh"            # scan.sh against fixtures
   "test-verdict.sh"   # verdict.sh thresholds, token actions, exit codes
   "test-guard.sh"     # fastlane-guard.sh token gating + exit codes
@@ -20,6 +44,7 @@ SUITE=(
   "test-scorecard.sh" # scorecard.sh metric math + --check staleness gate
   "test-scorecard-outcomes.sh" # scorecard-outcomes.sh tally + honesty floor
   "test-project-model.sh" # project-model.sh pbxproj parser + resolver
+  "test-guideline-routes.sh"
   "test-guideline-drift.sh" # guideline-drift.sh parse/diff + coverage↔fingerprint consistency
   "test-evidence.sh"  # evidence.sh per-rule evidence class + confidence + derived build-verification
   "test-guideline-cite.sh" # guideline-cite.sh offline pinned-quote citation lookup
@@ -32,6 +57,7 @@ SUITE=(
   "test-framework-detect.sh" # framework-detect.sh (rn/flutter/kmp/native from file presence) + scan.sh framework-not-audited gap record
   "test-app-discover.sh" # app-discover.sh: DerivedData/.app candidates, config from dir name, newest recommended, never builds
   "test-dynamic-libs.sh" # lib/dyn-*: launch-signal verdict, N=3 quorum, png-uniform, geometry heuristics, hosts parity, installed-bundle readers
+  "test-dynamic-guidelines.sh"
   "test-dynamic-run.sh" # dynamic-run.sh against a shimmed xcrun/maestro: lifecycle order, erase between repeats, delete-only-created, Metro guard, dry-run plan
   "test-rag-ingest.sh" # eval/rag/ingest.sh full-corpus extraction (RAG eval, no network)
   "test-rag-embed.sh" # eval/rag/embed.py SQL generation (RAG eval, no network)
@@ -46,6 +72,7 @@ SUITE=(
   "test-rag-build-request.sh" # eval/lib/build_request.py --retrieved flag (RAG eval, no network)
   "test-rag-run-guard.sh" # eval/run.sh --rag mismatch guard (RAG eval, no network)
   "test-eval-score.sh" # eval/score.py metric math on a fixed synthetic run (no network)
+  "test-semantic-v4.sh"
   "test-typesafe.sh"   # optional typed semantic review, transport/cache failures, gate isolation
 )
 

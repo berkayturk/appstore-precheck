@@ -15,6 +15,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 FORMAT="text"
 SCAN_DIR=""
+OPT_NO_RUNTIME=0 OPT_DEMO=0 OPT_ASC_VERSION="" OPT_ASC_INFO=""
+OPT_BUILD=0 OPT_APP="" OPT_METADATA=0 OPT_ASC="" OPT_URLS=0 OPT_DYN_BLOCK=0 OPT_DRY=0 OPT_OUT="" OPT_TEMP="" OPT_RAN_OK=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --format)
@@ -25,6 +27,26 @@ while [[ $# -gt 0 ]]; do
       if [[ $# -lt 2 ]]; then echo "scan.sh: --dir needs a path" >&2; exit 64; fi
       SCAN_DIR="$2"; shift 2 ;;
     --dir=*) SCAN_DIR="${1#*=}"; shift ;;
+    --build) OPT_BUILD=1; shift ;;
+    --app)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --app needs a path" >&2; exit 64; fi
+      OPT_APP="$2"; shift 2 ;;
+    --metadata) OPT_METADATA=1; shift ;;
+    --no-runtime) OPT_NO_RUNTIME=1; shift ;;
+    --demo-login) OPT_DEMO=1; shift ;;
+    --asc-version-id|--asc-info-id)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: $1 needs an ID" >&2; exit 64; fi
+      if [[ "$1" == --asc-version-id ]]; then OPT_ASC_VERSION="$2"; else OPT_ASC_INFO="$2"; fi
+      shift 2 ;;
+    --asc-app-id)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --asc-app-id needs an ID" >&2; exit 64; fi
+      OPT_ASC="$2"; OPT_METADATA=1; shift 2 ;;
+    --check-urls) OPT_URLS=1; OPT_METADATA=1; shift ;;
+    --dynamic-blocking) OPT_DYN_BLOCK=1; shift ;;
+    --dry-run) OPT_DRY=1; shift ;;
+    --out)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --out needs a path" >&2; exit 64; fi
+      OPT_OUT="$2"; shift 2 ;;
     *) shift ;;
   esac
 done
@@ -46,8 +68,12 @@ source "$SCRIPT_DIR/project-model.sh"
 source "$SCRIPT_DIR/image-dims.sh"
 source "$SCRIPT_DIR/sarif.sh"
 source "$SCRIPT_DIR/framework-detect.sh"
+# shellcheck source=skills/appstore-precheck/scripts/lib/coverage-run.sh
+source "$SCRIPT_DIR/lib/coverage-run.sh"
 FINDINGS_TMP="$(mktemp)"; export FINDINGS_TMP
-trap 'rm -f "$FINDINGS_TMP"' EXIT
+# shellcheck source=skills/appstore-precheck/scripts/lib/optin-scan.sh
+source "$SCRIPT_DIR/lib/optin-scan.sh"
+trap optin_cleanup EXIT
 # The envelope `version` is the appstore-precheck TOOL's own version (from this
 # skill's SKILL.md), never the scanned repo's — $ROOT above is the SCANNED app's
 # git root, so reading its package.json here would leak the wrong version.
@@ -73,6 +99,9 @@ cfg_bool() { # cfg_bool <json-path> — echoes "true"/"false"
   fi
   echo "false"
 }
+
+optin_trust
+optin_validate || exit $?
 
 _LAST_SUPPRESSED=0
 
@@ -254,7 +283,7 @@ echo "PASS: layout — ios='${IOS_DIR:-?}' metadata='${META_DIR:-?}' xcstrings='
 # The store listing is a real rejection surface. Without a fastlane metadata dir the
 # listing checks simply never run, and reporting only the ones that DID run would let
 # a repo look clean on ground nobody examined. Name the cost, derived from the
-# evidence catalogue so the number cannot rot as rules are added.
+# evidence catalogue. New modular gaps are reported in coverage_sections instead.
 if [[ -z "$META_DIR" || ! -d "$META_DIR" ]]; then
   # A gap record, not a check (see evidence.sh is_gap_record): the id exists so the
   # gap can be acknowledged by name in .precheck-ignore. Acknowledging it removes the
@@ -274,11 +303,11 @@ fi
 # rule under-detects there rather than false-firing — and a clean-looking result
 # would rest on ground nobody read. Detection is file presence only
 # (framework-detect.sh); the count is derived from the evidence catalogue, like the
-# store-listing gap above, so it cannot rot as rules are added.
+# original §1–§55 store-listing gap above; modular checks report separate gaps.
 FRAMEWORK="$(detect_framework .)"
 if [[ "$FRAMEWORK" != native ]]; then
   set_rule "framework-not-audited"
-  _src_list="$(rules_with_evidence source)"
+  _src_list="$(rules_with_evidence source 55)"
   _src_rules="$(printf '%s\n' "$_src_list" | grep -c .)"
   skip "framework — ${_src_rules} code-level checks under-detect on ${FRAMEWORK} (source greps read Swift/ObjC only): the metadata, manifest, resource and build-setting checks apply in full, but a ${FRAMEWORK} app's logic lives outside the files those checks read, so a clean result from them is partial. Review the listed guidelines against the ${FRAMEWORK} code by hand, or run the Phase 6 dynamic tier on a built simulator app."
   detail "$(printf '%s\n' "$_src_list" | tr '\n' ' ' | sed 's/ $//')"
@@ -1632,9 +1661,13 @@ if [[ -n "$IOS_DIR" ]]; then
   fi
 fi
 
+# shellcheck source=skills/appstore-precheck/scripts/lib/scan-guidelines.sh
+source "$SCRIPT_DIR/lib/scan-guidelines.sh"
+
+optin_run || exit $?
 echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
   printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"
 fi
-if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json;
+if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json | coverage_run_json | optin_render_json;
 elif [[ "$FORMAT" == sarif ]]; then exec 1>&4 4>&-; render_sarif; fi

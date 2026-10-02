@@ -147,10 +147,20 @@ section "the shipped fingerprint store is wired up and non-empty"
 real="$ROOT/skills/appstore-precheck/guidelines-fingerprints.json"
 cited="$(jq '[.sections[]|select(.quote != null and .quote != "")]|length' "$real")"
 total="$(jq '.sections|length' "$real")"
-# The coverage index can shrink when unrelated guideline mappings are corrected.
-# Require >90% citation coverage rather than an obsolete absolute section count.
+# Expanding the fingerprint inventory must not require copying Apple paragraphs.
+# Pin every previously shipped quotation by hash; new sections may be hash-only.
 assert_gt "$total" "0" "the shipped fingerprint store is non-empty"
-assert_gt "$((cited * 100))" "$((total * 90))" "the shipped store pins quotes for over 90% of covered sections"
+python3 - "$real" "$HERE/golden/quote-hashes-v1.19.0.json" <<'PYTEST'
+import hashlib, json, sys
+sections = json.load(open(sys.argv[1]))['sections']
+expected = json.load(open(sys.argv[2]))
+assert expected
+for section, digest in expected.items():
+    quote = sections.get(section, {}).get('quote', '')
+    assert hashlib.sha256(quote.encode()).hexdigest() == digest, section
+print('PASS: all %d legacy quotation hashes preserved' % len(expected))
+PYTEST
+assert_eq "$?" "0" "all legacy quotes are preserved without demanding new quotations"
 echo "  (info: $cited/$total covered sections carry a pinned quote)"
 # Every pinned quote must be substantial enough to actually cite.
 short="$(jq '[.sections[]|select(.quote != null and (.quote|length) < 40)]|length' "$real")"
@@ -160,7 +170,7 @@ undated="$(jq '[.sections[]|select(.quote != null and .quote_verified_on == null
 assert_eq "$undated" "0" "every pinned quote is dated"
 
 section "hash-only source records never fabricate a quotation"
-for section_id in 1.3 3.2.2 4.5.4; do
+for section_id in 1.3 3.2.2 4.5.4 1.1.1 2.4.2 2.5.14; do
   out="$(bash "$CITE" --fingerprints "$real" "$section_id" 2>&1)"; st=$?
   assert_eq "$st" "3" "$section_id has a fingerprint but no pinned quote"
   assert_contains "$out" "NO PINNED CITATION" "source hash is not substituted for a citation"

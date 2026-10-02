@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "appstore-precheck LLM eval case",
-  "description": "One labelled evaluation case for Pierre's deep-review layer. Each case targets exactly one of the 31 checks, ships a minimal self-contained fixture, and carries a human-confirmed expected outcome. Cases with label_confirmed=false are counted as UNLABELED and excluded from headline metrics.",
+  "description": "One labeled case for a check in its versioned catalog; unconfirmed labels are excluded from headline metrics.",
   "type": "object",
   "required": [
     "id",
@@ -23,15 +23,16 @@
     "check_id": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 31,
+      "maximum": 56,
       "description": "Target check number from pierre-deep-review.md (table order)"
     },
     "tier": {
       "enum": [
         "A",
-        "B"
+        "B",
+        "C"
       ],
-      "description": "Must match catalog: B for 4, 5, 7, 10, 15, 29, 30, 31; A otherwise"
+      "description": "Must match the record in the selected catalog version."
     },
     "guideline": {
       "type": "string",
@@ -43,9 +44,10 @@
         "finding",
         "pass",
         "not-applicable",
-        "insufficient_evidence"
+        "insufficient_evidence",
+        "no_signal"
       ],
-      "description": "finding = REVIEW-FINDING expected; pass = REVIEW-PASS expected; not-applicable = REVIEW-NOT-APPLICABLE (legacy v2: REVIEW-PASS with 'not applicable'); insufficient_evidence includes missing, unsupported or unexecuted inspection"
+      "description": "Versioned advisory outcome; no_signal is a bounded absence of concern, never a compliance pass."
     },
     "rationale": {
       "type": "string",
@@ -74,15 +76,74 @@
     },
     "check_key": {
       "type": "string",
-      "description": "Stable identity from references/review-catalog.json; must match check_id"
+      "description": "Stable identity from references/review-catalog.json; must match check_id",
+      "enum": [
+        "ugc-moderation",
+        "health-claims",
+        "claims-code",
+        "review-notes",
+        "beta-language",
+        "category-fit",
+        "preview-consistency",
+        "screenshot-consistency",
+        "pricing-consistency",
+        "review-incentives",
+        "locale-parity",
+        "external-purchase",
+        "subscription-disclosure",
+        "minimum-functionality",
+        "entitlement-purpose",
+        "login-parity",
+        "privacy-consistency",
+        "purpose-strings",
+        "permission-proportionality",
+        "permission-denial",
+        "permission-priming",
+        "tracking-consistency",
+        "health-data-use",
+        "parental-gates",
+        "vpn-disclosure",
+        "brand-use",
+        "contest-rules",
+        "developer-identity",
+        "rating-manipulation",
+        "category-differentiation",
+        "design-quality",
+        "content-defamatory",
+        "content-graphic-violence",
+        "content-weapons",
+        "content-sexual",
+        "content-religious",
+        "content-false-features",
+        "creator-content-boundary",
+        "drug-dosage-source",
+        "tobacco-vape-drugs",
+        "dui-checkpoints",
+        "physical-risk-bets",
+        "age-rating-consistency",
+        "alternate-home-screen",
+        "system-switch-override",
+        "other-purchase-eligibility",
+        "hardware-specific-content",
+        "business-model-acceptable",
+        "template-app",
+        "apple-rss-usage",
+        "miniapp-privacy-parity",
+        "miniapp-data-sharing",
+        "monetize-builtin-capability",
+        "media-download-facilitation",
+        "apple-product-confusion",
+        "iap-for-gambling-credit"
+      ]
     },
     "catalog_version": {
       "type": "integer",
       "enum": [
         2,
-        3
+        3,
+        4
       ],
-      "description": "Absent means frozen catalog v2; use 3 explicitly for corrected mappings."
+      "description": "Absent means frozen catalog v2; v3 is frozen, v4 is current."
     }
   }
 }

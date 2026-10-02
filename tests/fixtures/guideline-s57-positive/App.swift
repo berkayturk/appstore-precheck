@@ -1,0 +1,1 @@
+let message = "Restart your device to continue"

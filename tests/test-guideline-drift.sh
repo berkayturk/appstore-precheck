@@ -106,7 +106,7 @@ rm -f "$FIX/baseline-missing.json" "$recfp"
 # --- consistency: every covered section has a fingerprint; no orphan fingerprints ---
 BASE="$ROOT/skills/appstore-precheck/guidelines-baseline.json"
 FP="$ROOT/skills/appstore-precheck/guidelines-fingerprints.json"
-covered_sorted="$(jq -r '((.covered_by_scan // []) + (.covered_by_pierre_deep_review // [])) | unique[]' "$BASE" | sort)"
+covered_sorted="$(jq -r '((.covered_by_scan // []) + (.covered_by_pierre_deep_review // []) + (.covered_by_dynamic // []) + (.covered_by_vision // [])) | unique[]' "$BASE" | sort)"
 fp_sorted="$(jq -r '.sections | keys[]' "$FP" | sort)"
 missing="$(comm -23 <(printf '%s\n' "$covered_sorted") <(printf '%s\n' "$fp_sorted"))"
 orphan="$(comm -13 <(printf '%s\n' "$covered_sorted") <(printf '%s\n' "$fp_sorted"))"

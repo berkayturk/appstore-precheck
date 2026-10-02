@@ -39,7 +39,7 @@ runs:
         verdict="$APC_ACTION_PATH/skills/appstore-precheck/scripts/verdict.sh"
 
         cd "$APC_WORKDIR"
-        out="$(bash "$scan" --dir .)"
+        out="$(env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir .)"
         echo "$out"
         echo "----------------------------------------"
         summary="$(printf '%s\n' "$out" | bash "$verdict")"
@@ -68,7 +68,7 @@ runs:
         set -euo pipefail
         scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
         cd "$APC_WORKDIR"
-        bash "$scan" --dir . --format sarif > "$GITHUB_WORKSPACE/appstore-precheck.sarif"
+        env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir . --format sarif > "$GITHUB_WORKSPACE/appstore-precheck.sarif"
     - name: Upload SARIF
       if: ${{ (success() || failure()) && inputs.sarif == 'true' }}
       uses: github/codeql-action/upload-sarif@411c4c9a36b3fca4d674f06b6396b2c6d23522c6 # v3
@@ -87,7 +87,7 @@ runs:
         set -euo pipefail
         scan="$APC_ACTION_PATH/skills/appstore-precheck/scripts/scan.sh"
         cd "$APC_WORKDIR"
-        bash "$scan" --dir . --format json \
+        env -u APPSTORE_PRECHECK_TRUST_CONFIG bash "$scan" --dir . --format json \
           | jq -r '.findings[]
                    | select(.suppressed==false and (.severity=="FAIL" or .severity=="WARN"))
                    | (if .severity=="FAIL" then "error" else "warning" end) as $lvl

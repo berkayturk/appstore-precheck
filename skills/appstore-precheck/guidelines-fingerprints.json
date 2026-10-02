@@ -284,6 +284,294 @@
       "snapshot": "5.6.3 discovery fraud participating in the app store requires integrity and a commitment to building and maintaining customer trust. manipulating any element of",
       "quote": "5.6.3 Discovery Fraud Participating in the App Store requires integrity and a commitment to building and maintaining customer trust. Manipulating any element of the App Store customer experience such as charts, search, reviews, or referrals to your app erodes customer trust and is not permitted.",
       "quote_verified_on": "2026-09-01"
+    },
+    "2.4.1": {
+      "fingerprint": "e74a3521971b1d2a7f5762539dcba77115e24fc143c6bd0bcc2aed5c5dba580a",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.1.1": {
+      "fingerprint": "f446c6c8f796ae042813c98240ca8534658cbc0fe2e8dc2ae882fc6d2bc50b3a",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.1.2": {
+      "fingerprint": "2f6c6b3876ab3721a93b36cf0d03ae280f515ef81a35c070a5a20187884a3e6b",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.1.3": {
+      "fingerprint": "4186866fbccceeafcc7f4c46be2addea4f5df490c22a0789a5aa81601a8ca7d9",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.1.4": {
+      "fingerprint": "2ca1c551b8f59c3c9a08cb66bfe9825c226b2c5b7dbf7026b70088162c425cb9",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.1.5": {
+      "fingerprint": "c21c47578e5dea1d4cba2b46698ea6081d6ae16d55735cc630504304de1d9c7a",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.1.6": {
+      "fingerprint": "822b6ece35bf9ecdc0a95e97988534107fcb4d0089d1eb4c1a9358316eeef9d8",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.2.1": {
+      "fingerprint": "ffadee3ecbf75b6cf5b293fa2d9f59b2d68c1ba61e6e4c0cb33852324081e84b",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.4.2": {
+      "fingerprint": "fd02e0faf8ab3910f30402c117326958ddb0a777e47eaab91ee40c9e18fdf96e",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.4.3": {
+      "fingerprint": "3010d22973eff58ae99c66ce8d9d032f16989724b4fb4b55c06a37966e5a9ff3",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.4.4": {
+      "fingerprint": "8f2a2993a3e85b576d93f9509286b0d7b0902d7e72b8419654094f026ac47f12",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "1.4.5": {
+      "fingerprint": "94073e83a6b4de4a683bc238580097861ba765a4b7ff6b840f295b956bf9193a",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.3.6": {
+      "fingerprint": "a6804ee336bd78da1ddc44613ea6fe131b5dcf4cbe482b8cb696ef3720435c3d",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.8": {
+      "fingerprint": "313c56bbb1075f92ab1e66ab7eed1c1c7eff42846001abc62ae284e530022711",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.9": {
+      "fingerprint": "7d3906009804d802bede4634f4d9abae4b07e239c4418776f210e60840e00c2f",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "3.1.3": {
+      "fingerprint": "88155f382e2d743947ff7ad62997ff09a17225d0512ada4de6b1204753113adf",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "3.1.4": {
+      "fingerprint": "e699d339d2a5b1d59c5955c39f7d57a8e92347050866b80c621c1ae96136417b",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "3.2.1": {
+      "fingerprint": "8d28a81f97cbbaef0e4540433f5f988861fc6ddec67bb65f9f588c636b497ddd",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.2.6": {
+      "fingerprint": "4103043724fc67b34b9d9284adde202d44d15a33f8ee16a595fb1da66902e0bc",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.5.1": {
+      "fingerprint": "9a82e38f4117ddc59f65993ff1ba5c8fba392fb91f7aad3936725e289d348b38",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.7.1": {
+      "fingerprint": "a9c739366a556bcec76d7f255b248fb3389c6b6d3d88dee444bd3d33f74d02f8",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.7.3": {
+      "fingerprint": "54d9136a5c3963a72c280a8da4a940cd9071c8dcb4923ed01b610168c2fd25bb",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.10": {
+      "fingerprint": "80184d5be5beec88f04c59b79018d488f36d6597e21ca7950a9f54765feca174",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "5.2.3": {
+      "fingerprint": "af448918a1af7645066c9cce2be68952a841908a49efe143123b5641e8cf2215",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "5.2.5": {
+      "fingerprint": "d64c2be4c4da8dc7c5386cd1168c4ab68c0ec791cf3ee333abc7b1b4876c544e",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "5.3.3": {
+      "fingerprint": "7770603fbb406eeaa5d1320ca6baa5f57a72ee680200d82373bbc9dd6e41b8fe",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.3.12": {
+      "fingerprint": "c4fe778434d20e2157b2093ceab8e780d6a98f85c05c57823507992f58de54a3",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.4.4": {
+      "fingerprint": "5c1599abe86941e8cc0fac782d6108594b841593dbb9cb19d820ad4f0470a5bc",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.6": {
+      "fingerprint": "e1a8e8467efcfda4d7d3fc24fbfd3d66d0165435a1c53d0b186eb1067ac35609",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.11": {
+      "fingerprint": "afdf258f4f5e48caaa98645313f4c13732b786e93975f3b1dd00390b65fac898",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.12": {
+      "fingerprint": "6a5f137ccc7b19845507a1bef342708d3b855d3c2863f445ac5fc989db122715",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.13": {
+      "fingerprint": "a3c9f293d96b46e5143c618508ad065db149befad2ee87da2692216a4026e859",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.15": {
+      "fingerprint": "5285594d981dc8357f9236029cb7af8bbc2434deb94f998c90324d971c7e691e",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.16": {
+      "fingerprint": "67f6ba78b994b4bf08e77242214a3552bf40197b92df05263688ebb3c39f0044",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.17": {
+      "fingerprint": "bdf99d2885a4f998eb36328a92b0750322c7f0c6ba919c9093a6ca55ac21c3d1",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.18": {
+      "fingerprint": "443fa8d1851f9b93a9214f181fbcc1e9eb9a91862a078821ad4fdab0847bdcac",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.2.1": {
+      "fingerprint": "186350931d2f6ae6faf4fab30b4ad0000cb386890f59dfc1f0d55904e0d31ebc",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.2.3": {
+      "fingerprint": "60bde0e85a028024660dd1b6da7a487083fea5c8e346e1f9d4ef287e6bce7829",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.5.5": {
+      "fingerprint": "deedf18c56472724407d7c7ef8d62568b5457df308582812cf1bd6e0910c54b2",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.5.6": {
+      "fingerprint": "f1eb6c462b45c182d3dcc4ef0aff03df096dbbb59b114abcd80d513e9693f001",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.7.2": {
+      "fingerprint": "167c82880f22a7f3aa150522200dd4a456ac5c2be2dcea25ca722f691d66d2b2",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "5.2.4": {
+      "fingerprint": "29ef1e9fcebc87b117b49a7914c5bbff3fac0762d6b61af8172850f56163a992",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.4.2": {
+      "fingerprint": "cb18b01337c6f8967800ef9b824f1da4e689f9bba249b4efff12c82111b1263c",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "2.5.14": {
+      "fingerprint": "16e833e564e8fc89ba7845d296e5c85ec00b46aa147aa32e982f9d491b83a46d",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.5.2": {
+      "fingerprint": "285371a2e18e84a6b20f61f4b9e4f342c2890debecfaf527c57051d4e15c48b4",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.7.4": {
+      "fingerprint": "ff46610851c8c3c7082eaec7f7f94f9b61b3d25912c822efaa6850dec6e12809",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "4.7.5": {
+      "fingerprint": "18ec06bd6d97b2ac16a060021a0e88d7b1efa042e9320936c4c6a340e843f206",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
+    },
+    "5.1.5": {
+      "fingerprint": "07911be837521693da654a46f08e84c9ca2ec3cf9ad87c65f54ae9624d157b3e",
+      "snapshot": "Source fingerprint only; no pinned quotation.",
+      "fingerprint_verified_on": "2026-10-02",
+      "source_snapshot_date": "2026-09-27"
     }
   },
   "reconciled_on": "2026-09-01",

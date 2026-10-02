@@ -94,8 +94,7 @@ dyn_signal_tree() {
   local udid="$1" out="$2" n
   if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "maestro --device $udid hierarchy > $out   # one Maestro invocation, one flow"; echo unread; return 0; fi
   command -v maestro >/dev/null 2>&1 || { echo unread; return 0; }
-  dyn_with_timeout "$DYN_MAESTRO_TIMEOUT" sh -c 'maestro --device "$1" hierarchy > "$2" 2>/dev/null' _ "$udid" "$out" || { echo unread; return 0; }
-  n="$(jq '[.. | objects | select(has("attributes"))] | length' "$out" 2>/dev/null)" || { echo unread; return 0; }
+  n="$(python3 -B "$DYN_LIB_DIR/dyn-scrub.py" --udid "$udid" --out "$out" --timeout "$DYN_MAESTRO_TIMEOUT")" || { echo unread; return 0; }
   [[ "$n" =~ ^[0-9]+$ ]] && echo "$n" || echo unread
 }
 
@@ -108,6 +107,7 @@ dyn_repeat() {
   : > "$marker"; : > "$log"
   dyn_log_start "$udid" "$exe" "$bid" "$log"
   pid="$(dyn_launch "$udid" "$bid")"
+  [[ -z "${DYN_EXT_DIR:-}" ]] || printf '%s\n' "$pid" > "$DYN_EXT_DIR/pid-$i.txt"
   if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "sleep $window   # observation window, repeat $i"; else sleep "$window"; fi
   proc="$(dyn_signal_process "$pid")"
   shot="$(dyn_signal_screenshot "$udid" "$png")"

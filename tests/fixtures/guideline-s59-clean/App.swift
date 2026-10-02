@@ -1,0 +1,1 @@
+class Handler: INExtension { override func handler(for intent: INIntent) -> Any { self } }

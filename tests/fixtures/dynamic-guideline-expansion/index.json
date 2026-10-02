@@ -1,0 +1,32 @@
+{
+  "rule": "dyn-miniapp-index",
+  "cases": {
+    "risky": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "directory_unavailable": true,
+        "directory_heading": true
+      },
+      "expected": "FINDING"
+    },
+    "clean": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "directory_heading": true,
+        "visible_items": 2
+      },
+      "expected": "PASS"
+    },
+    "skip": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "directory_heading": false
+      },
+      "expected": "SKIP"
+    }
+  },
+  "origin": "Synthetic fixture, not a device recording"
+}

@@ -34,6 +34,14 @@ rule_slug() {
     51) echo push-marketing-optout ;;       52) echo xcode-sdk-requirement ;;
     53) echo subscription-eula-metadata ;;  54) echo saturated-category ;;
     55) echo ipv4-literal ;;
+    56) echo release-notes-specificity ;;  57) echo device-restart-instructions ;;
+    58) echo browser-engine ;;  59) echo intent-handler-parity ;;
+    60) echo call-filter-controls ;;  61) echo face-authentication ;;
+    62) echo document-browser-access ;;  63) echo extension-bundle-parity ;;
+    64) echo matter-extension ;;  65) echo extension-advertising ;;
+    66) echo ar-integration-depth ;;  67) echo companion-app-required ;;
+    68) echo game-center-id-sharing ;;  69) echo metadata-emoji ;;
+    70) echo miniapp-native-bridge ;;  71) echo apple-endorsement-claims ;;
     *) echo "" ;;
   esac
 }

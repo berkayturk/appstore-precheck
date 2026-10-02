@@ -173,5 +173,197 @@
     "expect_absent": [
       "usage-description-crosscheck"
     ]
+  },
+  "guideline-s56-positive": {
+    "expect_fire": [
+      "release-notes-specificity"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s56-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "release-notes-specificity"
+    ]
+  },
+  "guideline-s57-positive": {
+    "expect_fire": [
+      "device-restart-instructions"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s57-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "device-restart-instructions"
+    ]
+  },
+  "guideline-s58-positive": {
+    "expect_fire": [
+      "browser-engine"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s58-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "browser-engine"
+    ]
+  },
+  "guideline-s59-positive": {
+    "expect_fire": [
+      "intent-handler-parity"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s59-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "intent-handler-parity"
+    ]
+  },
+  "guideline-s60-positive": {
+    "expect_fire": [
+      "call-filter-controls"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s60-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "call-filter-controls"
+    ]
+  },
+  "guideline-s61-positive": {
+    "expect_fire": [
+      "face-authentication"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s61-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "face-authentication"
+    ]
+  },
+  "guideline-s62-positive": {
+    "expect_fire": [
+      "document-browser-access"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s62-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "document-browser-access"
+    ]
+  },
+  "guideline-s63-positive": {
+    "expect_fire": [
+      "extension-bundle-parity"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s63-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "extension-bundle-parity"
+    ]
+  },
+  "guideline-s64-positive": {
+    "expect_fire": [
+      "matter-extension"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s64-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "matter-extension"
+    ]
+  },
+  "guideline-s65-positive": {
+    "expect_fire": [
+      "extension-advertising"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s65-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "extension-advertising"
+    ]
+  },
+  "guideline-s66-positive": {
+    "expect_fire": [
+      "ar-integration-depth"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s66-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "ar-integration-depth"
+    ]
+  },
+  "guideline-s67-positive": {
+    "expect_fire": [
+      "companion-app-required"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s67-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "companion-app-required"
+    ]
+  },
+  "guideline-s68-positive": {
+    "expect_fire": [
+      "game-center-id-sharing"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s68-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "game-center-id-sharing"
+    ]
+  },
+  "guideline-s69-positive": {
+    "expect_fire": [
+      "metadata-emoji"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s69-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "metadata-emoji"
+    ]
+  },
+  "guideline-s70-positive": {
+    "expect_fire": [
+      "miniapp-native-bridge"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s70-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "miniapp-native-bridge"
+    ]
+  },
+  "guideline-s71-positive": {
+    "expect_fire": [
+      "apple-endorsement-claims"
+    ],
+    "expect_absent": []
+  },
+  "guideline-s71-clean": {
+    "expect_fire": [],
+    "expect_absent": [
+      "apple-endorsement-claims"
+    ]
   }
 }

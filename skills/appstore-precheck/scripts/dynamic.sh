@@ -51,7 +51,9 @@ dyn_catalogue() {
   printf '%s\n' dyn-install dyn-launch dyn-first-screen dyn-paywall-visible \
     dyn-restore-tap dyn-permission-prompt dyn-demo-login dyn-screenshot-parity \
     dyn-dark-mode dyn-dynamic-type dyn-ipad-layout \
-    dyn-shipped-bundle dyn-shipped-sdk dyn-shipped-links dyn-hosts-contacted
+    dyn-shipped-bundle dyn-shipped-sdk dyn-shipped-links dyn-hosts-contacted \
+    dyn-cpu-idle dyn-capture-indicator dyn-musickit-auth dyn-miniapp-index \
+    dyn-miniapp-rating-label dyn-location-timing
 }
 dyn_is_setup() { [[ "${1:-}" == "dyn-install" ]]; }
 
@@ -69,11 +71,30 @@ dyn_rule_confidence() {
     dyn-launch|dyn-first-screen|dyn-paywall-visible|dyn-restore-tap) echo review-risk ;;
     dyn-permission-prompt|dyn-demo-login|dyn-screenshot-parity) echo review-risk ;;
     dyn-hosts-contacted) echo review-risk ;;
+    dyn-cpu-idle|dyn-capture-indicator|dyn-miniapp-index|dyn-miniapp-rating-label) echo judgment-call ;;
+    dyn-musickit-auth|dyn-location-timing) echo review-risk ;;
     dyn-dark-mode|dyn-dynamic-type|dyn-ipad-layout) echo judgment-call ;;
     dyn-shipped-bundle|dyn-shipped-sdk|dyn-shipped-links) echo validator-blocking ;;
     dyn-install) echo judgment-call ;;
     *) echo "" ;;
   esac
+}
+
+# New observation families have no complete static equivalent; they stay standalone.
+# Even manually supplied transcripts must carry an explicit unanimous fresh quorum.
+dyn_extended_kind() {
+  local id="$1" kind="$2" msg="$3" observed total
+  case "$id" in
+    dyn-cpu-idle|dyn-capture-indicator|dyn-musickit-auth|dyn-miniapp-index|dyn-miniapp-rating-label|dyn-location-timing) ;;
+    *) printf '%s' "$kind"; return ;;
+  esac
+  if [[ "$kind" != SKIP ]]; then
+    if [[ "$msg" =~ quorum[[:space:]]([1-9][0-9]{0,5})/([1-9][0-9]{0,5})[\;[:space:]] && "$msg" == *'fresh erase verified'* ]]; then
+      observed="${BASH_REMATCH[1]}"; total="${BASH_REMATCH[2]}"
+      if (( observed >= 3 && observed == total )); then printf '%s' "$kind"; return; fi
+    fi
+    printf SKIP
+  else printf SKIP; fi
 }
 
 # --- Reconciliation table -------------------------------------------------------
@@ -186,6 +207,9 @@ parse_line() {
   else guideline="$rest"; rest=""; fi
   if [[ "$rest" == \[*\]* ]]; then id="${rest%%]*}"; id="${id#[}"; rest="$(_trim "${rest#*]}")"; fi
   msg="${rest#— }"; msg="${msg#- }"; msg="$(_trim "$msg")"
+  if [[ "$(dyn_extended_kind "${id%%:*}" "$kind" "$msg")" == SKIP && "$kind" != SKIP ]]; then
+    kind=SKIP; msg="Unverified fresh quorum; observation not accepted: $msg"
+  fi
   case "$kind" in PASS) sev=PASS ;; FINDING) sev=WARN ;; SKIP) sev=SKIP ;; esac
   set_rule "$id"
   set_evidence "runtime"

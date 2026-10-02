@@ -1,0 +1,34 @@
+{
+  "rule": "dyn-capture-indicator",
+  "cases": {
+    "observed": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "flow_triggered": true,
+        "new_indicator_frame": true,
+        "status_indicator": true,
+        "screenshots_verified": true
+      },
+      "expected": "PASS"
+    },
+    "missing_evidence": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "flow_triggered": true,
+        "new_indicator_frame": false,
+        "status_indicator": false,
+        "screenshots_verified": true
+      },
+      "expected": "SKIP"
+    },
+    "not_applicable": {
+      "observation": {
+        "applicable": false
+      },
+      "expected": "SKIP"
+    }
+  },
+  "origin": "Synthetic fixture, not a device recording"
+}

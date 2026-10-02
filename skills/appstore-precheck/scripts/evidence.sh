@@ -68,6 +68,9 @@ GUIDELINES_BASE_URL="https://developer.apple.com/app-store/review/guidelines/"
 # plist read was. A rule may refine this for one finding with set_evidence.
 rule_evidence() {
   case "$1" in
+    release-notes-specificity|apple-endorsement-claims ) echo metadata ;;
+    device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|miniapp-native-bridge ) echo source ;;
+    metadata-emoji ) echo resource ;;
     # --- metadata: read from fastlane/metadata/**, uploaded to ASC verbatim ---
     competitor-mentions|metadata-char-limits|locale-metadata-parity) echo metadata ;;
     subscription-eula-metadata|support-privacy-url|placeholder-metadata) echo metadata ;;
@@ -110,6 +113,7 @@ rule_evidence() {
 # a heuristic must never be graded above judgment-call.
 rule_confidence() {
   case "$1" in
+    release-notes-specificity|device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|metadata-emoji|miniapp-native-bridge|apple-endorsement-claims ) echo judgment-call ;;
     # --- validator-blocking: Apple's machinery refuses the build or the submission ---
     # Missing purpose string / required-reason declaration / private API -> upload
     # validation. Metadata limits, missing localized metadata, missing screenshots,
@@ -194,7 +198,7 @@ evidence_label() {
 # runtime-not-audited (dynamic.sh, when the Phase 6 tier was not run).
 is_gap_record() { [[ "${1:-}" == *-not-audited ]]; }
 
-# rules_with_evidence <class> -> the catalogued rule ids in that evidence class, one
+# rules_with_evidence <class> [last-section] -> the catalogued rule ids in that evidence class, one
 # per line. Derived by asking rule_evidence about every slug in the findings.sh
 # catalogue, so it can never disagree with the classification it reports on. Used to
 # tell the user how many checks a missing artifact actually cost them, rather than
@@ -205,7 +209,7 @@ rules_with_evidence() {
   command -v rule_slug >/dev/null 2>&1 || return 0
   while IFS= read -r slug; do
     [[ "$(rule_evidence "$slug")" == "$want" ]] && echo "$slug"
-  done < <(catalogue_slugs)
+  done < <(catalogue_slugs "${2:-}")
   return 0
 }
 
@@ -214,9 +218,10 @@ rules_with_evidence() {
 # edited when a section is added — the hardcoded 53 this replaced was already wrong
 # the day §54 landed.
 catalogue_slugs() {
-  local n=1 slug
+  local n=1 slug limit="${1:-}"
   command -v rule_slug >/dev/null 2>&1 || return 0
   while :; do
+    [[ -z "$limit" || "$n" -le "$limit" ]] || break
     slug="$(rule_slug "$n")"
     [[ -n "$slug" ]] || break
     echo "$slug"; n=$((n + 1))

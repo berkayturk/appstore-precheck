@@ -30,6 +30,20 @@ dyn_cmd() {
   "$@"
 }
 
+# Per-step wall-clock caps for teardown and the simulator UI calls. A cap is enforced by
+# lib/dyn-process.py (its own process group, up to 15s of TERM grace on top), so the four
+# teardown steps of two devices stay inside ~120s (4 x (15s + 15s grace)) even if CoreSimulator wedges.
+: "${DYN_TEARDOWN_STEP_TIMEOUT:=15}"
+: "${DYN_UI_TIMEOUT:=20}"
+DYN_DEVICE_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# dyn_cmd_bounded <secs> <argv…> — dyn_cmd with a wall-clock cap (124 on expiry).
+dyn_cmd_bounded() {
+  local secs="$1"; shift
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "$*"; return 0; fi
+  python3 "$DYN_DEVICE_LIB_DIR/dyn-process.py" --timeout "$secs" -- "$@"
+}
+
 # dyn_pick_runtime -> the newest available iOS runtime identifier.
 dyn_pick_runtime() {
   [[ "$DYN_DRY_RUN" == 1 ]] && { echo "com.apple.CoreSimulator.SimRuntime.iOS-PLAN"; return 0; }
@@ -52,8 +66,15 @@ dyn_pick_device_type() {
 
 # dyn_device_create <name> <device-type> <runtime> -> udid (stdout), or "" on failure.
 dyn_device_create() {
-  if [[ "$DYN_DRY_RUN" == 1 ]]; then dyn_plan "xcrun simctl create $1 $2 $3"; echo "UDID-PLAN-${1##*-}"; return 0; fi
-  xcrun simctl create "$1" "$2" "$3" 2>/dev/null
+  if [[ "$DYN_DRY_RUN" == 1 ]]; then
+    dyn_plan "xcrun simctl create $1 $2 $3"
+    [[ -z "${DYN_OWNED_LEDGER:-}" ]] || printf '%s\n' "UDID-PLAN-${1##*-}" >> "$DYN_OWNED_LEDGER"
+    echo "UDID-PLAN-${1##*-}"; return 0
+  fi
+  local created
+  created="$(xcrun simctl create "$1" "$2" "$3" 2>/dev/null)" || return 1
+  if [[ -n "${DYN_OWNED_LEDGER:-}" && -n "$created" ]]; then printf '%s\n' "$created" >> "$DYN_OWNED_LEDGER"; fi
+  printf '%s\n' "$created"
 }
 
 # dyn_device_boot <udid> — boot and wait until the device is usable.
@@ -86,10 +107,17 @@ dyn_device_container() {
 # dyn_device_teardown <udid> — shutdown + delete. ONLY for a device this run created.
 dyn_device_teardown() {
   [[ -n "${1:-}" ]] || return 0
-  dyn_cmd xcrun simctl shutdown "$1" >/dev/null 2>&1 || true
-  dyn_cmd xcrun simctl delete "$1" >/dev/null 2>&1 || true
+  if [[ -n "${DYN_OWNED_LEDGER:-}" ]]; then
+    [[ ! -L "$DYN_OWNED_LEDGER" ]] && dyn_ledger_has "$DYN_OWNED_LEDGER" "$1" || return 0
+  fi
+  dyn_cmd_bounded "$DYN_TEARDOWN_STEP_TIMEOUT" xcrun simctl shutdown "$1" >/dev/null 2>&1 || true
+  dyn_cmd_bounded "$DYN_TEARDOWN_STEP_TIMEOUT" xcrun simctl delete "$1" >/dev/null 2>&1
 }
 
 # dyn_device_appearance <udid> light|dark ; dyn_device_content_size <udid> <size>
 dyn_device_appearance()   { dyn_cmd xcrun simctl ui "$1" appearance "$2" >/dev/null 2>&1 || true; }
 dyn_device_content_size() { dyn_cmd xcrun simctl ui "$1" content_size "$2" >/dev/null 2>&1 || true; }
+
+# dyn_ledger_has <file> <line> — exact whole-line membership; a missing file has nothing.
+dyn_ledger_has() { [[ -f "$1" ]] && grep -qxF -- "$2" "$1"; }
+

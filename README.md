@@ -22,10 +22,8 @@
 
 `appstore-precheck` is a read-only, pre-submission gate for iOS apps. It statically scans the most
 common rejection vectors, runs Apple's own metadata linter, watches the App Store Review Guidelines
-for drift, has Pierre explain every FAIL and WARN, then runs **31 semantic deep-review checks**
-(23 high-confidence Tier A + 8 heuristic Tier B v1 — beta language, review notes quality, app preview,
-incentivized review, push/HomeKit abuse, rating manipulation, saturated-category differentiation,
-Apple's 4.0 design minimum).
+for drift, has Pierre explain every FAIL and WARN, then runs **56 semantic deep-review checks**
+(Tier A cross-reads, Tier B heuristics and Tier C host vision reviews).
 It hands you a single **GREEN / YELLOW / RED** verdict. It never edits your code.
 
 It ships as a portable [Agent Skill](https://agentskills.io): the same `SKILL.md` runs natively in
@@ -38,8 +36,7 @@ also run it by hand or wire it into CI.
 
 Your verdict is delivered by **Pierre**, a French critic who has seen ten thousand rejections and is
 impressed by none of them. He reviews your build harder than Apple would, in private — first with a
-fast static scan, then with **31 deep semantic checks** (23 confident + 8 heuristic). A GREEN from
-Pierre means Apple will wave you through.
+fast static scan, then with **56 deep semantic checks**. GREEN describes this run’s gate results; it does not guarantee App Store approval.
 
 - 🔴 **RED**: *"Non. Restore Purchases, absent. Guideline 3.1.2. Suivant."*
 - 🟡 **YELLOW**: *"A few small uglinesses. I would not reject. But I noticed."*
@@ -51,7 +48,11 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-55 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+
+The percentage counts sections touched, not automatic verification of every requirement; see [the coverage inventory](docs/guideline-coverage.md).
+
+71 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -108,11 +109,27 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 | **5.6.1** | A custom App Store review prompt instead of the system `requestReview` API |
 | **5.6.1** | Sentiment-gated rating flow ("Enjoying the app?" → only happy users see the prompt) |
 | **encryption** | `ITSAppUsesNonExemptEncryption` set, so App Store Connect skips the export-compliance question |
+| **2.3.12** | Release-notes files only; absent files are SKIP, and publication timing is unknown. |
+| **2.4.4** | English quoted source strings and String Catalog/resource text only; contextual review remains necessary. |
+| **2.5.6** | Dependency-name and deprecated UIWebView type-use signals only; regional browser entitlements and shipping target require review. UIWebView is WARN, not FAIL. |
+| **2.5.11** | Legacy declarations and handler parity only; modern AppIntent is deliberately exempt from legacy plist registration. |
+| **2.5.12** | Filter/directory APIs only: normal VoIP CallKit is deliberately excluded. Labels may exist on unreachable UI. |
+| **2.5.13** | Face API and authentication terms must coexist in one file; LocalAuthentication presence elsewhere suppresses the warning, without proving correct authentication. |
+| **2.5.15** | Picker alone does not prove a file-browser app; the warning explicitly asks that question. Unavailable main plist is SKIP. |
+| **2.5.16** | Discovered extension/App Clip manifests and source hints only; variable bundle identifiers are SKIP pending resolved build settings. |
+| **2.5.17** | Matter source import or setup entitlement without a discovered Matter extension; generated target settings may need manual inspection. |
+| **2.5.18** | Imports in extension/App Clip manifest directories only; pbxproj link-phase target resolution is not audited. No extension means SKIP. |
+| **4.2.1** | Low-confidence source footprint proxy: one AR usage file and fewer than two view declarations; does not establish functionality quality. |
+| **4.2.3** | App query schemes plus a quoted install-to-continue instruction; arbitrary canOpenURL control/data flow is not inferred. |
+| **4.5.5** | Game Center identifier and network/analytics API must coexist in one file; explicitly no assertion of actual data flow. |
+| **4.5.6** | Unicode emoji range heuristic in store text; icon pixels always receive a separate SKIP gap. |
+| **4.7.2** | All four signals must coexist in one file: handler, remote JS URL, evaluation and native-sensitive API. Does not resolve bridge access control. |
+| **5.2.4** | Narrow English endorsement/official-product patterns; authorized claims still require human confirmation. Ordinary iPhone compatibility text stays clean. |
 
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
-signal-gated advisory checks stay silent unless their triggering signal is found.
+advisory warnings require their documented trigger. Missing inputs are recorded in the JSON coverage gaps.
 
-### Pierre deep review (31 semantic checks)
+### Pierre deep review (56 semantic checks)
 
 Optional **TypeSafe / Jev** support adds typed semantic judgments for purpose strings,
 copy, disclosures, claims/privacy consistency, review routing, guideline reranking,
@@ -130,14 +147,13 @@ See the [TypeSafe guide](skills/appstore-precheck/references/typesafe.md) for al
 workflows, fallback behavior, private caches, costs, and evaluation. No new dependency
 is needed beyond Python 3.8+ for this optional command.
 
-After the static scan, Pierre reads your project end-to-end and runs **31 evidence-based checks**
+After the static scan, Pierre reads your project end-to-end and runs **56 evidence-based checks**
 the grep layer cannot fully judge. These emit advisory `REVIEW-FINDING:` lines (they do **not**
 change the GREEN/YELLOW/RED verdict). Full procedure:
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md).
 
-**23 checks (Tier A)** are high-confidence cross-reads (privacy policy fetch, claims vs code,
-screenshots, paywall copy). **8 checks (Tier B v1, marked †)** are heuristic — useful pre-submit
-signals with a higher false-positive rate; missing evidence is reported separately, and `not applicable` requires evidence that the check is outside scope.
+Tier A checks cross-read supplied artifacts; Tier B checks are heuristic. Tier C requires host vision.
+Missing evidence is reported separately; a declared section is not a verified requirement.
 
 | Guideline | Deep check |
 |-----------|------------|
@@ -172,11 +188,36 @@ signals with a higher false-positive rate; missing evidence is reported separate
 | **5.6.1 / 5.6.3** † | Rating / review manipulation dark patterns (withhold features until 5 stars, write-review links without `requestReview`) |
 | **4.3** † | Meaningfully different from the incumbents in a category Apple names as saturated (4.3(b)); no 4.3(a) per-variant bundle ids |
 | **4.0** † | Apple's minimum design bar: iPad / large-text layout, no placeholder, clipped or degraded UI (Apple's #1 removal reason) |
+| **1.1.1** (vision) | Does observed content attack or humiliate a named person or protected group? |
+| **1.1.2** (vision) | Does realistic violent imagery conflict with the documented game context and age declaration? |
+| **1.1.3** (vision) | Does the observed offering encourage harmful use of weapons or hazardous substances? |
+| **1.1.4** (vision) | Does observed sexual content or the advertised matching purpose warrant a content-policy review? |
+| **1.1.5** † | Does the supplied text contain inflammatory religious targeting or a quotation contradicted by its supplied source? |
+| **1.1.6** † | Does a concrete implementation mismatch support a deceptive capability claim such as fabricated scanning or sensor data? |
+| **1.2.1** † | Does a creator-content offering mislabel its content or move it outside the described in-app experience? |
+| **1.4.2** † | Does a dosage-calculation offering lack the documented institutional source appropriate to its claims? |
+| **1.4.3** † | Does the supplied offering promote or sell tobacco, vaping goods, or illegal drugs within its documented context? |
+| **1.4.4** † | Does a checkpoint-location feature use a source other than the documented law-enforcement source? |
+| **1.4.5** † | Does the observed challenge or wagering copy encourage actions likely to physically harm participants? |
+| **2.3.6** (vision) | Does visible content materially contradict the supplied current age-rating declaration? |
+| **2.5.8** † | Does the product promise to replace the device home screen beyond a clearly described in-app simulation? |
+| **2.5.9** † | Does implemented behavior or user-facing copy override system controls outside the documented app-local context? |
+| **3.1.3** † | Does the supplied external-purchase flow contradict the documented offering, storefront, and claimed exception? |
+| **3.1.4** † | Does a hardware-gated content unlock exceed the documented relationship between the hardware and its function? |
+| **3.2.1** † | Does the documented promotion, gift-card, or wallet model contradict the bounded permitted purpose claimed by the developer? |
+| **4.2.6** (vision) | Do observed template reuse and the supplied ownership relationship support concern about a generic third-party app submission? |
+| **4.5.1** † | Does the implementation use an Apple store feed beyond its documented display purpose? |
+| **4.7.1** † | Do documented mini-app data practices contradict the containing app privacy declaration? |
+| **4.7.3** † | Does a mini-app bridge transfer host permissions or personal data beyond the supplied consent boundary? |
+| **4.10** † | Does the paywall charge solely for access to a built-in device capability rather than a documented added service? |
+| **5.2.3** † | Does the offered media-downloading or sharing flow conflict with the documented authorization for third-party content? |
+| **5.2.5** (vision) | Do the observed icon, name, and interface create a concrete misleading resemblance to an Apple product? |
+| **5.3.3** † | Does the supplied StoreKit flow sell credits used for documented real-money gambling or lottery participation? |
 
-Pierre reports an outcome for **all 31 every time**, separating supported PASS/FINDING results
+Pierre reports an outcome for **all 56 every time**. New catalog v4 checks use FINDING, SKIP or no signal; historical checks retain their statuses. Separate conclusions
 from missing evidence, unsupported inspection, unexecuted checks and proven non-applicability. When the
 static scan already flagged a guideline, the deep check adds semantic context the scanner could not see.
-† Tier B v1 items are heuristic — treat findings as "verify before submit", not automatic blockers.
+† Tier B items are heuristic — treat findings as "verify before submit", not automatic blockers.
 
 ### Supported app types
 
@@ -187,7 +228,7 @@ how the app is built:
 
 | App type | Coverage |
 |----------|----------|
-| 🟢 **Native Swift / SwiftUI** | **Full.** All 55 vectors apply. |
+| 🟢 **Native Swift / SwiftUI** | Source checks are supported; applicability and missing-input gates still apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The native-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
 ## Quick start
@@ -375,10 +416,10 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 55 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
+| **1** | **Static scan**: `scan.sh` over the 71 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
-| **4** | **Pierre deep review**: 31 semantic checks (23 Tier A + 8 Tier B v1 heuristic), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
+| **4** | **Pierre deep review**: 56 semantic checks (Tier A, heuristic Tier B and host vision Tier C), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |
 | **5** | **Verdict**: GREEN / YELLOW / RED from Phases 0–2 counts, plus `.precheck-pass` token the upload guard gates on. |
 | **6** | *(opt-in, agent mode)* **Local dynamic simulator tier**: finds a simulator `.app` you already built (`scripts/app-discover.sh`, never builds), then `scripts/dynamic-run.sh` runs it on a throwaway simulator it creates and deletes — launch health three times on an erased device (a crash finding needs 3/3), first screen, dark-mode / Dynamic Type / iPad layout heuristics, the *installed* bundle's purpose strings / `DTXcode` / linked frameworks, hosts contacted vs `NSPrivacyTrackingDomains` — while the agent drives paywall / Restore-tap / permission / demo-login / screenshot-parity via Maestro. Advisory; never changes the verdict; a check it cannot drive is a `DYNAMIC-SKIP`, never a pass. `scripts/dynamic.sh` turns the transcript into `evidence: runtime` records and reconciles them with the static findings; a Debug build never clears `needs build verification`. Not read-only: it executes your app. |
 
@@ -605,7 +646,7 @@ measures the false-positive rate on real, unrelated open-source code. See
 ## Eval (LLM deep-review scorecard)
 
 The static scanner above is measured by `docs/scorecard.md`; Pierre's **LLM deep-review layer**
-(31 semantic checks, incl. the 8 heuristic Tier B checks) has its own harness under [`eval/`](eval/)
+(56 semantic checks, including heuristics and host vision) has its own harness under [`eval/`](eval/)
 and its own scorecard, [`docs/llm-scorecard.md`](docs/llm-scorecard.md).
 
 - **Dataset** — `eval/dataset/`: one labelled case per file (target check, expected

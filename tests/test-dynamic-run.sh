@@ -16,7 +16,8 @@ FX="$HERE/fixtures"
 T="$(mktemp -d)"
 SHIM="$T/shim"; mkdir -p "$SHIM"
 export FAKE_CALLS="$T/calls.log" FAKE_PIDS="$T/pids" FAKE_SCENARIO=pass FAKE_PNG="$T/varied.png" FAKE_APP=""
-export FAKE_COUNTER="$T/launches"
+export FAKE_COUNTER="$T/launches" FAKE_AUTH="$T/authenticated" FAKE_TREE="$FX/dynamic-hierarchies/clean.json"
+REAL_PYTHON="$(command -v python3)"; export REAL_PYTHON
 
 # A varied PNG for the screenshot shim (a flat one would be a "hung splash").
 python3 - "$FAKE_PNG" <<'PY'
@@ -50,16 +51,26 @@ case "$1" in
       *) sleep 20 >/dev/null 2>&1 & ;;
     esac
     pid=$!; echo "$pid" >> "$FAKE_PIDS"; echo "$4: $pid" ;;
-  io) cp "$FAKE_PNG" "$5" ;;
+  io) if [[ -f "$FAKE_AUTH" ]]; then echo AUTHENTICATED_SCREENSHOT >> "$FAKE_CALLS"; fi; cp "$FAKE_PNG" "$5" ;;
+  erase) rm -f "$FAKE_AUTH" ;;
   spawn) exec sleep 3600 ;;
   boot|bootstatus|status_bar|privacy|shutdown|erase|delete|ui) exit 0 ;;
   *) exit 0 ;;
 esac
 EOF
-cat > "$SHIM/maestro" <<EOF
+cat > "$SHIM/maestro" <<'EOF'
 #!/usr/bin/env bash
-printf 'maestro %s\n' "\$*" >> "$FAKE_CALLS"
-cat "$FX/dynamic-hierarchies/clean.json"
+printf 'maestro %s\n' "$*" >> "$FAKE_CALLS"
+if [[ -f "$FAKE_AUTH" ]]; then
+  printf '%s\n' '{"attributes":{"text":"Private Profile"},"children":[{"attributes":{"text":"Alice Example"}},{"attributes":{"text":"e2e-user@example.test"}},{"attributes":{"text":"e2e-secret-value"}},{"attributes":{"text":"Settings"}}]}'
+else cat "$FAKE_TREE"; fi
+EOF
+cat > "$SHIM/python3" <<'EOF'
+#!/usr/bin/env bash
+case "$*" in
+  *dyn-demo-login.py*) echo DEMO_LOGIN >> "$FAKE_CALLS"; touch "$FAKE_AUTH"; printf 'PASS\tfixture login completed\n' ;;
+  *) exec "$REAL_PYTHON" "$@" ;;
+esac
 EOF
 cat > "$SHIM/otool" <<'EOF'
 #!/bin/sh
@@ -74,7 +85,7 @@ mkdir -p "$T/Debug-iphonesimulator"; cp -R "$FX/dynamic-bundle/Installed.app" "$
 APP="$T/Debug-iphonesimulator/Installed.app"; export FAKE_APP="$APP"
 REPO="$T/repo"; mkdir -p "$REPO/ios/App"; cp "$FX/dynamic-bundle/repo/Info.plist" "$REPO/ios/App/Info.plist"
 
-reset_calls() { : > "$FAKE_CALLS"; rm -f "$FAKE_COUNTER"; }
+reset_calls() { : > "$FAKE_CALLS"; rm -f "$FAKE_COUNTER" "$FAKE_AUTH"; }
 kill_fakes() { [[ -f "$FAKE_PIDS" ]] && { while read -r p; do kill "$p" 2>/dev/null; done < "$FAKE_PIDS"; : > "$FAKE_PIDS"; }; return 0; }
 first_idx() { grep -n -- "$1" "$FAKE_CALLS" | head -1 | cut -d: -f1; }
 count() { grep -c -- "$1" "$FAKE_CALLS"; }
@@ -101,6 +112,14 @@ assert_contains "$tx" "DYNAMIC-PASS: 4.0 [dyn-dark-mode]" "dark-mode geometry ov
 assert_contains "$tx" "DYNAMIC-PASS: 4.0 [dyn-dynamic-type]" "Dynamic Type geometry"
 assert_contains "$tx" "DYNAMIC-SKIP: 5.1.2 [dyn-hosts-contacted]" "no host in an empty log -> SKIP"
 assert_contains "$tx" "# agent: selector-based checks left for Maestro MCP" "native: selector checks handed to the agent"
+for id in dyn-cpu-idle dyn-capture-indicator dyn-musickit-auth dyn-miniapp-index dyn-miniapp-rating-label dyn-location-timing; do
+  assert_contains "$tx" "[$id]" "new observation has an explicit result: $id"
+done
+assert_contains "$tx" "DYNAMIC-SKIP: 2.4.2 [dyn-cpu-idle]" "fake sleep PID is not sampled as the app"
+obs_dir="$(jq -r '.guideline_observations' "$OUT1/run.json")"
+assert_eq "$(jq -r '.fresh' "$obs_dir/repeat-1.json")" true "fresh owned observation persisted"
+assert_eq "$(jq '.observations | length' "$obs_dir/repeat-3.json")" 6 "six connected producers run in the third repeat"
+
 assert_absent "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap]" "native: no pre-SKIP"
 # order
 c="$(first_idx 'simctl create')"; b="$(first_idx 'simctl boot')"; bs="$(first_idx 'simctl bootstatus')"
@@ -113,8 +132,8 @@ assert_contains "$(grep 'simctl status_bar' "$FAKE_CALLS" | head -1)" "override 
 assert_contains "$(grep 'simctl privacy' "$FAKE_CALLS" | head -1)" "reset all" "every grant reset"
 assert_contains "$(grep 'simctl launch' "$FAKE_CALLS" | head -1)" "--terminate-running-process" "launch terminates a running instance"
 assert_eq "3" "$(count 'simctl launch')" "three launches"
-assert_eq "2" "$(count 'simctl erase')" "erased between repeats (N-1 times)"
-assert_eq "3" "$(count 'simctl install')" "re-installed after each erase"
+assert_eq "3" "$(count 'simctl erase')" "erased before every repeat"
+assert_eq "4" "$(count 'simctl install')" "re-installed after each erase"
 assert_eq "5" "$(count 'simctl io .* screenshot')" "a screenshot per repeat (3) plus dark mode and Dynamic Type"
 assert_eq "1" "$(count 'simctl delete')" "exactly one delete"
 udid="$(grep -oE 'simctl install (FAKE-UDID-[0-9]+)' "$FAKE_CALLS" | head -1 | awk '{print $3}')"
@@ -148,10 +167,10 @@ assert_contains "$tx" "DYNAMIC-FINDING: 2.1 [dyn-first-screen]" "no first screen
 assert_contains "$tx" "DYNAMIC-SKIP: 4.0 [dyn-dark-mode] — app did not stay up" "geometry SKIPped, not invented"
 assert_eq "1" "$(count 'simctl delete')" "device still deleted after failures"
 
-section "crash once: FINDING with its ratio, never unanimous"
+section "crash once: SKIP with its ratio, never unanimous"
 reset_calls; FAKE_SCENARIO=mixed
 tx="$(bash "$RUN" --app "$APP" --repeats 3 --window 1 --out "$T/out3" 2>/dev/null)"; kill_fakes
-assert_contains "$tx" "DYNAMIC-FINDING: 2.1 [dyn-launch] — quorum 1/3: failed on 1 of 3 launches (not unanimous" "1/3 -> ratio in the line"
+assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-launch] — quorum 1/3 failures" "1/3 remains inconclusive"
 assert_contains "$tx" "DYNAMIC-PASS: 4.0 [dyn-dark-mode]" "the app stayed up on some launches, so layout is judged"
 
 # ---------------------------------------------------------------------------------
@@ -181,7 +200,7 @@ assert_contains "$tx" "DYNAMIC-SKIP: 3.1.2 [dyn-restore-tap] — not driveable o
 assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-demo-login]" "D5 pre-SKIP"
 assert_contains "$tx" "DYNAMIC-SKIP: 5.1.1(ii) [dyn-permission-prompt]" "D4 trigger half pre-SKIP"
 assert_contains "$tx" "no semantics to Maestro" "…with the reason"
-assert_contains "$tx" "DYNAMIC-PASS: 2.1 [dyn-launch]" "observation-based D1 still runs"
+assert_contains "$tx" "DYNAMIC-SKIP: 2.1 [dyn-launch]" "one observed launch is below quorum"
 assert_contains "$tx" "Dart HttpClient bypasses CFNetwork" "empty host list on Flutter names the CFNetwork blind spot"
 assert_contains "$tx" "--pktap" "…and the opt-in remedy"
 
@@ -194,6 +213,34 @@ assert_eq "0" "$(count 'simctl erase')" "no erase"
 assert_eq "0" "$(count 'simctl delete')" "no delete"
 assert_eq "0" "$(count 'simctl privacy')" "no privacy reset on a user device"
 assert_eq "2" "$(count 'simctl launch')" "relaunched twice"
+assert_contains "$tx" "DYNAMIC-SKIP: 2.4.2 [dyn-cpu-idle]" "user device cannot establish fresh CPU quorum"
+obs_dir="$(jq -r '.guideline_observations' "$T/out7/run.json")"
+assert_eq "$(find "$obs_dir" -name 'repeat-*.json' | wc -l | tr -d ' ')" 0 "no new action collector runs on a user device"
+
+
+section "demo login follows geometry and needs explicit authorized exploration"
+reset_calls
+export PRECHECK_DEMO_USERNAME=e2e-user@example.test PRECHECK_DEMO_PASSWORD=e2e-secret-value
+out_demo="$T/out-demo"
+tx="$(bash "$RUN" --app "$APP" --repo "$REPO" --repeats 3 --window 1 --demo-login --explore --out "$out_demo" 2>/dev/null)"; st=$?
+kill_fakes
+assert_eq "$st" 0 'demo fixture run succeeds'
+assert_contains "$tx" 'authenticated exploration disabled' 'demo does not silently enable exploration'
+assert_gt "$(first_idx DEMO_LOGIN)" "$(first_idx 'simctl ui .* content_size accessibility')" 'geometry occurs before the first demo credential use'
+assert_eq "$(count 'simctl erase')" 6 'demo attempts receive three separate fresh erases'
+assert_absent "$(cat "$FAKE_CALLS")" AUTHENTICATED_SCREENSHOT 'no screenshot is taken after demo authentication'
+assert_absent "$(cat "$out_demo/dark.json" "$out_demo/dynamic-type.json")" 'Alice Example' 'geometry does not retain profile text'
+printf '%s\n' '{"selectors":["Settings"]}' > "$T/navigation.json"
+reset_calls
+out_auth="$T/out-authorized"
+tx="$(bash "$RUN" --app "$APP" --repo "$REPO" --repeats 3 --window 1 --demo-login --authorized-navigation "$T/navigation.json" --out "$out_auth" 2>/dev/null)"; st=$?
+kill_fakes
+assert_eq "$st" 0 'explicit authorized navigation run succeeds'
+assert_eq "$(jq '.screens[0].screenshot' "$out_auth/explore/screen-inventory.json")" null 'authenticated exploration withholds screenshots'
+assert_absent "$(cat "$out_auth/explore/screen-inventory.json" "$out_auth/explore/screen-000.json")" 'Alice Example' 'authenticated profile text is redacted'
+assert_absent "$(cat "$out_auth/explore/screen-inventory.json" "$out_auth/explore/screen-000.json")" 'e2e-secret-value' 'authenticated password is redacted'
+assert_absent "$(cat "$FAKE_CALLS")" AUTHENTICATED_SCREENSHOT 'authorized mode also avoids authenticated image capture'
+unset PRECHECK_DEMO_USERNAME PRECHECK_DEMO_PASSWORD
 
 section "--dry-run prints the plan and touches nothing"
 reset_calls
@@ -206,7 +253,7 @@ assert_contains "$tx" "PLAN: xcrun simctl status_bar UDID-PLAN" "plans the statu
 assert_contains "$tx" "PLAN: xcrun simctl privacy UDID-PLAN" "plans privacy reset"
 assert_contains "$tx" "PLAN: xcrun simctl install UDID-PLAN" "plans the install"
 assert_eq "4" "$(grep -c 'PLAN: SIMCTL_CHILD_CFNETWORK_DIAGNOSTICS=3 xcrun simctl launch --terminate-running-process' <<<"$tx")" "three iPhone launches + one iPad launch planned, each with CFNetwork diagnostics"
-assert_eq "2" "$(grep -c 'PLAN: xcrun simctl erase' <<<"$tx")" "two erases planned"
+assert_eq "3" "$(grep -c 'PLAN: xcrun simctl erase' <<<"$tx")" "three erases planned"
 assert_contains "$tx" "PLAN: xcrun simctl delete UDID-PLAN" "plans the delete of the created device"
 assert_contains "$tx" "PLAN: maestro --device UDID-PLAN" "plans the hierarchy reads"
 assert_contains "$tx" "one Maestro invocation, one flow" "…one flow per call"

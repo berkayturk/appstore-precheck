@@ -1,0 +1,46 @@
+{
+  "rule": "dyn-cpu-idle",
+  "cases": {
+    "risky": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "samples": [
+          65,
+          55,
+          70
+        ],
+        "idle_seconds": 20,
+        "pid_verified": true
+      },
+      "expected": "FINDING"
+    },
+    "clean": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "samples": [
+          2,
+          1,
+          3
+        ],
+        "idle_seconds": 20,
+        "pid_verified": true
+      },
+      "expected": "PASS"
+    },
+    "skip": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "samples": [
+          90
+        ],
+        "idle_seconds": 20,
+        "pid_verified": true
+      },
+      "expected": "SKIP"
+    }
+  },
+  "origin": "Synthetic fixture, not a device recording"
+}

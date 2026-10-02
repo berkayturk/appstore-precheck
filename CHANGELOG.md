@@ -5,12 +5,42 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+- Review fixes: custom document browsers and embedded emoji artwork replace inverted policy signals; ordinary metadata emoji, bug-fix notes and system document pickers remain clean.
+- Missing inputs produce visible, suppressible modular SKIP records; run coverage excludes PASS absence claims and deduplicates skipped sections. Present metadata declarations remain unverified.
+- Source reads have a 60-second deadline; face-authentication scanning is linear, UTF-16 strings are supported, and unreadable files produce local gaps.
+- Demo login runs after geometry in fresh sessions; authenticated exploration requires a navigation allowlist and redacts personal text without screenshots. Collector failures retain diagnostics.
+- Build copy validation supports trusted monorepo Flutter caches, rejects overlapping HOME paths, and excludes secret/special files. The stricter HOME boundary also rejects projects underneath HOME.
+- Coverage inventory reports 93 touched sections, including 2 partial positive-only dynamic observations; semantic inventory requires procedures, fixtures and producible inputs.
+
+
+Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+
+### Guideline coverage expansion
+- Add signal-gated source and metadata checks in separate scanner helpers; preserve
+  existing finding records and expose new missing-input SKIPs as coverage gaps.
+- Extend catalog v4 with advisory questions, explicit evidence requirements and a
+  vision tier; missing inputs abstain and text-only transport cannot judge images.
+- Collect bounded fresh simulator observations with unanimous quorum; capture and
+  MusicKit checks only confirm observed indicators/prompts and cannot detect their
+  absence. Location review covers request timing, not authorization-scope mismatch.
+- Harvest opt-in build, metadata, artifact and runtime helpers with credential,
+  output-path, process-timeout, simulator-ownership and trusted-config safeguards.
+- Section coverage is an inventory of checks that touch a rule, not automatic
+  verification; synthetic cases do not establish live model or runtime accuracy.
+
+### Coverage groundwork
+- Derive leaf-section coverage from baseline exclusions and cross-check scanner,
+  Pierre, dynamic and vision sources; add human-only reasons and the existing D9 mapping.
+- Add run-local `coverage_sections` to scan JSON; keep text, SARIF and verdict fields unchanged.
+- Require three unanimous launch observations; empty logs and flat screenshots alone
+  cannot establish a successful launch or a crash. Sanitize transcript control characters.
+
 ### Fixed
 - Correct scanner and Pierre guideline references, and require storefront/exception
   context before drawing conclusions from payment SDK signals.
 - Keep missing evidence, unsupported inspection and unexecuted checks separate from
   supported review outcomes. Freeze catalog v2 procedures for historical evaluation
-  cases while current reviews use catalog v3; bind resumed evaluations to both.
+  cases; freeze v3 before extending current reviews to catalog v4, and bind resumed evaluations to all three.
 - Report TypeSafe transport attempts and retries, including unknown retry billing.
 
 ### Maintenance

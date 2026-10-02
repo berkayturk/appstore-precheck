@@ -49,10 +49,12 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 . "$HERE/lib/dyn-hosts.sh"
 # shellcheck source=lib/dyn-bundle.sh
 . "$HERE/lib/dyn-bundle.sh"
+# shellcheck source=lib/dyn-guidelines.sh
+. "$HERE/lib/dyn-guidelines.sh"
 
 # --- Arguments --------------------------------------------------------------------
 APP="" UDID="" BID="" REPO="" FRAMEWORK="" REPO_PLIST="" REPEATS=3 WINDOW=10
-DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0
+DEVTYPE="" RUNTIME="" IPAD=0 PKTAP=0 OUT="" DYN_DRY_RUN=0 EXPLORE=0 DEMO=0 AUTH_NAV=""
 usage_err() { echo "dynamic-run.sh: $1" >&2; exit 64; }
 need() { [[ $# -ge 2 ]] || usage_err "$1 needs a value"; }
 while [[ $# -gt 0 ]]; do
@@ -68,12 +70,18 @@ while [[ $# -gt 0 ]]; do
     --device-type) need "$@"; DEVTYPE="$2"; shift 2 ;;
     --runtime)     need "$@"; RUNTIME="$2"; shift 2 ;;
     --out)         need "$@"; OUT="$2"; shift 2 ;;
+    --explore)     EXPLORE=1; shift ;;
+    --demo-login)  DEMO=1; shift ;;
+    --authorized-navigation) need "$@"; AUTH_NAV="$2"; EXPLORE=1; shift 2 ;;
     --ipad)        IPAD=1; shift ;;
     --pktap)       PKTAP=1; shift ;;
     --dry-run)     DYN_DRY_RUN=1; shift ;;
     *) usage_err "unknown option '$1'" ;;
   esac
 done
+if [[ -n "$AUTH_NAV" ]]; then
+  [[ -f "$AUTH_NAV" ]] || usage_err '--authorized-navigation needs a JSON allowlist file'
+fi
 export DYN_DRY_RUN
 if [[ -n "$APP" && -n "$UDID" ]]; then usage_err "give --app OR --udid, not both"; fi
 if [[ -z "$APP" && -z "$UDID" ]]; then usage_err "one of --app <path.app> or --udid <UDID> --bundle-id <id> is required"; fi
@@ -89,7 +97,23 @@ fi
 command -v xcrun >/dev/null 2>&1 || { echo "dynamic-run.sh: xcrun not found — this tier needs macOS with Xcode (it is permanently local-only)" >&2; exit 69; }
 [[ -z "$FRAMEWORK" ]] && { if [[ -n "$REPO" ]]; then FRAMEWORK="$(detect_framework "$REPO")"; else FRAMEWORK=native; fi; }
 [[ -n "$OUT" ]] || OUT="$(mktemp -d "${TMPDIR:-/tmp}/precheck-dynamic.XXXXXX")"
+if [[ -n "$REPO" ]]; then
+  python3 - "$OUT" "$REPO" <<'PYCODE' || usage_err '--out must be outside the project'
+from pathlib import Path
+import sys
+out, repo = [Path(x).resolve() for x in sys.argv[1:]]
+raise SystemExit(1 if out == repo or repo in out.parents else 0)
+PYCODE
+fi
 mkdir -p "$OUT" || { echo "dynamic-run.sh: cannot create --out $OUT" >&2; exit 66; }
+OUT="$(cd "$OUT" && pwd -P)"
+for _output in transcript.txt plan.txt run.json owned-simulators.txt deleted-simulators.txt cleanup-failures.txt; do
+  [[ ! -L "$OUT/$_output" ]] || usage_err 'output file is a symlink'
+done
+[[ ! -L "$OUT/explore" ]] || usage_err 'exploration output is a symlink'
+rm -f "$OUT/explore/screen-inventory.json"
+DYN_OWNED_LEDGER="$OUT/owned-simulators.txt"; : > "$DYN_OWNED_LEDGER"; export DYN_OWNED_LEDGER
+DYN_EXT_DIR="$(mktemp -d "$OUT/guideline-observations.XXXXXX")" || { echo "dynamic-run.sh: cannot create private observations directory" >&2; exit 66; }
 TRANSCRIPT="$OUT/transcript.txt"; : > "$TRANSCRIPT"
 DYN_PLAN_FILE="$OUT/plan.txt"; : > "$DYN_PLAN_FILE"; export DYN_PLAN_FILE
 
@@ -99,12 +123,21 @@ note() { printf '# %s\n' "$1" | tee -a "$TRANSCRIPT"; }
 skip_all() { # skip_all <reason> — every observation this runner owns, as SKIP with one cause.
   local id g
   for id in dyn-launch dyn-first-screen dyn-dark-mode dyn-dynamic-type dyn-ipad-layout \
-            dyn-shipped-bundle dyn-shipped-sdk dyn-shipped-links dyn-hosts-contacted; do
+            dyn-shipped-bundle dyn-shipped-sdk dyn-shipped-links dyn-hosts-contacted \
+            dyn-cpu-idle dyn-capture-indicator dyn-musickit-auth dyn-miniapp-index \
+            dyn-miniapp-rating-label dyn-location-timing; do
     case "$id" in dyn-launch|dyn-first-screen) g=2.1 ;; dyn-dark-mode|dyn-dynamic-type) g=4.0 ;; dyn-ipad-layout) g=2.4.1 ;;
-                  dyn-shipped-sdk) g=2.1 ;; dyn-shipped-links) g=2.5.1 ;; dyn-hosts-contacted) g=5.1.2 ;; *) g=5.1.1 ;; esac
+                  dyn-shipped-sdk) g=2.1 ;; dyn-shipped-links) g=2.5.1 ;; dyn-hosts-contacted) g=5.1.2 ;; dyn-cpu-idle) g=2.4.2 ;; dyn-capture-indicator) g=2.5.14 ;;
+                  dyn-musickit-auth) g=4.5.2 ;; dyn-miniapp-index) g=4.7.4 ;; dyn-miniapp-rating-label) g=4.7.5 ;;
+                  dyn-location-timing) g=5.1.5 ;; *) g=5.1.1 ;; esac
     emit "$(dyn_line SKIP "$g" "$id" "$1")"
   done
 }
+
+if (( DEMO && EXPLORE )) && [[ -z "$AUTH_NAV" ]]; then
+  EXPLORE=0
+  note 'authenticated exploration disabled: --demo-login requires explicit --authorized-navigation allowlist'
+fi
 
 # --- Identity of the app under test ---------------------------------------------------
 BUILD_CONFIG="unknown" EXE="" APP_LABEL=""
@@ -135,6 +168,8 @@ cleanup() {
   return 0
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 # --- D0: device + install -------------------------------------------------------------------
 [[ -n "$RUNTIME" ]] || RUNTIME="$(dyn_pick_runtime)"
@@ -183,6 +218,7 @@ elif (( PKTAP )); then
 fi
 
 # --- D1 / D2: N launch repeats ----------------------------------------------------------------------
+FRESH_ERASES=0 DEMO_PASS=0 DEMO_FIND=0 DEMO_SKIP=0
 L_PASS=0 L_FIND=0 L_SKIP=0 S_PASS=0 S_FIND=0 S_SKIP=0 LAST_DETAIL="" LAST_SIGNALS="" LAUNCH_KIND="SKIP"
 if (( METRO_SKIP )); then
   emit "$(dyn_line SKIP 2.1 dyn-launch "Metro bundler not running on 127.0.0.1:8081 and $APP_LABEL embeds no main.jsbundle; a React Native Debug build cannot load its JavaScript, so a launch would fail for a reason that is not the app's — start Metro or supply a release bundle")"
@@ -190,9 +226,12 @@ if (( METRO_SKIP )); then
 else
   i=1
   while (( i <= REPEATS )); do
-    if (( i > 1 )) && [[ -n "$CREATED_UDID" ]]; then
-      dyn_device_erase "$UDID"; dyn_device_boot "$UDID"; dyn_device_prepare "$UDID"
-      dyn_device_install "$UDID" "$APP" >/dev/null 2>&1 || true
+    if [[ -n "$CREATED_UDID" ]]; then
+      if ! dyn_device_erase "$UDID" || ! dyn_device_boot "$UDID" || ! dyn_device_install "$UDID" "$APP" >/dev/null 2>&1; then
+        L_SKIP=$((L_SKIP+1)); S_SKIP=$((S_SKIP+1)); i=$((i+1)); continue
+      fi
+      dyn_device_prepare "$UDID"
+      [[ "$DYN_DRY_RUN" == 1 ]] || FRESH_ERASES=$((FRESH_ERASES+1))
     fi
     r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "$i")"
     kind="$(cut -f1 <<<"$r")"; LAST_DETAIL="$(cut -f2 <<<"$r")"; LAST_SIGNALS="$(cut -f3 <<<"$r")"
@@ -202,13 +241,20 @@ else
     if [[ "$shot" == varied && "$proc" == alive ]]; then S_PASS=$((S_PASS+1))
     elif [[ "$shot" == uniform || "$proc" == dead ]]; then S_FIND=$((S_FIND+1))
     else S_SKIP=$((S_SKIP+1)); fi
+    if [[ -n "$CREATED_UDID" && "$DYN_DRY_RUN" != 1 && "$kind" == PASS ]]; then
+      dyn_extended_capture "$i"
+    fi
     i=$((i+1))
   done
   q="$(dyn_quorum "$L_PASS" "$L_FIND" "$L_SKIP")"; LAUNCH_KIND="$(cut -f1 <<<"$q")"
-  emit "$(dyn_line "$LAUNCH_KIND" 2.1 dyn-launch "$(cut -f2 <<<"$q"); last repeat: $LAST_DETAIL; window ${WINDOW}s; screenshots $OUT/launch-*.png")"
+  FRESH_NOTE="fresh erase not established"
+  (( FRESH_ERASES == REPEATS && REPEATS >= 3 )) && FRESH_NOTE="fresh erase verified"
+  emit "$(dyn_line "$LAUNCH_KIND" 2.1 dyn-launch "$(cut -f2 <<<"$q"); last repeat: $LAST_DETAIL; window ${WINDOW}s; screenshots $OUT/launch-*.png; $FRESH_NOTE")"
   q="$(dyn_quorum "$S_PASS" "$S_FIND" "$S_SKIP")"
   emit "$(dyn_line "$(cut -f1 <<<"$q")" 2.1 dyn-first-screen "$(cut -f2 <<<"$q") (a non-blank screenshot with the process alive after ${WINDOW}s; a splash stuck as a flat frame counts as failed)")"
 fi
+
+dyn_extended_report
 
 # --- D7 / D8: dark mode and Dynamic Type geometry ------------------------------------------------------
 geometry_pass() { # geometry_pass <rule-id> <guideline> <label> <tag>
@@ -260,6 +306,44 @@ if (( IPAD )); then
   fi
 fi
 
+# Demo credentials are introduced only after every normal screenshot/geometry pass.
+run_demo_phase() {
+  local i=1 r kind demo_result fresh=0 fresh_note='fresh erase not established' q
+  (( DEMO )) || return 0
+  if [[ -z "$CREATED_UDID" || "$DYN_DRY_RUN" == 1 || "$L_PASS" -eq 0 ]]; then
+    DEMO_SKIP="$REPEATS"
+  else
+    while (( i <= REPEATS )); do
+      if ! dyn_device_erase "$UDID" || ! dyn_device_boot "$UDID" || ! dyn_device_install "$UDID" "$APP" >/dev/null 2>&1; then
+        DEMO_SKIP=$((DEMO_SKIP+1)); i=$((i+1)); continue
+      fi
+      dyn_device_prepare "$UDID"
+      fresh=$((fresh+1))
+      r="$(dyn_repeat "$UDID" "$BID" "$EXE" "$WINDOW" "$OUT" "demo-$i")"
+      kind="$(cut -f1 <<<"$r")"
+      if [[ "$kind" == PASS ]]; then
+        demo_result="$(python3 -B "$HERE/lib/dyn-demo-login.py" "$UDID" "$BID")"
+        case "$demo_result" in PASS*) DEMO_PASS=$((DEMO_PASS+1));; FINDING*) DEMO_FIND=$((DEMO_FIND+1));; *) DEMO_SKIP=$((DEMO_SKIP+1));; esac
+      else DEMO_SKIP=$((DEMO_SKIP+1)); fi
+      i=$((i+1))
+    done
+  fi
+  (( fresh == REPEATS && fresh >= 3 )) && fresh_note='fresh erase verified'
+  q="$(dyn_quorum "$DEMO_PASS" "$DEMO_FIND" "$DEMO_SKIP")"
+  emit "$(dyn_line "$(cut -f1 <<<"$q")" 2.1 dyn-demo-login "$(cut -f2 <<<"$q"); explicit login rejection count $DEMO_FIND; $fresh_note")"
+}
+
+run_exploration() {
+  local args=( --udid "$UDID" --bundle-id "$BID" --out "$OUT/explore" )
+  (( EXPLORE )) && [[ -n "$CREATED_UDID" && "$DYN_DRY_RUN" != 1 && "$L_PASS" -gt 0 ]] || return 0
+  [[ -z "$AUTH_NAV" ]] || args+=( --authorized-navigation "$AUTH_NAV" )
+  (( ! DEMO )) || args+=( --authenticated )
+  python3 -B "$HERE/lib/dyn-explore.py" "${args[@]}" >/dev/null 2>&1 || note 'screen exploration unavailable; inventory is not complete'
+}
+
+run_demo_phase
+run_exploration
+
 # --- D11: hosts contacted -----------------------------------------------------------------------------
 HOSTS="$OUT/hosts.txt"; : > "$HOSTS"
 cat "$OUT"/log-*.txt 2>/dev/null > "$OUT/log-all.txt" || : > "$OUT/log-all.txt"
@@ -295,14 +379,15 @@ esac
 # --- Run metadata ------------------------------------------------------------------------------------------
 jq -n --arg app "${APP:-}" --arg bid "$BID" --arg cfg "$BUILD_CONFIG" --arg fw "$FRAMEWORK" \
       --arg udid "$UDID" --arg name "$DEV_NAME" --arg type "$DEVTYPE" --arg rt "$RUNTIME" \
-      --argjson n "$REPEATS" --argjson w "$WINDOW" --arg out "$OUT" \
+      --argjson n "$REPEATS" --argjson w "$WINDOW" --arg out "$OUT" --arg observations "$DYN_EXT_DIR" \
       --argjson created "$([[ -n "$CREATED_UDID" ]] && echo true || echo false)" \
       --argjson metro "$([[ "$METRO_SKIP" == 1 ]] && echo true || echo false)" \
       --argjson dry "$([[ "$DYN_DRY_RUN" == 1 ]] && echo true || echo false)" \
+      --argjson fresh "$FRESH_ERASES" --argjson dp "$DEMO_PASS" --argjson df "$DEMO_FIND" --argjson ds "$DEMO_SKIP" \
       --argjson lp "$L_PASS" --argjson lf "$L_FIND" --argjson ls "$L_SKIP" '
   {app:(if $app=="" then null else $app end), bundle_id:$bid, build_config:$cfg, framework:$fw,
    device:{udid:$udid, name:$name, type:$type, runtime:$rt, created_by_this_run:$created},
-   repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls}, metro_skipped:$metro,
+   guideline_observations:$observations, fresh_erases:$fresh, demo_login:{pass:$dp,finding:$df,skip:$ds}, repeats:$n, window_seconds:$w, launch:{pass:$lp, finding:$lf, skip:$ls}, metro_skipped:$metro,
    dry_run:$dry, out:$out, transcript:($out + "/transcript.txt"),
    next:("dynamic.sh --transcript " + $out + "/transcript.txt --findings <scan.json> --target simulator --build-config " + $cfg)}' > "$OUT/run.json"
 # Teardown now (the EXIT trap becomes a no-op) so the transcript and the plan are complete.

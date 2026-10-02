@@ -1,0 +1,37 @@
+{
+  "rule": "dyn-location-timing",
+  "cases": {
+    "risky": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "os_prompt": "location",
+        "prompt_phase": "launch",
+        "location_context": false,
+        "app_context_observed": true
+      },
+      "expected": "FINDING"
+    },
+    "clean": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "os_prompt": "location",
+        "prompt_phase": "action",
+        "location_context": true
+      },
+      "expected": "PASS"
+    },
+    "skip": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "os_prompt": "",
+        "prompt_phase": "launch",
+        "location_context": false
+      },
+      "expected": "SKIP"
+    }
+  },
+  "origin": "Synthetic fixture, not a device recording"
+}

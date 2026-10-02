@@ -67,9 +67,9 @@ reporter, or real-device QA.
   "Not applicable" is also a SKIP (`DYNAMIC-SKIP: … — not applicable: <why>`), so the summary never
   counts an unobserved behaviour as observed.
 - **Determinism before findings.** The launch checks run **N=3 times**, each on a freshly erased
-  device; a `DYNAMIC-FINDING` for a crash needs **3/3**. A mixed result is a FINDING that carries its
-  ratio (`quorum 1/3: failed on 1 of 3 launches (not unanimous; advisory, never blocking)`) — the
-  Phase 3 blocking channel reads that ratio and never blocks on it.
+  device; a `DYNAMIC-FINDING` for a crash needs **3/3**. Mixed evidence is not unanimous and stays SKIP with its counts; fewer than three repeats
+  or any unreadable repeat also stays SKIP. Blocking is off by default; explicit `--dynamic-blocking`
+  uses only the documented fresh unanimous launch/login allowlist.
 - **One flow per Maestro invocation.** The iOS 26 driver misbehaves in batch mode (Maestro issues
   #3254 / #3318): every `mcp__maestro__run` call carries exactly one flow; the runner reads the
   hierarchy with one `maestro hierarchy` call at a time.
@@ -91,7 +91,7 @@ checks need Maestro to find and tap controls and stay with the agent (D3, D3b, D
 | # | rule id | Guideline | Kind | Dynamic question |
 |---|---------|-----------|------|------------------|
 | D0 | `dyn-install` | — | setup | Create a throwaway device, install the `.app`, resolve the bundle id, record the build configuration from the directory name. |
-| D1 | `dyn-launch` | **2.1** | observation | Does the app launch and stay up? Four signals per repeat, N=3 repeats, FINDING only on 3/3. |
+| D1 | `dyn-launch` | **2.1** | observation | Does the app launch and stay up? Four signals per repeat, N=3 repeats, FINDING only on 3/3; 2 PASS + 1 SKIP → SKIP. |
 | D2 | `dyn-first-screen` | **2.1** | observation | Does it reach a real first screen (not a flat splash, blank, or dead process)? |
 | D3 | `dyn-paywall-visible` | **3.1.2** | selector | If a paywall exists **and prices are visible**, does it render price + trial/auto-renew/terms on-screen? |
 | D3b | `dyn-restore-tap` | **3.1.2** | selector | Does tapping *Restore Purchases* produce a non-inert response within 3 s? |
@@ -103,6 +103,12 @@ checks need Maestro to find and tap controls and stay with the agent (D3, D3b, D
 | D9 | `dyn-ipad-layout` | **2.4.1** | observation (opt-in `--ipad`) | On an iPad simulator this run creates: the same heuristics; iPhone-only apps are `not applicable`. |
 | D10 | `dyn-shipped-bundle[:KEY]` / `dyn-shipped-sdk` / `dyn-shipped-links` | **5.1.1 / 5.1.2 / 2.1 / 2.5.1** | observation (nothing executed) | The **installed** bundle: `Info.plist` purpose strings (one line per key) and drift vs the repo plist; `DTXcode` / `DTSDKName` (the toolchain that built *this* bundle); `otool -L` private-framework links. |
 | D11 | `dyn-hosts-contacted` | **5.1.2** | observation | Hosts seen in CFNetwork diagnostics (opt-in `--pktap` adds DNS for every process) vs `NSPrivacyTrackingDomains`. |
+| D12 | `dyn-cpu-idle` | **2.4.2** | observation | On a verified app PID, wait 20 idle seconds and sample CPU three times; median above 40% is an advisory finding. |
+| D13 | `dyn-capture-indicator` | **2.5.14** | selector + geometry | After an explicit recording action, capture a new labelled app frame and an OS status indicator with screenshots; absence remains SKIP. |
+| D14 | `dyn-musickit-auth` | **4.5.2** | selector + OS alert | After a music action, observe a SpringBoard media-library authorization alert; missing authorization evidence remains SKIP. |
+| D15 | `dyn-miniapp-index` | **4.7.4** | selector | Observe a mini-app directory with entries, or an explicit directory-unavailable screen; partial exploration never proves absence. |
+| D16 | `dyn-miniapp-rating-label` | **4.7.5** | selector + geometry | Inspect accessible age labels on fully visible mini-app entry cells; clipped or unreadable entries remain SKIP. |
+| D17 | `dyn-location-timing` | **5.1.5** | selector + OS alert | Observe a verified OS location alert before any action, without judging the app’s purpose, or after an explicit location action. |
 
 When the tier is **not run** (the user supplied no `.app` and no UDID), Phase 5's "Not audited"
 section lists the gap under its stable id **`runtime-not-audited`** — `dynamic.sh --not-run`
@@ -176,8 +182,7 @@ not be read is written into the line as such — never assumed healthy, never as
 - **process alive:** `kill -0` on the PID `simctl launch` printed (simulator apps are host
   processes);
 - **screenshot not uniform:** `xcrun simctl io <udid> screenshot` decoded by
-  [`lib/png-uniform.py`](../scripts/lib/png-uniform.py): a single flat colour is a hung splash or a
-  dead process;
+  [`lib/png-uniform.py`](../scripts/lib/png-uniform.py): a single flat colour calls for first-screen inspection, and cannot alone establish a crash;
 - **no crash in the log stream:** no `SIGABRT` / `EXC_BAD_ACCESS` / `Terminating app` / `Fatal
   error` line for the app in the window, and no new `<Executable>-*.ips` in
   `~/Library/Logs/DiagnosticReports`;
@@ -186,12 +191,11 @@ not be read is written into the line as such — never assumed healthy, never as
   perfectly healthy screen, so a small tree on its own is **never** a FINDING; it only counts when
   another signal also fails.
 
-Per repeat: process gone, a crash line, or a flat screenshot → failed; every readable signal
-healthy → passed; nothing readable → skipped. Across the N=3 repeats
-([`lib/dyn-quorum.sh`](../scripts/lib/dyn-quorum.sh)): every repeat failed → `DYNAMIC-FINDING …
-quorum 3/3`; some failed → `DYNAMIC-FINDING … quorum k/3 … (not unanimous; advisory, never
-blocking)`; every repeat skipped (driver timeouts) → `DYNAMIC-SKIP`; otherwise `DYNAMIC-PASS`
-naming the signals and, in parentheses, the ones that could not be read.
+Per repeat: process gone or an app crash in the log stream establishes failure. A flat
+screenshot alone is SKIP for launch and remains separate first-screen evidence in D2.
+An empty crash log alone establishes nothing. Across repeats, at least three unanimous
+failures are needed for FINDING and three unanimous passes for PASS; mixed or incomplete
+observations are SKIP with their counts. Signals that could not be read are named explicitly.
 
 ### D2 — Core screen reachable (`dyn-first-screen`)
 Derived from the same repeats: a non-uniform screenshot with the process alive at the end of the
@@ -380,3 +384,59 @@ partial, a keyless D10 line aims at nothing); `att-usage ↔ dyn-shipped-bundle:
 `release` claim over a transcript whose D0 line says `Debug-iphonesimulator` is degraded to
 `unknown`, loudly. `dynamic.sh --not-run --findings <static.json>` produces the
 `runtime-not-audited` gap record for a run where the tier was not used.
+
+### D12–D17 — bounded fresh observations
+
+`lib/dyn-guidelines.sh` invokes `dyn-guideline-capture.py` once per healthy launch,
+before demo login, only on a device created and freshly erased by this runner. The
+collector has a 240-second deadline; individual commands have 10–20-second deadlines.
+`dyn-guidelines.py` requires at least three distinct fresh observations with identical
+non-SKIP results. Missing repeats, mixed results, driver errors and degenerate UI
+semantics remain SKIP. Existing `--udid` and `--dry-run` sessions cannot establish this
+freshness. `run.json` links the private `guideline_observations` artifact directory.
+
+The CPU check verifies the PID's executable path against the installed bundle before
+sleeping or sampling. Host `ps` may report averaged process CPU; this is a performance
+review hint, not a battery-use measurement. Missing tools, PID mismatch or incomplete
+samples remain SKIP. It does not need an accessibility tree.
+
+UI actions are an exact small English allowlist, one flow per Maestro invocation;
+no permission acceptance, login, purchase or destructive controls are tapped. Source
+mini-app applicability requires `WKScriptMessageHandler`, remote URL and JavaScript
+execution signals together. OS prompts require both SpringBoard ownership and a native
+alert class; text such as “Allow” in an app view is not OS evidence. If a driver omits
+ownership, bounds or native classes, the affected observation is SKIP. Other languages
+or deeper navigation currently need agent review.
+
+D13 and D14 are deliberately incomplete defect detectors: they can establish the
+positive, narrowly described observations, but cannot infer omitted capture warnings
+or unauthorized library access from missing UI. D13 requires before/after screenshots,
+a newly labelled recording frame and OS status-bar child geometry; it does not perform
+visual pixel recognition. D15's defect case is an explicit unavailable directory, not
+failure to discover an index. D16 is limited to accessible labels on visible entries;
+it does not infer the rating of hidden content. D17 reports only the observed pre-action permission timing; it does not judge the
+app’s purpose or whether the request was justified. The same wording applies to
+English and localized app screens. It cannot distinguish WhenInUse from Always.
+
+Each action must start from the same captured app context: a digest of app-owned
+labels, frames and roles must match the initial screen, and ownership must match
+the bundle under test. A changed screen after an earlier action, unknown ownership,
+or a post-action switch to another app yields SKIP. Initial directory/prompt facts
+remain attached to their original launch snapshot; they are never copied into a
+different post-action screen.
+
+These observations have no complete static equivalent, so reconciliation preserves
+them as standalone records and never resolves a wider static source finding. Manually
+supplied D12–D17 PASS/FINDING transcript lines also require a fresh unanimous quorum.
+
+### Demo-session output safety
+
+Normal launch, geometry and iPad captures finish before demo credentials are entered.
+Demo login uses its own erased-device repeats. All persisted hierarchy JSON goes
+through shared credential/email redaction before writing. Runtime review does not
+implicitly explore: request `--explore` explicitly. With `--demo-login`, exploration
+also needs `--authorized-navigation /path/to/allowlist.json` containing a nonempty
+`selectors` array. The destructive-action denylist applies even to authorized labels.
+Authenticated exploration preserves only those navigation labels and structural
+geometry, redacts other text, and withholds screenshots. Maestro debug/test artifacts
+are directed to temporary output subdirectories and deleted after each call.

@@ -1,0 +1,6 @@
+{"attributes":{"text":"","bounds":"[0,0][393,852]"},"children":[
+ {"attributes":{"text":"Home","accessibilityText":"Home"},"children":[]},
+ {"attributes":{"text":"Settings","accessibilityText":"Settings","clickable":true},"children":[]},
+ {"attributes":{"text":"Open Library","accessibilityText":"Open Library","clickable":true},"children":[]},
+ {"attributes":{"text":"Welcome to the app","accessibilityText":"Welcome to the app"},"children":[]}
+]}

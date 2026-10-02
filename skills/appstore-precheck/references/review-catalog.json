@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "checks": [
     {
       "key": "ugc-moderation",
@@ -248,6 +248,493 @@
       "guideline": "4.0",
       "question": "Would the app pass Apple's minimum design bar: usable iPad / large-text layout, no clipped, overlapping or placeholder UI, no degraded or non-functional screens?",
       "requires_vision": true
+    },
+    {
+      "key": "content-defamatory",
+      "number": 32,
+      "tier": "C",
+      "guideline": "1.1.1",
+      "question": "Does observed content attack or humiliate a named person or protected group?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "screenshots",
+        "metadata",
+        "source-strings"
+      ],
+      "required_context": [
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "content-graphic-violence",
+      "number": 33,
+      "tier": "C",
+      "guideline": "1.1.2",
+      "question": "Does realistic violent imagery conflict with the documented game context and age declaration?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "screenshots",
+        "metadata"
+      ],
+      "required_context": [
+        "age_rating",
+        "content_context",
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "content-weapons",
+      "number": 34,
+      "tier": "C",
+      "guideline": "1.1.3",
+      "question": "Does the observed offering encourage harmful use of weapons or hazardous substances?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "screenshots",
+        "metadata"
+      ],
+      "required_context": [
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "content-sexual",
+      "number": 35,
+      "tier": "C",
+      "guideline": "1.1.4",
+      "question": "Does observed sexual content or the advertised matching purpose warrant a content-policy review?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "screenshots",
+        "metadata"
+      ],
+      "required_context": [
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "content-religious",
+      "number": 36,
+      "tier": "B",
+      "guideline": "1.1.5",
+      "question": "Does the supplied text contain inflammatory religious targeting or a quotation contradicted by its supplied source?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings"
+      ],
+      "required_context": [
+        "quotation_context"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "content-false-features",
+      "number": 37,
+      "tier": "B",
+      "guideline": "1.1.6",
+      "question": "Does a concrete implementation mismatch support a deceptive capability claim such as fabricated scanning or sensor data?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings",
+        "source"
+      ],
+      "required_context": [],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "creator-content-boundary",
+      "number": 38,
+      "tier": "B",
+      "guideline": "1.2.1",
+      "question": "Does a creator-content offering mislabel its content or move it outside the described in-app experience?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source"
+      ],
+      "required_context": [],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "drug-dosage-source",
+      "number": 39,
+      "tier": "B",
+      "guideline": "1.4.2",
+      "question": "Does a dosage-calculation offering lack the documented institutional source appropriate to its claims?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings"
+      ],
+      "required_context": [
+        "publisher_source"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "tobacco-vape-drugs",
+      "number": 40,
+      "tier": "B",
+      "guideline": "1.4.3",
+      "question": "Does the supplied offering promote or sell tobacco, vaping goods, or illegal drugs within its documented context?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings",
+        "SDK"
+      ],
+      "required_context": [
+        "sales_context"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "dui-checkpoints",
+      "number": 41,
+      "tier": "B",
+      "guideline": "1.4.4",
+      "question": "Does a checkpoint-location feature use a source other than the documented law-enforcement source?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings"
+      ],
+      "required_context": [
+        "checkpoint_source"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "physical-risk-bets",
+      "number": 42,
+      "tier": "B",
+      "guideline": "1.4.5",
+      "question": "Does the observed challenge or wagering copy encourage actions likely to physically harm participants?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings"
+      ],
+      "required_context": [],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "age-rating-consistency",
+      "number": 43,
+      "tier": "C",
+      "guideline": "2.3.6",
+      "question": "Does visible content materially contradict the supplied current age-rating declaration?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "screenshots",
+        "metadata"
+      ],
+      "required_context": [
+        "age_rating",
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "alternate-home-screen",
+      "number": 44,
+      "tier": "B",
+      "guideline": "2.5.8",
+      "question": "Does the product promise to replace the device home screen beyond a clearly described in-app simulation?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source-strings",
+        "source"
+      ],
+      "required_context": [],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "system-switch-override",
+      "number": 45,
+      "tier": "B",
+      "guideline": "2.5.9",
+      "question": "Does implemented behavior or user-facing copy override system controls outside the documented app-local context?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "source-strings"
+      ],
+      "required_context": [],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "other-purchase-eligibility",
+      "number": 46,
+      "tier": "B",
+      "guideline": "3.1.3",
+      "question": "Does the supplied external-purchase flow contradict the documented offering, storefront, and claimed exception?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "metadata"
+      ],
+      "required_context": [
+        "storefront",
+        "purchase_exception",
+        "offering"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "hardware-specific-content",
+      "number": 47,
+      "tier": "B",
+      "guideline": "3.1.4",
+      "question": "Does a hardware-gated content unlock exceed the documented relationship between the hardware and its function?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "metadata"
+      ],
+      "required_context": [
+        "hardware_relationship"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "business-model-acceptable",
+      "number": 48,
+      "tier": "B",
+      "guideline": "3.2.1",
+      "question": "Does the documented promotion, gift-card, or wallet model contradict the bounded permitted purpose claimed by the developer?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "metadata",
+        "source"
+      ],
+      "required_context": [
+        "business_model"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "template-app",
+      "number": 49,
+      "tier": "C",
+      "guideline": "4.2.6",
+      "question": "Do observed template reuse and the supplied ownership relationship support concern about a generic third-party app submission?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "screenshots",
+        "metadata",
+        "source"
+      ],
+      "required_context": [
+        "content_owner",
+        "publisher_relationship",
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "apple-rss-usage",
+      "number": 50,
+      "tier": "B",
+      "guideline": "4.5.1",
+      "question": "Does the implementation use an Apple store feed beyond its documented display purpose?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "source-strings"
+      ],
+      "required_context": [
+        "feed_purpose"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "miniapp-privacy-parity",
+      "number": 51,
+      "tier": "B",
+      "guideline": "4.7.1",
+      "question": "Do documented mini-app data practices contradict the containing app privacy declaration?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "privacy-manifest"
+      ],
+      "required_context": [
+        "miniapp_present",
+        "miniapp_data_practices"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "miniapp-data-sharing",
+      "number": 52,
+      "tier": "B",
+      "guideline": "4.7.3",
+      "question": "Does a mini-app bridge transfer host permissions or personal data beyond the supplied consent boundary?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source"
+      ],
+      "required_context": [
+        "miniapp_present",
+        "sharing_consent"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "monetize-builtin-capability",
+      "number": 53,
+      "tier": "B",
+      "guideline": "4.10",
+      "question": "Does the paywall charge solely for access to a built-in device capability rather than a documented added service?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source-strings",
+        "source"
+      ],
+      "required_context": [
+        "paid_feature"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "media-download-facilitation",
+      "number": 54,
+      "tier": "B",
+      "guideline": "5.2.3",
+      "question": "Does the offered media-downloading or sharing flow conflict with the documented authorization for third-party content?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "metadata"
+      ],
+      "required_context": [
+        "media_authorization"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
+    },
+    {
+      "key": "apple-product-confusion",
+      "number": 55,
+      "tier": "C",
+      "guideline": "5.2.5",
+      "question": "Do the observed icon, name, and interface create a concrete misleading resemblance to an Apple product?",
+      "requires_vision": true,
+      "evidence_inputs": [
+        "icon",
+        "name",
+        "screenshots"
+      ],
+      "required_context": [
+        "host_icon",
+        "host_screenshots"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown.",
+        "No host vision observation is supplied; text-only inference cannot judge this check."
+      ]
+    },
+    {
+      "key": "iap-for-gambling-credit",
+      "number": 56,
+      "tier": "B",
+      "guideline": "5.3.3",
+      "question": "Does the supplied StoreKit flow sell credits used for documented real-money gambling or lottery participation?",
+      "requires_vision": false,
+      "evidence_inputs": [
+        "source",
+        "metadata"
+      ],
+      "required_context": [
+        "gambling_context"
+      ],
+      "abstain_when": [
+        "A required evidence input is missing, truncated, stale, or contradictory.",
+        "Applicability or any required external context is unknown."
+      ]
     }
   ]
 }

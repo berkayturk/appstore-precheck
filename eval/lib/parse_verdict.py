@@ -14,7 +14,7 @@ import json
 import re
 import sys
 
-REVIEW_RE = re.compile(r"^\s*(REVIEW-(?:FINDING|PASS|NOT-APPLICABLE|NEEDS-REVIEW|UNSUPPORTED|NOT-RUN)):\s*(.*)$", re.MULTILINE)
+REVIEW_RE = re.compile(r"^\s*(REVIEW-(?:FINDING|PASS|NOT-APPLICABLE|NEEDS-REVIEW|UNSUPPORTED|NOT-RUN|SKIP|NO-SIGNAL)):\s*(.*)$", re.MULTILINE)
 
 
 def response_text(response):
@@ -28,7 +28,7 @@ def parse_verdict(response):
     """Return {"verdict": <str>, "line": <str|None>} for one raw API response."""
     if response.get('provider') == 'typesafe':
         outcome = response.get('result', {}).get('outcome')
-        if outcome in ('finding', 'pass', 'not_applicable', 'insufficient_evidence'):
+        if outcome in ('finding', 'pass', 'not_applicable', 'insufficient_evidence', 'no_signal'):
             return {'verdict': 'not-applicable' if outcome == 'not_applicable' else outcome, 'line': None}
         return {'verdict': 'unparseable', 'line': None}
     if response.get("stop_reason") == "refusal":
@@ -38,8 +38,10 @@ def parse_verdict(response):
         return {"verdict": "unparseable", "line": None}
     kind, rest = match.group(1), match.group(2)
     line = f"{kind}: {rest}".strip()
-    if kind in ("REVIEW-NEEDS-REVIEW", "REVIEW-UNSUPPORTED", "REVIEW-NOT-RUN"):
+    if kind in ("REVIEW-NEEDS-REVIEW", "REVIEW-UNSUPPORTED", "REVIEW-NOT-RUN", "REVIEW-SKIP"):
         return {"verdict": "insufficient_evidence", "line": line}
+    if kind == "REVIEW-NO-SIGNAL":
+        return {"verdict": "no_signal", "line": line}
     if kind == "REVIEW-NOT-APPLICABLE":
         return {"verdict": "not-applicable", "line": line}
     if kind == "REVIEW-FINDING":

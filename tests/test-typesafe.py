@@ -21,7 +21,7 @@ from semantic.client import ServiceError, evaluate, validate_response
 from semantic.engine import compose, request_for, run_job, validate_bundle, render_text
 from semantic.collect import collect
 from semantic.questions import WORKFLOWS
-from catalog import BY_KEY, resolve, procedure_path, fingerprint
+from catalog import CATALOG, BY_KEY, resolve, procedure_path, fingerprint
 from build_request import build_system
 from parse_verdict import parse_verdict
 import score
@@ -224,13 +224,13 @@ class TypeSafeTests(unittest.TestCase):
         self.assertIn('### 6 — 2.3.5 Category fit', procedure_path(current).read_text())
         self.assertIn('### 8 — 2.3.5 Screenshots', procedure_path(historical).read_text())
         self.assertIn('### 8 — 2.3.3 Screenshots', procedure_path(current).read_text())
-        for version in (1, 4, '3', True, 3.0, None):
+        for version in (1, CATALOG['version'] + 1, '3', True, 3.0, None):
             with self.assertRaises(ValueError):
                 resolve({'check_id': 6, 'catalog_version': version})
         with tempfile.TemporaryDirectory() as directory:
             reviews = [j for j in collect(Path(directory))['jobs'] if j['workflow'] == 'review']
-        self.assertEqual(len(reviews), 31)
-        self.assertTrue(all(j['catalog_version'] == 3 for j in reviews))
+        self.assertEqual(len(reviews), len(CATALOG['checks']))
+        self.assertTrue(all(j['catalog_version'] == CATALOG['version'] for j in reviews))
 
     def test_collector_limits_and_skips_credentials_and_symlinks(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -254,7 +254,7 @@ class TypeSafeTests(unittest.TestCase):
         self.assertEqual(resolve(case)['key'], 'rating-manipulation')
         legacy = json.loads((ROOT / 'eval/baseline/cases-v1.json').read_text())
         self.assertEqual(next(c for c in legacy if c['id'] == case['id'])['check_id'], 28)
-        self.assertEqual(len(BY_KEY), 31)
+        self.assertEqual(len(BY_KEY), len(CATALOG['checks']))
 
     def test_v3_statuses_are_abstentions_and_explicit_nonapplicability(self):
         for status in ('NEEDS-REVIEW', 'UNSUPPORTED', 'NOT-RUN'):

@@ -1,0 +1,1 @@
+Adds encrypted journal export and fixes sorting.

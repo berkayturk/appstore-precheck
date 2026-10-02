@@ -1,0 +1,1 @@
+struct DetailScreen: View { let session = ARSession() }

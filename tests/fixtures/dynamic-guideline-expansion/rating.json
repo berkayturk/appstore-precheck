@@ -1,0 +1,39 @@
+{
+  "rule": "dyn-miniapp-rating-label",
+  "cases": {
+    "risky": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "directory_heading": true,
+        "visible_items": 2,
+        "fully_visible_items": 2,
+        "rated_items": 0
+      },
+      "expected": "FINDING"
+    },
+    "clean": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "directory_heading": true,
+        "visible_items": 2,
+        "fully_visible_items": 2,
+        "rated_items": 2
+      },
+      "expected": "PASS"
+    },
+    "skip": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "directory_heading": true,
+        "visible_items": 2,
+        "fully_visible_items": 0,
+        "rated_items": 0
+      },
+      "expected": "SKIP"
+    }
+  },
+  "origin": "Synthetic fixture, not a device recording"
+}

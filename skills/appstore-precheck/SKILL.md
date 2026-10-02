@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 55 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 23 semantic deep-review checks (Tier A) plus 8 heuristic checks (Tier B v1) — 31 total. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 71 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 56 semantic deep-review checks across Tier A, heuristic Tier B and host vision Tier C. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -10,10 +10,16 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 
 # App Store Precheck
 
+Optional CLI tiers and build/credential boundaries: [optional-review.md](references/optional-review.md).
+
+Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+
+This percentage counts sections touched, not automatic verification of every requirement.
+
 A one-command gate to run before every iOS App Store submission. It minimizes the risk of
 rejection by statically scanning the most common rejection vectors, running Apple's own
 metadata linter, watching for guideline drift, having Pierre explain every FAIL and WARN, and
-running 31 semantic deep-review checks (23 Tier A + 8 Tier B v1 heuristic). The deep-review checklist lives in
+running 56 semantic deep-review checks (Tier A, heuristic Tier B and host vision Tier C). The deep-review checklist lives in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md).
 
 **This skill is read-only.** It never edits code, metadata, or assets. It only reports and
@@ -144,7 +150,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 55 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 71 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.7), localized parity (2.3), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -285,10 +291,10 @@ complete procedure and prompt: every scanner finding verbatim, evidence strength
 pinned/live citations, and a short explanation in the user's language. Never invent
 citations or claim a source grep establishes release behavior.
 
-### Phase 4: Pierre deep review (31 semantic checks)
+### Phase 4: Pierre deep review (56 semantic checks)
 
-After Phase 3, Pierre runs the **Review Simulator**: 31 read-only, evidence-based checks the
-static scanner cannot fully judge (**23 Tier A** + **8 Tier B v1** heuristic — marked † below).
+After Phase 3, Pierre runs the **Review Simulator**: 56 read-only, evidence-based checks the
+static scanner cannot fully judge (Tier A cross-reads, Tier B heuristics and Tier C host vision).
 The full checklist, per-check procedure, and output format live in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md) — read it before starting
 Phase 4. When screenshots are present, also run the structured screenshot vision review in
@@ -301,25 +307,25 @@ SDK usage, screenshots vs features, and paywall disclosure quality.
 
 **Rules (summary):**
 
-- Run **all 31 checks every time** — report an outcome for each using the reference status definitions; missing evidence never means PASS.
+- Run **all 56 checks every time** — report an outcome for each using the reference status definitions; missing evidence never means PASS.
 - `REVIEW-FINDING:` is always **WARN** (advisory). It does **not** change FAIL/WARN counts or the verdict.
-- † **Tier B v1** checks (4, 5, 7, 10, 15, 29, 30, 31) are heuristic — use cautious language; require evidence of non-applicability.
+- **Tier B** is heuristic; **Tier C** needs host vision. New v4 checks report FINDING, SKIP or no signal, never PASS.
 - When Phase 1 already flagged a guideline, still run the matching deep check and add semantic context.
 - Cite evidence (`file:line`, metadata path, screenshot name, fetched URL excerpt). Read-only — never edit files.
 
-The canonical 31-check table, including check 31 (4.0 design quality), is in
+The canonical 56-check table, including check 31 (4.0 design quality), is in
 [`references/pierre-deep-review.md`](references/pierre-deep-review.md). Its versioned
 mapping is recorded in `references/review-catalog.json`.
 
 Use this prompt after Phase 3:
 
-> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 31 checks in
+> You are **Pierre**. Phase 3 is done. Now run **Phase 4 deep review**: all 56 checks in
 > [`references/pierre-deep-review.md`](references/pierre-deep-review.md), in table order. For each
 > check use the reference outcome format, including NEEDS-REVIEW, UNSUPPORTED, NOT-RUN or
 > evidence-backed NOT-APPLICABLE where appropriate. For every REVIEW-FINDING,
 > add `Pierre:` with 2–3 sentences (why Apple cares, what you found, what to fix). Read-only.
 > Write explanations in `<USER_LANGUAGE>`. Do not change the scan verdict counts. † Tier B checks
-> (4, 5, 7, 10, 15, 29, 30, 31): require evidence of non-applicability; use cautious language when flagging.
+> require evidence of non-applicability; Tier C requires vision. Missing inputs mean REVIEW-SKIP.
 
 ### Phase 5: Consolidation + token
 
@@ -339,17 +345,20 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
    from Phase 1 + Phase 0/2 only — Pierre's prose and REVIEW-FINDING lines do not add FAIL/WARN).
 2. Open with Pierre's **trilingual verdict block** using the required format in [Output contract](#trilingual-verdict-block-required-format) — bold language label + blockquote per language, separated by `---`; never one compressed line.
 3. Present **Phase 3 commentary** — Pierre's 2–3 sentence explanation for every FAIL and WARN.
-4. Present **Phase 4 deep review** — summary count (`REVIEW-FINDING` vs `REVIEW-PASS` of 31), then
-   every `REVIEW-FINDING` with Pierre explanation; list `REVIEW-PASS` lines compactly or omit if all 31 passed.
+4. Present **Phase 4 deep review** — summary counts for findings, no signal and missing evidence, then
+   every `REVIEW-FINDING` with Pierre explanation; list historical `REVIEW-PASS` lines compactly. New v4 checks never produce PASS.
    The 5 screenshot-vision checks (S1–S5) emit the same `REVIEW-*` prefixes but count as a
-   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 31" denominator.
+   **separate "+5 vision checks" sub-block** in the summary, never inside the "of 56" denominator.
 5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, with its
    `evidence:` line, then for each FAIL a `file:line` reference and a suggested fix (one line each,
    surgical, not paraphrased).
-6. Print a **"Not audited"** section. This is **mandatory on every run**, including a GREEN one —
+6. Print `Guideline coverage this run: X/102 sections touched, Y SKIP, Z human-only` using
+   `coverage_sections` from scan JSON (Y counts SKIP records, including `gaps`). List every
+   `human_only_sections` entry with its reason; optional tiers stay unexecuted unless observed.
+   Print a **"Not audited"** section. This is **mandatory on every run**, including a GREEN one —
    a verdict is only meaningful next to the list of what it did not cover. Two parts:
 
-   **(a) Checks that did not run this time** — every `SKIP:` line, verbatim, with what would close
+   **(a) Checks that did not run this time** — every `SKIP:` line and coverage `gaps` record, with what would close
    the gap (paste the App Store Connect listing, set `.screenshotsDir`, …). A SKIP acknowledged in
    `.precheck-ignore` is not printed by the scanner but is still in `summary.not_audited` with
    `suppressed: true`; list it here as *acknowledged* — signing for a gap does not close it. If
@@ -421,7 +430,7 @@ parity) with the Maestro MCP tools — **one flow per `mcp__maestro__run` call**
 `accessibilityText` — appending `DYNAMIC-*` lines to the same transcript.
 
 Follow [`references/simulator-dynamic-review.md`](references/simulator-dynamic-review.md) for the
-setup step (D0), the full checklist (D1–D11 incl. D3b) and the output format.
+setup step (D0), the full checklist (D1–D17 incl. D3b) and the output format.
 Afterwards feed the transcript to [`scripts/dynamic.sh`](scripts/dynamic.sh) with the static
 `--format json` output: it records every observation as `evidence: runtime` with the run's
 `runtime_target` and `build_config`, and reconciles them with the static findings (a runtime

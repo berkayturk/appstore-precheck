@@ -1,0 +1,30 @@
+{
+  "rule": "dyn-musickit-auth",
+  "cases": {
+    "observed": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "flow_triggered": true,
+        "os_prompt": "music"
+      },
+      "expected": "PASS"
+    },
+    "missing_evidence": {
+      "observation": {
+        "applicable": true,
+        "usable": true,
+        "flow_triggered": true,
+        "os_prompt": ""
+      },
+      "expected": "SKIP"
+    },
+    "not_applicable": {
+      "observation": {
+        "applicable": false
+      },
+      "expected": "SKIP"
+    }
+  },
+  "origin": "Synthetic fixture, not a device recording"
+}
