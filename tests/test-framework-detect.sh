@@ -106,7 +106,7 @@ done
 PATH="$shim:$PATH" bash "$FD" --root "$FX/rn-app" >/dev/null
 PATH="$shim:$PATH" bash "$FD" --root "$FX/flutter-app" >/dev/null
 PATH="$shim:$PATH" bash "$FD" --root "$FX/kmp-app" >/dev/null
-[[ -e "$marker" ]] && { echo "  FAIL: a toolchain was invoked: $(cat "$marker")"; fails=$((fails+1)); } || echo "  ok: no toolchain invoked"
+assert_path_absent "$marker" "no toolchain invoked"
 rm -rf "$shim"
 
 exit "$fails"

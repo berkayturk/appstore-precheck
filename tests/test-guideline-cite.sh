@@ -131,15 +131,13 @@ out="$(GUIDELINE_CITE_URL="file:///nonexistent/guidelines.html" GUIDELINE_CITE_C
 assert_eq "$st" "0" "a failed live check still returns the pinned quote"
 assert_absent "$out" "verified against the live page" "and never claims a verification it did not do"
 assert_contains "$out" "A pinned quote about screenshots" "the pinned quote is still delivered"
-[[ -e "$vcache" ]] && r=1 || r=0
-assert_eq "$r" "0" "no empty cache file is left behind"
+assert_path_absent "$vcache" "no empty cache file is left behind"
 # A non-regular file at the cache path is refused, never read from or deleted.
 out="$(GUIDELINE_CITE_URL="file:///nonexistent" GUIDELINE_CITE_CACHE="$(dirname "$vcache")" \
        bash "$CITE" --fingerprints "$vfp2" --verify-live 2.3.3 2>&1)"; st=$?
 assert_eq "$st" "0" "a directory at the cache path degrades safely"
 assert_contains "$out" "not a regular file" "and says why"
-[[ -d "$(dirname "$vcache")" ]] && r=1 || r=0
-assert_eq "$r" "1" "the directory was not deleted"
+assert_path_exists "$(dirname "$vcache")" "the directory was not deleted"
 rm -rf "$(dirname "$vcache")" "$vfp2"
 
 section "the shipped fingerprint store is wired up and non-empty"
