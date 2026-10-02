@@ -45,8 +45,19 @@ source "$HERE/../skills/appstore-precheck/scripts/findings.sh"
 source "$HERE/../skills/appstore-precheck/scripts/evidence.sh"
 catalogued="$(catalogue_slugs | wc -l | tr -d ' ')"
 assert_gt "$catalogued" "54" "catalogue walk reaches §55"
-assert_eq "$catalogued" "$(grep -oE 'set_rule "[^"]+"' "$SCAN" | grep -v -- '-not-audited"' | sort -u | wc -l | tr -d ' ')" \
-  "every catalogued section ($catalogued) is tagged in scan.sh, and nothing untagged"
+tagged="$(python3 - "$SCAN" <<'PYTAG'
+from pathlib import Path
+import re
+import sys
+scanner = Path(sys.argv[1]); entry = scanner.read_text()
+modules = re.findall(r'^\s*(?:source|\.) "\$SCRIPT_DIR/(lib/scan-[\w-]+\.sh)"', entry, re.M)
+text = entry + '\n' + '\n'.join((scanner.parent / name).read_text() for name in modules)
+slugs = set(re.findall(r'set_rule "([^"\n]+)"', text))
+print(len([slug for slug in slugs if not slug.endswith('-not-audited')]))
+PYTAG
+)"
+assert_eq "$catalogued" "$tagged" "every catalogued section is tagged in the scanner or a sourced module"
+
 
 # Version provenance: the JSON envelope must report the TOOL's own version (read
 # from skills/appstore-precheck/SKILL.md), never the scanned repo's package.json,
