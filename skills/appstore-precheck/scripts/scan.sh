@@ -748,7 +748,7 @@ ext_purchase=""
 grep -rqE 'ExternalPurchase|ExternalPurchaseLink|ExternalPurchaseCustomLink' "${IOS_DIR:-.}" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null && ext_purchase=1
 grep -rqE 'external-purchase' "${IOS_DIR:-.}" "${GREP_PRUNE[@]}" --include='*.entitlements' 2>/dev/null && ext_purchase=1
 if [[ -n "$ext_purchase" ]]; then
-  warn "3.1.1(a) External purchase link detected — review the offering, storefront, distribution and applicable agreement before checking entitlement, disclosure and reporting duties. United States storefront links do not require these entitlements under 3.1.1(a); SDK presence alone is not a violation."
+  warn "3.1.1(a) External purchase link detected — the link may only lead to a permitted destination for that storefront (approved destinations vary by region), under a StoreKit External Purchase Link or, where permitted, Music Streaming Services entitlement; review the offering, storefront, distribution and applicable agreement before checking entitlement, disclosure and reporting duties. United States storefront links do not require these entitlements under 3.1.1(a); SDK presence alone is not a violation."
 fi
 
 # ===================================================================
@@ -875,14 +875,19 @@ fi
 # Apps with UGC must provide: a content filter, a report mechanism, the ability
 # to block abusive users, and published contact info. We detect a UGC signal and
 # warn when no report/block/moderation affordance is found anywhere in the source.
+# Since October 16, 2026 the rule names apps that let users "create, generate,
+# upload, share, or otherwise contribute content", explicitly including AI content
+# creation apps, and adds nonconsensual intimate imagery to the harms; failing to
+# implement safeguards is a Developer Code of Conduct matter. The signal list
+# therefore also covers image/video generation endpoints and SDKs.
 set_rule "ugc-no-moderation"
 if [[ -n "$IOS_DIR" ]]; then
-  ugc_signal=$(grep -rlE 'userGeneratedContent|\bUGC\b|StreamChat|MessageKit|SendbirdSDK|PubNub|postComment|submitComment|createPost|publishPost|uploadUserPhoto|uploadVideo' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  ugc_signal=$(grep -rlE 'userGeneratedContent|\bUGC\b|StreamChat|MessageKit|SendbirdSDK|PubNub|postComment|submitComment|createPost|publishPost|uploadUserPhoto|uploadVideo|/images/generations|/images/edits|/v1/videos/generations|api\.replicate\.com|replicate\.run|api\.stability\.ai|stability\.ai|fal\.ai|fal\.run|api\.runwayml\.com|api\.dev\.runwayml\.com|import ImagePlayground|ImageCreator\b|ImagePlaygroundViewController|imagePlaygroundSheet|generateImage\b|generateVideo\b|imageGeneration\b|videoGeneration\b|textToImage\b|text-to-image|txt2img|StableDiffusion' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
   if [[ -n "$ugc_signal" ]]; then
     if grep -rqiE 'report(Content|User|Abuse|Post|Comment|Message|Reason|ed)|block(ed)?User|unblockUser|moderat(e|ion|or)|flag(Content|Post|User|Comment|Message)|content.?filter' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null; then
       pass "1.2 UGC — user-generated content with report/block/moderation affordances present"
     else
-      warn "1.2 UGC — user-generated content detected (e.g. $(basename "$ugc_signal")) but no report/block/moderation mechanism found; UGC apps must offer content filtering, a report mechanism, user blocking, and published contact info (1.2)"
+      warn "1.2 UGC — user-generated or AI-generated content detected (e.g. $(basename "$ugc_signal")) but no report/block/moderation mechanism found; apps that let users create, generate, upload or share content (including AI content creation apps) must offer content filtering, a report mechanism, user blocking, and published contact info, and must guard against nonconsensual intimate imagery; missing safeguards are also a Developer Code of Conduct violation (1.2)"
     fi
   fi
 fi
@@ -1546,6 +1551,21 @@ if [[ -n "$IOS_DIR" ]]; then
       warn "4.5.4 Marketing push — a marketing-push SDK ($(basename "$push_mkt")) registers for notifications but no in-app notification-preferences/opt-out signal was found; promotional push requires explicit consent and a working opt-out (4.5.4)" "$push_mkt"
     else
       pass "4.5.4 Marketing push — SDK present and a notification-preferences signal exists; verify promotional pushes are consent-gated"
+    fi
+  fi
+  # Live Activities (ActivityKit / NSSupportsLiveActivities) are an Apple Service under
+  # 4.5.3 since the June 2026 rewrite: they may not carry spam, phishing or unsolicited
+  # messages. Push-to-start Live Activities driven by a marketing-push SDK are the
+  # risky combination; ActivityKit alone is a note for deep-review check 15.
+  live_act=$(grep -rlE 'import ActivityKit|ActivityKit\.|Activity<[A-Za-z_]+Attributes>|ActivityAttributes\b' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null | head -1)
+  if [[ -z "$live_act" && -f "$INFO_PLIST" ]] && grep -qA1 'NSSupportsLiveActivities' "$INFO_PLIST" 2>/dev/null && grep -A1 'NSSupportsLiveActivities' "$INFO_PLIST" 2>/dev/null | grep -q '<true/>'; then
+    live_act="$INFO_PLIST"
+  fi
+  if [[ -n "$live_act" ]]; then
+    if [[ -n "$push_mkt" ]]; then
+      warn "4.5.3 Live Activities — ActivityKit/NSSupportsLiveActivities ($(basename "$live_act")) coexists with a marketing-push SDK ($(basename "$push_mkt")); Live Activities may not be used to spam or send unsolicited promotional updates (4.5.3). Verify every Live Activity (including push-to-start) reflects a user-initiated, time-bound activity" "$live_act"
+    else
+      pass "4.5.3 Live Activities — ActivityKit/NSSupportsLiveActivities present without a marketing-push SDK; verify Live Activities stay tied to user-initiated activity and never carry promotions (4.5.3)"
     fi
   fi
 fi

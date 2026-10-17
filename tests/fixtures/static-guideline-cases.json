@@ -210,5 +210,17 @@
       "fastlane/metadata/en-US/description.txt": "A private journal for iPhone."
     },
     "skip": {}
+  },
+  {
+    "number": 72,
+    "guideline": "2.5.19",
+    "rule_id": "review-mode-gate",
+    "positive": {
+      "App.swift": "import FirebaseRemoteConfig\nlet reviewMode = remoteConfig[\"review_mode\"].boolValue\nif !reviewMode { showHiddenCasino() }"
+    },
+    "clean": {
+      "App.swift": "import StoreKit\nfunc askForRating() { SKStoreReviewController.requestReview() }\nlet reviewPrompt = ReviewPromptView(reviewCount: 3)"
+    },
+    "skip": {}
   }
 ]

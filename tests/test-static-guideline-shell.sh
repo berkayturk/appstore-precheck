@@ -26,7 +26,7 @@ assert_absent "$(cat "$ROOT/output")" 'WARN:browser-engine' 'GREP_PRUNE excludes
 assert_absent "$(cat "$ROOT/output")" 'PASS:release-notes-specificity' 'missing metadata never passes'
 assert_eq "$(printf '%s' "$COVERAGE_GAPS_JSON" | jq '[.[] | select(.rule_id == "release-notes-specificity" and .status == "SKIP")] | length')" 1 'missing metadata explicit coverage gap'
 assert_eq "$(printf '%s' "$COVERAGE_GAPS_JSON" | jq '[.[] | select(.rule_id == "metadata-emoji-icon-not-audited")] | length')" 1 'icon pixels explicitly unaudited'
-for n in $(seq 56 71); do
+for n in $(seq 56 72); do
   slug="$(rule_slug "$n")"
   assert_not_empty "$slug" "section $n registered"
   assert_not_empty "$(rule_evidence "$slug")" "section $n evidence classified"
@@ -41,7 +41,7 @@ command() {
 # shellcheck source=skills/appstore-precheck/scripts/lib/scan-guidelines.sh
 source "$SCRIPT_DIR/lib/scan-guidelines.sh"
 unset -f command
-assert_eq "$(printf '%s' "$COVERAGE_GAPS_JSON" | jq length)" 16 'unavailable reader yields 16 unique rule gaps'
+assert_eq "$(printf '%s' "$COVERAGE_GAPS_JSON" | jq length)" 17 'unavailable reader yields 17 unique rule gaps'
 # D1: jq present on PATH but failing must not empty the slug list in the SKIP line.
 stub="$(mktemp -d)"; printf '#!/bin/sh\nexit 127\n' > "$stub/jq"; chmod +x "$stub/jq"
 line="$(PATH="$stub:$PATH" bash "$SCRIPT_DIR/scan.sh" --dir "$(mktemp -d)" 2>/dev/null | grep '^SKIP: modular-checks-not-audited' || true)"

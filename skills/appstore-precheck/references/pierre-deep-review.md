@@ -150,10 +150,10 @@ A host with image access must directly inspect the supplied images and cite its 
 
 ### 1 — 1.2 UGC moderation UI
 
-1. Establish UGC scope (posts, comments, chat, uploads) from feature and runtime evidence. Mark not applicable only when sufficient evidence excludes UGC.
-2. Search Swift for report/block/flag/moderate flows and screens reachable from content.
-3. Compare to metadata promises ("community", "share", "chat").
-4. Flag if UGC exists but moderation is only mentioned in text, not implemented in UI.
+1. Establish UGC scope (posts, comments, chat, uploads, and AI content generation — image/video/text generators count as "create, generate" since the October 16, 2026 wording) from feature and runtime evidence. Mark not applicable only when sufficient evidence excludes UGC.
+2. Search Swift for report/block/flag/moderate flows and screens reachable from content; for generators, also look for prompt/output safety filters and a path to report a generated result.
+3. Compare to metadata promises ("community", "share", "chat", "AI art", "generate").
+4. Flag if UGC exists but moderation is only mentioned in text, not implemented in UI. Call out generators with no safeguard against nonconsensual intimate imagery: Apple treats missing safeguards as a Developer Code of Conduct matter.
 
 ### 2 — 1.4.1 Health / medical claims
 
@@ -244,9 +244,14 @@ A host with image access must directly inspect the supplied images and cite its 
 1. Read entitlements and Info.plist for push notifications and HomeKit.
 2. **Push:** if push entitlement present, scan metadata/UI for spam patterns ("notify every hour",
    "unlimited reminders") unrelated to user-initiated alerts.
-3. **HomeKit:** if HomeKit framework imported, confirm home-automation UI exists; flag HomeKit
+3. **Live Activities:** if the scan reports `4.5.3 Live Activities` (ActivityKit import or
+   `NSSupportsLiveActivities`), confirm each activity tracks something the user started and is
+   time-bound; flag promotional, re-engagement or push-to-start activities that are not tied to a
+   user action (4.5.3 names Live Activities alongside push and Game Center as Apple Services that
+   may not carry spam or unsolicited messages).
+4. **HomeKit:** if HomeKit framework imported, confirm home-automation UI exists; flag HomeKit
    import with no home-related features (possible misuse).
-4. If neither push nor HomeKit signals, mark not applicable.
+5. If neither push, Live Activities nor HomeKit signals, mark not applicable.
 
 ### 16 — 4.8 Sign in with Apple (context)
 
@@ -437,7 +442,7 @@ actual crashes belong to Phase 6 (the local simulator tier), not to a source rea
 1. Read metadata, source; record concrete evidence pointers.
 2. Establish the stated applicability and source scope; if unknown or conflicting, emit `REVIEW-SKIP`.
 3. Does a creator-content offering mislabel its content or move it outside the described in-app experience?
-4. Do not infer observed behavior or external facts from source symbols alone.
+4. Do not infer observed behavior or external facts from source symbols alone. AI-generated creator content is still creator content under the October 16, 2026 wording of 1.2; moderation of it belongs to check 1, not here.
 5. Emit a cited advisory FINDING, bounded NO-SIGNAL, or SKIP; never PASS.
 
 ### 39 — 1.4.2 drug-dosage-source *(Tier B)*

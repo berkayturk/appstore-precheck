@@ -161,6 +161,39 @@ class StaticRules(unittest.TestCase):
         self.assertEqual(result['game-center-id-sharing']['status'], 'PASS')
 
 
+    def test_review_mode_gate_signal_families(self):
+        positives = {
+            'identifier': 'if AppConfig.isAppStoreReview { hideBetaTab() }',
+            'remote-config key': 'let hide = remoteConfig["hide_for_review"].boolValue',
+            'build flag': '#if !APPSTORE\nenableCasino()\n#endif',
+            'date gate': 'if Date() > featureUnlockDate { showGambling() }',
+            'reverse date gate': 'if goLiveDate < Date.now { reveal() }'}
+        for label, text in positives.items():
+            with self.subTest(label=label):
+                row = evaluate({'App.swift': text})['review-mode-gate']
+                self.assertEqual(row['status'], 'WARN', row)
+                self.assertIn('2.5.19', row['reason'])
+
+    def test_review_mode_gate_obfuscation_tooling(self):
+        self.assertEqual(evaluate({'App.swift': 'import UIKit', 'Podfile': "pod 'SwiftShield'"})['review-mode-gate']['status'], 'WARN')
+        self.assertEqual(evaluate({'App.swift': 'let secret = ObfuscatedString("…")'})['review-mode-gate']['status'], 'WARN')
+        row = evaluate({'App.swift': 'import UIKit', 'Package.swift': '.package(url: "https://github.com/x/swift-obfuscator", from: "1.0.0")'})['review-mode-gate']
+        self.assertEqual(row['status'], 'WARN')
+        self.assertIn('obfuscation', row['reason'])
+
+    def test_review_mode_gate_store_review_and_product_review_are_clean(self):
+        negatives = {
+            'system rating prompt': 'import StoreKit\nSKStoreReviewController.requestReview(in: scene)',
+            'review prompt copy': 'let reviewPrompt = "Enjoying the app? Leave a review"\nlet reviewCount = reviews.count',
+            'order status': 'if order.status == .orderUnderReview { showPending() }\nstruct ReviewView: View {}',
+            'subscription expiry': 'if Date() > subscription.expiryDate { lock() }',
+            'comment mentions obfuscation': '// no obfuscation here\nlet appReview = fetchReviews()',
+            'debug-only flag': '#if DEBUG\nshowDebugMenu()\n#endif'}
+        for label, text in negatives.items():
+            with self.subTest(label=label):
+                self.assertEqual(evaluate({'App.swift': text})['review-mode-gate']['status'], 'PASS', label)
+
+
 
 def case_test(case, kind):
     def test(self):

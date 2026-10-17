@@ -29,13 +29,13 @@ command() {
 }
 MODE="$3"
 source "$SCRIPT_DIR/lib/scan-guidelines.sh"
-printf '%s' "$COVERAGE_GAPS_JSON" | jq -e 'length == 16' >/dev/null
+printf '%s' "$COVERAGE_GAPS_JSON" | jq -e 'length == 17' >/dev/null
 '''
         with tempfile.TemporaryDirectory() as folder:
             for mode, expected in [('crash', 'reader invocation failed'), ('timeout', 'reader timeout'), ('missing', 'Python 3 or jq unavailable')]:
                 result = subprocess.run(['bash', '-c', script, 'bash', str(SCAN.parent), folder, mode], text=True, capture_output=True)
                 self.assertEqual(result.returncode, 0, result.stderr)
-                self.assertIn('16 check(s) did not run', result.stdout)
+                self.assertIn('17 check(s) did not run', result.stdout)
                 self.assertIn(expected, result.stdout)
                 if mode == 'crash':
                     self.assertIn('reader crash sentinel', result.stderr)
@@ -68,7 +68,8 @@ printf '%s' "$COVERAGE_GAPS_JSON" | jq -e 'length == 16' >/dev/null
             'intent-handler-parity', 'call-filter-controls', 'face-authentication',
             'document-browser-access', 'extension-bundle-parity', 'matter-extension',
             'extension-advertising', 'ar-integration-depth', 'companion-app-required',
-            'game-center-id-sharing', 'metadata-emoji', 'miniapp-native-bridge', 'apple-endorsement-claims')}
+            'game-center-id-sharing', 'metadata-emoji', 'miniapp-native-bridge', 'apple-endorsement-claims',
+            'review-mode-gate')}
         for slug, reason in [('browser-engine', 'reader timeout'), ('call-filter-controls', 'reader timeout'),
                              ('release-notes-specificity', 'metadata unavailable')]:
             rows[slug].update(status='SKIP', reason=reason)

@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 71 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 56 semantic deep-review checks across Tier A, heuristic Tier B and host vision Tier C. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 72 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 56 semantic deep-review checks across Tier A, heuristic Tier B and host vision Tier C. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -12,7 +12,7 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 
 Optional CLI tiers and build/credential boundaries: [optional-review.md](references/optional-review.md).
 
-Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 This percentage counts sections touched, not automatic verification of every requirement.
 
@@ -132,11 +132,13 @@ those moved repeatedly through 2024–2026.
 Like the drift check this is a gap in **our** coverage, never a fault of the build: always
 non-blocking, WARN at most.
 
-The deterministic, full-page drift detector is `scripts/guideline-drift.sh` (maintainer/CI;
-curl-based, so it also covers the 5.5–5.6.x tail that `WebFetch` truncates). It reports
-section-number drift AND text (semantic) drift of covered sections, naming the affected
-check(s). It is non-blocking and never runs in the offline user scan; the fingerprint baseline
-(`guidelines-fingerprints.json`) is human-reconciled via `guideline-drift.sh --reconcile`.
+The deterministic, full-page drift detector is `scripts/guideline-drift.sh` at the **source
+repository root** (not this skill's own `scripts/`; it is a maintainer/CI tool and is not
+installed with the skill). It is curl-based, so it also covers the 5.5–5.6.x tail that
+`WebFetch` truncates, and reports section-number drift AND text (semantic) drift of covered
+sections, naming the affected check(s). It is non-blocking and never runs in the offline user
+scan; the fingerprint baseline (`guidelines-fingerprints.json`) is human-reconciled from the
+repository root via `bash scripts/guideline-drift.sh --reconcile`.
 
 ### Phase 1: Static scan
 
@@ -150,7 +152,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 71 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 72 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.7), localized parity (2.3), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -352,7 +354,7 @@ narrative; verdict.sh just pins the threshold arithmetic. `REVIEW-FINDING` lines
 5. Present the **machine-faithful** scan output: each `FAIL:`/`WARN:` line verbatim, with its
    `evidence:` line, then for each FAIL a `file:line` reference and a suggested fix (one line each,
    surgical, not paraphrased).
-6. Print `Guideline coverage this run: X/102 sections touched, Y SKIP, Z human-only` using
+6. Print `Guideline coverage this run: X/104 sections touched, Y SKIP, Z human-only` using
    `coverage_sections` from scan JSON (Y counts SKIP records, including `gaps`). List every
    `human_only_sections` entry with its reason; optional tiers stay unexecuted unless observed.
    Print a **"Not audited"** section. This is **mandatory on every run**, including a GREEN one —

@@ -314,6 +314,39 @@ def endorsements(c):
     return outcome(reason='No matched Apple endorsement claim in metadata.')
 
 
+# §72 — 2.5.19 hidden / dormant / undocumented features (October 16, 2026 guideline).
+# Four narrow signal families, any one of which is a WARN: a review-detection or
+# hide-for-review identifier (source or remote-config key), a build-flag branch named
+# after the App Store / review build, a date-gated unlock, and obfuscation tooling.
+# Store-review prompts (SKStoreReviewController, requestReview, reviewPrompt) and
+# product/order review vocabulary are deliberately outside every pattern.
+REVIEW_GATE_KEYS = re.compile(
+    r'(?<![A-Za-z0-9])(?:isAppStoreReview|isAppReview|appStoreReview|appReviewMode|reviewMode|isReviewMode|'
+    r'inReviewMode|isUnderReview|underReview|isReviewing|isReviewBuild|reviewBuild|reviewerMode|'
+    r'hideForReview|hiddenForReview|hide_for_review|hidden_for_review|review_mode|is_under_review|'
+    r'under_review|appstore_review|app_review_mode|is_review_build)(?![A-Za-z0-9])', re.I)
+REVIEW_GATE_FLAG = re.compile(r'#if\s+!?\s*(?:APPSTORE|APP_STORE|APPSTORE_BUILD|APPSTORE_REVIEW|APP_REVIEW|REVIEW_BUILD|UNDER_REVIEW)\b')
+REVIEW_GATE_DATE = re.compile(
+    r'(?:Date\(\)|Date\.now|\.timeIntervalSince1970)\s*[<>]=?\s*[A-Za-z_.]*(?:unlock|launch|golive|go_live|activation|enable|reveal|hidden|feature)[A-Za-z_.]*|'
+    r'[A-Za-z_.]*(?:unlock|launch|golive|go_live|activation|enable|reveal|hidden|feature)[A-Za-z_.]*\s*[<>]=?\s*(?:Date\(\)|Date\.now)', re.I)
+REVIEW_GATE_OBFUSCATION = re.compile(r'SwiftShield|swift-?obfuscator|iXGuard|Guardsquare|Arxan|Verimatrix|Promon|obfuscat', re.I)
+
+
+def review_gate(c):
+    signals = [(REVIEW_GATE_KEYS, 'review-detection or hide-for-review identifier'),
+               (REVIEW_GATE_FLAG, 'App Store / review build-flag branch'),
+               (REVIEW_GATE_DATE, 'date-gated feature unlock')]
+    for pattern, kind in signals:
+        p = next((p for p, text in c['src'].items() if pattern.search(text)), None)
+        if p:
+            return outcome(True, 'Hidden-feature gate signal (' + kind + '): 2.5.19 forbids hidden, dormant or undocumented features; verify the branch only drops debug tooling and that every shipped feature is visible to App Review.', p)
+    deps = {p: uncomment(t) for p, t in c['files'].items() if p.name in {'Podfile', 'Package.swift', 'Package.resolved'} or p.suffix == '.pbxproj'}
+    p = hit_file(deps, REVIEW_GATE_OBFUSCATION.pattern) or hit_file(c['src'], r'\b(?:SwiftShield|ObfuscatedString|StringObfuscator|Obfuscator)\b|import\s+\w*Obfuscat\w*')
+    if p:
+        return outcome(True, 'Code/string obfuscation tooling signal: 2.5.19 treats obfuscation used to hide undocumented features as grounds for removal and account termination; confirm nothing reviewable is concealed.', p)
+    return outcome(reason='No review-mode gate, App Store build-flag branch, date-gated unlock or obfuscation tooling signal.')
+
+
 CHECKS = {'release-notes-specificity': release_notes, 'device-restart-instructions': restart,
           'browser-engine': browser, 'intent-handler-parity': intents,
           'call-filter-controls': call_filter, 'face-authentication': face_auth,
@@ -321,7 +354,8 @@ CHECKS = {'release-notes-specificity': release_notes, 'device-restart-instructio
           'matter-extension': matter, 'extension-advertising': extension_ads,
           'ar-integration-depth': ar_depth, 'companion-app-required': companion,
           'game-center-id-sharing': game_ids, 'metadata-emoji': emoji,
-          'miniapp-native-bridge': miniapp, 'apple-endorsement-claims': endorsements}
+          'miniapp-native-bridge': miniapp, 'apple-endorsement-claims': endorsements,
+          'review-mode-gate': review_gate}
 
 
 def evaluate(root, metadata, main, excludes):

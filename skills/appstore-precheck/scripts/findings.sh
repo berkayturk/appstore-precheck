@@ -42,6 +42,7 @@ rule_slug() {
     66) echo ar-integration-depth ;;  67) echo companion-app-required ;;
     68) echo game-center-id-sharing ;;  69) echo metadata-emoji ;;
     70) echo miniapp-native-bridge ;;  71) echo apple-endorsement-claims ;;
+    72) echo review-mode-gate ;;
     *) echo "" ;;
   esac
 }

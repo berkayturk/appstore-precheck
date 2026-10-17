@@ -1,6 +1,6 @@
 # Methodology: App Store Precheck
 
-Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 Coverage means sections touched, not automatic verification.
 
 The detailed reference behind the skill. Read the section you need; you do not need to read this
@@ -153,6 +153,7 @@ citable like any sub-section; every link and citation resolves `N.0` back to `#N
 | 69 | **4.5.6 metadata-emoji** *(advisory)* | Low-confidence embedded emoji artwork filenames/assets require visual/license review. Metadata emoji characters are permitted; icon pixels remain unaudited. |
 | 70 | **4.7.2 miniapp-native-bridge** *(advisory)* | All four signals must coexist in one file: handler, remote JS URL, evaluation and native-sensitive API. Does not resolve bridge access control. |
 | 71 | **5.2.4 apple-endorsement-claims** *(advisory)* | Narrow English endorsement/official-product patterns; authorized claims still require human confirmation. Ordinary iPhone compatibility text stays clean. |
+| 72 | **2.5.19 review-mode-gate** *(advisory)* | Review-detection / hide-for-review identifiers and remote-config keys, App Store build-flag branches, date-gated unlocks, and obfuscation tooling in dependencies or source. Store-review prompts (`SKStoreReviewController`, `requestReview`) and product-review vocabulary stay clean; a hit means "show the reviewer what ships", not proof of a hidden feature. |
 
 New source checks skip compiled bundles and pruned dependencies. Unreadable or incomplete
 inputs produce additive coverage gaps: source/manifest reads are bounded to 2 MiB and
@@ -479,6 +480,7 @@ completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
 | 69 | `metadata-emoji` | resource | judgment-call | — |
 | 70 | `miniapp-native-bridge` | source | judgment-call | — |
 | 71 | `apple-endorsement-claims` | metadata | judgment-call | — |
+| 72 | `review-mode-gate` | source | judgment-call | — |
 
 *Generated from `scripts/evidence.sh`; `tests/test-evidence.sh` keeps it honest.*
 
