@@ -5,6 +5,9 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Changed
+- README visuals redrawn: the social preview carries the current numbers (72 static vectors, 56 deep checks, 20 dynamic, 94/104 sections) and all five hosts; a new "How it works" pipeline graphic sits above the phase table. Sources live in `assets/src/` and render with `bash assets/src/render.sh` (headless Chrome); the demo GIFs were re-recorded from the current CLI with the existing vhs tapes.
+
 ## [1.21.0] — 2026-10-17
 
 ### Apple App Review Guidelines update of October 16, 2026 reconciled

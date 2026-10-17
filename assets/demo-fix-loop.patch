@@ -25,10 +25,12 @@ diff --git a/ios/fastlane/metadata/en-US/description.txt b/ios/fastlane/metadata
 index 2a7c15b..3617dea 100644
 --- a/ios/fastlane/metadata/en-US/description.txt
 +++ b/ios/fastlane/metadata/en-US/description.txt
-@@ -1 +1 @@
+@@ -1 +1,3 @@
 -A great app. Also available on Android and Google Play.
 \ No newline at end of file
 +A great app for building daily habits, with widgets, streaks and reminders.
++
++Terms of Use: https://habits.app/terms
 diff --git a/ios/fastlane/metadata/en-US/privacy_url.txt b/ios/fastlane/metadata/en-US/privacy_url.txt
 new file mode 100644
 index 0000000..450183e

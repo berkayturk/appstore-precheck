@@ -1,0 +1,87 @@
+<!doctype html>
+<!-- Source of the README visual. Render: bash assets/src/render.sh -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How appstore-precheck works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#9DC2FF}a:hover{color:#EEF3FB}
+</style>
+</head>
+<body>
+<div style="width: 1600px; height: 520px; box-sizing: border-box; position: relative; overflow: hidden; background: #0C1830; font-family: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif; color: #EEF3FB; display: flex; flex-direction: column; padding: 48px 64px; gap: 30px">
+
+  <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 24px">
+    <div style="display: flex; align-items: baseline; gap: 18px">
+      <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 20px; font-weight: 700; color: #79B0FF">appstore-precheck</span>
+      <h1 style="margin: 0; font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 34px; color: #EEF3FB">How it works</h1>
+    </div>
+    <div style="font-size: 18px; color: #8FA3C3">Read-only · never edits your code · one verdict</div>
+  </div>
+
+  <div style="display: flex; align-items: stretch; gap: 0">
+
+    <div style="flex: 1 1 0; min-width: 0; background: #142447; border: 1px solid rgba(157,194,255,0.18); border-radius: 16px; padding: 20px 20px 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #79B0FF">PHASE 0</div>
+      <div style="font-size: 21px; font-weight: 600; line-height: 1.2">Guideline drift</div>
+      <div style="font-size: 16px; line-height: 1.4; color: #A9BBD8">Diffs the live App Review Guidelines against a tracked baseline. Never blocks.</div>
+    </div>
+    <div aria-hidden="true" style="flex: 0 0 26px; display: flex; align-items: center; justify-content: center; color: #4D6A99; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 22px">→</div>
+
+    <div style="flex: 1 1 0; min-width: 0; background: #142447; border: 1px solid rgba(157,194,255,0.18); border-radius: 16px; padding: 20px 20px 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #79B0FF">PHASE 1</div>
+      <div style="font-size: 21px; font-weight: 600; line-height: 1.2">Static scan</div>
+      <div style="font-size: 16px; line-height: 1.4; color: #A9BBD8">72 rejection vectors across code, metadata, screenshots, privacy manifest and paywall. Every finding labelled with its evidence.</div>
+    </div>
+    <div aria-hidden="true" style="flex: 0 0 26px; display: flex; align-items: center; justify-content: center; color: #4D6A99; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 22px">→</div>
+
+    <div style="flex: 1 1 0; min-width: 0; background: #142447; border: 1px solid rgba(157,194,255,0.18); border-radius: 16px; padding: 20px 20px 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #79B0FF">PHASE 2</div>
+      <div style="font-size: 21px; font-weight: 600; line-height: 1.2">fastlane precheck</div>
+      <div style="font-size: 16px; line-height: 1.4; color: #A9BBD8">Apple's own metadata rule engine, run on your fastlane metadata.</div>
+    </div>
+    <div aria-hidden="true" style="flex: 0 0 26px; display: flex; align-items: center; justify-content: center; color: #4D6A99; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 22px">→</div>
+
+    <div style="flex: 1 1 0; min-width: 0; background: #142447; border: 1px solid rgba(157,194,255,0.18); border-radius: 16px; padding: 20px 20px 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #79B0FF">PHASE 3</div>
+      <div style="font-size: 21px; font-weight: 600; line-height: 1.2">Pierre commentary</div>
+      <div style="font-size: 16px; line-height: 1.4; color: #A9BBD8">Explains every FAIL and WARN, quoting Apple's pinned guideline text, not memory.</div>
+    </div>
+    <div aria-hidden="true" style="flex: 0 0 26px; display: flex; align-items: center; justify-content: center; color: #4D6A99; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 22px">→</div>
+
+    <div style="flex: 1 1 0; min-width: 0; background: #142447; border: 1px solid rgba(157,194,255,0.18); border-radius: 16px; padding: 20px 20px 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #79B0FF">PHASE 4</div>
+      <div style="font-size: 21px; font-weight: 600; line-height: 1.2">Pierre deep review</div>
+      <div style="font-size: 16px; line-height: 1.4; color: #A9BBD8">56 semantic checks (Tier A, B, C) plus 5 screenshot-vision checks. Advisory only.</div>
+    </div>
+    <div aria-hidden="true" style="flex: 0 0 26px; display: flex; align-items: center; justify-content: center; color: #4D6A99; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 22px">→</div>
+
+    <div style="flex: 1.15 1 0; min-width: 0; background: #FBFBF9; border-radius: 16px; padding: 20px 20px 18px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; color: #0C1830">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #8A6A52">PHASE 5</div>
+      <div style="font-size: 21px; font-weight: 600; line-height: 1.2">Verdict</div>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 2px">
+        <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 15px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #1F7A3E; color: #FFFFFF">GREEN</span>
+        <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 15px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #B07A0C; color: #FFFFFF">YELLOW</span>
+        <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 15px; font-weight: 700; padding: 5px 10px; border-radius: 999px; background: #B3261E; color: #FFFFFF">RED</span>
+      </div>
+      <div style="font-size: 15px; line-height: 1.4; color: #4A5468">Writes the <span style="font-family: 'JetBrains Mono', Menlo, monospace">.precheck-pass</span> token the upload guard gates on.</div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: stretch; gap: 24px">
+    <div style="flex: 1 1 0; border: 1px dashed rgba(157,194,255,0.35); border-radius: 16px; padding: 18px 22px; box-sizing: border-box; display: flex; align-items: center; gap: 22px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #E7B948; white-space: nowrap">PHASE 6 · OPT-IN</div>
+      <div style="font-size: 19px; font-weight: 600; white-space: nowrap">Local dynamic simulator tier</div>
+      <div style="font-size: 16px; line-height: 1.4; color: #A9BBD8">Runs the app you already built on a throwaway simulator: launch health ×3, first screen, dark mode, Dynamic Type, iPad, hosts contacted vs tracking domains, paywall and Restore via Maestro. 20 checks, advisory, never changes the verdict.</div>
+    </div>
+    <div style="flex: 0 0 300px; border-radius: 16px; background: #142447; border: 1px solid rgba(157,194,255,0.18); padding: 18px 22px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; gap: 6px">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 13px; letter-spacing: 3px; color: #79B0FF">RUNS IN</div>
+      <div style="font-size: 17px; line-height: 1.45; color: #EEF3FB">Claude Code · Codex · Cursor<br>Gemini CLI · Grok Build · CI</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

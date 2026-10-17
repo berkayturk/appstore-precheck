@@ -13,10 +13,10 @@
 <p align="center"><strong>Catch App Store rejections before a reviewer does.</strong></p>
 
 <p align="center">
-  <img src="assets/demo-fix-loop.gif" width="900" alt="appstore-precheck scanning an app: RED with four FAILs, then GREEN after the paywall is fixed">
+  <img src="assets/demo-fix-loop.gif" width="900" alt="appstore-precheck scanning an app: RED with five FAILs, then GREEN after the paywall and metadata are fixed">
 </p>
 
-<p align="center"><em>Four blockers found before Apple saw them, then a clean GREEN after the fix.</em></p>
+<p align="center"><em>Five blockers found before Apple saw them, then a clean GREEN after the fix.</em></p>
 
 ---
 
@@ -414,6 +414,10 @@ Locally / via npx: `npx appstore-precheck --format sarif > results.sarif`. The s
 nothing is auto-fixed.
 
 ## How it works
+
+<p align="center">
+  <img src="assets/how-it-works.png" width="900" alt="The appstore-precheck pipeline: guideline drift, static scan, fastlane precheck, Pierre commentary, Pierre deep review, then a GREEN / YELLOW / RED verdict; an opt-in dynamic simulator tier runs beside it">
+</p>
 
 | Phase | Step |
 |-------|------|
