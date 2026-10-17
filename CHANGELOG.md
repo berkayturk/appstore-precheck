@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.21.0] — 2026-10-17
+
 ### Apple App Review Guidelines update of October 16, 2026 reconciled
 
 - Baseline gains the two new sections: **2.3.14 Creative Assets** (human-only: the product-page header / search art lives only in App Store Connect and has no fastlane metadata slot) and **2.5.19 hidden, dormant or undocumented features** (moved out of 2.3.1; obfuscation used to hide features is now grounds for removal and account termination). Denominator 102 → 104 leaf sections.
