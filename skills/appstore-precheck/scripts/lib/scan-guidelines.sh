@@ -48,7 +48,7 @@ static_guideline_gap() {
   fi
 }
 
-# §56–§71: slug | guideline | evidence class. Keep coverage-sections.py in sync.
+# §56–§72: slug | guideline | evidence class. Keep coverage-sections.py in sync.
 while IFS='|' read -r _static_slug _static_guideline _static_evidence; do
   set_rule "$_static_slug"
   set_evidence "$_static_evidence"
@@ -76,6 +76,7 @@ game-center-id-sharing|4.5.5|source
 metadata-emoji|4.5.6|resource
 miniapp-native-bridge|4.7.2|source
 apple-endorsement-claims|5.2.4|metadata
+review-mode-gate|2.5.19|source
 STATIC_GUIDELINE_TABLE
 
 if [[ "$STATIC_EMOJI_STATUS" != SKIP ]]; then

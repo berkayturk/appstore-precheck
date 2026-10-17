@@ -48,15 +48,15 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 The percentage counts sections touched, not automatic verification of every requirement; see [the coverage inventory](docs/guideline-coverage.md).
 
-71 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+72 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
-| **1.2** | User-generated content without a report / block / moderation mechanism |
+| **1.2** | User-generated or AI-generated content (chat/UGC SDKs, image & video generation endpoints) without a report / block / moderation mechanism |
 | **1.6** | App Transport Security disabled app-wide (`NSAllowsArbitraryLoads`) |
 | **2.1** | No placeholder / dummy copy (lorem ipsum, TODO, `example.com`) in store metadata |
 | **2.1** | A login-gated app ships demo credentials / review notes for App Review |
@@ -75,7 +75,7 @@ The percentage counts sections touched, not automatic verification of every requ
 | **2.5.4** | Background modes declared in `UIBackgroundModes` but never used |
 | **2.5.5** | IPv4-only socket APIs (`inet_addr`, `AF_INET`, `gethostbyname`, …) or hardcoded IPv4 literals — App Review runs on an IPv6-only NAT64 network *(advisory)* |
 | **3.1.1** | Third-party payment SDK (Stripe, Braintree, PayPal, …) linked for digital goods instead of in-app purchase |
-| **3.1.1(a)** | External purchase link entitlement + disclosure, when external purchase APIs are used |
+| **3.1.1(a)** | External purchase link entitlement + disclosure (link only to a permitted destination), when external purchase APIs are used |
 | **3.1.2** | Trial & auto-renew subscription disclosures |
 | **3.1.2** | Restore Purchases + Terms (EULA) + Privacy Policy on the paywall |
 | **3.1.2** | Trial-emphasized paywall CTA ("Continue with free trial") or a free-trial toggle instead of one clear price |
@@ -87,6 +87,7 @@ The percentage counts sections touched, not automatic verification of every requ
 | **4.4.1** | Keyboard extension that requires full access (`RequestsOpenAccess`) |
 | **4.4.2** | Safari content-blocker / web extension |
 | **4.5.4** | Marketing-push SDK registered for notifications without an in-app opt-out signal |
+| **4.5.3** | Live Activities (`ActivityKit` / `NSSupportsLiveActivities`) alongside a marketing-push SDK: push-to-start promotions are spam *(advisory)* |
 | **4.8** | Sign in with Apple offered when a third-party social login is used |
 | **4.3** | Exposure to a category Apple names as saturated in 4.3(b) (dating, flashlight, sound effects, wallpaper, simple timers, fortune telling, …) |
 | **4.9** | Recurring Apple Pay (`PKRecurringPaymentRequest`) — verify the renewal / cancel disclosure |
@@ -125,6 +126,7 @@ The percentage counts sections touched, not automatic verification of every requ
 | **4.5.6** | Unicode emoji range heuristic in store text; icon pixels always receive a separate SKIP gap. |
 | **4.7.2** | All four signals must coexist in one file: handler, remote JS URL, evaluation and native-sensitive API. Does not resolve bridge access control. |
 | **5.2.4** | Narrow English endorsement/official-product patterns; authorized claims still require human confirmation. Ordinary iPhone compatibility text stays clean. |
+| **2.5.19** | Review-detection / hide-for-review keys, App Store build-flag branches, date-gated unlocks and obfuscation tooling; store-review prompts and product-review vocabulary stay clean. A hit asks "show the reviewer what ships", it is not proof of a hidden feature. |
 
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
 advisory warnings require their documented trigger. Missing inputs are recorded in the JSON coverage gaps.
@@ -416,7 +418,7 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 71 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
+| **1** | **Static scan**: `scan.sh` over the 72 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
 | **4** | **Pierre deep review**: 56 semantic checks (Tier A, heuristic Tier B and host vision Tier C), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |

@@ -1,21 +1,64 @@
 {
   "sections": {
+    "1.1.1": {
+      "fingerprint": "f446c6c8f796ae042813c98240ca8534658cbc0fe2e8dc2ae882fc6d2bc50b3a",
+      "snapshot": "1.1.1 defamatory, discriminatory, or mean-spirited content, including references or commentary about religion, race, sexual orientation, gender, national/ethnic"
+    },
+    "1.1.2": {
+      "fingerprint": "2f6c6b3876ab3721a93b36cf0d03ae280f515ef81a35c070a5a20187884a3e6b",
+      "snapshot": "1.1.2 realistic portrayals of people or animals being killed, maimed, tortured, or abused, or content that encourages violence. “enemies” within the context"
+    },
+    "1.1.3": {
+      "fingerprint": "4186866fbccceeafcc7f4c46be2addea4f5df490c22a0789a5aa81601a8ca7d9",
+      "snapshot": "1.1.3 depictions that encourage illegal or reckless use of weapons and dangerous objects, or facilitate the purchase of firearms or ammunition."
+    },
+    "1.1.4": {
+      "fingerprint": "2ca1c551b8f59c3c9a08cb66bfe9825c226b2c5b7dbf7026b70088162c425cb9",
+      "snapshot": "1.1.4 overtly sexual or pornographic material, defined as “explicit descriptions or displays of sexual organs or activities intended to stimulate erotic rathe"
+    },
+    "1.1.5": {
+      "fingerprint": "c21c47578e5dea1d4cba2b46698ea6081d6ae16d55735cc630504304de1d9c7a",
+      "snapshot": "1.1.5 inflammatory religious commentary or inaccurate or misleading quotations of religious texts."
+    },
+    "1.1.6": {
+      "fingerprint": "822b6ece35bf9ecdc0a95e97988534107fcb4d0089d1eb4c1a9358316eeef9d8",
+      "snapshot": "1.1.6 false information and features, including inaccurate device data or trick/joke functionality, such as fake location trackers. stating that the app is “f"
+    },
     "1.2": {
-      "fingerprint": "ce18f5618681eafe5b4010d3162e0cdfe026aed127295d1762a1fe0c23f68026",
-      "snapshot": "1.2 user-generated content apps with user-generated content present particular challenges, ranging from intellectual property infringement to anonymous bullying",
-      "quote": "1.2 User-Generated Content Apps with user-generated content present particular challenges, ranging from intellectual property infringement to anonymous bullying. To prevent abuse, apps with user-generated content or social networking services must include: A method for filtering objectionable material from being posted to the app A mechanism to report offensive content and timely responses to concerns The ability to block abusive users from the service Published contact information so users can easily reach you Apps with user-generated content or services that end up being used primarily for…",
-      "quote_verified_on": "2026-09-01"
+      "fingerprint": "e98c878778766e5e616843539521025ae373d91d8911e32b788ba9a5539f78f3",
+      "snapshot": "1.2 user-generated content apps that enable users to create, generate, upload, share, or otherwise contribute content present particular challenges, including i",
+      "quote": "1.2 User-Generated Content Apps that enable users to create, generate, upload, share, or otherwise contribute content present particular challenges, including intellectual property infringement, nonconsensual intimate",
+      "quote_verified_on": "2026-10-17"
+    },
+    "1.2.1": {
+      "fingerprint": "ffadee3ecbf75b6cf5b293fa2d9f59b2d68c1ba61e6e4c0cb33852324081e84b",
+      "snapshot": "1.2.1 creator content apps which feature content from a specific community of users called “creators” are a great opportunity if properly moderated. these a"
     },
     "1.3": {
       "fingerprint": "38fd0f8eab744d685a04db770db8af4cc907a10fc580381a4a693c3191fcb8a7",
-      "snapshot": "Kids Category — source hash only; no pinned quotation",
-      "fingerprint_verified_on": "2026-09-24"
+      "snapshot": "1.3 kids category the kids category is a great way for people to easily find apps that are designed for children. if you want to participate in the kids categor"
     },
     "1.4.1": {
       "fingerprint": "30045ffe09e8c2fe50923eb5f718ddec394b048bef67c6b7959abadb178c8406",
       "snapshot": "1.4.1 medical apps that could provide inaccurate data or information, or that could be used for diagnosing or treating patients may be reviewed with greater scr",
       "quote": "1.4.1 Medical apps that could provide inaccurate data or information, or that could be used for diagnosing or treating patients may be reviewed with greater scrutiny. Apps must clearly disclose data and methodology to support accuracy claims relating to health measurements, and if the level of accuracy or methodology cannot be validated, we will reject your app. For example, apps that claim to take x-rays, measure blood pressure, body temperature, blood glucose levels, or blood oxygen levels using only the sensors on the device are not permitted.",
       "quote_verified_on": "2026-09-01"
+    },
+    "1.4.2": {
+      "fingerprint": "fd02e0faf8ab3910f30402c117326958ddb0a777e47eaab91ee40c9e18fdf96e",
+      "snapshot": "1.4.2 drug dosage calculators must come from the drug manufacturer, a hospital, university, health insurance company, pharmacy or other approved entity, or rece"
+    },
+    "1.4.3": {
+      "fingerprint": "3010d22973eff58ae99c66ce8d9d032f16989724b4fb4b55c06a37966e5a9ff3",
+      "snapshot": "1.4.3 apps that encourage consumption of tobacco and vape products, illegal drugs, or excessive amounts of alcohol are not permitted. apps that encourage minors"
+    },
+    "1.4.4": {
+      "fingerprint": "8f2a2993a3e85b576d93f9509286b0d7b0902d7e72b8419654094f026ac47f12",
+      "snapshot": "1.4.4 apps may only display dui checkpoints that are published by law enforcement agencies, and should never encourage drunk driving or other reckless behavior "
+    },
+    "1.4.5": {
+      "fingerprint": "94073e83a6b4de4a683bc238580097861ba765a4b7ff6b840f295b956bf9193a",
+      "snapshot": "1.4.5 apps should not urge customers to participate in activities (like bets, challenges, etc.) or use their devices in a way that risks physical harm to themse"
     },
     "1.5": {
       "fingerprint": "5553347bd97263487f23eae8b7577d036a875ba0934bbde44ac4216218fe85fa",
@@ -48,10 +91,20 @@
       "quote_verified_on": "2026-09-01"
     },
     "2.3.1": {
-      "fingerprint": "4745cb96a6e7665103163daa8a6f07dfc08008288116132a1f3c668d621c61b3",
-      "snapshot": "2.3.1 (a) don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and app review. all",
-      "quote": "2.3.1 (a) Don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and App Review. All new features, functionality, and product changes must be described with specificity in the Notes for Review section of App Store Connect (generic descriptions will be rejected) and accessible for review. Similarly, marketing your app in a misleading way, such as by promoting content or services that it does not actually offer (e.g.",
+      "fingerprint": "ca4e9a3516387b33187e8d1d7f0e6494f417fd3548354780e82c4b1c6cdd08e7",
+      "snapshot": "2.3.1 (a) all new features, functionality, and product changes must be described with specificity in the notes for review section of app store connect (generic ",
+      "quote": "2.3.1 (a) All new features, functionality, and product changes must be described with specificity in the Notes for Review section of App Store Connect (generic",
+      "quote_verified_on": "2026-10-17"
+    },
+    "2.3.10": {
+      "fingerprint": "a770ee4d270784e3bfa0784aab62563acccae50f02e4d85c4bb65bda14a4133d",
+      "snapshot": "2.3.10 make sure your app is focused on the experience of the apple platforms it supports, and don’t include names, icons, or imagery of other mobile platform",
+      "quote": "2.3.10 Make sure your app is focused on the experience of the Apple platforms it supports, and don’t include names, icons, or imagery of other mobile platforms or alternative app marketplaces in your app or metadata, unless there is specific, approved interactive functionality. Make sure your app metadata is focused on the app itself and its experience. Don’t include irrelevant information.",
       "quote_verified_on": "2026-09-01"
+    },
+    "2.3.12": {
+      "fingerprint": "c4fe778434d20e2157b2093ceab8e780d6a98f85c05c57823507992f58de54a3",
+      "snapshot": "2.3.12 apps must clearly describe new features and product changes in their “what’s new” text. simple bug fixes, security updates, and performance improve"
     },
     "2.3.2": {
       "fingerprint": "e070f3780bbbbf41f191f71ef396904f9d42d531ab782f6f35b4e0c9b95dbf0a",
@@ -60,10 +113,10 @@
       "quote_verified_on": "2026-09-01"
     },
     "2.3.3": {
-      "fingerprint": "599fcbd06e68d93bab64101dc412f5c6ffb13eb76e8490c7e93d95d95e4dafae",
-      "snapshot": "2.3.3 screenshots should show the app in use, and not merely the title art, login page, or splash screen. they may also include text and image overlays (e.g. to",
-      "quote": "2.3.3 Screenshots should show the app in use, and not merely the title art, login page, or splash screen. They may also include text and image overlays (e.g. to demonstrate input mechanisms, such as an animated touch point or Apple Pencil) and show extended functionality on device, such as Touch Bar.",
-      "quote_verified_on": "2026-09-01"
+      "fingerprint": "8a652ae3985e5cbf8d2a6e19fcf6d677e3328105d4b955d03df2173e56fd138c",
+      "snapshot": "2.3.3 screenshots should show the app in use, and not merely the title art, login page, or splash screen. they may also include text and image overlays (for exa",
+      "quote": "2.3.3 Screenshots should show the app in use, and not merely the title art, login page, or splash screen. They may also include text and",
+      "quote_verified_on": "2026-10-17"
     },
     "2.3.4": {
       "fingerprint": "581fe91e7677d96de480c0edca7761023e5606f5d6cd39ae42a06d29081ab393",
@@ -77,6 +130,10 @@
       "quote": "2.3.5 Select the most appropriate category for your app, and check out the App Store Category Definitions if you need help. If you’re way off base, we may change the category for you.",
       "quote_verified_on": "2026-09-01"
     },
+    "2.3.6": {
+      "fingerprint": "374a994f0e6c75304edc28743c4d48d6ea2df97d30cb61eeb29f19c3aea460ce",
+      "snapshot": "2.3.6 answer the age rating questions in app store connect honestly so that your app aligns properly with parental controls. if your app is mis-rated, customers"
+    },
     "2.3.7": {
       "fingerprint": "3493119147fdb0b4735ce6760d2a0186a4941531ff209e4198879f0a1c201a2c",
       "snapshot": "2.3.7 choose a unique app name, assign keywords that accurately describe your app, and don’t try to pack any of your metadata with trademarked terms, popular ",
@@ -89,17 +146,59 @@
       "quote": "2.3.8 Metadata should be appropriate for all audiences, so make sure your app and in-app purchase icons, screenshots, and previews adhere to a 4+ age rating even if your app is rated higher. For example, if your app is a game that includes violence, select images that don’t depict a gruesome death or a gun pointed at a specific character. Use of terms like “For Kids” and “For Children” in app metadata is reserved in the App Store for the Kids Category.",
       "quote_verified_on": "2026-09-01"
     },
-    "2.3.10": {
-      "fingerprint": "a770ee4d270784e3bfa0784aab62563acccae50f02e4d85c4bb65bda14a4133d",
-      "snapshot": "2.3.10 make sure your app is focused on the experience of the apple platforms it supports, and don’t include names, icons, or imagery of other mobile platform",
-      "quote": "2.3.10 Make sure your app is focused on the experience of the Apple platforms it supports, and don’t include names, icons, or imagery of other mobile platforms or alternative app marketplaces in your app or metadata, unless there is specific, approved interactive functionality. Make sure your app metadata is focused on the app itself and its experience. Don’t include irrelevant information.",
-      "quote_verified_on": "2026-09-01"
+    "2.4.1": {
+      "fingerprint": "e74a3521971b1d2a7f5762539dcba77115e24fc143c6bd0bcc2aed5c5dba580a",
+      "snapshot": "2.4.1 to ensure people get the most out of your app, iphone apps should run on ipad whenever possible. we encourage you to consider building apps so customers c"
+    },
+    "2.4.2": {
+      "fingerprint": "cb18b01337c6f8967800ef9b824f1da4e689f9bba249b4efff12c82111b1263c",
+      "snapshot": "2.4.2 design your app to use power efficiently and be used in a way that does not risk damage to the device. apps should not rapidly drain battery, generate exc"
+    },
+    "2.4.4": {
+      "fingerprint": "5c1599abe86941e8cc0fac782d6108594b841593dbb9cb19d820ad4f0470a5bc",
+      "snapshot": "2.4.4 apps should never suggest or require a restart of the device or modifications to system settings unrelated to the core functionality of the app. for examp"
     },
     "2.5.1": {
       "fingerprint": "7b055c4d2438faeaee3b1b77f5ce9b9cec38e713466ea0c85d31117d6484ba8b",
       "snapshot": "2.5.1 apps may only use public apis and must run on the currently shipping os. learn more about public apis . keep your apps up-to-date and make sure you phase ",
       "quote": "2.5.1 Apps may only use public APIs and must run on the currently shipping OS. Learn more about public APIs . Keep your apps up-to-date and make sure you phase out any deprecated features, frameworks or technologies that will no longer be supported in future versions of an OS. Apps should use APIs and frameworks for their intended purposes and indicate that integration in their app description. For example, the HomeKit framework should provide home automation services; and HealthKit should be used for health and fitness purposes and integrate with the Health app.",
       "quote_verified_on": "2026-09-01"
+    },
+    "2.5.11": {
+      "fingerprint": "fc6036943b1d4feb75754bdad977a8c5a5cc17128f2ac3c289d40faeb1873526",
+      "snapshot": "2.5.11 sirikit and shortcuts (i) apps integrating sirikit and shortcuts should only sign up for intents they can handle without the support of an additional app"
+    },
+    "2.5.12": {
+      "fingerprint": "29cf68f171ad5d37a3f15b9b8835aec9424c1a13ff98aeed59776c6047411223",
+      "snapshot": "2.5.12 apps using callkit or including an sms fraud extension should only block phone numbers that are confirmed spam. apps that include call-, sms-, and mms- b"
+    },
+    "2.5.13": {
+      "fingerprint": "a3c9f293d96b46e5143c618508ad065db149befad2ee87da2692216a4026e859",
+      "snapshot": "2.5.13 apps using facial recognition for account authentication must use localauthentication (and not arkit or other facial recognition technology) where possib"
+    },
+    "2.5.14": {
+      "fingerprint": "16e833e564e8fc89ba7845d296e5c85ec00b46aa147aa32e982f9d491b83a46d",
+      "snapshot": "2.5.14 apps must request explicit user consent and provide a clear visual and/or audible indication when recording, logging, or otherwise making a record of use"
+    },
+    "2.5.15": {
+      "fingerprint": "5285594d981dc8357f9236029cb7af8bbc2434deb94f998c90324d971c7e691e",
+      "snapshot": "2.5.15 apps that enable users to view and select files should include items from the files app and the user’s icloud documents."
+    },
+    "2.5.16": {
+      "fingerprint": "67f6ba78b994b4bf08e77242214a3552bf40197b92df05263688ebb3c39f0044",
+      "snapshot": "2.5.16 widgets, extensions, and notifications should be related to the content and functionality of your app. (a) additionally, all app clip features and functi"
+    },
+    "2.5.17": {
+      "fingerprint": "bdf99d2885a4f998eb36328a92b0750322c7f0c6ba919c9093a6ca55ac21c3d1",
+      "snapshot": "2.5.17 apps that support matter must use apple’s support framework for matter to initiate pairing. in addition, if you choose to use any matter software compo"
+    },
+    "2.5.18": {
+      "fingerprint": "66c616ae40b0541831f66cf6294a79c14d113c8b7ab8a781d0058cebf1c108f2",
+      "snapshot": "2.5.18 display advertising should be limited to your main app binary, and should not be included in extensions, app clips, widgets, notifications, keyboards, wa"
+    },
+    "2.5.19": {
+      "fingerprint": "9f99fa599ab62580198261f064d446c229ecf835d3c06eb6ab6ded97305c5fb0",
+      "snapshot": "2.5.19 don’t include any hidden, dormant, or undocumented features in your app; your app’s functionality should be clear to end users and app review. attemp"
     },
     "2.5.2": {
       "fingerprint": "353ebb9358966707a33b8b1b29575e44c1a2db44e8a42c013bcd48ca296fec44",
@@ -119,28 +218,51 @@
       "quote": "2.5.5 Apps must be fully functional on IPv6-only networks.",
       "quote_verified_on": "2026-09-01"
     },
+    "2.5.6": {
+      "fingerprint": "e1a8e8467efcfda4d7d3fc24fbfd3d66d0165435a1c53d0b186eb1067ac35609",
+      "snapshot": "2.5.6 apps that browse the web must use the appropriate webkit framework and webkit javascript. you may apply for an entitlement to use an alternative web brows"
+    },
+    "2.5.8": {
+      "fingerprint": "313c56bbb1075f92ab1e66ab7eed1c1c7eff42846001abc62ae284e530022711",
+      "snapshot": "2.5.8 apps that create alternate desktop/home screen environments will be rejected."
+    },
+    "2.5.9": {
+      "fingerprint": "7d3906009804d802bede4634f4d9abae4b07e239c4418776f210e60840e00c2f",
+      "snapshot": "2.5.9 apps that alter or disable the functions of standard switches, such as the volume up/down and ring/silent switches, or other native user interface element"
+    },
     "3.1.1": {
-      "fingerprint": "16d14be80e2243e9456be40bbc6c8dfb2cb6e90c6e98e5c36ba6e7f7147a61e8",
+      "fingerprint": "71d13777b7cf359f4bd580911c3882f5e2b8c2f69dbfff3f2fa66f3b0bfcddcd",
       "snapshot": "3.1.1 in-app purchase: if you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, acce",
-      "quote": "3.1.1 In-App Purchase: If you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, access to premium content, or unlocking a full version), you must use in-app purchase. Apps may not use their own mechanisms to unlock content or functionality, such as license keys, augmented reality markers, QR codes, cryptocurrencies and cryptocurrency wallets, etc. Apps may use in-app purchase currencies to enable customers to “tip” the developer or digital content providers in the app.",
-      "quote_verified_on": "2026-09-01"
+      "quote": "3.1.1 In-App Purchase: If you want to unlock features or functionality within your app, (by way of example: subscriptions, in-game currencies, game levels, access to",
+      "quote_verified_on": "2026-10-17"
     },
     "3.1.2": {
-      "fingerprint": "015f5baa628e085d550f8bc6d47f0cc33508915a5dced6d8b238e6a52616690a",
+      "fingerprint": "846995c3704a4ae1c8a31345da3e6cab984d61729a06e41df0f31635c6d959be",
       "snapshot": "3.1.2 subscriptions: apps may offer auto-renewable in-app purchase subscriptions, regardless of category on the app store. when incorporating auto-renewable sub",
-      "quote": "3.1.2 Subscriptions: Apps may offer auto-renewable in-app purchase subscriptions, regardless of category on the App Store. When incorporating auto-renewable subscriptions into your app, be sure to follow the guidelines below. 3.1.2(a) Permissible uses: If you offer an auto-renewable subscription, you must provide ongoing value to the customer, and the subscription period must last at least seven days and be available across all of the user’s devices.",
-      "quote_verified_on": "2026-09-01"
+      "quote": "3.1.2 Subscriptions: Apps may offer auto-renewable in-app purchase subscriptions, regardless of category on the App Store. When incorporating auto-renewable subscriptions into your app, be sure",
+      "quote_verified_on": "2026-10-17"
+    },
+    "3.1.3": {
+      "fingerprint": "f4ec1bef55f06a4107c8c574f0d62c206cfbcb57b5b2bf7a0b113b0c014bd752",
+      "snapshot": "3.1.3 other purchase methods: the following apps may use purchase methods other than in-app purchase. apps in this section cannot, within the app, encourage use"
+    },
+    "3.1.4": {
+      "fingerprint": "032e6a457f56c3482ddf190352cfb1b834524e91c2fdd7dee1cd4e3c971d0e64",
+      "snapshot": "3.1.4 hardware-specific content: in limited circumstances, such as when features are dependent upon specific hardware to function, the app may unlock that funct"
     },
     "3.1.5": {
-      "fingerprint": "ff34b24b578bec14defe707f1333593160535ab927d03676f1e533b4d9ef03bb",
+      "fingerprint": "6845b0d71f210c61f66ca61066716e4701cab16b68d58c1ec1458c1b19ea2e12",
       "snapshot": "3.1.5 cryptocurrencies: (i) wallets: apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) min",
-      "quote": "3.1.5 Cryptocurrencies: (i) Wallets: Apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) Mining: Apps may not mine for cryptocurrencies unless the processing is performed off device (e.g. cloud-based mining). (iii) Exchanges: Apps may facilitate transactions or transmissions of cryptocurrency on an approved exchange, provided they are offered only in countries or regions where the app has appropriate licensing and permissions to provide a cryptocurrency exchange.",
-      "quote_verified_on": "2026-09-01"
+      "quote": "3.1.5 Cryptocurrencies: (i) Wallets: Apps may facilitate virtual currency storage, provided they are offered by developers enrolled as an organization. (ii) Mining: Apps may not",
+      "quote_verified_on": "2026-10-17"
+    },
+    "3.2.1": {
+      "fingerprint": "835cfdf7bac215a2826de2e534d69defbb9e594c2d3e53ed98af0f145a35f856",
+      "snapshot": "3.2.1 acceptable (i) displaying your own apps for purchase or promotion within your app, provided the app is not merely a catalog of your apps. (ii) displaying "
     },
     "3.2.2": {
-      "fingerprint": "fe1f8219ea48d4b1acd38d56664c64cf442a899a379bf146570efbd58aa31a0a",
-      "snapshot": "Business practices: unacceptable — source hash only; no pinned quotation",
-      "fingerprint_verified_on": "2026-09-24"
+      "fingerprint": "1d552af535cb221344ac9683742db61c6a7234f678d888e7b0fa8c7da21b0e6b",
+      "snapshot": "3.2.2 unacceptable (i) creating an interface for displaying third-party apps, extensions, or plug-ins similar to the app store or as a general-interest collecti"
     },
     "4.0": {
       "fingerprint": "428486ae5ee88d20ce9d22900b8f502af2f318918679c3f60f00b6dffed2cdc7",
@@ -148,17 +270,33 @@
       "quote": "4. Design Apple customers place a high value on products that are simple, refined, innovative, and easy to use, and that’s what we want to see on the App Store. Coming up with a great design is up to you, but the following are minimum standards for approval to the App Store. And remember that even after your app has been approved, you should update your app to ensure it remains functional and engaging to new and existing customers. Apps that stop working or offer a degraded experience may be removed from the App Store at any time.",
       "quote_verified_on": "2026-09-01"
     },
+    "4.10": {
+      "fingerprint": "80184d5be5beec88f04c59b79018d488f36d6597e21ca7950a9f54765feca174",
+      "snapshot": "4.10 monetizing built-in capabilities you may not monetize built-in capabilities provided by the hardware or operating system, such as push notifications, the c"
+    },
     "4.2": {
       "fingerprint": "381768384e5d58de6c2c75ccfae3524279669ea710b29bd12994561ba002e9d6",
       "snapshot": "4.2 minimum functionality your app should include features, content, and ui that elevate it beyond a repackaged website. if your app is not particularly useful,",
       "quote": "4.2 Minimum Functionality Your app should include features, content, and UI that elevate it beyond a repackaged website. If your app is not particularly useful, unique, or “app-like,” it doesn’t belong on the App Store. If your App doesn’t provide some sort of lasting entertainment value or adequate utility, it may not be accepted. Apps that are simply a song or movie should be submitted to the iTunes Store. Apps that are simply a book or game guide should be submitted to the Apple Books Store.",
       "quote_verified_on": "2026-09-01"
     },
+    "4.2.1": {
+      "fingerprint": "186350931d2f6ae6faf4fab30b4ad0000cb386890f59dfc1f0d55904e0d31ebc",
+      "snapshot": "4.2.1 apps using arkit should provide rich and integrated augmented reality experiences; merely dropping a model into an ar view or replaying animation is not e"
+    },
     "4.2.2": {
       "fingerprint": "504f8404893912593ded8f89748de71a847897cc0cf7f987e475323edef8650a",
       "snapshot": "4.2.2 other than catalogs, apps shouldn’t primarily be marketing materials, advertisements, web clippings, content aggregators, or a collection of links.",
       "quote": "4.2.2 Other than catalogs, apps shouldn’t primarily be marketing materials, advertisements, web clippings, content aggregators, or a collection of links.",
       "quote_verified_on": "2026-09-01"
+    },
+    "4.2.3": {
+      "fingerprint": "60bde0e85a028024660dd1b6da7a487083fea5c8e346e1f9d4ef287e6bce7829",
+      "snapshot": "4.2.3 (i) your app should work on its own without requiring installation of another app to function. (ii) if your app needs to download additional resources in "
+    },
+    "4.2.6": {
+      "fingerprint": "4103043724fc67b34b9d9284adde202d44d15a33f8ee16a595fb1da66902e0bc",
+      "snapshot": "4.2.6 apps created from a commercialized template or app generation service will be rejected unless they are submitted directly by the provider of the app’s c"
     },
     "4.2.7": {
       "fingerprint": "debd395643a03b8dec28d32aed55ec883b91ce24df156ed8365846245a56d436",
@@ -173,16 +311,24 @@
       "quote_verified_on": "2026-09-01"
     },
     "4.4.1": {
-      "fingerprint": "520a1ac7a5d13b54061b05bdc57a851e7d5f541a352144623b16c52ae578e5c6",
-      "snapshot": "4.4.1 keyboard extensions have some additional rules. they must: provide keyboard input functionality (e.g. typed characters); follow sticker guidelines if the ",
-      "quote": "4.4.1 Keyboard extensions have some additional rules. They must: Provide keyboard input functionality (e.g. typed characters); Follow Sticker guidelines if the keyboard includes images or emoji; Provide a method for progressing to the next keyboard; Remain functional without full network access and without requiring full access; Collect user activity only to enhance the functionality of the user’s keyboard extension on the iOS device. They must not: Launch other apps besides Settings; or Repurpose keyboard buttons for other behaviors (e.g.",
-      "quote_verified_on": "2026-09-01"
+      "fingerprint": "266634bd4cfa57e79abbc18d66909a313155166046df023d7cabec7b90309047",
+      "snapshot": "4.4.1 keyboard extensions have some additional rules. they must: provide keyboard input functionality (such as typed characters); follow sticker guidelines if t",
+      "quote": "4.4.1 Keyboard extensions have some additional rules. They must: Provide keyboard input functionality (such as typed characters); Follow Sticker guidelines if the keyboard includes images",
+      "quote_verified_on": "2026-10-17"
     },
     "4.4.2": {
       "fingerprint": "6b7f6bde5787ba828a1f18833340140d858d1cc520430b0519f487a7d86dc54c",
       "snapshot": "4.4.2 safari extensions must run on the current version of safari on the relevant apple operating system. they may not interfere with system or safari ui elemen",
       "quote": "4.4.2 Safari extensions must run on the current version of Safari on the relevant Apple operating system. They may not interfere with System or Safari UI elements and must never include malicious or misleading content or code. Violating this rule will lead to removal from the Apple Developer Program. Safari extensions should not claim access to more websites than strictly necessary to function.",
       "quote_verified_on": "2026-09-01"
+    },
+    "4.5.1": {
+      "fingerprint": "30c871e3d4822e8c6546a7066b19bb64db24a4aad157646b34f6d67f435bdcae",
+      "snapshot": "4.5.1 apps may use approved apple rss feeds such as the itunes store rss feed, but may not scrape any information from apple sites (such as apple.com, the itune"
+    },
+    "4.5.2": {
+      "fingerprint": "e46114f887f78d2250fc425c5ead2c9de4475484a830d76f3a5717088a79c031",
+      "snapshot": "4.5.2 apple music (i) musickit on ios lets users play apple music and their local music library natively from your apps and games. when a user provides permissi"
     },
     "4.5.3": {
       "fingerprint": "66dcdc8015b616f09d2dc81e96567f1e003d3c71d8549e89d911ff1a7a3a528e",
@@ -192,8 +338,35 @@
     },
     "4.5.4": {
       "fingerprint": "67c214be2af3b7fecfb7485d23e61a4b70f8e89c3ccf84de424fc7a1f88a2699",
-      "snapshot": "Push notification use — source hash only; no pinned quotation",
-      "fingerprint_verified_on": "2026-09-24"
+      "snapshot": "4.5.4 push notifications must not be required for the app to function, and should not be used to send sensitive personal or confidential information. push notif"
+    },
+    "4.5.5": {
+      "fingerprint": "deedf18c56472724407d7c7ef8d62568b5457df308582812cf1bd6e0910c54b2",
+      "snapshot": "4.5.5 only use game center player ids in a manner approved by the game center terms and do not display them in the app or to any third party."
+    },
+    "4.5.6": {
+      "fingerprint": "f1eb6c462b45c182d3dcc4ef0aff03df096dbbb59b114abcd80d513e9693f001",
+      "snapshot": "4.5.6 apps may use unicode characters that render as apple emoji in their app and app metadata. apple emoji may not be used on other platforms or embedded direc"
+    },
+    "4.7.1": {
+      "fingerprint": "a9c739366a556bcec76d7f255b248fb3389c6b6d3d88dee444bd3d33f74d02f8",
+      "snapshot": "4.7.1 software offered in apps under this rule must: follow all privacy guidelines, including but not limited to the rules set forth in guideline 5.1 concerning"
+    },
+    "4.7.2": {
+      "fingerprint": "167c82880f22a7f3aa150522200dd4a456ac5c2be2dcea25ca722f691d66d2b2",
+      "snapshot": "4.7.2 your app may not extend or expose native platform apis or technologies to the software without prior permission from apple."
+    },
+    "4.7.3": {
+      "fingerprint": "54d9136a5c3963a72c280a8da4a940cd9071c8dcb4923ed01b610168c2fd25bb",
+      "snapshot": "4.7.3 your app may not share data or privacy permissions to any individual software offered in your app without explicit user consent in each instance."
+    },
+    "4.7.4": {
+      "fingerprint": "ff46610851c8c3c7082eaec7f7f94f9b61b3d25912c822efaa6850dec6e12809",
+      "snapshot": "4.7.4 you must provide an index of software and metadata available in your app. it must include universal links that lead to all of the software offered in your"
+    },
+    "4.7.5": {
+      "fingerprint": "18ec06bd6d97b2ac16a060021a0e88d7b1efa042e9320936c4c6a340e843f206",
+      "snapshot": "4.7.5 your app must provide a way for users to identify software that exceeds the app’s age rating, and use an age restriction mechanism based on verified or "
     },
     "4.8": {
       "fingerprint": "4d97c6a408a925e9209c7f01ca4377b17c52eeb837a15023ac776b198f3f203e",
@@ -208,16 +381,16 @@
       "quote_verified_on": "2026-09-01"
     },
     "5.1.1": {
-      "fingerprint": "fed9edf9021681ed9f27139e162f963bf4823e95775d6efad1156c59e9bd7baf",
+      "fingerprint": "052948484a622451a567d4d8f6785f31950fc463b44abc6c9e73b4bf19f06307",
       "snapshot": "5.1.1 data collection and storage (i) privacy policies: all apps must include a link to their privacy policy in the app store connect metadata field and within ",
-      "quote": "5.1.1 Data Collection and Storage (i) Privacy Policies: All apps must include a link to their privacy policy in the App Store Connect metadata field and within the app in an easily accessible manner. The privacy policy must clearly and explicitly: Identify what data, if any, the app/service collects, how it collects that data, and all uses of that data.",
-      "quote_verified_on": "2026-09-01"
+      "quote": "5.1.1 Data Collection and Storage (i) Privacy Policies: All apps must include a link to their privacy policy in the App Store Connect metadata field",
+      "quote_verified_on": "2026-10-17"
     },
     "5.1.2": {
-      "fingerprint": "9817b825aa227ee7959bdecde672a78dffa147ce2ded3e3bcc0c0a4b3010f80c",
+      "fingerprint": "c200235664cf29dba59aff23919c5145b56ae876def6b768c37d18fa8fd4dad9",
       "snapshot": "5.1.2 data use and sharing (i) unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their pe",
-      "quote": "5.1.2 Data Use and Sharing (i) Unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their permission. You must provide access to information about how and where the data will be used. You must clearly disclose where personal data will be shared with third parties, including with third-party AI, and obtain explicit permission before doing so. Data collected from apps may only be shared with third parties to improve the app or serve advertising (in compliance with the Apple Developer Program License Agreement ).",
-      "quote_verified_on": "2026-09-01"
+      "quote": "5.1.2 Data Use and Sharing (i) Unless otherwise permitted by law, you may not use, transmit, or share someone’s personal data without first obtaining their",
+      "quote_verified_on": "2026-10-17"
     },
     "5.1.3": {
       "fingerprint": "12a61190ea01b69c11d8d029b473777b5e9590739fd3043afa25f4f0f05c114a",
@@ -226,16 +399,32 @@
       "quote_verified_on": "2026-09-01"
     },
     "5.1.4": {
-      "fingerprint": "43671205363120d06dd34eb1971c4751e8582fb8f7dfe69abbcadf2cd36195ea",
+      "fingerprint": "d89dec82aa3e5af25d3d6e75f8ba31e3456bdd310b6e817026030850735b77d9",
       "snapshot": "5.1.4 kids (a) for many reasons, it is critical to use care when dealing with personal data from kids, and we encourage you to carefully review all the requirem",
-      "quote": "5.1.4 Kids (a) For many reasons, it is critical to use care when dealing with personal data from kids, and we encourage you to carefully review all the requirements for complying with laws like the Children’s Online Privacy Protection Act (“COPPA”), the European Union’s General Data Protection Regulation (“GDPR”), and any other applicable regulations or laws. Apps may ask for birthdate and parental contact information only for the purpose of complying with these statutes, but must include some useful functionality or entertainment value regardless of a person’s age.",
-      "quote_verified_on": "2026-09-01"
+      "quote": "5.1.4 Kids (a) For many reasons, it is critical to use care when dealing with personal data from kids, and we encourage you to carefully",
+      "quote_verified_on": "2026-10-17"
+    },
+    "5.1.5": {
+      "fingerprint": "07911be837521693da654a46f08e84c9ca2ec3cf9ad87c65f54ae9624d157b3e",
+      "snapshot": "5.1.5 location services use location services in your app only when it is directly relevant to the features and services provided by the app. location-based api"
     },
     "5.2.1": {
       "fingerprint": "358d2d81a7b375d308077bbb71b07989235f5667d2cda7fffb14ac1b006c7ae8",
       "snapshot": "5.2.1 generally: don’t use protected third-party material such as trademarks, copyrighted works, or patented ideas in your app without permission, and don’t",
       "quote": "5.2.1 Generally: Don’t use protected third-party material such as trademarks, copyrighted works, or patented ideas in your app without permission, and don’t include misleading, false, or copycat representations, names, or metadata in your app bundle or developer name. Apps should be submitted by the person or legal entity that owns or has licensed the intellectual property and other relevant rights.",
       "quote_verified_on": "2026-09-01"
+    },
+    "5.2.3": {
+      "fingerprint": "af14ea092fafab7360560c7964d5fd367536d2838865eda48daf84bbff727e05",
+      "snapshot": "5.2.3 audio/video downloading: apps should not facilitate illegal file sharing or include the ability to save, convert, or download media from third-party sourc"
+    },
+    "5.2.4": {
+      "fingerprint": "630c79c4aefbdafc718270082bb0421b896d6bcd69e8aea7b82b1d5d14e8fe7d",
+      "snapshot": "5.2.4 apple endorsements: (a) don’t suggest or imply that apple is a source or supplier of the app, or that apple endorses any particular representation regar"
+    },
+    "5.2.5": {
+      "fingerprint": "6181cead4012f1ed25ad6e1e965a8ff6ef48f2a8e318d3eebfca478fd6089c0b",
+      "snapshot": "5.2.5 apple products: don’t create an app that appears confusingly similar to an existing apple product, interface (such as finder), app (such as the app stor"
     },
     "5.3.1": {
       "fingerprint": "b1b9f19d97e0303c2b658f1b7d9d0db70dc417bdff7ce826c1e5b93b4a35ca55",
@@ -249,11 +438,15 @@
       "quote": "5.3.2 Official rules for sweepstakes, contests, and raffles must be presented in the app and make clear that Apple is not a sponsor or involved in the activity in any manner.",
       "quote_verified_on": "2026-09-01"
     },
+    "5.3.3": {
+      "fingerprint": "7770603fbb406eeaa5d1320ca6baa5f57a72ee680200d82373bbc9dd6e41b8fe",
+      "snapshot": "5.3.3 apps may not use in-app purchase to purchase credit or currency for use in conjunction with real money gaming of any kind."
+    },
     "5.3.4": {
-      "fingerprint": "aaca06600d77f4c3d63ffd9c6c3f5eef979135c2ce3f1263bb5349420d036387",
-      "snapshot": "5.3.4 apps that offer real money gaming (e.g. sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions in t",
-      "quote": "5.3.4 Apps that offer real money gaming (e.g. sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions in the locations where the app is used, must be geo-restricted to those locations, and must be free on the App Store. Illegal gambling aids, including card counters, are not permitted on the App Store. Lottery apps must have consideration, chance, and a prize.",
-      "quote_verified_on": "2026-09-01"
+      "fingerprint": "1bc234ccf2883ddf4f28f8825c9a4b91e00f5cdf7ff5ead31e41dfb714837db6",
+      "snapshot": "5.3.4 apps that offer real money gaming (such as sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions i",
+      "quote": "5.3.4 Apps that offer real money gaming (such as sports betting, poker, casino games, horse racing) or lotteries must have necessary licensing and permissions in",
+      "quote_verified_on": "2026-10-17"
     },
     "5.4": {
       "fingerprint": "3d639b21b98c7d15167fdfbd71559a91a5de51a7b5c22f300203e5f341af8616",
@@ -284,296 +477,7 @@
       "snapshot": "5.6.3 discovery fraud participating in the app store requires integrity and a commitment to building and maintaining customer trust. manipulating any element of",
       "quote": "5.6.3 Discovery Fraud Participating in the App Store requires integrity and a commitment to building and maintaining customer trust. Manipulating any element of the App Store customer experience such as charts, search, reviews, or referrals to your app erodes customer trust and is not permitted.",
       "quote_verified_on": "2026-09-01"
-    },
-    "2.4.1": {
-      "fingerprint": "e74a3521971b1d2a7f5762539dcba77115e24fc143c6bd0bcc2aed5c5dba580a",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.1.1": {
-      "fingerprint": "f446c6c8f796ae042813c98240ca8534658cbc0fe2e8dc2ae882fc6d2bc50b3a",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.1.2": {
-      "fingerprint": "2f6c6b3876ab3721a93b36cf0d03ae280f515ef81a35c070a5a20187884a3e6b",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.1.3": {
-      "fingerprint": "4186866fbccceeafcc7f4c46be2addea4f5df490c22a0789a5aa81601a8ca7d9",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.1.4": {
-      "fingerprint": "2ca1c551b8f59c3c9a08cb66bfe9825c226b2c5b7dbf7026b70088162c425cb9",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.1.5": {
-      "fingerprint": "c21c47578e5dea1d4cba2b46698ea6081d6ae16d55735cc630504304de1d9c7a",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.1.6": {
-      "fingerprint": "822b6ece35bf9ecdc0a95e97988534107fcb4d0089d1eb4c1a9358316eeef9d8",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.2.1": {
-      "fingerprint": "ffadee3ecbf75b6cf5b293fa2d9f59b2d68c1ba61e6e4c0cb33852324081e84b",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.4.2": {
-      "fingerprint": "fd02e0faf8ab3910f30402c117326958ddb0a777e47eaab91ee40c9e18fdf96e",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.4.3": {
-      "fingerprint": "3010d22973eff58ae99c66ce8d9d032f16989724b4fb4b55c06a37966e5a9ff3",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.4.4": {
-      "fingerprint": "8f2a2993a3e85b576d93f9509286b0d7b0902d7e72b8419654094f026ac47f12",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "1.4.5": {
-      "fingerprint": "94073e83a6b4de4a683bc238580097861ba765a4b7ff6b840f295b956bf9193a",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.3.6": {
-      "fingerprint": "a6804ee336bd78da1ddc44613ea6fe131b5dcf4cbe482b8cb696ef3720435c3d",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.8": {
-      "fingerprint": "313c56bbb1075f92ab1e66ab7eed1c1c7eff42846001abc62ae284e530022711",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.9": {
-      "fingerprint": "7d3906009804d802bede4634f4d9abae4b07e239c4418776f210e60840e00c2f",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "3.1.3": {
-      "fingerprint": "88155f382e2d743947ff7ad62997ff09a17225d0512ada4de6b1204753113adf",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "3.1.4": {
-      "fingerprint": "e699d339d2a5b1d59c5955c39f7d57a8e92347050866b80c621c1ae96136417b",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "3.2.1": {
-      "fingerprint": "8d28a81f97cbbaef0e4540433f5f988861fc6ddec67bb65f9f588c636b497ddd",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.2.6": {
-      "fingerprint": "4103043724fc67b34b9d9284adde202d44d15a33f8ee16a595fb1da66902e0bc",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.5.1": {
-      "fingerprint": "9a82e38f4117ddc59f65993ff1ba5c8fba392fb91f7aad3936725e289d348b38",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.7.1": {
-      "fingerprint": "a9c739366a556bcec76d7f255b248fb3389c6b6d3d88dee444bd3d33f74d02f8",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.7.3": {
-      "fingerprint": "54d9136a5c3963a72c280a8da4a940cd9071c8dcb4923ed01b610168c2fd25bb",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.10": {
-      "fingerprint": "80184d5be5beec88f04c59b79018d488f36d6597e21ca7950a9f54765feca174",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "5.2.3": {
-      "fingerprint": "af448918a1af7645066c9cce2be68952a841908a49efe143123b5641e8cf2215",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "5.2.5": {
-      "fingerprint": "d64c2be4c4da8dc7c5386cd1168c4ab68c0ec791cf3ee333abc7b1b4876c544e",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "5.3.3": {
-      "fingerprint": "7770603fbb406eeaa5d1320ca6baa5f57a72ee680200d82373bbc9dd6e41b8fe",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.3.12": {
-      "fingerprint": "c4fe778434d20e2157b2093ceab8e780d6a98f85c05c57823507992f58de54a3",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.4.4": {
-      "fingerprint": "5c1599abe86941e8cc0fac782d6108594b841593dbb9cb19d820ad4f0470a5bc",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.6": {
-      "fingerprint": "e1a8e8467efcfda4d7d3fc24fbfd3d66d0165435a1c53d0b186eb1067ac35609",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.11": {
-      "fingerprint": "afdf258f4f5e48caaa98645313f4c13732b786e93975f3b1dd00390b65fac898",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.12": {
-      "fingerprint": "6a5f137ccc7b19845507a1bef342708d3b855d3c2863f445ac5fc989db122715",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.13": {
-      "fingerprint": "a3c9f293d96b46e5143c618508ad065db149befad2ee87da2692216a4026e859",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.15": {
-      "fingerprint": "5285594d981dc8357f9236029cb7af8bbc2434deb94f998c90324d971c7e691e",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.16": {
-      "fingerprint": "67f6ba78b994b4bf08e77242214a3552bf40197b92df05263688ebb3c39f0044",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.17": {
-      "fingerprint": "bdf99d2885a4f998eb36328a92b0750322c7f0c6ba919c9093a6ca55ac21c3d1",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.18": {
-      "fingerprint": "443fa8d1851f9b93a9214f181fbcc1e9eb9a91862a078821ad4fdab0847bdcac",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.2.1": {
-      "fingerprint": "186350931d2f6ae6faf4fab30b4ad0000cb386890f59dfc1f0d55904e0d31ebc",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.2.3": {
-      "fingerprint": "60bde0e85a028024660dd1b6da7a487083fea5c8e346e1f9d4ef287e6bce7829",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.5.5": {
-      "fingerprint": "deedf18c56472724407d7c7ef8d62568b5457df308582812cf1bd6e0910c54b2",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.5.6": {
-      "fingerprint": "f1eb6c462b45c182d3dcc4ef0aff03df096dbbb59b114abcd80d513e9693f001",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.7.2": {
-      "fingerprint": "167c82880f22a7f3aa150522200dd4a456ac5c2be2dcea25ca722f691d66d2b2",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "5.2.4": {
-      "fingerprint": "29ef1e9fcebc87b117b49a7914c5bbff3fac0762d6b61af8172850f56163a992",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.4.2": {
-      "fingerprint": "cb18b01337c6f8967800ef9b824f1da4e689f9bba249b4efff12c82111b1263c",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "2.5.14": {
-      "fingerprint": "16e833e564e8fc89ba7845d296e5c85ec00b46aa147aa32e982f9d491b83a46d",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.5.2": {
-      "fingerprint": "285371a2e18e84a6b20f61f4b9e4f342c2890debecfaf527c57051d4e15c48b4",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.7.4": {
-      "fingerprint": "ff46610851c8c3c7082eaec7f7f94f9b61b3d25912c822efaa6850dec6e12809",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "4.7.5": {
-      "fingerprint": "18ec06bd6d97b2ac16a060021a0e88d7b1efa042e9320936c4c6a340e843f206",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
-    },
-    "5.1.5": {
-      "fingerprint": "07911be837521693da654a46f08e84c9ca2ec3cf9ad87c65f54ae9624d157b3e",
-      "snapshot": "Source fingerprint only; no pinned quotation.",
-      "fingerprint_verified_on": "2026-10-02",
-      "source_snapshot_date": "2026-09-27"
     }
   },
-  "reconciled_on": "2026-09-01",
-  "coverage_index_updated_on": "2026-09-24"
+  "reconciled_on": "2026-10-17"
 }

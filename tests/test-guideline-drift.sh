@@ -48,6 +48,17 @@ checks="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh"
 assert_contains "$checks" "screenshots-per-locale" "2.3.3 maps to its scan check"
 assert_eq "$checks" "$(printf 'screenshots-per-locale\nscreenshot-dimensions')" "2.3.3 maps to exactly its two real checks (§7 + §7b; no comment-boundary false extra)"
 
+# Modular checks (§56–§72) are registered through a `slug|guideline|evidence` table whose
+# set_rule argument is a variable; the drift report must name the slug, never "$_static_slug".
+c2518="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "2.5.18")"
+assert_eq "$c2518" "extension-advertising" "2.5.18 maps to its modular table slug"
+c524="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "5.2.4")"
+assert_eq "$c524" "apple-endorsement-claims" "5.2.4 maps to its modular table slug"
+c2519="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "2.5.19")"
+assert_eq "$c2519" "review-mode-gate" "2.5.19 maps to the §72 modular slug"
+all_checks="$(for s in 2.5.11 2.5.12 2.5.18 5.2.4; do gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "$s"; done)"
+assert_absent "$all_checks" '$_static_slug' "no literal loop variable leaks into the drift report"
+
 c511="$(gd_checks_for_section "$ROOT/skills/appstore-precheck/scripts/scan.sh" "5.1.1")"
 assert_contains "$c511" "privacy-manifest-parity" "5.1.1 maps to its real checks"
 assert_absent "$c511" "safari-extension" "5.1.1 does not pick up the §38 header-comment false extra"

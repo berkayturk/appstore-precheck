@@ -51,6 +51,7 @@ SUITE=(
   "test-skip.sh"      # SKIP (not-audited) line class: emission, counting, json/sarif
   "test-saturated.sh" # §54 saturated-category (4.3(b)) field scoping + word boundaries
   "test-ipv4-literal.sh" # §55 ipv4-literal (2.5.5): IPv4-only socket APIs + literals, exclusions, labels
+  "test-guideline-2026-10.sh" # Oct 16, 2026 guideline update: §22 AI-generation UGC signals, §50 Live Activities (4.5.3), §15 permitted-destination wording
   "test-design-40.sh" # guideline 4.0: baseline N.0 sections, pinned quote, deep-review check 31
   "test-phase6-doc.sh" # Phase 6 reference contract: D0 install step, D3 StoreKit SKIP, device lifecycle, rule ids, D3b, four launch signals
   "test-dynamic-reconcile.sh" # dynamic.sh transcript -> runtime records, reconciliation table, Debug guard, RESOLVED inertness

@@ -32,14 +32,16 @@ class CoverageSections(unittest.TestCase):
 
     def test_denominator_and_dynamic_baseline_correction(self):
         report = self.report()
-        self.assertEqual(report['denominator'], 102)
+        self.assertEqual(report['denominator'], 104)
         self.assertEqual(report['parent_sections_count'], 16)
         self.assertEqual(report['not_counted_count'], 12)
-        self.assertEqual(report['human_only'], 9)
+        self.assertEqual(report['human_only'], 10)
         self.assertEqual(report['errors'], [])
         # D9 is an existing check missing from the old baseline, not a new detector.
         self.assertIn('dyn-ipad-layout', report['sources']['2.4.1'])
-        self.assertGreaterEqual(report['covered'], 93)
+        self.assertGreaterEqual(report['covered'], 94)
+        self.assertIn('§72', report['sources']['2.5.19'])
+        self.assertIn('2.3.14', report['human_only_sections'])
         self.assertNotIn('1.2', report['covered_sections'])
         self.assertIn('deep-38', report['sources']['1.2.1'])
 
@@ -116,11 +118,11 @@ class CoverageSections(unittest.TestCase):
 
     def test_positive_only_routes_are_explicit_without_changing_denominator(self):
         report = self.report()
-        self.assertEqual(report['touched'], 93)
+        self.assertEqual(report['touched'], 94)
         self.assertEqual(report['positive_only'], 2)
         self.assertEqual(report['positive_only_sections'], ['2.5.14', '4.5.2'])
-        self.assertEqual(report['denominator'], 102)
-        self.assertIn('93 touched, 2 positive-only', MODULE.summary_line(report))
+        self.assertEqual(report['denominator'], 104)
+        self.assertIn('94 touched, 2 positive-only', MODULE.summary_line(report))
         for section in ('2.5.14', '4.5.2'):
             self.assertEqual(report['source_details'][section]['scope'], 'partial (positive-only observation)')
             self.assertIn('partial (positive-only observation)',

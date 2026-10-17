@@ -1,6 +1,6 @@
 # Maintenance
 
-Coverage inventory: 93/102 leaf sections (91%); 93 touched, 2 positive-only; 71 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 9 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 This scanner encodes Apple's App Store Review Guidelines, a moving target. The checks are static
 and hand maintained, so they drift out of date unless someone reconciles them on a schedule. This
@@ -22,7 +22,7 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 
 ### Quarterly: vector and pattern review
 
-Walk the 71 vectors in the methodology table and confirm each still matches how Apple reviews
+Walk the 72 vectors in the methodology table and confirm each still matches how Apple reviews
 today. Also spot-check the 56 Pierre deep-review checks in
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
@@ -33,7 +33,10 @@ after major guideline updates. Pay special attention to the signal lists that go
   module/entry-point symbol, plus a negative case if the symbol is a common English word.
 - The analytics SDK list in §19 (`scan.sh`: `analytics_sdk`), covered by the same test file.
 - The third-party payment SDK list in §21 (`scan.sh`: `payment_sdk`) and the UGC / chat SDK
-  signals in §22 (`ugc_signal`); both grow as new SDKs gain adoption.
+  signals in §22 (`ugc_signal`, which since the October 16, 2026 guideline also lists AI
+  image/video generation endpoints and SDKs); both grow as new SDKs gain adoption.
+- The review-detection keys, build flags and obfuscation tools in §72 (`static-guidelines.py`:
+  `REVIEW_GATE_*`); 2.5.19 is new and the vocabulary developers use for it will shift.
 - The hot-patch frameworks in §32 (`hotcode`), the crypto SDKs in §34 (`crypto_sdk`), the
   remote-desktop SDKs in §36 (`remote_desktop`), and the MDM signals in §41 (`mdm_sig`); these
   vendor lists go stale the same way the ad/analytics lists do.

@@ -69,7 +69,7 @@ GUIDELINES_BASE_URL="https://developer.apple.com/app-store/review/guidelines/"
 rule_evidence() {
   case "$1" in
     release-notes-specificity|apple-endorsement-claims ) echo metadata ;;
-    device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|miniapp-native-bridge ) echo source ;;
+    device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|miniapp-native-bridge|review-mode-gate ) echo source ;;
     metadata-emoji ) echo resource ;;
     # --- metadata: read from fastlane/metadata/**, uploaded to ASC verbatim ---
     competitor-mentions|metadata-char-limits|locale-metadata-parity) echo metadata ;;
@@ -113,7 +113,7 @@ rule_evidence() {
 # a heuristic must never be graded above judgment-call.
 rule_confidence() {
   case "$1" in
-    release-notes-specificity|device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|metadata-emoji|miniapp-native-bridge|apple-endorsement-claims ) echo judgment-call ;;
+    release-notes-specificity|device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|metadata-emoji|miniapp-native-bridge|apple-endorsement-claims|review-mode-gate ) echo judgment-call ;;
     # --- validator-blocking: Apple's machinery refuses the build or the submission ---
     # Missing purpose string / required-reason declaration / private API -> upload
     # validation. Metadata limits, missing localized metadata, missing screenshots,

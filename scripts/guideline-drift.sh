@@ -32,7 +32,13 @@ gd_checks_for_section() {
     [[ -f "$base/$module" ]] && files+=( "$base/$module" )
   done < <(sed -nE 's/^[[:space:]]*(source|\.) "\$SCRIPT_DIR\/(lib\/scan-[[:alnum:]_-]+\.sh)".*/\2/p' "$1")
   awk -v want="$2" '
+    # The modular table (scan-guidelines.sh) is `slug|guideline|evidence` rows read by a
+    # loop whose set_rule argument is a variable, so the rows themselves carry the mapping.
+    /^[a-z0-9-]+\|[1-5](\.[0-9]+)*\|(source|metadata|resource)$/ {
+      split($0, row, "|"); if (row[2] == want) print row[1]; next
+    }
     /set_rule "/ { if (match($0, /set_rule "([^"]+)"/)) slug = substr($0, RSTART+10, RLENGTH-11) }
+    slug ~ /^\$/ { next }   # set_rule "$var": the literal variable name is not a check id
     slug != "" && $0 !~ /^[[:space:]]*#/ {
       s = $0
       while (match(s, /[1-5]\.[0-9]+(\.[0-9]+)?/)) {

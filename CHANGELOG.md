@@ -5,6 +5,19 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Apple App Review Guidelines update of October 16, 2026 reconciled
+
+- Baseline gains the two new sections: **2.3.14 Creative Assets** (human-only: the product-page header / search art lives only in App Store Connect and has no fastlane metadata slot) and **2.5.19 hidden, dormant or undocumented features** (moved out of 2.3.1; obfuscation used to hide features is now grounds for removal and account termination). Denominator 102 → 104 leaf sections.
+- New advisory static vector **§72 `review-mode-gate` (2.5.19)**: review-detection / hide-for-review identifiers and remote-config keys, App Store build-flag branches, date-gated unlocks, and obfuscation tooling (SwiftShield, swift-obfuscator, iXGuard, string obfuscators). WARN only; `SKStoreReviewController`, `requestReview`, review-prompt copy and product/order review vocabulary stay clean.
+- **§22 (1.2)** now treats AI content creation as user-generated content: image/video generation endpoints and SDKs (OpenAI images, Replicate, Stability, fal.ai, Runway, ImagePlayground, StableDiffusion, `generateImage`) join the UGC signal list, and the WARN names nonconsensual intimate imagery and the Developer Code of Conduct consequence. Deep-review checks 1 and 38 mention AI-generated content.
+- **§50 (4.5.3)** gains a Live Activities signal: `import ActivityKit` / `NSSupportsLiveActivities` with a marketing-push SDK is a WARN (push-to-start promotions), alone a PASS note; deep-review check 15 now asks about Live Activities spam.
+- **§15 (3.1.1(a))** WARN uses Apple's "permitted destination" language and notes that approved destinations vary by region.
+- Fingerprints reconciled against the live page (`reconciled_on` 2026-10-17); the eleven pinned quotations whose text Apple changed were re-pinned at the 25-word boundary and their golden hashes refreshed. Baseline `reconciled_on` 2026-10-17, `apple_last_updated_seen` October 16, 2026.
+- `scripts/guideline-drift.sh` names the real check slug for modular-table checks (§56–§72) instead of the literal `$_static_slug`; SKILL.md points at the drift script at the repository root rather than the skill's own `scripts/`.
+
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+
+
 ## [1.20.2] — 2026-10-02
 
 ### Fixed
