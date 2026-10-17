@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- Source of the README visual. Render: bash assets/src/render.sh -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>appstore-precheck social preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#9DC2FF}a:hover{color:#EEF3FB}
+</style>
+</head>
+<body>
+<div style="width: 1280px; height: 640px; box-sizing: border-box; position: relative; overflow: hidden; background: radial-gradient(120% 90% at 64% 40%, #15294C 0%, #0C1830 100%); font-family: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif; color: #EEF3FB; display: flex; align-items: center; gap: 56px; padding: 0 64px">
+
+  <div style="position: relative; width: 452px; height: 456px; flex: 0 0 452px; background: #FBFBF9; border-radius: 30px; box-shadow: 0 24px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(14,27,51,0.10); display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 18px; box-sizing: border-box">
+    <img src="../mascot.png" alt="Pierre, the French app reviewer, holding a clipboard and a NON stamp" style="position: absolute; top: -6px; left: 6px; width: 440px; height: 440px; object-fit: contain">
+    <div style="position: relative; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 17px; letter-spacing: 4px; color: #8A6A52; font-weight: 500">PIERRE — REVIEWER</div>
+    <div aria-hidden="true" style="position: absolute; top: 26px; right: -26px; transform: rotate(-9deg); width: 160px; height: 92px; box-sizing: border-box; border: 5px solid #CE2F22; border-radius: 9px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; opacity: 0.95; background: rgba(251,251,249,0.6)">
+      <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 12px; letter-spacing: 3px; color: #CE2F22">REVIEWED</div>
+      <div style="font-family: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif; font-size: 42px; font-weight: 600; letter-spacing: 2px; line-height: 1; color: #CE2F22">NON</div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 0; flex: 1 1 auto; min-width: 0">
+    <div style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 28px; font-weight: 700; color: #79B0FF; letter-spacing: 0.5px; margin-bottom: 26px">appstore-precheck</div>
+    <h1 style="margin: 0 0 34px 0; font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 54px; line-height: 1.08; color: #EEF3FB; letter-spacing: -0.5px">A French critic reviews your build&nbsp;—<br><em style="font-style: italic; font-weight: 400; color: #9DC2FF">before Apple does.</em></h1>
+    <div style="display: flex; gap: 28px; align-items: baseline; font-family: 'JetBrains Mono', Menlo, monospace; font-size: 25px; font-weight: 700; margin-bottom: 30px; white-space: nowrap">
+      <span style="color: #46CC7C">PASS 66</span>
+      <span style="color: #E7B948">WARN 2</span>
+      <span style="color: #FF6E5E">FAIL 0</span>
+      <span style="color: #9FB4D6; font-weight: 500">→</span>
+      <span style="color: #46CC7C">GREEN</span>
+    </div>
+    <div style="font-size: 21px; line-height: 1.45; color: #A9BBD8">72 static vectors · 56 deep checks · 20 dynamic · 94/104 guideline sections</div>
+    <div style="font-size: 21px; line-height: 1.45; color: #8FA3C3">Claude Code · Codex · Cursor · Gemini CLI · Grok Build</div>
+  </div>
+</div>
+</body>
+</html>

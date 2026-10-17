@@ -12,6 +12,7 @@ Set Shell bash
 Set FontSize 16
 Set Width 1100
 Set Height 760
+Set Framerate 20
 Set Padding 18
 Set Theme "Dracula"
 
@@ -22,14 +23,14 @@ Type "cp -R tests/fixtures/clean-app /tmp/apc-green; cp -R tests/fixtures/sample
 Type "clear" Enter
 Show
 
-Type "# A clean app — nothing blocks submission" Sleep 800ms Enter
-Type "cd /tmp/apc-green && bash $SCAN | bash $VERDICT" Sleep 600ms Enter
-Sleep 3s
+Type "# A clean app: nothing blocks submission" Sleep 800ms Enter
+Type "cd /tmp/apc-green && bash $SCAN > scan.log; grep -vE '^PASS' scan.log; bash $VERDICT < scan.log" Sleep 600ms Enter
+Sleep 5s
 
 Type "clear" Sleep 400ms Enter
-Type "# An app with rejection vectors — submission blocked" Sleep 800ms Enter
-Type "cd /tmp/apc-red && bash $SCAN | tee /dev/stderr | bash $VERDICT" Sleep 600ms Enter
-Sleep 4s
+Type "# An app with rejection vectors: submission blocked" Sleep 800ms Enter
+Type "cd /tmp/apc-red && bash $SCAN > scan.log; grep -vE '^PASS' scan.log; bash $VERDICT < scan.log" Sleep 600ms Enter
+Sleep 6s
 
 Hide
 Type "rm -rf /tmp/apc-green /tmp/apc-red" Enter

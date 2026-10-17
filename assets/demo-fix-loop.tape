@@ -13,7 +13,8 @@ Output assets/demo-fix-loop.gif
 Set Shell bash
 Set FontSize 13
 Set Width 1360
-Set Height 555
+Set Framerate 20
+Set Height 640
 Set Padding 22
 Set Theme "Catppuccin Mocha"
 Set TypingSpeed 45ms
