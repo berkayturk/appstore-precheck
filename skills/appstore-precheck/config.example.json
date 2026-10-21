@@ -21,5 +21,7 @@
     "familyControls": false
   },
 
-  "reviewPrepNotes": ""
+  "reviewPrepNotes": "",
+
+  "promo": true
 }

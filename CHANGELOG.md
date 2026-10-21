@@ -5,6 +5,9 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Added
+- `PRO:` line after RED/YELLOW verdicts pointing to the hosted resubmission check (text output only; never on GREEN, in `--format json|sarif`, or when any `CI` variable is set). Opt out with `--no-promo`, `PRECHECK_NO_PROMO=1`, or `"promo": false` in `.appstore-precheck.json`. README gains a "Pro" section stating what stays free.
+
 ### Changed
 - README visuals redrawn: the social preview carries the current numbers (72 static vectors, 56 deep checks, 20 dynamic, 94/104 sections) and all five hosts; a new "How it works" pipeline graphic sits above the phase table. Sources live in `assets/src/` and render with `bash assets/src/render.sh` (headless Chrome); the demo GIFs were re-recorded from the current CLI with the existing vhs tapes.
 

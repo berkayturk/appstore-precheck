@@ -39,6 +39,8 @@ function printHelp() {
     `  --dir <path>        Directory to scan (default: current directory)\n` +
     `  --fail-on <level>   Exit non-zero at RED (default) or YELLOW\n` +
     `  --format <fmt>      Output format: text (default), json, or sarif\n` +
+    `  --no-promo          Hide the PRO line after RED/YELLOW (also: PRECHECK_NO_PROMO=1,\n` +
+    `                      any CI variable, or "promo": false in .appstore-precheck.json)\n` +
     `  -v, --version       Print the version and exit\n` +
     `  -h, --help          Show this help and exit\n` +
     `\n` +
@@ -55,12 +57,27 @@ function fail(message, code) {
   process.exit(code);
 }
 
+// promoEnabled <dir> -> false only when .appstore-precheck.json says "promo": false.
+// A missing or unparseable config keeps the default (the scanner tolerates the same).
+function promoEnabled(dir) {
+  const configPath = path.join(dir, '.appstore-precheck.json');
+  if (!fs.existsSync(configPath)) return true;
+  try {
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    return config.promo !== false;
+  } catch (err) {
+    process.stderr.write(`appstore-precheck: ignoring unreadable .appstore-precheck.json (${err.message})\n`);
+    return true;
+  }
+}
+
 function parseArgs(argv) {
-  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text' };
+  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text', noPromo: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') { printHelp(); process.exit(0); }
     if (a === '-v' || a === '--version') { process.stdout.write(pkgVersion() + '\n'); process.exit(0); }
+    if (a === '--no-promo') { opts.noPromo = true; continue; }
     if (a === '--dir') {
       opts.dir = argv[++i];
       if (!opts.dir) fail('--dir requires a path', 64);
@@ -122,7 +139,9 @@ function main() {
     process.exit(scan.status === 0 ? 0 : (scan.status || 0));
   }
 
-  const verdict = spawnSync('bash', [VERDICT], { input: scanOut, encoding: 'utf8' });
+  const verdictArgs = [VERDICT];
+  if (opts.noPromo || !promoEnabled(opts.dir)) verdictArgs.push('--no-promo');
+  const verdict = spawnSync('bash', verdictArgs, { input: scanOut, encoding: 'utf8' });
   if (verdict.error) fail(`failed to compute the verdict: ${verdict.error.message}`, 70);
   const summary = verdict.stdout || '';
 

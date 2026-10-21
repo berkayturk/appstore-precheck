@@ -46,6 +46,20 @@ The verdict line is in Pierre's voice — **three separate language blocks** (bo
 each, divided by horizontal rules), not one compressed sentence. The breakdown beneath it, every
 `file:line` and fix, stays plain and surgical.
 
+## Pro
+
+**Everything in this repo stays free and MIT:** the scanner, all 72 vectors, deep review, the
+dynamic tier, the guard hook, the GitHub Action, JSON/SARIF output. Nothing here will be gated.
+
+Pro is a separate hosted service for the part a local scan cannot do. **Resubmission check** (live):
+paste Apple's rejection message, get the pinned guideline text it cites, the scanner rules to
+re-run, and a fix list. Guideline Watch and a store-listing audit are on the waitlist.
+See [precheck.blitzcortex.com](https://precheck.blitzcortex.com). Automated checks, no approval guarantee.
+
+After a RED or YELLOW verdict the text output ends with one `PRO:` line pointing there. It never
+appears on GREEN, in `--format json|sarif`, or in CI. Turn it off with `--no-promo`,
+`PRECHECK_NO_PROMO=1`, or `"promo": false` in `.appstore-precheck.json`.
+
 ## What it checks
 
 Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.

@@ -84,6 +84,48 @@ assert_contains "$OUT" "VERDICT: GREEN" "subdir scan reaches the same GREEN as a
 assert_eq "$CODE" "0" "exit 0 for the subdir GREEN"
 rm -rf "$mono"
 
+# PRO line plumbing: the CLI forwards --no-promo, and reads "promo": false from the
+# project config. CI is cleared explicitly because it is itself an opt-out channel.
+# run_promo <fixture> <config-json-or-empty> [args...] -> sets $OUT and $CODE
+run_promo() {
+  local fixture="$1" config="$2"; shift 2
+  local tmp; tmp="$(mktemp -d)"
+  cp -R "$FIXTURES/$fixture/." "$tmp/"
+  [[ -n "$config" ]] && printf '%s\n' "$config" > "$tmp/.appstore-precheck.json"
+  OUT="$(env -u CI node "$CLI" --dir "$tmp" "$@" 2>&1)"; CODE=$?
+  rm -rf "$tmp"
+}
+
+section "cli promo — default prints the PRO line on RED"
+run_promo "sample-app" ""
+assert_contains "$OUT" "PRO: Rejected after all?" "default promo on RED"
+
+section "cli promo — --no-promo flag suppresses"
+run_promo "sample-app" "" --no-promo
+assert_absent "$OUT" "PRO:" "flag suppresses"
+assert_eq "$CODE" "1" "RED exit unchanged with --no-promo"
+
+section "cli promo — config promo:false suppresses"
+run_promo "sample-app" '{"promo": false}'
+assert_absent "$OUT" "PRO:" "config suppresses"
+
+section "cli promo — config promo:true keeps it"
+run_promo "sample-app" '{"promo": true}'
+assert_contains "$OUT" "PRO:" "config true keeps promo"
+
+section "cli promo — broken config keeps promo and does not crash"
+run_promo "sample-app" '{promo: nope'
+assert_contains "$OUT" "PRO:" "broken config keeps promo"
+assert_eq "$CODE" "1" "RED exit unchanged with broken config"
+
+section "cli promo — --format json has no PRO line"
+run_promo "sample-app" "" --format json
+assert_absent "$OUT" "PRO:" "json output clean"
+
+section "cli promo — --help documents --no-promo"
+OUT="$(node "$CLI" --help 2>&1)"
+assert_contains "$OUT" "--no-promo" "help mentions --no-promo"
+
 echo
 if (( fails == 0 )); then echo "test-cli: ALL PASSED"; else echo "test-cli: $fails FAILED"; fi
 exit "$fails"
