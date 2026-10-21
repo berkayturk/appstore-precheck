@@ -18,15 +18,23 @@
 #   VERDICT: GREEN|YELLOW|RED
 #   COUNTS: fail=<n> warn=<n> pass=<n> skip=<n>
 #   TOKEN: write|hold|remove
+#   PRO: ...                                  # RED/YELLOW only, always last; see --no-promo
 # Exit code: 0 GREEN, 1 RED, 2 YELLOW (so callers can branch without parsing).
 
 set -u
 
+# PRO line: a single pointer to the hosted resubmission check, printed after everything
+# else and only on RED/YELLOW. Text output only (json/sarif never reach this script).
+# Opt out with --no-promo, PRECHECK_NO_PROMO=1|true, or any CI variable (even empty).
+PROMO_LINE="PRO: Rejected after all? Paste Apple's message into https://precheck.blitzcortex.com for a resubmission check."
+
 APPLY="false"
+NO_PROMO="false"
 SRC=""
 for arg in "$@"; do
   case "$arg" in
     --apply) APPLY="true" ;;
+    --no-promo) NO_PROMO="true" ;;
     -*) echo "verdict.sh: unknown option '$arg'" >&2; exit 64 ;;
     *)  SRC="$arg" ;;
   esac
@@ -78,6 +86,12 @@ if [[ "$APPLY" == "true" ]]; then
     remove) rm -f "$TOKEN_FILE"       && echo "APPLIED: token removed" ;;
     hold)   echo "APPLIED: token held (YELLOW needs explicit confirmation)" ;;
   esac
+fi
+
+# Last line, never a finding: the PRO: prefix keeps it clear of FAIL/WARN/PASS/SKIP.
+if [[ "$verdict" != "GREEN" && "$NO_PROMO" == "false" && -z "${CI+x}" ]] \
+   && [[ ! "${PRECHECK_NO_PROMO:-}" =~ ^(1|true)$ ]]; then
+  echo "$PROMO_LINE"
 fi
 
 exit "$code"

@@ -69,6 +69,52 @@ out="$(bash "$VERDICT" "$TMP")"
 assert_contains "$out" "VERDICT: GREEN" "file-arg input parsed"
 rm -f "$TMP"
 
+# PRO line: printed last, only on RED/YELLOW, and only when none of the three opt-out
+# channels is set. Every case clears CI explicitly — GitHub Actions exports CI=true,
+# which is itself one of the opt-outs.
+PROMO="PRO: Rejected after all? Paste Apple's message into https://precheck.blitzcortex.com for a resubmission check."
+
+section "promo — RED prints the PRO line as the last stdout line"
+out="$(gen 1 0 5 | env -u CI bash "$VERDICT")"
+assert_eq "$(printf '%s\n' "$out" | tail -n1)" "$PROMO" "RED prints promo last"
+
+section "promo — YELLOW prints the PRO line"
+out="$(gen 0 5 5 | env -u CI bash "$VERDICT")"
+assert_contains "$out" "$PROMO" "YELLOW prints promo"
+
+section "promo — GREEN never prints it"
+out="$(gen 0 4 5 | env -u CI bash "$VERDICT")"
+assert_absent "$out" "PRO:" "GREEN has no promo"
+
+section "promo — --no-promo suppresses"
+out="$(gen 1 0 5 | env -u CI bash "$VERDICT" --no-promo)"
+assert_absent "$out" "PRO:" "--no-promo suppresses"
+
+section "promo — PRECHECK_NO_PROMO=1 / true suppress, 0 keeps"
+out="$(gen 1 0 5 | env -u CI PRECHECK_NO_PROMO=1 bash "$VERDICT")"
+assert_absent "$out" "PRO:" "env 1 suppresses"
+out="$(gen 1 0 5 | env -u CI PRECHECK_NO_PROMO=true bash "$VERDICT")"
+assert_absent "$out" "PRO:" "env true suppresses"
+out="$(gen 1 0 5 | env -u CI PRECHECK_NO_PROMO=0 bash "$VERDICT")"
+assert_contains "$out" "PRO:" "env 0 keeps promo"
+
+section "promo — CI set (even empty) suppresses"
+out="$(gen 1 0 5 | env CI= bash "$VERDICT")"
+assert_absent "$out" "PRO:" "empty CI suppresses"
+out="$(gen 1 0 5 | env CI=true bash "$VERDICT")"
+assert_absent "$out" "PRO:" "CI=true suppresses"
+
+section "promo — file argument path prints it too"
+TMP="$(mktemp)"; gen 1 0 5 > "$TMP"
+out="$(env -u CI bash "$VERDICT" "$TMP")"
+assert_contains "$out" "$PROMO" "file arg prints promo"
+rm -f "$TMP"
+
+section "promo — counts and exit code unchanged"
+out="$(gen 1 0 5 | env -u CI bash "$VERDICT")"; code=$?
+assert_contains "$out" "COUNTS: fail=1 warn=0 pass=5" "counts unchanged"
+assert_eq "$code" "1" "RED exit 1 unchanged"
+
 echo
 if (( fails == 0 )); then echo "test-verdict: ALL PASSED"; else echo "test-verdict: $fails FAILED"; fi
 exit "$fails"
