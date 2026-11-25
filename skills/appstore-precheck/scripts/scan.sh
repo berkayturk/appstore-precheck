@@ -1639,8 +1639,10 @@ if [[ -n "$IOS_DIR" ]]; then
   # The trailing class also rejects the IPv6-capable siblings (sockaddr_in6, AF_INET6,
   # gethostbyname2) because their next character is alphanumeric.
   ipv4_api_re='(^|[^A-Za-z0-9_])(inet_addr|inet_aton|gethostbyname|sockaddr_in|AF_INET)([^A-Za-z0-9_]|$)'
+  # Sorted by path then line before the cap: grep -r walks directories in filesystem
+  # order (APFS and ext4 differ), and the golden tests pin this text verbatim.
   ipv4_api_hits=$(grep -rnEI "$ipv4_api_re" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
-    | grep -vE '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' | head -5)
+    | grep -vE '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' | sort -t: -k1,1 -k2,2n | head -5)
   # Literals: dotted quads in source AND plists (ATS exception domains, endpoints).
   # Pre-filter with grep, then let awk apply the exclusions per match. No brace
   # intervals in the awk regexes: mawk (Ubuntu CI) does not support them.
@@ -1668,9 +1670,9 @@ if [[ -n "$IOS_DIR" ]]; then
         }
       }' "$ipv4_f" 2>/dev/null | head -2)
     [[ -n "$ipv4_h" ]] && ipv4_lit_hits+="$ipv4_h"$'\n'
-  done < <(grep -rlE '(^|[^0-9])[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}([^0-9]|$)' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" --include='*.plist' 2>/dev/null | head -50)
+  done < <(grep -rlE '(^|[^0-9])[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}([^0-9]|$)' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" --include='*.plist' 2>/dev/null | sort | head -50)
   ipv4_lit_hits="$(printf '%s' "$ipv4_lit_hits" | grep -v '^$' | head -5)"
-  ipv4_hits="$(printf '%s\n%s\n' "$ipv4_api_hits" "$ipv4_lit_hits" | grep -v '^$')"
+  ipv4_hits="$(printf '%s\n%s\n' "$ipv4_api_hits" "$ipv4_lit_hits" | grep -v '^$' | sort -t: -k1,1 -k2,2n -k3)"
   if [[ -n "$ipv4_hits" ]]; then
     ipv4_n="$(printf '%s\n' "$ipv4_hits" | wc -l | tr -d ' ')"
     ipv4_first="$(printf '%s\n' "$ipv4_hits" | head -1)"
