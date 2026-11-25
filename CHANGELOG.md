@@ -5,6 +5,11 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Fixed
+- **§54 `saturated-category` (4.3(b))** now matches "simple timers", the one category in Apple's own 4.3(b) list that the regex had left out while the comment above it named it. A bare `timer` keyword still does not fire: Apple's words are "simple timers", and "timer" alone is an ordinary feature word.
+- **§51 `xcode-sdk-requirement` (2.1)** reads every checked-in `project.pbxproj` instead of the first five `find` returned, and transports paths NUL-delimited (`-print0` / `xargs -0`), so a project under a directory with a space in its name, or a hand-maintained project listed after several generated Tuist / XcodeGen / SwiftPM wrapper projects, no longer escapes the pre-26 `LastUpgradeCheck` warning. New `tests/test-xcode-sdk-paths.sh` pins both cases.
+- SKILL.md no longer claims age rating, review notes and the demo account have "no scanner rule": §20 checks for reviewer credentials behind a login and the opt-in `--metadata` tier reports their presence; what remains a deep-review judgment is their substance. README's 2.3.3 row says the screenshot check is presence-only and names Apple's "more than half show the app in use" rule as the vision / human part.
+
 ### Changed
 - README visuals redrawn: the social preview carries the current numbers (72 static vectors, 56 deep checks, 20 dynamic, 94/104 sections) and all five hosts; a new "How it works" pipeline graphic sits above the phase table. Sources live in `assets/src/` and render with `bash assets/src/render.sh` (headless Chrome); the demo GIFs were re-recorded from the current CLI with the existing vhs tapes.
 

@@ -223,8 +223,10 @@ The scanner accepts an absolute `metadataDir`, so the repo is untouched (read-on
 them like any other, saying they came from the pasted listing rather than the repo. Use the second
 run's output as the Phase 1 result.
 
-Age rating, review notes and the demo account have no scanner rule; judge those in Phase 4 (deep
-review check 4) as advisory `REVIEW-FINDING` lines. If the user declines, or there is no user to ask
+Age rating, review notes and the demo account are only checked for *presence* (§20 looks for
+`review_information/` credentials behind a login; the opt-in `--metadata` tier in
+[optional-review.md](references/optional-review.md) reports whether the listing has them, unverified);
+judge their substance in Phase 4 (deep review check 4) as advisory `REVIEW-FINDING` lines. If the user declines, or there is no user to ask
 (a CI or non-interactive run), leave the listing as `SKIP` and list it under "Not audited" in
 Phase 5. **Never invent metadata to audit.**
 

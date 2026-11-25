@@ -27,13 +27,17 @@ assert_contains "$out" "flashlight" "the matched term is shown"
 assert_contains "$out" "meaningfully different" "quotes Apple's own bar for acceptance"
 
 for pair in "Dating Now:dating" "Live Wallpaper HD:wallpaper" "Fortune Teller:fortune telling" \
-            "Sound Effects Box:sound effects" "Drinking Games Party:drinking game"; do
+            "Sound Effects Box:sound effects" "Drinking Games Party:drinking game" \
+            "Simple Timer:simple timer"; do
   n="${pair%%:*}"; term="${pair##*:}"
   o="$(run_meta "$n" 'An app' 'fun' 'Something.')"
   assert_contains "$o" "WARN: 4.3 Saturated category" "fires for '$n' ($term)"
 done
 
 section "does not fire on unrelated apps"
+# Apple names "simple timers"; a bare 'timer' in keywords is an ordinary feature word.
+o="$(run_meta 'Pomodoro Focus' 'Deep work sessions' 'focus,timer,productivity' 'Work in blocks.')"
+assert_absent "$o" "WARN: 4.3 Saturated category" "a bare 'timer' keyword does not fire"
 o="$(run_meta 'Budget Tracker' 'Track your spending' 'budget,money' 'Track expenses.')"
 assert_absent "$o" "WARN: 4.3 Saturated category" "an ordinary app is not flagged"
 assert_contains "$o" "PASS: 4.3" "and says so explicitly"

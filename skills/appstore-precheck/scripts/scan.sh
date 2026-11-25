@@ -1579,8 +1579,8 @@ fi
 # tracks "upgrade to recommended settings", not the actual toolchain, so this
 # is WARN-verify only, and only fires when the value is clearly pre-26.
 set_rule "xcode-sdk-requirement"
-last_upgrade=$(find . "${PRUNE[@]}" -name 'project.pbxproj' -type f 2>/dev/null | head -5 \
-  | xargs grep -h 'LastUpgradeCheck' 2>/dev/null | grep -oE '[0-9]+' | sort -n | tail -1)
+last_upgrade=$(find . "${PRUNE[@]}" -name 'project.pbxproj' -type f -print0 2>/dev/null \
+  | xargs -0 grep -h 'LastUpgradeCheck' 2>/dev/null | grep -oE '[0-9]+' | sort -n | tail -1)
 if [[ -n "$last_upgrade" ]] && (( last_upgrade < 2600 )); then
   warn "2.1 Xcode/SDK minimum — LastUpgradeCheck=$last_upgrade suggests the project was last upgraded with a pre-26 Xcode; since April 2026 App Store uploads must be built with the iOS 26 SDK (Xcode 26) or they are auto-rejected at upload. Verify the actual build toolchain (heuristic: this field tracks the upgrade-check, not the build)"
 fi
@@ -1602,7 +1602,7 @@ fi
 set_rule "saturated-category"
 if [[ -d "$META_DIR" ]]; then
   # Word-boundary anchored so 'fart' does not match 'farther', nor 'dating' 'updating'.
-  sat_re='(^|[^a-z])(dating|flashlight|sound effects?|wallpapers?|fortune telling|fortune teller|drinking games?|kama sutra|fart|burp)([^a-z]|$)'
+  sat_re='(^|[^a-z])(dating|flashlight|sound effects?|wallpapers?|simple timers?|fortune telling|fortune teller|drinking games?|kama sutra|fart|burp)([^a-z]|$)'
   sat_hits=""
   for loc in "${LOCALES[@]+"${LOCALES[@]}"}"; do
     for mf in name.txt subtitle.txt keywords.txt; do
