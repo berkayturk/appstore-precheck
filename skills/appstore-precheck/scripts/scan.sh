@@ -945,7 +945,7 @@ fi
 set_rule "misleading-marketing"
 if [[ -d "$META_DIR" ]]; then
   mislead_re='virus scan|virus scanner|antivirus|anti-virus|malware (scan|remov|clean)|spyware remov|clean your (iphone|device)|speed booster|boost.*(speed|ram)|free money|guaranteed.*(win|prize)'
-  mislead_hits=$(grep -rEniI "$mislead_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
+  mislead_hits=$(grep -rEniI "$mislead_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | LC_ALL=C sort -t: -k1,1 -k2,2n | head -10)
   if [[ -n "$mislead_hits" ]]; then
     mislead_file="$(printf '%s\n' "$mislead_hits" | head -1 | cut -d: -f1)"
     warn "2.3.1 Misleading marketing — claims that often violate 2.3.1 (e.g. iOS virus/malware scanners, fake speed boosters) in metadata; verify the app truly delivers them or remove the claim:" "$mislead_file"
@@ -961,7 +961,7 @@ fi
 set_rule "kids-wording"
 if [[ -d "$META_DIR" ]]; then
   kids_re='for kids|for children|for your (kid|child)|kids[[:space:]]?app|für kinder|para niños|pour enfants'
-  kids_hits=$(grep -rEniI "$kids_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
+  kids_hits=$(grep -rEniI "$kids_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | LC_ALL=C sort -t: -k1,1 -k2,2n | head -10)
   # Cross-gate with §39 (5.1.4): when an ads/analytics SDK is also linked, §39 fires the
   # more specific Kids finding for the same wording signal — don't double-count it here
   # (one root signal must not cost two WARNs against the 5-WARN YELLOW threshold).
@@ -1174,7 +1174,7 @@ fi
 set_rule "realmoney-gambling"
 if [[ -d "$META_DIR" ]]; then
   gamble_re='real[ -]?money|gambling|casino|sportsbook|sports[ -]?betting|place[ -].*bets|wager(ing)?|roulette.*real'
-  gamble_hits=$(grep -rEniI "$gamble_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | head -10)
+  gamble_hits=$(grep -rEniI "$gamble_re" "$META_DIR" 2>/dev/null | grep -v "^Binary file" | LC_ALL=C sort -t: -k1,1 -k2,2n | head -10)
   if [[ -n "$gamble_hits" ]]; then
     gamble_first="$(printf '%s\n' "$gamble_hits" | head -1)"   # "path:line:match"
     gamble_file="${gamble_first%%:*}"
@@ -1642,7 +1642,7 @@ if [[ -n "$IOS_DIR" ]]; then
   # Sorted by path then line before the cap: grep -r walks directories in filesystem
   # order (APFS and ext4 differ), and the golden tests pin this text verbatim.
   ipv4_api_hits=$(grep -rnEI "$ipv4_api_re" "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" 2>/dev/null \
-    | grep -vE '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' | sort -t: -k1,1 -k2,2n | head -5)
+    | grep -vE '^[^:]+:[0-9]+:[[:space:]]*(//|\*|/\*|#)' | LC_ALL=C sort -t: -k1,1 -k2,2n | head -5)
   # Literals: dotted quads in source AND plists (ATS exception domains, endpoints).
   # Pre-filter with grep, then let awk apply the exclusions per match. No brace
   # intervals in the awk regexes: mawk (Ubuntu CI) does not support them.
@@ -1670,9 +1670,9 @@ if [[ -n "$IOS_DIR" ]]; then
         }
       }' "$ipv4_f" 2>/dev/null | head -2)
     [[ -n "$ipv4_h" ]] && ipv4_lit_hits+="$ipv4_h"$'\n'
-  done < <(grep -rlE '(^|[^0-9])[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}([^0-9]|$)' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" --include='*.plist' 2>/dev/null | sort | head -50)
+  done < <(grep -rlE '(^|[^0-9])[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}([^0-9]|$)' "$IOS_DIR" "${GREP_PRUNE[@]}" "${SRC_INC[@]}" --include='*.plist' 2>/dev/null | LC_ALL=C sort | head -50)
   ipv4_lit_hits="$(printf '%s' "$ipv4_lit_hits" | grep -v '^$' | head -5)"
-  ipv4_hits="$(printf '%s\n%s\n' "$ipv4_api_hits" "$ipv4_lit_hits" | grep -v '^$' | sort -t: -k1,1 -k2,2n -k3)"
+  ipv4_hits="$(printf '%s\n%s\n' "$ipv4_api_hits" "$ipv4_lit_hits" | grep -v '^$' | LC_ALL=C sort -t: -k1,1 -k2,2n -k3)"
   if [[ -n "$ipv4_hits" ]]; then
     ipv4_n="$(printf '%s\n' "$ipv4_hits" | wc -l | tr -d ' ')"
     ipv4_first="$(printf '%s\n' "$ipv4_hits" | head -1)"

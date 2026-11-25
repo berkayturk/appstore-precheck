@@ -52,6 +52,7 @@ SUITE=(
   "test-saturated.sh" # §54 saturated-category (4.3(b)) field scoping + word boundaries
   "test-ipv4-literal.sh" # §55 ipv4-literal (2.5.5): IPv4-only socket APIs + literals, exclusions, labels
   "test-xcode-sdk-paths.sh" # §51 xcode-sdk-requirement (2.1): spaces in project paths, no cap on pbxproj count
+  "test-detail-order.sh" # metadata "first hit" rules (§26/§27/§40) quote hits in path order, not filesystem order
   "test-guideline-2026-10.sh" # Oct 16, 2026 guideline update: §22 AI-generation UGC signals, §50 Live Activities (4.5.3), §15 permitted-destination wording
   "test-design-40.sh" # guideline 4.0: baseline N.0 sections, pinned quote, deep-review check 31
   "test-phase6-doc.sh" # Phase 6 reference contract: D0 install step, D3 StoreKit SKIP, device lifecycle, rule ids, D3b, four launch signals

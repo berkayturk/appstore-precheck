@@ -35,7 +35,7 @@ assert_absent   "$out" "1.2.3.4" "a version string is not reported as an address
 # Detail lines must not depend on the filesystem's directory order (APFS and ext4
 # differ, and the golden test pins the exact text): sorted by path, then line.
 ipv4_detail="$(printf '%s\n' "$out" | awk '/^WARN: 2.5.5/{f=1; next} f && /^      evidence:/{next} f && /^      \.\//{print; next} f{exit}' | sed 's/^      //')"
-assert_eq "$ipv4_detail" "$(printf '%s\n' "$ipv4_detail" | sort -t: -k1,1 -k2,2n -k3)" "detail lines are sorted by path then line"
+assert_eq "$ipv4_detail" "$(printf '%s\n' "$ipv4_detail" | LC_ALL=C sort -t: -k1,1 -k2,2n -k3)" "detail lines are sorted by path then line"
 assert_contains "$ipv4_detail" "Info.plist:9:" "the plist literal is among the sorted detail lines"
 
 section "each signal fires on its own"
