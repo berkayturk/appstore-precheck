@@ -65,7 +65,7 @@ The percentage counts sections touched, not automatic verification of every requ
 | **2.3.7 / ASC** | Metadata length limits (name, subtitle, keywords, promo, description) |
 | **2.3.1** | Misleading marketing claims (iOS virus / malware scanners, fake speed boosters) in metadata |
 | **2.3.7** | Pricing / promo language ("Free", "% off", a currency amount) in the app name or subtitle |
-| **2.3.3** | At least one screenshot per locale |
+| **2.3.3** | At least one screenshot per locale *(presence only; Apple's "more than half show the app in use" rule per device set is a vision / human check)* |
 | **2.3.3** | Screenshot format + PNG dimensions match a known App Store screenshot size *(advisory, WARN-only)* |
 | **2.3** | Localized metadata parity across every locale |
 | **2.3.8** | "For Kids" / "For Children" wording outside the Kids Category |
