@@ -34,7 +34,7 @@ gd_checks_for_section() {
   awk -v want="$2" '
     # The modular table (scan-guidelines.sh) is `slug|guideline|evidence` rows read by a
     # loop whose set_rule argument is a variable, so the rows themselves carry the mapping.
-    /^[a-z0-9-]+\|[1-5](\.[0-9]+)*\|(source|metadata|resource)$/ {
+    /^[a-z0-9-]+\|[1-5](\.[0-9]+)*\|(source|metadata|resource|manifest)$/ {
       split($0, row, "|"); if (row[2] == want) print row[1]; next
     }
     /set_rule "/ { if (match($0, /set_rule "([^"]+)"/)) slug = substr($0, RSTART+10, RLENGTH-11) }

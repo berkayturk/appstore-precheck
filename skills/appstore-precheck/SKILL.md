@@ -1,6 +1,6 @@
 ---
 name: appstore-precheck
-description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 72 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 56 semantic deep-review checks across Tier A, heuristic Tier B and host vision Tier C. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
+description: Read-only pre-submission check for an iOS app before App Store review. Scans Swift and Objective-C code, fastlane metadata, screenshots, PrivacyInfo.xcprivacy, and the paywall for 77 rejection vectors, wraps Apple's official `fastlane precheck`, watches for live App Store Review Guideline drift, has Pierre explain every FAIL and WARN, then runs 56 semantic deep-review checks across Tier A, heuristic Tier B and host vision Tier C. Emits a GREEN/YELLOW/RED verdict and a `.precheck-pass` token an upload guard can gate on. Use when preparing an iOS App Store submission (before Archive, before "Submit for Review", before TestFlight, or before any `fastlane deliver/pilot/release`), or when the user mentions App Store rejection, app review, or fastlane upload.
 license: MIT
 metadata:
   author: Berkay Turk
@@ -12,7 +12,7 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 
 Optional CLI tiers and build/credential boundaries: [optional-review.md](references/optional-review.md).
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 This percentage counts sections touched, not automatic verification of every requirement.
 
@@ -152,7 +152,7 @@ bash <skill-dir>/scripts/scan.sh
 bash skills/appstore-precheck/scripts/scan.sh
 ```
 
-Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 72 rejection vectors: Privacy Manifest /
+Emits `FAIL:` / `WARN:` / `PASS:` / `SKIP:` lines covering 77 rejection vectors: Privacy Manifest /
 Required Reason API parity (5.1.1), purpose strings (5.1.1), ATT (5.1.2), other-platform mentions
 (2.3.10), metadata limits (2.3.7), localized parity (2.3), screenshots (2.3.3), trial &
 auto-renew disclosures (3.1.2), Restore/Terms/Privacy links (3.1.2), private API (2.5.1), minimum
@@ -177,7 +177,8 @@ strings (5.1.1(ii)), a third-party AI endpoint without a provider-naming consent
 urgency/scarcity dark patterns on the paywall (3.1.2), sentiment-gated rating prompts (5.6.1),
 forced login without a guest path (5.1.1(v)), a marketing-push SDK without an opt-out signal
 (4.5.4), and a pre-26 Xcode `LastUpgradeCheck` against the April 2026 iOS 26 SDK upload minimum
-(2.1), and exposure to a category Apple names as saturated in 4.3(b) (4.3). The IAP checks (8–10 and 53) are skipped automatically
+(2.1), exposure to a category Apple names as saturated in 4.3(b) (4.3), and the November 2026 App Store Connect rules:
+Shared Location / Dating age descriptors (2.3.6), On-Demand Resources sunset (2.1), speculative `UIRequiredDeviceCapabilities` (2.4.1) and review-notes completeness (2.1). The IAP checks (8–10 and 53) are skipped automatically
 when no in-app-purchase signals are present, and the signal-gated advisory checks (16–52) stay
 silent unless their triggering signal is found. The
 full check table is in

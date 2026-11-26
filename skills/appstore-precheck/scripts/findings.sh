@@ -43,6 +43,9 @@ rule_slug() {
     68) echo game-center-id-sharing ;;  69) echo metadata-emoji ;;
     70) echo miniapp-native-bridge ;;  71) echo apple-endorsement-claims ;;
     72) echo review-mode-gate ;;
+    73) echo shared-location-descriptor ;;  74) echo dating-age-descriptor ;;
+    75) echo on-demand-resources ;;  76) echo required-device-capabilities ;;
+    77) echo review-notes-completeness ;;
     *) echo "" ;;
   esac
 }

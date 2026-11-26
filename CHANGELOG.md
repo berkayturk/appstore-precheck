@@ -5,6 +5,21 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### App Store Connect changes of November 2026 encoded (guideline text unchanged)
+
+Apple did not change the App Review Guidelines after October 16, 2026 (`guideline-drift.sh`: no drift), but App Store Connect and the new App Review Help hub added submission rules the scanner did not know. Five advisory static vectors (§73–§77) in the modular table, all WARN-only, all `judgment-call`:
+
+- **§73 `shared-location-descriptor` (2.3.6)**: a location API together with copy about sharing location with other people. The "Shared Location" age-rating content descriptor is mandatory for every app by **2027-01-12**; the WARN says to answer it, not that the rating is wrong.
+- **§74 `dating-age-descriptor` (2.3.6)**: dating / matchmaking / AI-companion wording in store metadata. The "Dating and Relationships" descriptor sets the minimum rating to 18+ (Brazil A18). "Updating", puzzle "match" and CRM "relationship" stay clean.
+- **§75 `on-demand-resources` (2.1)**: `NSBundleResourceRequest` / ODR build settings. New apps using On-Demand Resources are not accepted from early 2027; Background Assets is the replacement.
+- **§76 `required-device-capabilities` (2.4.1)**: `UIRequiredDeviceCapabilities` entries beyond architecture / baseline (telephony, gps, cameras, sensors, nfc) narrow the device set; App Review Help says to declare only what core functionality needs.
+- **§77 `review-notes-completeness` (2.1)**: against `fastlane/metadata/review_information/`, a third-party AI provider in code must be named in the notes, auto-renewable subscriptions need a demo account in an expired state, and more than one account type needs credentials for each. Missing metadata is a SKIP gap.
+- Deep-review check 4 lists the same three review-notes expectations; check 8 and vision S4 count the "more than half of each device set shows the app in use" rule (2 of 3, 3 of 56). The methodology checklist gains the ASC age questions, the App Compliance page, the screenshot ratio, the review-notes items and the Siri AI App Intents limits (under-13 and EU users excluded; submissions from spring 2027).
+- Modular-table evidence classes now include `manifest`; the coverage derivation accepts it.
+
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+
+
 ## [1.21.1] — 2026-11-25
 
 ### Fixed

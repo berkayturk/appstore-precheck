@@ -1,6 +1,6 @@
 # Methodology: App Store Precheck
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 Coverage means sections touched, not automatic verification.
 
 The detailed reference behind the skill. Read the section you need; you do not need to read this
@@ -154,6 +154,11 @@ citable like any sub-section; every link and citation resolves `N.0` back to `#N
 | 70 | **4.7.2 miniapp-native-bridge** *(advisory)* | All four signals must coexist in one file: handler, remote JS URL, evaluation and native-sensitive API. Does not resolve bridge access control. |
 | 71 | **5.2.4 apple-endorsement-claims** *(advisory)* | Narrow English endorsement/official-product patterns; authorized claims still require human confirmation. Ordinary iPhone compatibility text stays clean. |
 | 72 | **2.5.19 review-mode-gate** *(advisory)* | Review-detection / hide-for-review identifiers and remote-config keys, App Store build-flag branches, date-gated unlocks, and obfuscation tooling in dependencies or source. Store-review prompts (`SKStoreReviewController`, `requestReview`) and product-review vocabulary stay clean; a hit means "show the reviewer what ships", not proof of a hidden feature. |
+| 73 | **2.3.6 shared-location-descriptor** *(advisory)* | A location API (`CLLocationManager`, location usage keys) together with copy about sharing location with other people (live location, friends on a map, people nearby). App Store Connect added the "Shared Location" age-rating content descriptor in November 2026; every app must answer the new questions by 2027-01-12 or updates are blocked. The WARN says "answer it", not "you are rated wrong". |
+| 74 | **2.3.6 dating-age-descriptor** *(advisory)* | Dating / matchmaking / AI-companion wording in store metadata (name, subtitle, description, keywords, promo). The "Dating and Relationships" descriptor sets the minimum rating to 18+ (Brazil A18), so the listing and the ASC rating must agree. "Updating", puzzle "match" and CRM "relationship" wording stay clean. |
+| 75 | **2.1 on-demand-resources** *(advisory)* | `NSBundleResourceRequest` / `beginAccessingResources` in source or ODR build settings (`ENABLE_ON_DEMAND_RESOURCES = YES`, initial-install / prefetch tags, asset-pack manifest URL). App Store Connect stops accepting new apps that use On-Demand Resources in early 2027; Apple's replacement is Background Assets. Existing apps keep updating for now. |
+| 76 | **2.4.1 required-device-capabilities** *(advisory)* | `UIRequiredDeviceCapabilities` in the main Info.plist lists something beyond architecture / baseline entries (`arm64`, `metal`, `wifi`, …): telephony, gps, cameras, sensors, nfc. App Review Help says to declare only what the core functionality cannot work without; each extra entry shrinks the eligible device set and reviewers test on a device that has it. |
+| 77 | **2.1 review-notes-completeness** *(advisory)* | Three App Review Help expectations checked against `fastlane/metadata/review_information/`: a third-party AI provider in code (§47 list) is named in the notes; auto-renewable subscription code comes with a demo account in an expired state; when the app has more than one account type (teacher/student, driver/rider, …) the notes cover every type. Missing metadata is a SKIP gap, not a WARN. |
 
 New source checks skip compiled bundles and pruned dependencies. Unreadable or incomplete
 inputs produce additive coverage gaps: source/manifest reads are bounded to 2 MiB and
@@ -481,6 +486,11 @@ completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
 | 70 | `miniapp-native-bridge` | source | judgment-call | — |
 | 71 | `apple-endorsement-claims` | metadata | judgment-call | — |
 | 72 | `review-mode-gate` | source | judgment-call | — |
+| 73 | `shared-location-descriptor` | source | judgment-call | — |
+| 74 | `dating-age-descriptor` | metadata | judgment-call | — |
+| 75 | `on-demand-resources` | source | judgment-call | — |
+| 76 | `required-device-capabilities` | manifest | judgment-call | — |
+| 77 | `review-notes-completeness` | metadata | judgment-call | — |
 
 *Generated from `scripts/evidence.sh`; `tests/test-evidence.sh` keeps it honest.*
 
@@ -618,6 +628,11 @@ Things the scanner cannot verify; confirm by hand before you submit:
 [ ] Paywall price matches App Store Connect EXACTLY (amount + currency formatting)
 [ ] Free trial is configured as an Introductory Offer in App Store Connect (not app-side only)
 [ ] Updated age-rating questionnaire (13+/16+/18+ tiers) completed in App Store Connect
+[ ] November 2026 age-rating questions answered in App Store Connect: "Shared Location" and "Dating and Relationships" (Dating ⇒ 18+, Brazil A16/A18); mandatory for every app by 2027-01-12 (§73/§74 only flag the signal)
+[ ] App Compliance page in App Store Connect answered where it applies (China ICP / AIGC declaration, game licence, medical device, security assessment) — no fastlane slot, human-only
+[ ] Screenshots: more than half of each device set show the app in use (2 of 3, 3 of 56); vision check S4 counts, you decide
+[ ] Review notes list every external service the app depends on, AI services included, and give a demo account per account type plus one with an expired subscription (§77 flags the gap)
+[ ] Siri AI App Intents (developer preview, submissions from spring 2027): under-13 and EU users cannot use them — the app must still work without
 [ ] EU DSA trader status declared (required for EU distribution)
 [ ] If user data goes to a third-party AI provider: consent screen names the provider
 [ ] IPv6-only run: Internet Sharing > "Create NAT64 Network" on a Mac, every network feature works (2.5.5 — GUI-only, not automatable; §55 only greps the IPv4-literal subset)
