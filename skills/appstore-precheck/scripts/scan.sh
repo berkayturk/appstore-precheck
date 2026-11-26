@@ -17,6 +17,7 @@ FORMAT="text"
 SCAN_DIR=""
 OPT_NO_RUNTIME=0 OPT_DEMO=0 OPT_ASC_VERSION="" OPT_ASC_INFO=""
 OPT_BUILD=0 OPT_APP="" OPT_METADATA=0 OPT_ASC="" OPT_URLS=0 OPT_DYN_BLOCK=0 OPT_DRY=0 OPT_OUT="" OPT_TEMP="" OPT_RAN_OK=0
+OPT_BASELINE="" OPT_SAVE_BASELINE="" OPT_ARTIFACT=""
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --format)
@@ -47,6 +48,18 @@ while [[ $# -gt 0 ]]; do
     --out)
       if [[ $# -lt 2 ]]; then echo "scan.sh: --out needs a path" >&2; exit 64; fi
       OPT_OUT="$2"; shift 2 ;;
+    --baseline)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --baseline needs a file" >&2; exit 64; fi
+      OPT_BASELINE="$2"; shift 2 ;;
+    --baseline=*) OPT_BASELINE="${1#*=}"; shift ;;
+    --save-baseline)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: --save-baseline needs a file" >&2; exit 64; fi
+      OPT_SAVE_BASELINE="$2"; shift 2 ;;
+    --save-baseline=*) OPT_SAVE_BASELINE="${1#*=}"; shift ;;
+    --artifact|--ipa)
+      if [[ $# -lt 2 ]]; then echo "scan.sh: $1 needs a .app, .ipa or .xcarchive path" >&2; exit 64; fi
+      OPT_ARTIFACT="$2"; shift 2 ;;
+    --artifact=*|--ipa=*) OPT_ARTIFACT="${1#*=}"; shift ;;
     *) shift ;;
   esac
 done
@@ -59,6 +72,11 @@ if [[ -n "$SCAN_DIR" ]]; then
 else
   ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || ROOT="$(pwd)"
 fi
+# Option paths are the caller's, not the scanned repo's: make them absolute before cd.
+for _opt in OPT_BASELINE OPT_SAVE_BASELINE OPT_ARTIFACT; do
+  eval "_v=\${$_opt}"
+  if [[ -n "$_v" && "$_v" != /* ]]; then eval "$_opt=\"\$PWD/\$_v\""; fi
+done
 cd "$ROOT" || { echo "FAIL: repo-root — could not enter repository root"; exit 0; }
 
 source "$SCRIPT_DIR/findings.sh"
@@ -116,8 +134,8 @@ _tag() {
   [[ -n "$lbl" ]] && printf '      %s\n' "$lbl"
   return 0
 }
-fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
-warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
+fail() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}" "$1"; then _record_suppressed FAIL "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "FAIL: $1"; _record FAIL "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
+warn() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}" "$1"; then _record_suppressed WARN "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "WARN: $1"; _record WARN "$1" "${2:-}" "${3:-}"; _tag; _LAST_SUPPRESSED=0; fi; }
 pass() { if is_suppressed "$_CURRENT_RULE" "${2:-}" "${3:-}"; then _record_suppressed PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=1; else echo "PASS: $1"; _record PASS "$1" "${2:-}" "${3:-}"; _LAST_SUPPRESSED=0; fi; }
 
 # skip <message> — a check that could NOT run (a missing artifact, not a clean
@@ -161,6 +179,9 @@ SRC_INC=( --include='*.swift' --include='*.m' --include='*.mm' --include='*.h' )
 # Load .precheck-ignore path exclusions (Task 2 suppress.sh) and extend both
 # prune sets so a suppressed path is skipped by detection AND grep passes.
 load_precheck_ignore "$ROOT"
+# --baseline <file>: findings recorded by an earlier --save-baseline are treated like
+# a .precheck-ignore suppression (counted, kept in JSON, dropped from text + verdict).
+[[ -n "$OPT_BASELINE" ]] && load_baseline "$OPT_BASELINE"
 while IFS= read -r _g; do
   [[ -z "$_g" ]] && continue
   PRUNE+=( -not -path "*/$_g/*" -not -path "$_g/*" )
@@ -1687,10 +1708,21 @@ fi
 # shellcheck source=skills/appstore-precheck/scripts/lib/scan-guidelines.sh
 source "$SCRIPT_DIR/lib/scan-guidelines.sh"
 
+# --artifact / --ipa: the nine read-only artifact-review checks on a built
+# .app / .ipa / .xcarchive, as catalogued rules with `artifact` evidence.
+if [[ -n "$OPT_ARTIFACT" ]]; then
+  # shellcheck source=skills/appstore-precheck/scripts/lib/scan-artifact.sh
+  source "$SCRIPT_DIR/lib/scan-artifact.sh"
+fi
+
 optin_run || exit $?
+[[ -n "$OPT_SAVE_BASELINE" ]] && save_baseline "$OPT_SAVE_BASELINE"
 echo "---END-OF-SCAN---"
 if [[ "$FORMAT" == text && "${_SUPPRESSED_COUNT:-0}" -gt 0 ]]; then
-  printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$_SUPPRESSED_COUNT"
+  printf '(%s finding(s) suppressed via .precheck-ignore)\n' "$((_SUPPRESSED_COUNT - ${_BASELINE_COUNT:-0}))"
+fi
+if [[ "$FORMAT" == text && "${_BASELINE_COUNT:-0}" -gt 0 ]]; then
+  printf '(%s finding(s) matched the baseline %s)\n' "$_BASELINE_COUNT" "$OPT_BASELINE"
 fi
 if [[ "$FORMAT" == json ]]; then exec 1>&4 4>&-; render_json | coverage_run_json | optin_render_json;
 elif [[ "$FORMAT" == sarif ]]; then exec 1>&4 4>&-; render_sarif; fi

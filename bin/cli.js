@@ -39,6 +39,9 @@ function printHelp() {
     `  --dir <path>        Directory to scan (default: current directory)\n` +
     `  --fail-on <level>   Exit non-zero at RED (default) or YELLOW\n` +
     `  --format <fmt>      Output format: text (default), json, or sarif\n` +
+    `  --artifact <path>   Also inspect a built .app / .ipa / .xcarchive (read-only)\n` +
+    `  --baseline <file>   Hide findings recorded earlier with --save-baseline\n` +
+    `  --save-baseline <f> Write the live FAIL/WARN findings of this run to <f>\n` +
     `  -v, --version       Print the version and exit\n` +
     `  -h, --help          Show this help and exit\n` +
     `\n` +
@@ -56,7 +59,7 @@ function fail(message, code) {
 }
 
 function parseArgs(argv) {
-  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text' };
+  const opts = { dir: process.cwd(), failOn: 'RED', format: 'text', passthrough: [] };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === '-h' || a === '--help') { printHelp(); process.exit(0); }
@@ -76,6 +79,12 @@ function parseArgs(argv) {
       const v = (argv[++i] || '').toLowerCase();
       if (v !== 'text' && v !== 'json' && v !== 'sarif') fail('--format must be text, json, or sarif', 64);
       opts.format = v;
+      continue;
+    }
+    if (a === '--artifact' || a === '--ipa' || a === '--baseline' || a === '--save-baseline') {
+      const v = argv[++i];
+      if (!v) fail(`${a} requires a path`, 64);
+      opts.passthrough.push(a === '--ipa' ? '--artifact' : a, v);
       continue;
     }
     fail(`unknown option: ${a} (try --help)`, 64);
@@ -104,6 +113,7 @@ function main() {
   // the enclosing git toplevel.
   const scanArgs = [SCAN, '--dir', opts.dir];
   if (opts.format !== 'text') scanArgs.push('--format', opts.format);
+  scanArgs.push(...opts.passthrough);
   const scan = spawnSync('bash', scanArgs, {
     cwd: opts.dir,
     encoding: 'utf8',

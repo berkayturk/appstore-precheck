@@ -1,6 +1,6 @@
 # Methodology: App Store Precheck
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 9 artifact checks, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 Coverage means sections touched, not automatic verification.
 
 The detailed reference behind the skill. Read the section you need; you do not need to read this
@@ -294,6 +294,7 @@ actually ships:
 
 | Class | Read from | Why it sits here |
 |---|---|---|
+| `artifact` | a built `.app` / `.ipa` / `.xcarchive` (`--artifact`), read without executing it | The bundle that ships, or a sibling build of it: stronger than any repository read, but not an observation of behaviour, and a simulator `.app` is still not the archive. |
 | `metadata` | `fastlane/metadata/**` | Uploaded to App Store Connect verbatim. |
 | `manifest` | `Info.plist`, `*.entitlements`, `PrivacyInfo.xcprivacy` | Ship as authored. |
 | `resource` | String Catalogs, screenshot assets | Shipped / uploaded files. |
@@ -491,6 +492,15 @@ completeness test (`is_gap_record`, convention: ids ending in `-not-audited`).
 | 75 | `on-demand-resources` | source | judgment-call | — |
 | 76 | `required-device-capabilities` | manifest | judgment-call | — |
 | 77 | `review-notes-completeness` | metadata | judgment-call | — |
+| 78 | `artifact-entitlements` | artifact | judgment-call | — |
+| 79 | `artifact-reason-api` | artifact | judgment-call | — |
+| 80 | `artifact-private-api` | artifact | review-risk | — |
+| 81 | `artifact-url-schemes` | artifact | judgment-call | — |
+| 82 | `artifact-ats` | artifact | judgment-call | — |
+| 83 | `artifact-sdk` | artifact | judgment-call | — |
+| 84 | `artifact-embedded-sdk` | artifact | judgment-call | — |
+| 85 | `artifact-executable-loading` | artifact | judgment-call | — |
+| 86 | `artifact-debug` | artifact | judgment-call | — |
 
 *Generated from `scripts/evidence.sh`; `tests/test-evidence.sh` keeps it honest.*
 
@@ -591,6 +601,45 @@ a rate is shown. It is a reporting layer only — it never influences the GREEN/
 which rules fire. Contribute an outcome via the "App Store outcome" issue template.
 
 ---
+
+### Artifact tier (`--artifact <path>`, alias `--ipa`)
+
+Between the repository read and the dynamic tier sits a third kind of evidence: a **built bundle
+read without being executed**. `scan.sh --artifact build/MyApp.ipa` (also a `.app` directory or an
+`.xcarchive`) runs `scripts/lib/artifact-review.py` and files its nine checks as catalogued rules
+§78–§86 with `evidence: artifact`:
+
+| Rule | Guideline | What is read |
+|---|---|---|
+| `artifact-entitlements` | 2.1 | signed entitlements (`codesign -d --entitlements`) vs `Info.plist` and binary symbols (HealthKit, push) |
+| `artifact-reason-api` | 5.1.1 | Required Reason API symbols in the Mach-O vs `PrivacyInfo.xcprivacy` declarations and approved reason codes |
+| `artifact-private-api` | 2.5.1 | `otool -L` linkage against `/System/Library/PrivateFrameworks`, `nm -u` restricted symbols |
+| `artifact-url-schemes` | 2.5.1 | `LSApplicationQueriesSchemes`: jailbreak-store schemes, malformed entries |
+| `artifact-ats` | 1.6 | `NSAppTransportSecurity` exceptions as shipped |
+| `artifact-sdk` | 2.1 | `MinimumOSVersion` vs `DTSDKName` |
+| `artifact-embedded-sdk` | 5.1.1 | embedded frameworks: readable `PrivacyInfo.xcprivacy`, verified signatures |
+| `artifact-executable-loading` | 2.5.2 | download + executable string pairs in the binary |
+| `artifact-debug` | 2.1 | `get-task-allow`, stray `.mobileprovision`, dSYMs, test bundles, `.DS_Store` |
+
+Status mapping: `PASS` stays PASS, `FINDING` and `NEEDS_REVIEW` become WARN (the tier says "this
+bundle needs a look"; it never FAILs on its own), `SKIP` / `NOT_RUN` become SKIP with the reason
+(no artifact, no `codesign` / `otool` / `nm`, unsigned simulator build). An IPA is unpacked into a
+temporary directory with path-traversal and size guards; nothing is launched. The nine rules are
+counted as *artifact checks*, apart from the static vectors, in the coverage inventory. Without
+`--artifact` the scan output is byte-for-byte what it was.
+
+### Baseline (`--save-baseline <file>` / `--baseline <file>`)
+
+A baseline is the list of FAIL/WARN findings a team has looked at and accepted for now. `scan.sh
+--save-baseline .precheck-baseline.json` writes the live FAIL/WARN findings of the run as
+`{rule_id, severity, file, message}`; `scan.sh --baseline .precheck-baseline.json` then treats a
+finding that matches on all three of rule, file and message exactly like a `.precheck-ignore`
+suppression: dropped from the text output and the verdict, kept in `--format json` with
+`suppressed: true`, counted in `summary.baseline` and in the text footer `(N finding(s) matched the
+baseline)`. PASS and SKIP are never baselined, so a baseline cannot hide a coverage gap. A baseline
+that is missing, unreadable or not a findings file is reported on stderr and ignored. Matching is
+exact on the message text on purpose: when a rule's wording changes, the finding resurfaces and is
+triaged again.
 
 ### Optional local dynamic simulator tier
 

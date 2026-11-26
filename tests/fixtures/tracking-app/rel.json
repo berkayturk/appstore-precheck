@@ -1,0 +1,43 @@
+{
+  "tool": "appstore-precheck",
+  "version": "1.22.0",
+  "created": "2026-11-26T15:12:48Z",
+  "findings": [
+    {
+      "rule_id": "tracking-sdk-no-att",
+      "severity": "WARN",
+      "file": null,
+      "message": "5.1.2 Tracking SDK — IDFA/tracking signals detected (e.g. Mediation.swift) but no ATT prompt found; apps that track must request permission via AppTrackingTransparency (5.1.2)"
+    },
+    {
+      "rule_id": "export-compliance",
+      "severity": "WARN",
+      "file": "./ios/TrackingApp/Info.plist",
+      "message": "export-compliance — Info.plist has no ITSAppUsesNonExemptEncryption; set it (true/false) to skip the App Store Connect encryption-export prompt every submission"
+    },
+    {
+      "rule_id": "support-privacy-url",
+      "severity": "WARN",
+      "file": null,
+      "message": "2.3 Support URL — no non-empty support_url.txt in any locale under fastlane metadata; Apple requires a working support URL with developer contact info (1.5 / 2.3)"
+    },
+    {
+      "rule_id": "support-privacy-url",
+      "severity": "WARN",
+      "file": null,
+      "message": "2.3 Privacy URL — no non-empty privacy_url.txt in any locale under fastlane metadata; a privacy policy link is required for every app, and especially apps with accounts or in-app purchases (5.1.1(i))"
+    },
+    {
+      "rule_id": "analytics-privacyinfo-mismatch",
+      "severity": "WARN",
+      "file": "./ios/TrackingApp/PrivacyInfo.xcprivacy",
+      "message": "5.1.1 Privacy manifest — analytics SDK detected (e.g. Mediation.swift) but PrivacyInfo declares no collected data types or tracking domains; verify your privacy manifest and App Privacy nutrition labels"
+    },
+    {
+      "rule_id": "placeholder-metadata",
+      "severity": "WARN",
+      "file": "./ios/fastlane/metadata/en-US/description.txt",
+      "message": "2.1 Metadata content — placeholder/dummy text in store metadata (looks unfinished; rejected under 2.1):"
+    }
+  ]
+}

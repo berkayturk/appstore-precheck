@@ -1,6 +1,6 @@
 # Maintenance
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 9 artifact checks, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 This scanner encodes Apple's App Store Review Guidelines, a moving target. The checks are static
 and hand maintained, so they drift out of date unless someone reconciles them on a schedule. This
@@ -47,6 +47,10 @@ after major guideline updates. Pay special attention to the signal lists that go
   remote-desktop SDKs in §36 (`remote_desktop`), and the MDM signals in §41 (`mdm_sig`); these
   vendor lists go stale the same way the ad/analytics lists do.
 - The Required Reason API categories in §1 and the sensitive frameworks in §2.
+- The artifact tier (§78–§86, `scripts/lib/artifact-review.py`): `APPROVED_REASONS` / `REASON_SYMBOLS`
+  (Required Reason API codes, pinned 2026-09-27), the jailbreak scheme list in `review_schemes`, and the
+  debug-leftover file list in `review_debug`. The guideline each rule is filed under is literal in
+  `scripts/lib/scan-artifact.sh`.
 - The banned / deprecated API list in §11.
 - The account-deletion rule in §38 (5.1.1(v)) and the 4.2 web-wrapper heuristic threshold in
   §35; both are policy-sensitive and worth re-checking after a guidelines update.

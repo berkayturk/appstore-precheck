@@ -39,6 +39,10 @@
 #                     usually in configuration (Debug from DerivedData). So a
 #                     runtime observation only clears needs_build_verification
 #                     when it came from a release build_config; see below.
+#   artifact      a built .app / .ipa / .xcarchive read WITHOUT executing it (--artifact).
+#                 Stronger than any repo read (it is the bundle that ships, or a sibling
+#                 of it) but not an observation of behaviour, and a simulator .app is
+#                 still not the archive: see runtime (b).
 #   metadata      fastlane/metadata/** — uploaded to App Store Connect verbatim.
 #   manifest      Info.plist, *.entitlements, PrivacyInfo.xcprivacy — ship as authored.
 #   resource      String Catalogs, screenshot assets — shipped/uploaded files.
@@ -46,7 +50,7 @@
 #                 so a repo-level read is a proxy for what the archive was built with.
 #   source        .swift/.m/.mm/.h greps — the weakest: presence in a file is not
 #                 proof of presence in the shipping binary.
-EVIDENCE_CLASSES="runtime metadata manifest resource build-setting source"
+EVIDENCE_CLASSES="runtime artifact metadata manifest resource build-setting source"
 
 # Confidence levels — who acts on the finding, and how deterministically:
 #   validator-blocking  Apple's automated validation (upload or App Store Connect)
@@ -72,6 +76,7 @@ rule_evidence() {
     device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|miniapp-native-bridge|review-mode-gate|shared-location-descriptor|on-demand-resources ) echo source ;;
     metadata-emoji ) echo resource ;;
     required-device-capabilities ) echo manifest ;;
+    artifact-* ) echo artifact ;;
     # --- metadata: read from fastlane/metadata/**, uploaded to ASC verbatim ---
     competitor-mentions|metadata-char-limits|locale-metadata-parity) echo metadata ;;
     subscription-eula-metadata|support-privacy-url|placeholder-metadata) echo metadata ;;
@@ -115,6 +120,9 @@ rule_evidence() {
 rule_confidence() {
   case "$1" in
     release-notes-specificity|device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|metadata-emoji|miniapp-native-bridge|apple-endorsement-claims|review-mode-gate|shared-location-descriptor|dating-age-descriptor|on-demand-resources|required-device-capabilities|review-notes-completeness ) echo judgment-call ;;
+    # artifact tier: a linked private framework is what 2.5.1 rejects; the rest asks for a look.
+    artifact-private-api ) echo review-risk ;;
+    artifact-* ) echo judgment-call ;;
     # --- validator-blocking: Apple's machinery refuses the build or the submission ---
     # Missing purpose string / required-reason declaration / private API -> upload
     # validation. Metadata limits, missing localized metadata, missing screenshots,

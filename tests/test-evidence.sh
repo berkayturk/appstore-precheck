@@ -15,7 +15,7 @@ source "$ROOT/skills/appstore-precheck/scripts/evidence.sh"
 section "vocabularies are closed sets"
 # "runtime" leads: it is the shipping behaviour itself, not a proxy for it. But the list
 # is not one axis of strength (metadata is about the listing, runtime about the binary).
-assert_eq "$EVIDENCE_CLASSES"  "runtime metadata manifest resource build-setting source" "evidence vocabulary"
+assert_eq "$EVIDENCE_CLASSES"  "runtime artifact metadata manifest resource build-setting source" "evidence vocabulary"
 assert_eq "$CONFIDENCE_LEVELS" "validator-blocking review-risk judgment-call"    "confidence vocabulary"
 
 section "per-rule classification (spot checks)"
