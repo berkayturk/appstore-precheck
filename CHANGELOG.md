@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.21.1] — 2026-11-25
+
 ### Fixed
 - **§54 `saturated-category` (4.3(b))** now matches "simple timers", the one category in Apple's own 4.3(b) list that the regex had left out while the comment above it named it. A bare `timer` keyword still does not fire: Apple's words are "simple timers", and "timer" alone is an ordinary feature word.
 - **§51 `xcode-sdk-requirement` (2.1)** reads every checked-in `project.pbxproj` instead of the first five `find` returned, and transports paths NUL-delimited (`-print0` / `xargs -0`), so a project under a directory with a space in its name, or a hand-maintained project listed after several generated Tuist / XcodeGen / SwiftPM wrapper projects, no longer escapes the pre-26 `LastUpgradeCheck` warning. New `tests/test-xcode-sdk-paths.sh` pins both cases.
