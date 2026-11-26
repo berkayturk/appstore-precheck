@@ -195,6 +195,88 @@ class StaticRules(unittest.TestCase):
 
 
 
+    # §73–§77 — App Store Connect changes of November 2026 (age descriptors, ODR, App Review Help).
+    def test_shared_location_needs_both_location_and_sharing(self):
+        row = evaluate({'App.swift': 'import CoreLocation\nlet m = CLLocationManager()\nText("See where your friends are on the map")'})['shared-location-descriptor']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertIn('Shared Location', row['reason'])
+        self.assertIn('2027-01-12', row['reason'])
+        plist = plistlib.dumps({'NSLocationWhenInUseUsageDescription': 'Shows nearby friends'})
+        row = evaluate({'Info.plist': plist, 'App.swift': 'import UIKit', 'Localizable.xcstrings': '"share_location": "Share my location"'})['shared-location-descriptor']
+        self.assertEqual(row['status'], 'WARN', row)
+        for label, files in {
+            'location only': {'App.swift': 'import CoreLocation\nlet m = CLLocationManager()\nText("Weather for your location")'},
+            'sharing copy without location API': {'App.swift': 'Text("Share your live location with friends")'},
+            'share sheet is not location sharing': {'App.swift': 'import CoreLocation\nlet m = CLLocationManager()\nlet share = UIActivityViewController(activityItems: [image], applicationActivities: nil)'},
+        }.items():
+            with self.subTest(label=label):
+                self.assertEqual(evaluate(files)['shared-location-descriptor']['status'], 'PASS', label)
+
+    def test_dating_descriptor_reads_metadata_and_names_18_plus(self):
+        for text in ('Dating for busy professionals', 'Your AI girlfriend is waiting', 'Find your soulmate tonight', 'Chat and flirt with people nearby'):
+            with self.subTest(text=text):
+                row = evaluate({'fastlane/metadata/en-US/description.txt': text})['dating-age-descriptor']
+                self.assertEqual(row['status'], 'WARN', row)
+                self.assertIn('18+', row['reason'])
+                self.assertIn('Dating and Relationships', row['reason'])
+        for text in ('Updating your journal is fast.', 'Match the colours in this puzzle.', 'Relationship manager for sales teams (CRM).'):
+            with self.subTest(text=text):
+                self.assertEqual(evaluate({'fastlane/metadata/en-US/description.txt': text})['dating-age-descriptor']['status'], 'PASS', text)
+        self.assertEqual(evaluate({'App.swift': 'import UIKit'})['dating-age-descriptor']['status'], 'SKIP')
+
+    def test_on_demand_resources_from_source_and_build_settings(self):
+        row = evaluate({'App.swift': 'let r = NSBundleResourceRequest(tags: ["l2"])'})['on-demand-resources']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertIn('Background Assets', row['reason'])
+        self.assertIn('2027', row['reason'])
+        row = evaluate({'App.swift': 'import UIKit', 'App.xcodeproj/project.pbxproj': 'ENABLE_ON_DEMAND_RESOURCES = YES;\nON_DEMAND_RESOURCES_INITIAL_INSTALL_TAGS = "level1";'})['on-demand-resources']
+        self.assertEqual(row['status'], 'WARN', row)
+        for label, files in {
+            'background assets': {'App.swift': 'import BackgroundAssets\nlet d = BADownloaderExtension.self'},
+            'disabled setting': {'App.swift': 'import UIKit', 'App.xcodeproj/project.pbxproj': 'ENABLE_ON_DEMAND_RESOURCES = NO;'},
+            'comment only': {'App.swift': '// migrated away from NSBundleResourceRequest\nimport UIKit'},
+        }.items():
+            with self.subTest(label=label):
+                self.assertEqual(evaluate(files)['on-demand-resources']['status'], 'PASS', label)
+
+    def test_required_device_capabilities_flags_speculative_entries(self):
+        row = evaluate({'App.swift': 'import UIKit', 'Info.plist': plistlib.dumps({'UIRequiredDeviceCapabilities': ['arm64', 'telephony', 'front-facing-camera']})})['required-device-capabilities']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertIn('telephony', row['reason'])
+        self.assertIn('front-facing-camera', row['reason'])
+        self.assertNotIn('arm64', row['reason'])
+        row = evaluate({'App.swift': 'import UIKit', 'Info.plist': plistlib.dumps({'UIRequiredDeviceCapabilities': {'gps': True, 'arm64': True}})})['required-device-capabilities']
+        self.assertEqual(row['status'], 'WARN', row)
+        for label, value in {'baseline only': ['arm64', 'metal'], 'absent': None, 'false means not required': {'arm64': True, 'telephony': False}}.items():
+            with self.subTest(label=label):
+                data = {'CFBundleIdentifier': 'org.app'} if value is None else {'UIRequiredDeviceCapabilities': value}
+                self.assertEqual(evaluate({'App.swift': 'import UIKit', 'Info.plist': plistlib.dumps(data)})['required-device-capabilities']['status'], 'PASS', label)
+        self.assertEqual(evaluate({'App.swift': 'import UIKit'})['required-device-capabilities']['status'], 'SKIP')
+
+    def test_review_notes_completeness_three_signals(self):
+        meta = {'fastlane/metadata/en-US/description.txt': 'A journal.'}
+        ai = {'App.swift': 'let u = URL(string: "https://api.anthropic.com/v1/messages")!'}
+        row = evaluate({**meta, **ai, 'fastlane/metadata/review_information/notes.txt': 'Tap Journal.'})['review-notes-completeness']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertIn('AI', row['reason'])
+        self.assertEqual(evaluate({**meta, **ai, 'fastlane/metadata/review_information/notes.txt': 'Entries are summarised by Anthropic Claude.'})['review-notes-completeness']['status'], 'PASS')
+        sub = {'App.swift': 'import StoreKit\nlet info = try await product.subscription?.status\nlet renew = Product.SubscriptionInfo.RenewalInfo.self'}
+        row = evaluate({**meta, **sub, 'fastlane/metadata/review_information/notes.txt': 'Demo: demo@example.com', 'fastlane/metadata/review_information/demo_user.txt': 'demo@example.com'})['review-notes-completeness']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertIn('expired', row['reason'])
+        self.assertEqual(evaluate({**meta, **sub, 'fastlane/metadata/review_information/notes.txt': 'Second account lapsed@example.com has an expired subscription.'})['review-notes-completeness']['status'], 'PASS')
+        roles = {'App.swift': 'Text("Sign in as a teacher")\nText("Sign in as a student")'}
+        row = evaluate({**meta, **roles, 'fastlane/metadata/review_information/notes.txt': 'Use teacher@example.com.', 'fastlane/metadata/review_information/demo_user.txt': 'teacher@example.com'})['review-notes-completeness']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertIn('student', row['reason'])
+        self.assertEqual(evaluate({**meta, **roles, 'fastlane/metadata/review_information/notes.txt': 'Teacher: t@example.com. Student: s@example.com.'})['review-notes-completeness']['status'], 'PASS')
+        self.assertEqual(evaluate({**meta, 'App.swift': 'import UIKit'})['review-notes-completeness']['status'], 'PASS')
+        # A password that happens to contain "Expired" is not an expired-subscription instruction.
+        row = evaluate({**meta, **sub, 'fastlane/metadata/review_information/notes.txt': 'Demo account below.', 'fastlane/metadata/review_information/demo_password.txt': 'Expired2026!'})['review-notes-completeness']
+        self.assertEqual(row['status'], 'WARN', row)
+        self.assertEqual(evaluate({**ai})['review-notes-completeness']['status'], 'SKIP')
+
+
 def case_test(case, kind):
     def test(self):
         result = evaluate(case[kind])[case['rule_id']]

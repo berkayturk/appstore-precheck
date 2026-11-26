@@ -68,9 +68,10 @@ GUIDELINES_BASE_URL="https://developer.apple.com/app-store/review/guidelines/"
 # plist read was. A rule may refine this for one finding with set_evidence.
 rule_evidence() {
   case "$1" in
-    release-notes-specificity|apple-endorsement-claims ) echo metadata ;;
-    device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|miniapp-native-bridge|review-mode-gate ) echo source ;;
+    release-notes-specificity|apple-endorsement-claims|dating-age-descriptor|review-notes-completeness ) echo metadata ;;
+    device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|miniapp-native-bridge|review-mode-gate|shared-location-descriptor|on-demand-resources ) echo source ;;
     metadata-emoji ) echo resource ;;
+    required-device-capabilities ) echo manifest ;;
     # --- metadata: read from fastlane/metadata/**, uploaded to ASC verbatim ---
     competitor-mentions|metadata-char-limits|locale-metadata-parity) echo metadata ;;
     subscription-eula-metadata|support-privacy-url|placeholder-metadata) echo metadata ;;
@@ -113,7 +114,7 @@ rule_evidence() {
 # a heuristic must never be graded above judgment-call.
 rule_confidence() {
   case "$1" in
-    release-notes-specificity|device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|metadata-emoji|miniapp-native-bridge|apple-endorsement-claims|review-mode-gate ) echo judgment-call ;;
+    release-notes-specificity|device-restart-instructions|browser-engine|intent-handler-parity|call-filter-controls|face-authentication|document-browser-access|extension-bundle-parity|matter-extension|extension-advertising|ar-integration-depth|companion-app-required|game-center-id-sharing|metadata-emoji|miniapp-native-bridge|apple-endorsement-claims|review-mode-gate|shared-location-descriptor|dating-age-descriptor|on-demand-resources|required-device-capabilities|review-notes-completeness ) echo judgment-call ;;
     # --- validator-blocking: Apple's machinery refuses the build or the submission ---
     # Missing purpose string / required-reason declaration / private API -> upload
     # validation. Metadata limits, missing localized metadata, missing screenshots,

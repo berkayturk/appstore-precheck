@@ -54,7 +54,7 @@ modules = re.findall(r'^\s*(?:source|\.) "\$SCRIPT_DIR/(lib/scan-[\w-]+\.sh)"', 
 text = entry + '\n' + '\n'.join((scanner.parent / name).read_text() for name in modules)
 slugs = set(re.findall(r'set_rule "([\w-]+)"', text))
 for table in re.findall(r"done <<'STATIC_GUIDELINE_TABLE'\n(.*?)\nSTATIC_GUIDELINE_TABLE", text, re.S):
-    slugs.update(re.findall(r'^([\w-]+)\|[1-5](?:\.\d+)+\|(?:source|metadata|resource)$', table, re.M))
+    slugs.update(re.findall(r'^([\w-]+)\|[1-5](?:\.\d+)+\|(?:source|metadata|resource|manifest)$', table, re.M))
 print(len([slug for slug in slugs if not slug.endswith('-not-audited')]))
 PYTAG
 )"

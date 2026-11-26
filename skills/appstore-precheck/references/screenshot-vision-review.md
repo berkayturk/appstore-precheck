@@ -52,6 +52,7 @@ deep-review.
 ### S4 — Misleading marketing
 1. Determine whether each screenshot shows the app actually in use (real UI) vs pure title/splash/logo art.
 2. Flag shots that are marketing art rather than the app in use (2.3.3), or that depict a feature absent from the build (2.3.1(a)).
+3. Count per device set (iPhone, iPad): App Review Help requires more than half of the set to show the app in use (2 of 3, 3 of 4). A set below that ratio is a finding even when every single shot is defensible.
 
 ### S5 — Metadata ↔ screenshot mismatch
 1. Read the visible UI text/features and compare to the description, keywords, and promo text.

@@ -1,6 +1,6 @@
 # Maintenance
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 This scanner encodes Apple's App Store Review Guidelines, a moving target. The checks are static
 and hand maintained, so they drift out of date unless someone reconciles them on a schedule. This
@@ -22,7 +22,7 @@ Run Phase 0 (the live guideline drift check) against the tracked baseline and ac
 
 ### Quarterly: vector and pattern review
 
-Walk the 72 vectors in the methodology table and confirm each still matches how Apple reviews
+Walk the 77 vectors in the methodology table and confirm each still matches how Apple reviews
 today. Also spot-check the 56 Pierre deep-review checks in
 [`references/pierre-deep-review.md`](skills/appstore-precheck/references/pierre-deep-review.md)
 after major guideline updates. Pay special attention to the signal lists that go stale fastest:
@@ -37,6 +37,12 @@ after major guideline updates. Pay special attention to the signal lists that go
   image/video generation endpoints and SDKs); both grow as new SDKs gain adoption.
 - The review-detection keys, build flags and obfuscation tools in §72 (`static-guidelines.py`:
   `REVIEW_GATE_*`); 2.5.19 is new and the vocabulary developers use for it will shift.
+- The November 2026 App Store Connect vectors §73–§77 (`static-guidelines.py`: `LOCATION_SHARING`,
+  `DATING_TERMS`, `ODR_*`, `BASELINE_CAPABILITIES`, `AI_PROVIDERS` / `SUBSCRIPTION_API` / `ROLE_WORDS`).
+  Two dates are load-bearing and belong in the WARN text until they pass: the age-descriptor deadline
+  **2027-01-12** and the ODR sunset for new apps (early 2027). Once Apple enforces them, re-read the
+  wording: a "deadline ahead" WARN becomes a "submission will be blocked" one. `AI_PROVIDERS` mirrors
+  the §47 list in `scan.sh` and must be extended together with it.
 - The hot-patch frameworks in §32 (`hotcode`), the crypto SDKs in §34 (`crypto_sdk`), the
   remote-desktop SDKs in §36 (`remote_desktop`), and the MDM signals in §41 (`mdm_sig`); these
   vendor lists go stale the same way the ad/analytics lists do.

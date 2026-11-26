@@ -97,7 +97,7 @@ def context(root, metadata, main, excludes):
         except (OSError, UnicodeError, ValueError, plistlib.InvalidFileException, ExpatError) as exc:
             gaps.append(input_error(main, exc, root))
     extensions = {p: v for p, v in plists.items() if 'NSExtension' in v or 'NSAppClip' in v}
-    return dict(root=root, metadata=metadata, main=main_data, files=files, gaps=gaps,
+    return dict(root=root, metadata=metadata, main=main_data, main_path=main if main_data else None, files=files, gaps=gaps,
                 src=src, resources=resources, plists=plists, extensions=extensions)
 
 
@@ -347,6 +347,121 @@ def review_gate(c):
     return outcome(reason='No review-mode gate, App Store build-flag branch, date-gated unlock or obfuscation tooling signal.')
 
 
+# §73–§77 — App Store Connect changes of November 2026. None of these is a guideline
+# sentence; they are the submission-form and App Review Help rules Apple added around
+# the October 16 guideline text: two new age-rating content descriptors (Shared
+# Location, Dating and Relationships; every app must answer by 2027-01-12), the
+# On-Demand Resources sunset for new apps in early 2027, and the App Review Help
+# hub's review-notes expectations. All WARN, all judgment-call.
+LOCATION_API = re.compile(r'\bCLLocationManager\b|\bimport\s+CoreLocation\b|request(?:WhenInUse|Always)Authorization|\bCLLocationUpdate\b')
+LOCATION_KEYS = ('NSLocationWhenInUseUsageDescription', 'NSLocationAlwaysAndWhenInUseUsageDescription', 'NSLocationAlwaysUsageDescription')
+LOCATION_SHARING = re.compile(
+    r'shar(?:e|ing)\s+(?:my\s+|your\s+|their\s+|live\s+|real-?time\s+|current\s+)*(?:location|whereabouts|position)|'
+    r'location\s+shar(?:e|ing)|live\s+location|(?:see|show|find|track)\s+(?:where\s+)?(?:your\s+|my\s+)?friends(?:\s+are)?(?:\s+on\s+the\s+map)?|'
+    r'friends?\s+(?:on\s+the\s+|nearby\s+)?map|nearby\s+(?:users|people|members|singles|friends)|people\s+(?:near|around)\s+you|'
+    r'share[A-Za-z]*Location|location[A-Za-z]*Shar', re.I)
+DATING_TERMS = re.compile(
+    r'(?<![a-z])(?:dating|singles|matchmak\w*|soulmates?|hook-?ups?|flirt\w*|swipe\s+(?:right|left)|'
+    r'(?:ai|virtual)\s+(?:girlfriend|boyfriend|companion|partner|lover)|romantic\s+(?:partner|match(?:es)?|connections?)|'
+    r'find\s+(?:your\s+)?(?:love|a\s+partner|a\s+date)|meet\s+(?:local\s+)?singles)(?![a-z])', re.I)
+ODR_SOURCE = re.compile(r'\bNSBundleResourceRequest\b|\b(?:conditionally)?[bB]eginAccessingResources\b|\bendAccessingResources\b')
+ODR_BUILD = re.compile(r'ENABLE_ON_DEMAND_RESOURCES\s*=\s*YES|ON_DEMAND_RESOURCES_(?:INITIAL_INSTALL_TAGS|PREFETCH_ORDER)\s*=\s*"?[^;"\s]|'
+                       r'ASSET_PACK_MANIFEST_URL_PREFIX|EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE\s*=\s*YES|\bKnownAssetTags\b')
+# Capabilities every current device has, or that only state the binary's architecture.
+BASELINE_CAPABILITIES = {'arm64', 'armv7', 'armv7s', 'metal', 'arkit', 'wifi', 'accelerometer', 'opengles-1', 'opengles-2', 'opengles-3'}
+AI_PROVIDERS = (('OpenAI', r'api\.openai\.com|\bimport\s+OpenAI\b|\bOpenAIKit\b'),
+                ('Anthropic', r'api\.anthropic\.com|\bimport\s+Anthropic\b'),
+                ('Gemini', r'generativelanguage\.googleapis\.com|\bGoogleGenerativeAI\b|\bFirebaseVertexAI\b'),
+                ('Mistral', r'api\.mistral\.ai'), ('OpenRouter', r'openrouter\.ai'), ('Groq', r'api\.groq\.com'),
+                ('Perplexity', r'api\.perplexity\.ai'), ('Together', r'api\.together\.xyz'))
+AI_IN_NOTES = re.compile(r'\bAI\b|\bLLM\b|language model|OpenAI|GPT|Anthropic|Claude|Gemini|Mistral|OpenRouter|Groq|Perplexity|Together|external service', re.I)
+SUBSCRIPTION_API = re.compile(r'\.autoRenewable\b|SubscriptionInfo|\bRenewalInfo\b|subscriptionGroupIdentifier|SKProductSubscriptionPeriod|\bsubscriptionPeriod\b|Purchases\.shared\.|\bRevenueCat\b')
+EXPIRED_IN_NOTES = re.compile(r'expired|lapsed|cancel+ed\s+subscription|non-?renewing|grace period|billing retry', re.I)
+ROLE_WORDS = r'admin(?:istrator)?|teacher|student|parent|driver|rider|passenger|host|guest|coach|athlete|patient|doctor|clinician|therapist|provider|seller|buyer|merchant|vendor|employee|employer|manager|landlord|tenant|trainer|client|owner|moderator|organi[sz]er|attendee'
+ROLE_SIGNAL = re.compile(r'(?:log\s*in|sign\s*in|log\s*on|continue|register|sign\s*up)\s+as\s+(?:an?\s+)?(' + ROLE_WORDS + r')\b|'
+                         r'\b(' + ROLE_WORDS + r')\s+(?:account|login|log-?in|sign-?in|portal|mode|dashboard|role)\b', re.I)
+
+
+def review_information(c):
+    folder = c['metadata'] / 'review_information'
+    texts = {}
+    if folder.is_dir() and not folder.is_symlink():
+        for name in ('notes', 'demo_user', 'demo_password'):
+            path = folder / (name + '.txt')
+            if path.is_file() and not path.is_symlink():
+                texts[name] = checked_text(path)
+    return folder, texts
+
+
+def shared_location(c):
+    uses_location = hit_file(c['src'], LOCATION_API.pattern) or any(k in c['main'] for k in LOCATION_KEYS)
+    if not uses_location:
+        return outcome(reason='No location API or location usage key, so the Shared Location descriptor does not apply.')
+    copy = dict(c['src']); copy.update(c['resources'])
+    p = hit_file(copy, LOCATION_SHARING.pattern)
+    if not p:
+        for path in metadata_files(c, ['description', 'subtitle', 'promotional_text', 'keywords']):
+            if LOCATION_SHARING.search(checked_text(path)):
+                p = path
+                break
+    if p:
+        return outcome(True, 'Location API plus copy about sharing location with other people: App Store Connect added the "Shared Location" age-rating content descriptor in November 2026 and every app must answer the new questions by 2027-01-12 (updates are blocked until then); answer it honestly and check the resulting rating (2.3.6).', p)
+    return outcome(reason='Location API present but no location-sharing copy; still answer the Shared Location question in App Store Connect.')
+
+
+def dating_descriptor(c):
+    files = metadata_files(c, ['name', 'subtitle', 'description', 'keywords', 'promotional_text'])
+    if not files:
+        return outcome(skip=True, reason='Store metadata unavailable.')
+    for p in files:
+        if DATING_TERMS.search(checked_text(p)):
+            return outcome(True, 'Dating / relationship / companion wording in store metadata: the "Dating and Relationships" age-rating content descriptor added in November 2026 sets the minimum rating to 18+ (Brazil A18) and every app must answer it by 2027-01-12; confirm the App Store Connect age rating and that the listing fits an 18+ app (2.3.6).', p)
+    return outcome(reason='No dating, matchmaking or AI-companion wording in store metadata.')
+
+
+def on_demand_resources(c):
+    p = hit_file(c['src'], ODR_SOURCE.pattern)
+    if not p:
+        builds = {path: uncomment(text) for path, text in c['files'].items() if path.suffix == '.pbxproj'}
+        p = next((path for path, text in builds.items() if ODR_BUILD.search(text)), None)
+    if p:
+        return outcome(True, 'On-Demand Resources signal (NSBundleResourceRequest / asset-pack build settings): App Store Connect stops accepting new apps that use ODR in early 2027 and Apple directs developers to Background Assets; plan the migration before the first submission of a new app (2.1).', p)
+    return outcome(reason='No On-Demand Resources API or asset-pack build setting.')
+
+
+def required_capabilities(c):
+    declared = c['main'].get('UIRequiredDeviceCapabilities')
+    if not declared:
+        return outcome(reason='No UIRequiredDeviceCapabilities entry; the app is offered to every compatible device.')
+    # Dictionary form: a false value means the capability must be ABSENT, which widens the set.
+    names = sorted(str(k) for k, v in declared.items() if v) if isinstance(declared, dict) else sorted(str(k) for k in declared) if isinstance(declared, list) else [str(declared)]
+    extra = [n for n in names if n not in BASELINE_CAPABILITIES]
+    if extra:
+        return outcome(True, 'UIRequiredDeviceCapabilities narrows the device set with ' + ', '.join(extra) + ': App Review Help says to list only capabilities the core functionality cannot work without, and reviewers test on devices that have them; drop any entry that is merely nice to have (2.4.1).', c['main_path'])
+    return outcome(reason='UIRequiredDeviceCapabilities lists only architecture / baseline entries.')
+
+
+def review_notes(c):
+    if not c['metadata'].is_dir() or c['metadata'].is_symlink():
+        return outcome(skip=True, reason='Store metadata unavailable.')
+    folder, texts = review_information(c)
+    notes = texts.get('notes', '')  # credentials files are values, not instructions
+    target = (folder / 'notes.txt') if 'notes' in texts else folder
+    provider = next((name for name, pattern in AI_PROVIDERS if hit_file(c['src'], pattern)), None)
+    if provider and not AI_IN_NOTES.search(notes):
+        return outcome(True, 'Code calls ' + provider + ' but the review notes (fastlane review_information/notes.txt) do not mention it: App Review Help asks for every external service the app depends on, AI services included, to be listed in the notes so the reviewer can exercise the feature (2.1).', target)
+    if hit_file(c['src'], SUBSCRIPTION_API.pattern) and not EXPIRED_IN_NOTES.search(notes):
+        return outcome(True, 'Auto-renewable subscription code without a demo account in an expired state: App Review Help asks for a second demo account whose subscription has expired so the reviewer can see the lapsed experience; add it to review_information/notes.txt (2.1).', target)
+    roles = set()
+    for text in list(c['src'].values()) + [checked_text(p) for p in metadata_files(c, ['description'])]:
+        for a, b in ROLE_SIGNAL.findall(text):
+            roles.add((a or b).lower())
+    missing = sorted(r for r in roles if not re.search(r'\b' + re.escape(r) + r'\b', notes, re.I))
+    if len(roles) >= 2 and missing:
+        return outcome(True, 'The app has more than one account type (' + ', '.join(sorted(roles)) + ') but the review notes cover only some of them; App Review Help asks for demo credentials for every account type, missing: ' + ', '.join(missing) + ' (2.1).', target)
+    return outcome(reason='Review notes cover the external services, subscription states and account types the code suggests.')
+
+
 CHECKS = {'release-notes-specificity': release_notes, 'device-restart-instructions': restart,
           'browser-engine': browser, 'intent-handler-parity': intents,
           'call-filter-controls': call_filter, 'face-authentication': face_auth,
@@ -355,20 +470,22 @@ CHECKS = {'release-notes-specificity': release_notes, 'device-restart-instructio
           'ar-integration-depth': ar_depth, 'companion-app-required': companion,
           'game-center-id-sharing': game_ids, 'metadata-emoji': emoji,
           'miniapp-native-bridge': miniapp, 'apple-endorsement-claims': endorsements,
-          'review-mode-gate': review_gate}
+          'review-mode-gate': review_gate, 'shared-location-descriptor': shared_location,
+          'dating-age-descriptor': dating_descriptor, 'on-demand-resources': on_demand_resources,
+          'required-device-capabilities': required_capabilities, 'review-notes-completeness': review_notes}
 
 
 def evaluate(root, metadata, main, excludes):
     c = context(root, metadata, main, excludes)
     result = {}
-    independent = {'release-notes-specificity', 'metadata-emoji', 'apple-endorsement-claims'}
+    independent = {'release-notes-specificity', 'metadata-emoji', 'apple-endorsement-claims', 'dating-age-descriptor'}
     if c['gaps']:
         result['_input_gaps'] = {'count': len(set(c['gaps'])), 'paths': sorted(set(c['gaps']))[:3]}
     for key, check in CHECKS.items():
         if key not in independent and not c['src']:
             result[key] = outcome(skip=True, reason='Source directory unavailable or no source files were read.')
             continue
-        if key in {'intent-handler-parity', 'companion-app-required'} and not c['main']:
+        if key in {'intent-handler-parity', 'companion-app-required', 'required-device-capabilities'} and not c['main']:
             result[key] = outcome(skip=True, reason='Main Info.plist unavailable for manifest comparison.')
             continue
         try:

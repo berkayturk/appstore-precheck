@@ -222,5 +222,71 @@
       "App.swift": "import StoreKit\nfunc askForRating() { SKStoreReviewController.requestReview() }\nlet reviewPrompt = ReviewPromptView(reviewCount: 3)"
     },
     "skip": {}
+  },
+  {
+    "number": 73,
+    "guideline": "2.3.6",
+    "rule_id": "shared-location-descriptor",
+    "positive": {
+      "App.swift": "import CoreLocation\nlet manager = CLLocationManager()\nlet title = \"Share your live location with friends\""
+    },
+    "clean": {
+      "App.swift": "import CoreLocation\nlet manager = CLLocationManager()\nlet title = \"Weather near you\""
+    },
+    "skip": {}
+  },
+  {
+    "number": 74,
+    "guideline": "2.3.6",
+    "rule_id": "dating-age-descriptor",
+    "positive": {
+      "fastlane/metadata/en-US/description.txt": "Meet local singles and swipe right to find your match."
+    },
+    "clean": {
+      "fastlane/metadata/en-US/description.txt": "A private journal for iPhone."
+    },
+    "skip": {}
+  },
+  {
+    "number": 75,
+    "guideline": "2.1",
+    "rule_id": "on-demand-resources",
+    "positive": {
+      "App.swift": "import Foundation\nlet request = NSBundleResourceRequest(tags: [\"level2\"])\nrequest.beginAccessingResources { _ in }"
+    },
+    "clean": {
+      "App.swift": "import BackgroundAssets\nlet url = Bundle.main.url(forResource: \"level2\", withExtension: \"pack\")"
+    },
+    "skip": {}
+  },
+  {
+    "number": 76,
+    "guideline": "2.4.1",
+    "rule_id": "required-device-capabilities",
+    "positive": {
+      "App.swift": "import UIKit",
+      "Info.plist": "<plist version=\"1.0\"><dict><key>UIRequiredDeviceCapabilities</key><array><string>arm64</string><string>telephony</string><string>gps</string></array></dict></plist>"
+    },
+    "clean": {
+      "App.swift": "import UIKit",
+      "Info.plist": "<plist version=\"1.0\"><dict><key>UIRequiredDeviceCapabilities</key><array><string>arm64</string></array></dict></plist>"
+    },
+    "skip": {}
+  },
+  {
+    "number": 77,
+    "guideline": "2.1",
+    "rule_id": "review-notes-completeness",
+    "positive": {
+      "App.swift": "import Foundation\nlet endpoint = URL(string: \"https://api.openai.com/v1/chat/completions\")!",
+      "fastlane/metadata/en-US/description.txt": "A journal.",
+      "fastlane/metadata/review_information/notes.txt": "Log in with the demo account and tap Journal."
+    },
+    "clean": {
+      "App.swift": "import Foundation\nlet endpoint = URL(string: \"https://api.openai.com/v1/chat/completions\")!",
+      "fastlane/metadata/en-US/description.txt": "A journal.",
+      "fastlane/metadata/review_information/notes.txt": "Journal entries are summarised by OpenAI (GPT); no account is needed."
+    },
+    "skip": {}
   }
 ]

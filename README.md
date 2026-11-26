@@ -48,11 +48,11 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 72 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 The percentage counts sections touched, not automatic verification of every requirement; see [the coverage inventory](docs/guideline-coverage.md).
 
-72 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
+77 rejection vectors across code, fastlane metadata, screenshots, `PrivacyInfo.xcprivacy`, and the paywall:
 
 | Guideline | Check |
 |-----------|-------|
@@ -127,6 +127,10 @@ The percentage counts sections touched, not automatic verification of every requ
 | **4.7.2** | All four signals must coexist in one file: handler, remote JS URL, evaluation and native-sensitive API. Does not resolve bridge access control. |
 | **5.2.4** | Narrow English endorsement/official-product patterns; authorized claims still require human confirmation. Ordinary iPhone compatibility text stays clean. |
 | **2.5.19** | Review-detection / hide-for-review keys, App Store build-flag branches, date-gated unlocks and obfuscation tooling; store-review prompts and product-review vocabulary stay clean. A hit asks "show the reviewer what ships", it is not proof of a hidden feature. |
+| **2.3.6** | Location API plus location-sharing copy → answer the new "Shared Location" age-rating descriptor; dating / AI-companion wording in metadata → "Dating and Relationships" descriptor means 18+ (both mandatory in App Store Connect by 2027-01-12) *(advisory)* |
+| **2.1** | On-Demand Resources (`NSBundleResourceRequest`, ODR build settings): not accepted in new apps from early 2027, migrate to Background Assets *(advisory)* |
+| **2.4.1** | `UIRequiredDeviceCapabilities` entries beyond architecture / baseline (telephony, gps, cameras, sensors) narrow the device set; declare only what core functionality needs *(advisory)* |
+| **2.1** | Review notes name the third-party AI provider the code calls, give an expired-subscription demo account when subscriptions auto-renew, and cover every account type the app has *(advisory)* |
 
 Paywall checks are skipped automatically when no in-app-purchase signals are present, and the
 advisory warnings require their documented trigger. Missing inputs are recorded in the JSON coverage gaps.
@@ -422,7 +426,7 @@ nothing is auto-fixed.
 | Phase | Step |
 |-------|------|
 | **0** | **Guideline drift**: diff the live App Store Review Guidelines against a tracked baseline. Never blocks. |
-| **1** | **Static scan**: `scan.sh` over the 72 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
+| **1** | **Static scan**: `scan.sh` over the 77 vectors above. Every finding is labelled with the artifact it was read from and who enforces it — see [Evidence strength](#evidence-strength). |
 | **2** | **`fastlane precheck`**: Apple's own metadata rule engine. |
 | **3** | **Pierre commentary**: explains **every** FAIL and WARN from Phases 0–2 in 2–3 sentences each, quoting Apple's pinned guideline text rather than his memory — see [Guideline citations](#guideline-citations). |
 | **4** | **Pierre deep review**: 56 semantic checks (Tier A, heuristic Tier B and host vision Tier C), plus 5 screenshot-vision checks when screenshots are present. Advisory only. |

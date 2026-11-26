@@ -174,7 +174,11 @@ A host with image access must directly inspect the supplied images and cite its 
    `.appstore-precheck.json` → `reviewPrepNotes` if set.
 2. Flag empty notes, placeholder credentials (`test`, `demo`, `changeme`, `TBD`), or notes that
    do not explain how to reach core features (subscription paywall, Screen Time blocking, etc.).
-3. If the app is not login-gated and has no account wall, mark not applicable.
+3. App Review Help (November 2026) adds three concrete expectations; scan §77 flags their absence,
+   you judge the substance: one working demo account per account type (teacher and student, driver
+   and rider); when subscriptions auto-renew, a second account whose subscription has expired; and
+   every external service the app depends on, AI services included, named in the notes.
+4. If the app is not login-gated and has no account wall, mark not applicable.
 
 ### 5 — 2.2 Beta / test language *(Tier B v1)*
 
@@ -202,6 +206,8 @@ A host with image access must directly inspect the supplied images and cite its 
 1. Open ≥1 screenshot per primary locale.
 2. List visible features (tabs, paywall, login, maps, etc.).
 3. Flag screenshots showing features absent from the build or metadata.
+3b. Per device set, count the shots that show the app in use versus title / splash / marketing art:
+   App Review Help requires more than half in use (2 of 3, 3 of 4). Below that is a finding.
 4. For the full structured screenshot vision review (placeholder/empty-state, text overflow,
    wrong device frame, misleading marketing, metadata mismatch), follow
    `screenshot-vision-review.md` (sibling file in this same `references/` directory).
