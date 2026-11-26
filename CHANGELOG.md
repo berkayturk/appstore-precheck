@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.23.0] — 2026-11-26
+
 ### Artifact tier, baseline diff, positioning
 
 - **`--artifact <path>` (alias `--ipa`)**: the read-only `artifact-review.py` inspector (`.app`, `.ipa`, `.xcarchive`; plists, signed entitlements, Mach-O linkage, embedded frameworks, nothing launched) is now part of `scan.sh`. Its nine checks are catalogued rules §78–§86 (`artifact-entitlements`, `artifact-reason-api`, `artifact-private-api`, `artifact-url-schemes`, `artifact-ats`, `artifact-sdk`, `artifact-embedded-sdk`, `artifact-executable-loading`, `artifact-debug`) with the new `artifact` evidence class; `FINDING` / `NEEDS_REVIEW` map to WARN, never FAIL, and a missing tool or artifact is an honest SKIP. Counted as "artifact checks" in the coverage inventory, apart from the static vectors. `npx appstore-precheck --artifact build/App.ipa` passes it through.
