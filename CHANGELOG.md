@@ -5,6 +5,8 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+## [1.22.0] — 2026-11-26
+
 ### App Store Connect changes of November 2026 encoded (guideline text unchanged)
 
 Apple did not change the App Review Guidelines after October 16, 2026 (`guideline-drift.sh`: no drift), but App Store Connect and the new App Review Help hub added submission rules the scanner did not know. Five advisory static vectors (§73–§77) in the modular table, all WARN-only, all `judgment-call`:
