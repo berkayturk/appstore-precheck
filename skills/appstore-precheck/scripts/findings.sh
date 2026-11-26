@@ -46,6 +46,12 @@ rule_slug() {
     73) echo shared-location-descriptor ;;  74) echo dating-age-descriptor ;;
     75) echo on-demand-resources ;;  76) echo required-device-capabilities ;;
     77) echo review-notes-completeness ;;
+    # 78–86: artifact tier (--artifact / --ipa), read from a built bundle, never executed.
+    78) echo artifact-entitlements ;;  79) echo artifact-reason-api ;;
+    80) echo artifact-private-api ;;  81) echo artifact-url-schemes ;;
+    82) echo artifact-ats ;;  83) echo artifact-sdk ;;
+    84) echo artifact-embedded-sdk ;;  85) echo artifact-executable-loading ;;
+    86) echo artifact-debug ;;
     *) echo "" ;;
   esac
 }
@@ -178,7 +184,11 @@ _record() {
 
 # _record_suppressed <severity> <message> [<file>] [<line>]
 # Same JSONL record as _record but suppressed:true, and bumps the counter.
+: "${_BASELINE_COUNT:=0}"
 _record_suppressed() {
+  # A --baseline match is a suppression with a different signer: count it on its own
+  # as well, so the footer and summary.baseline can say "accepted earlier", not "ignored".
+  [[ "${_SUPP_REASON:-}" == baseline ]] && _BASELINE_COUNT=$((_BASELINE_COUNT + 1))
   [[ -z "$FINDINGS_TMP" ]] && { _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1)); return 0; }
   _emit "$1" "$2" "${3:-}" "${4:-}" true
   _SUPPRESSED_COUNT=$((_SUPPRESSED_COUNT + 1))
@@ -195,11 +205,11 @@ render_json() {
   . "$(dirname "${BASH_SOURCE[0]}")/thresholds.sh"
   [[ -s "$buf" ]] || { printf '%s\n' '{"findings":[]}' | jq \
      --arg v "$PRECHECK_VERSION" '{tool:"appstore-precheck",version:$v,verdict:"GREEN",
-       summary:{fail:0,warn:0,pass:0,suppressed:0,
+       summary:{fail:0,warn:0,pass:0,suppressed:0,baseline:0,
                 by_confidence:{"validator-blocking":0,"review-risk":0,"judgment-call":0,unclassified:0},
                 needs_build_verification:0, not_audited:0},
        findings:[]}'; return 0; }
-  jq -s --arg v "$PRECHECK_VERSION" \
+  jq -s --arg v "$PRECHECK_VERSION" --argjson b "${_BASELINE_COUNT:-0}" \
      --argjson fmin "$RED_FAIL_MIN" --argjson wmin "$YELLOW_WARN_MIN" '
     (map(select(.suppressed==false))) as $live
     | ($live|map(select(.severity=="FAIL"))|length) as $f
@@ -218,7 +228,7 @@ render_json() {
     | ($live|map(select(.severity=="FAIL" or .severity=="WARN"))) as $issues
     | ($issues|map(select(.needs_build_verification==true))|length) as $nb
     | {tool:"appstore-precheck", version:$v, verdict:$verdict,
-       summary:{fail:$f, warn:$w, pass:$p, suppressed:$s,
+       summary:{fail:$f, warn:$w, pass:$p, suppressed:$s, baseline:$b,
                 by_confidence:{
                   "validator-blocking":($issues|map(select(.confidence=="validator-blocking"))|length),
                   "review-risk":($issues|map(select(.confidence=="review-risk"))|length),

@@ -48,7 +48,7 @@ each, divided by horizontal rules), not one compressed sentence. The breakdown b
 
 ## What it checks
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 9 artifact checks, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 The percentage counts sections touched, not automatic verification of every requirement; see [the coverage inventory](docs/guideline-coverage.md).
 
@@ -237,6 +237,10 @@ how the app is built:
 | 🟢 **Native Swift / SwiftUI** | Source checks are supported; applicability and missing-input gates still apply. |
 | 🟡 **React Native / Flutter** | Metadata, privacy manifest, screenshots, and export compliance apply in full. The native-source checks (ATT, paywall links, private API, SDK detection, navigation) **under-detect rather than misfire**: that logic lives in JS/Dart, so they stay quiet instead of blocking. |
 
+**iOS only, on purpose.** The scanner encodes Apple's App Store Review Guidelines and App Store
+Connect rules; it does not read Android projects or Play Console policy, and it will not. For a
+Google Play pre-check use a tool built for it, such as [greenlight](https://github.com/RevylAI/greenlight).
+
 ## Quick start
 
 One `SKILL.md`, every host. **Claude Code, Cursor, Codex, and Grok Build** install as native
@@ -378,6 +382,32 @@ bash skills/appstore-precheck/scripts/scan.sh --format json   # structured findi
 `message`, and optional `file`/`line` per finding, plus the verdict summary) instead of the
 default text lines, for scripts and measurement tooling to consume. It's read-only and additive;
 the default text output is unchanged.
+
+**Built artifact (`--artifact`, alias `--ipa`)** — hand the scan a built `.app`, `.ipa` or
+`.xcarchive` and nine read-only artifact checks join the output as rules `artifact-*`: signed
+entitlements vs `Info.plist`, Required Reason API symbols vs `PrivacyInfo.xcprivacy`, private
+framework linkage (`otool -L`), `LSApplicationQueriesSchemes`, ATS exceptions as shipped,
+`MinimumOSVersion` vs the build SDK, embedded frameworks' manifests and signatures, downloaded
+executable code strings, and debug leftovers (`get-task-allow`, stray `.mobileprovision`, dSYMs).
+Nothing is launched. They carry `evidence: artifact`, never FAIL on their own, and report SKIP when a
+tool (`codesign`, `otool`, `nm`) is missing.
+
+```bash
+npx appstore-precheck --artifact build/MyApp.ipa
+bash skills/appstore-precheck/scripts/scan.sh --ipa build/MyApp.ipa --format json
+```
+
+**Baseline (`--save-baseline` / `--baseline`)** — accept today's findings and see only what is
+new. `--save-baseline .precheck-baseline.json` records the live FAIL/WARN findings (rule, file,
+message); on later runs `--baseline .precheck-baseline.json` treats a matching finding like a
+`.precheck-ignore` suppression: it leaves the text output and the verdict, stays in `--format json`
+as `suppressed: true`, and is counted in `summary.baseline` and in the footer. A baseline that
+cannot be read is reported on stderr and ignored, so it can never hide anything by accident.
+
+```bash
+npx appstore-precheck --save-baseline .precheck-baseline.json   # once, after triage
+npx appstore-precheck --baseline .precheck-baseline.json         # in CI: fail only on new findings
+```
 
 ### CI
 

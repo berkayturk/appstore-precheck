@@ -6,6 +6,8 @@ _SUPP_RULES=""        # rule-ids suppressed everywhere, one per line
 _SUPP_RULE_PATH=""    # "rule<TAB>glob" per line
 _SUPP_PATHS=""        # path globs excluded from scanning, one per line (trailing / stripped)
 _SUPP_REASON=""       # set by is_suppressed on a hit
+_BASE_KEYS=""         # "rule<TAB>file<TAB>message" per line, from --baseline
+_BASE_FILE=""
 
 # _is_catalog_rule <token> -> 0 if token is a known rule slug.
 # The bound is derived from the catalog itself (rule_slug returns "" past the
@@ -54,6 +56,33 @@ load_precheck_ignore() {
   done < "$file"
 }
 
+# load_baseline <file> — read a --save-baseline file. Problems are reported on stderr
+# and leave the scan untouched: a baseline that cannot be read must never hide anything.
+load_baseline() {
+  local file="$1" keys
+  _BASE_KEYS=""; _BASE_FILE="$file"
+  if [[ ! -f "$file" ]]; then printf 'scan.sh: baseline file not found: %s (ignored)\n' "$file" >&2; return 0; fi
+  if ! command -v jq >/dev/null 2>&1; then printf 'scan.sh: --baseline needs jq (ignored)\n' >&2; return 0; fi
+  # Fields are joined with US (0x1f) and newlines inside a message flattened to spaces, the
+  # same normalisation is_suppressed applies to the live message, so the two keys agree.
+  keys="$(jq -r '.findings[]? | select(.rule_id != null and .message != null) | [.rule_id, (.file // ""), (.message | gsub("\n"; " "))] | join("\u001f")' "$file" 2>/dev/null)" \
+    || { printf 'scan.sh: baseline is not a findings JSON file: %s (ignored)\n' "$file" >&2; return 0; }
+  _BASE_KEYS="$keys"
+}
+
+# save_baseline <file> — write the live FAIL/WARN findings of this run as a baseline.
+# Reads the JSONL findings buffer, so it works in text and json mode alike.
+save_baseline() {
+  local file="$1"
+  if ! command -v jq >/dev/null 2>&1; then printf 'scan.sh: --save-baseline needs jq\n' >&2; return 0; fi
+  [[ -s "${FINDINGS_TMP:-}" ]] || printf '' > "${FINDINGS_TMP:-/dev/null}"
+  jq -s --arg v "${PRECHECK_VERSION:-dev}" --arg d "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+    '{tool:"appstore-precheck", version:$v, created:$d,
+      findings: [ .[] | select(.suppressed == false and (.severity == "FAIL" or .severity == "WARN"))
+                       | {rule_id, severity, file, message} ]}' "$FINDINGS_TMP" > "$file" 2>/dev/null \
+    || printf 'scan.sh: could not write the baseline %s\n' "$file" >&2
+}
+
 # precheck_prune_globs -> one path glob per line (for scan.sh PRUNE/GREP_PRUNE).
 precheck_prune_globs() { printf '%s' "$_SUPP_PATHS"; }
 
@@ -66,10 +95,14 @@ _inline_marker() {
   [[ "$spec" == "$rule" ]]            # scoped marker must match
 }
 
-# is_suppressed <rule> <file> <line> -> 0 if suppressed (+ _SUPP_REASON), else 1.
+# is_suppressed <rule> <file> <line> [<message>] -> 0 if suppressed (+ _SUPP_REASON), else 1.
+# The message is passed only for FAIL/WARN: a baseline match needs rule + file + text.
 is_suppressed() {
-  local rule="$1" file="${2:-}" line="${3:-}" r g target
+  local rule="$1" file="${2:-}" line="${3:-}" msg="${4:-}" r g target
   _SUPP_REASON=""
+  if [[ -n "$msg" && -n "$_BASE_KEYS" ]] && printf '%s\n' "$_BASE_KEYS" | grep -qxF "$(printf '%s\037%s\037%s' "$rule" "$file" "${msg//$'\n'/ }")"; then
+    _SUPP_REASON="baseline"; return 0
+  fi
   if [[ -n "$rule" ]] && printf '%s\n' "$_SUPP_RULES" | grep -qxF "$rule"; then
     _SUPP_REASON="rule:$rule"; return 0
   fi

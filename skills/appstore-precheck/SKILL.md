@@ -12,7 +12,7 @@ allowed-tools: Bash Read Grep Glob WebFetch mcp__maestro__list_devices mcp__maes
 
 Optional CLI tiers and build/credential boundaries: [optional-review.md](references/optional-review.md).
 
-Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 9 artifact checks, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
 
 This percentage counts sections touched, not automatic verification of every requirement.
 
@@ -185,7 +185,8 @@ full check table is in
 [`references/methodology.md`](references/methodology.md#phase-1-rejection-vectors).
 
 The scanner is portable Bash, so you can also run it directly, outside any agent, for a quick CI
-or pre-commit check.
+or pre-commit check. `--artifact <.app|.ipa|.xcarchive>` adds nine read-only checks on the built bundle (`artifact-*`, `evidence: artifact`, never executed);
+`--save-baseline` / `--baseline <file>` accept today's FAIL/WARN findings and fail only on what is new (see methodology.md).
 
 A fourth line class, `SKIP:`, marks a check that **could not run** — a missing artifact, not a
 clean result. It is counted separately (`skip=` in `verdict.sh`, `summary.not_audited` in JSON) and

@@ -44,7 +44,10 @@ def scan_sources(skill):
                 continue
             for message in re.findall(r'\b(?:fail|warn|pass)\s+"((?:[^"\\]|\\.)*)"', chunks[index + 1]):
                 add(result, message, '§%d' % slugs[slug])
-    return result, len(slugs)
+    # The artifact tier (--artifact) is read from a built bundle, not the repository: its
+    # checks are catalogued rules but not static vectors, and are counted on their own.
+    artifact = [slug for slug in slugs if slug.startswith('artifact-')]
+    return result, len(slugs) - len(artifact), len(artifact)
 
 
 def table_sources(path, dynamic=False):
@@ -118,7 +121,7 @@ def deep_sources(skill, catalog):
 
 
 def sources(skill):
-    scan, vectors = scan_sources(skill)
+    scan, vectors, artifact = scan_sources(skill)
     refs = skill / 'references'
     catalog = json.loads((refs / 'review-catalog.json').read_text())
     deep, deep_errors = deep_sources(skill, catalog)
@@ -133,7 +136,7 @@ def sources(skill):
     if len(numbers) != len(set(numbers)) or len(keys) != len(set(keys)):
         errors.append('duplicate deep-review number/key')
     return {'scan': scan, 'deep': deep, 'dynamic': dynamic, 'vision': vision}, {
-        'static_vectors': vectors, 'deep_checks': len(numbers),
+        'static_vectors': vectors, 'artifact_checks': artifact, 'deep_checks': len(numbers),
         'dynamic_checks': len(registered), 'vision_checks': len(vision_ids),
         'catalog_version': catalog['version']}, errors
 
@@ -202,7 +205,7 @@ def source_details(pointers):
 def summary_line(report):
     return ('Coverage inventory: {covered}/{denominator} leaf sections ({percentage}%); '
             '{touched} touched, {positive_only} positive-only; '
-            '{static_vectors} static vectors, {deep_checks} deep-review checks, '
+            '{static_vectors} static vectors, {artifact_checks} artifact checks, {deep_checks} deep-review checks, '
             '{dynamic_checks} dynamic checks, {vision_checks} vision checks, '
             '{human_only} human-only sections.').format(**report)
 

@@ -5,6 +5,15 @@ All notable changes to this project are documented here. Versioning follows
 
 ## [Unreleased]
 
+### Artifact tier, baseline diff, positioning
+
+- **`--artifact <path>` (alias `--ipa`)**: the read-only `artifact-review.py` inspector (`.app`, `.ipa`, `.xcarchive`; plists, signed entitlements, Mach-O linkage, embedded frameworks, nothing launched) is now part of `scan.sh`. Its nine checks are catalogued rules §78–§86 (`artifact-entitlements`, `artifact-reason-api`, `artifact-private-api`, `artifact-url-schemes`, `artifact-ats`, `artifact-sdk`, `artifact-embedded-sdk`, `artifact-executable-loading`, `artifact-debug`) with the new `artifact` evidence class; `FINDING` / `NEEDS_REVIEW` map to WARN, never FAIL, and a missing tool or artifact is an honest SKIP. Counted as "artifact checks" in the coverage inventory, apart from the static vectors. `npx appstore-precheck --artifact build/App.ipa` passes it through.
+- **`--save-baseline <file>` / `--baseline <file>`**: accept today's FAIL/WARN findings and fail only on what is new. A match on rule + file + message is treated like a `.precheck-ignore` suppression (out of text and verdict, kept in JSON as `suppressed: true`), counted in the new `summary.baseline` and in the text footer. PASS and SKIP are never baselined; an unreadable baseline is reported on stderr and ignored.
+- README states the scope plainly: iOS only, by design, with a pointer to greenlight for Google Play. New `tests/test-baseline.sh` and `tests/test-scan-artifact.sh`.
+
+Coverage inventory: 94/104 leaf sections (90%); 94 touched, 2 positive-only; 77 static vectors, 9 artifact checks, 56 deep-review checks, 20 dynamic checks, 5 vision checks, 10 human-only sections.
+
+
 ## [1.22.0] — 2026-11-26
 
 ### App Store Connect changes of November 2026 encoded (guideline text unchanged)
